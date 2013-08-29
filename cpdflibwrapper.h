@@ -1,4 +1,5 @@
 /* cpdflibwrapper.h */
+extern void caml_startup (char **);
 
 /* Errors */
 int lastError;
