@@ -8,11 +8,13 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
           -output-obj -o cpdflib.o \
           unix.cmxa bigarray.cmxa camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
 	cp $(CAMLBASE)ocaml/libasmrun.a libcpdf.a;
+	cp $(CAMLBASE)ocaml/libbigarray.a .;
+	cp $(CAMLBASE)ocaml/libunix.a .;
 	ar -x $(CAMLBASE)camlpdf/libcamlpdf_stubs.a;
 	ar r libcpdf.a *.o 
 
 test:   libcpdf.a cpdflibtest.c
-	cc cpdflibtest.c -o test -L$(CAMLBASE)ocaml -L. -lcpdf -lbigarray -lunix
+	cc cpdflibtest.c -o test -L. -lcpdf -lbigarray -lunix
 
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a test

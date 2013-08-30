@@ -1,4 +1,9 @@
 /* cpdflibwrapper.h */
+/* A C wrapper to cpdf PDF tools library */
+/* Free for non-commercial use. See LICENSE for details */
+/* To purchase a license, please visit http://www.coherentpdf.com/ */
+
+/* This function must be called with argv before using the library. */
 extern void caml_startup (char **);
 
 /* Errors */
