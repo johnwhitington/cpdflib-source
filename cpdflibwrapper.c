@@ -2,11 +2,7 @@
 #include <stdio.h>
 #include <caml/memory.h>
 #include <caml/callback.h>
-#include <caml/mlvalues.h>
 #include <caml/alloc.h>
-#include <caml/fail.h>
-#include <caml/custom.h>
-#include <caml/intext.h>
 #include <caml/bigarray.h>
 
 int lastError = 0;

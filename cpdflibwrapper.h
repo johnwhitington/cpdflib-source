@@ -3,15 +3,32 @@
 /* Free for non-commercial use. See LICENSE for details */
 /* To purchase a license, please visit http://www.coherentpdf.com/ */
 
+/* CHAPTER 0. Preliminaries */
+
 /* This function must be called with argv before using the library. */
 extern void caml_startup (char **);
 
-/* Errors */
+/* Set demo mode. Upon library startup is false */
+void setdemo(int);
+
+/* Errors. lastError and lastErrorString hold information about the last error
+ * to have occurred. */
 int lastError;
 char* lastErrorString;
+
+/* Clear the current error state. */
 void clearError (void);
 
+/* A debug function which prints some information about resource usage. This
+ * can be used to detect if PDFs or ranges are not being deallocated properly. */
 void onexit (void);
+
+/* Remove a PDF from memory */
+void deletePdf(int);
+
+/* Calling replacePdf(a, b) places PDF b under number a. Original a and b are
+ * no longer available. */
+void replacePdf(int, int);
 
 /* Undo support */
 
@@ -23,20 +40,12 @@ int redo(int);
 
 /* Mark a document for update. This copies the document so the change can be undone later */
 void aboutToUpdate(int);
+
+/* Same, but when a deep copy (no sharing of data) is required. */
 void aboutToUpdateDeep(int);
 
 /* Abort such an update due to an error part-way through the update */
 void abortUpdate(int);
-
-int startEnumeratePDFs(void);
-int enumeratePDFsKey(int);
-char* enumeratePDFsInfo(int);
-void endEnumeratePDFs(void);
-
-void deletePdf(int);
-void replacePdf(int, int);
-
-void setdemo(int);
 
 /* CHAPTER 1. Basics */
 double ptOfCm (double);
@@ -67,8 +76,6 @@ int fromFile(char*);
 
 int fromFileLazy(char*);
 
-//int fromFileDecrypt(char*, char*);
-
 int blankDocument(double, double, int);
 
 enum papersize {a0portrait, a1portrait, a2portrait, a3portrait, a4portrait, a5portrait, a0landscape, a1landscape, a2landscape, a3landscape, a4landscape, a5landscape, usletterportrait, usletterlandscape, uslegalportrait, uslegallandscape};
@@ -89,7 +96,6 @@ int hasPermissionStatus(int, int);
 int lookupPdfEncryption(int);
 char* lookupPdfUserPassword(int);
 
-/* Make it happen imperatively. Need to fix this/document in .NET version... */
 void decryptPdf(int, char*);
 
 void decryptPdfOwner(int, char*);
@@ -114,8 +120,6 @@ int merge(int*, int, int, int);
 int mergeSame(int*, int, int, int, int*);
 
 int selectPages(int, int);
-
-//int* splitOnBookmarks(int, int, int*);
 
 /* CHAPTER 3. Pages */
 void scalePages(int, int, double, double);
@@ -143,8 +147,6 @@ void removeCrop(int, int);
 void removeTrim(int, int);
 void removeArt(int, int);
 void removeBleed(int, int);
-
-
 
 
 /* CHAPTER 5. Compression */

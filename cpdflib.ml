@@ -444,16 +444,6 @@ let copy_pdf from =
    Pdf.objects = from.Pdf.objects;
    Pdf.trailerdict = from.Pdf.trailerdict}
 
-(* FIXME: 26/11/2011 - what was this for? Why different? *)
-(*let deep_copy_pdf from =
-  let pdf = copy_pdf from in
-    Pdf.objselfmap
-      (function
-       | Pdf.Stream {contents = (dict, stream)} -> Pdf.Stream (ref (dict, stream))
-       | x -> x)
-      pdf;
-    pdf *)
-
 let deep_copy_pdf = Pdf.deep_copy
 
 (* Do an update. Copy PDF to left list *)
@@ -469,7 +459,7 @@ let aboutToUpdateDeep i =
   if !dbg then flprint "Cpdflib.aboutToUpdateDeep\n";
   try
     match Hashtbl.find pdfs i with
-    | (ls, (p, enc), rs) -> Hashtbl.replace pdfs i ((p, enc)::ls, (deep_copy_pdf p, enc), rs)
+    | (ls, (p, enc), rs) -> Hashtbl.replace pdfs i ((p, enc)::ls, (Pdf.deep_copy p, enc), rs)
   with
     e -> handle_error "aboutToUpdateDeep" e; err_unit
 
