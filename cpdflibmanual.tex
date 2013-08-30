@@ -13,12 +13,12 @@
 
 \begin{flushright}
 
-{\sffamily \bfseries \Huge Coherent PDF Toolkit for .NET}
+{\sffamily \bfseries \Huge Coherent PDF Library}
 
 \vspace{12mm}
 
 {\Huge Developer's Manual}\\\vspace{2mm}
-Version 1.6 (February 2011)
+Version 1.7 (August 2013)
 
 \vspace{25mm}
 
@@ -37,7 +37,7 @@ Version 1.6 (February 2011)
 \noindent For bug reports, feature requests and comments, email\\ \texttt{contact@coherentgraphics.co.uk}
 
 \vspace*{\fill}
-\noindent\copyright 2011 Coherent Graphics Limited. All rights reserved.
+\noindent\copyright 2013 Coherent Graphics Limited. All rights reserved.
 
 \smallgap 
 \noindent Adobe, Acrobat, Adobe PDF, Adobe Reader and PostScript are
@@ -53,24 +53,13 @@ Excel are registered trademarks of Microsoft Corporation.
 \chapterstyle{hangnum}
 \pagestyle{ruled}
 \chapter{Installation}
-The Coherent PDF .NET Toolkit is supplied as a Windows Installer, which installs reference copies of the DLLs and the manual in the Program Files Folder, installs the DLLs into the .NET GAC (Global Assembly Cache) and adds appropriate entries in the Registry.
+The Coherent PDF Library is provided either in binary form (three archive files \texttt{libcpdf.a}, \texttt{libbigarray.a}, \texttt{libunix.a} and the library header \texttt{cpdflibwrapper.h}), or as source. Instructions for building from source are included in the distribution.
 
 \section{Installation}
-Double click the .msi file and follow the instructions to install. Reference copies of the DLLs and the manual are placed in \texttt{Program Files/Coherent Graphics/Cpdflib 1.6/}. 
-
-The toolkit can be uninstalled by using ``Add or Remove Programs'' in the Windows Control Panel.
-
-\section{Visual Studio Setup}
-Use the ``Add Reference'' facility to add references in a project to:
-\begin{itemize}
-\item Coherent.PDFTools.dll
-\item FSharp.Core.dll
-\end{itemize}
-
-The ``Add Reference'' facility is located differently in each version of Visual Studio - see the documentation.
+Place \texttt{libcpdf.a}, \texttt{libbigarray.a}, and \texttt{libunix.a} somewhere suitable. Instruct your C linker to link with them. Place \texttt{cpdflibwrapper.h} somewhere suitable and instuct your C compiler to search for headers there.
 
 \vspace{3mm}
-\noindent The toolkit is now ready for use.
+\noindent The library is now ready for use.
 
 \chapter{Basic Usage}
 \begin{framed}
