@@ -1,4 +1,4 @@
-CAMLBASE = /Users/john/.opam/4.00.1/lib/
+CAMLBASE = /Users/john/.opam/4.01.0/lib/
 
 mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ocamlfind ocamlc -package cpdf cpdflib.mli;
@@ -17,5 +17,6 @@ test:   libcpdf.a cpdflibtest.c
 	cc cpdflibtest.c -o test -L. -lcpdf -lbigarray -lunix
 
 clean:
-	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a test
+	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a test *.aux *.idx \
+*.log *.out cpdflibmanual.pdf *.toc
 
