@@ -4,7 +4,7 @@
 int main (int argc, char ** argv)
 {
   caml_startup(argv);
-  int pdf = fromFile("PDFTests/aes256blankuser.pdf");
+  int pdf = fromFile("logo.pdf");
   //toFile(pdf, "d1.pdf", 0, 0);
   //aboutToUpdateDeep(pdf);
   //toFile(pdf, "d2.pdf", 0, 0);
