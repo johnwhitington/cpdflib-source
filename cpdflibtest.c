@@ -14,10 +14,10 @@ int main (int argc, char ** argv)
   setdemo(false);
 
   printf("Load from a file\n");
-  int pdf = fromFile("logo.pdf");
+  int pdf = fromFile("testinputs/logo.pdf");
 
   printf("Write to a file\n");
-  toFile(pdf, "out.pdf", 0, 0);
+  toFile(pdf, "testoutputs/out.pdf", 0, 0);
 
   printf("*****Tests finished\n");
   return 0;
