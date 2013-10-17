@@ -72,12 +72,116 @@ int main (int argc, char ** argv)
   int blanksized = blankDocumentPaper(a4portrait, 10);
   toFile(blanksized, "testoutputs/blanka4.pdf", false, false);
   
-  //int rfrompagespec = parsePagespec(blanksized, "1-2,3-end");
-  //printf("Validating pagespec gives %i\n", validatePagespec("1-2,3-end"));
+  int rfrompagespec = parsePagespec(blanksized, "1-2,5-end");
+  printf("Validating pagespec gives %i\n", validatePagespec("1-2,5-end"));
 
-  //printf("There are %i pages in the blank sized pdf\n", pages(blanksized));
+  printf("There are %i pages in the blank sized pdf\n", pages(blanksized));
  
-  //printf("There are %i quick pages in the blank sized pdf\n", pagesFast("", "testoutputs/blanka4.pdf"));
+  printf("There are %i quick pages in the blank sized pdf\n", pagesFast("", "testoutputs/blanka4.pdf"));
+
+  printf("String of pagespec is %s\n", stringOfPagespec(blanksized, rfrompagespec));
+
+  printf("This is documents has isEncrypted = %i\n", isEncrypted(blanksized));
+
+  /* Chapter 9. Multipage facilities */
+  printf("Two up\n");
+  twoUp(blanksized);
+  toFile(blanksized, "testoutputs/twoup.pdf", false, false);
+  padAfter(pdflazy, allrange);
+  padBefore(pdflazy, allrange);
+  toFile(pdflazy, "testoutputs/padded.pdf", false, false);
+
+
+  /* Chapter 11. Document Information and Metadata */
+  int fonts = fromFile("testinputs/london.pdf");
+  startGetFontInfo(fonts);
+  int numfonts = numberFonts();
+  for (int x = 0; x < numfonts; x++)
+  {
+    printf("Page %i, font %s has type %s and encoding %s\n",
+      getFontPage(x),
+      getFontName(x),
+      getFontType(x),
+      getFontEncoding(x));
+  };
+  endGetFontInfo();
+
+  printf("isLinearized = %i\n", isLinearized("testinputs/london.pdf"));
+  printf("pdf version is %i\n", getVersion(fonts));
+  printf("pdf title is %s\n", getTitle(fonts));
+  printf("pdf author is %s\n", getAuthor(fonts));
+  printf("pdf subject is %s\n", getSubject(fonts));
+  printf("pdf keywords is %s\n", getKeywords(fonts));
+  printf("pdf creator is %s\n", getCreator(fonts));
+  printf("pdf producer is %s\n", getProducer(fonts));
+
+  printf("Creation date is %s\n", getCreationDate(fonts));
+  
+  printf("Modification date is %s\n", getModificationDate(fonts));
+ 
+  printf("Make a date string from components: %s\n",
+    dateStringOfComponents(2003, 2, 5, 4, 6, 6, 0, 0));
+
+  int year, month, day, hour, minute, second, hour_offset, minute_offset;
+  getDateComponents("D:20061108125017Z", &year, &month, &day, &hour, &minute, &second, &hour_offset, &minute_offset);
+  printf("Get the components from a date string D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n",
+          year, month, day, hour, minute, second, hour_offset, minute_offset);
+
+  setVersion(fonts, 6);
+  setTitle(fonts, "Title");
+  setAuthor(fonts, "Author");
+  setSubject(fonts, "Subject");
+  setKeywords(fonts, "Keywords");
+  setCreator(fonts, "Creator");
+  setProducer(fonts, "Producer");
+  setCreationDate(fonts, "D:20061108125017Z");
+  setModificationDate(fonts, "D:20061108125017Z");
+  toFile(fonts, "testoutputs/settitleetc.pdf", false, false);
+
+
+
+  setMetadataFromFile(fonts, "cpdflib.ml");
+  toFile(fonts, "testoutputs/metadata1.pdf", false, false);
+  setMetadataFromByteArray(fonts, "BYTEARRAY", 9);
+  toFile(fonts, "testoutputs/metadata2.pdf", false, false);
+  int metadata_length;
+  void* metadata = getMetadata(fonts, &metadata_length);
+  removeMetadata(fonts);
+
+  /* Chapter 12. File attachments */
+  int toattachto = fromFile("testinputs/london.pdf");
+  attachFile("cpdflibtest.c", toattachto);
+  toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
+
+  startGetAttachments(toattachto);
+  int numatt = numberGetAttachments();
+  printf("There are %i attachements to get\n", numatt);
+  for (int x = 0; x < numatt; x++)
+  {
+    printf("Attachment %i is named %s\n", x, getAttachmentName(x));
+  };
+  endGetAttachments();
+
+  removeAttachedFiles(toattachto);
+  toFile(toattachto, "testoutputs/removedattachments.pdf", false, false);
+
+  /* Chapter 13. Miscellaneous */
+  int london = fromFile("testinputs/london.pdf");
+  int all_london = all(london);
+  draft(london, all_london, true);
+  toFile(london, "testoutputs/draft.pdf", false, false);
+  blackText(london, all_london);
+  blackFills(london, all_london);
+  blackLines(london, all_london);
+  toFile(london, "testoutputs/black.pdf", false, false);
+  int london2 = fromFile("testinputs/london.pdf");
+  thinLines(london2, all_london, 8.0);
+  copyId(pdflazy, london2);
+  toFile(london2, "testoutputs/thinlines.pdf", false, false);
+
+  /* Page labels */
+  addPageLabels(london2, 4, "PREFIX-", 1, all_london);
+  toFile(london2, "testoutputs/pagelabels.pdf", false, false);
 
   replacePdf(blankdoc, blanksized);
 
