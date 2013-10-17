@@ -134,11 +134,47 @@ int main (int argc, char ** argv)
   setKeywords(fonts, "Keywords");
   setCreator(fonts, "Creator");
   setProducer(fonts, "Producer");
+  markTrapped(fonts);
+  markUntrapped(fonts);
   setCreationDate(fonts, "D:20061108125017Z");
   setModificationDate(fonts, "D:20061108125017Z");
   toFile(fonts, "testoutputs/settitleetc.pdf", false, false);
 
+  setPageLayout(fonts, 4);
+  setPageMode(fonts, 3);
 
+  printf("Has page one a %s box? %i\n", "/CropBox", hasBox(fonts, 1, "/CropBox")); 
+  printf("Has page one a %s box? %i\n", "/BleedBox", hasBox(fonts, 1, "/BleedBox")); 
+  printf("Has page one a %s box? %i\n", "/ArtBox", hasBox(fonts, 1, "/ArtBox")); 
+  printf("Has page one a %s box? %i\n", "/TrimBox", hasBox(fonts, 1, "/TrimBox")); 
+
+  double minx, maxx, miny, maxy;
+
+  int allbox = all(fonts);
+
+  setMediabox(fonts, allbox, 100, 500, 150, 550);
+  setCropBox(fonts, allbox, 100, 500, 150, 550);
+  setBleedBox(fonts, allbox, 100, 500, 150, 550);
+  setArtBox(fonts, allbox, 100, 500, 150, 550);
+  setTrimBox(fonts, allbox, 100, 500, 150, 550);
+  
+  getMediaBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  printf("Media: %f %f %f %f\n", minx, maxx, miny, maxy);
+  getCropBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  printf("Crop: %f %f %f %f\n", minx, maxx, miny, maxy);
+  getBleedBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  printf("Bleed: %f %f %f %f\n", minx, maxx, miny, maxy);
+  getArtBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  printf("Art: %f %f %f %f\n", minx, maxx, miny, maxy);
+  getTrimBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  printf("Trim: %f %f %f %f\n", minx, maxx, miny, maxy);
+
+  hideToolbar(fonts, true);
+  hideMenubar(fonts, true);
+  hideWindowUi(fonts, true);
+  fitWindow(fonts, true);
+  centerWindow(fonts, true);
+  displayDocTitle(fonts, true);
 
   setMetadataFromFile(fonts, "cpdflib.ml");
   toFile(fonts, "testoutputs/metadata1.pdf", false, false);
