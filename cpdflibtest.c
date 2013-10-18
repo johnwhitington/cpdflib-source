@@ -142,6 +142,41 @@ int main (int argc, char ** argv)
   printf("This is documents has isEncrypted = %i\n", isEncrypted(blanksized));
 
   /* Chapter 8. Logos, Watermarks and Stamps */
+  int stamp = fromFile("logo.pdf");
+  int stampee = fromFile("testinputs/london.pdf");
+  stampOn(stamp, stampee, all(stamp));
+  stampUnder(stamp, stampee, all(stamp));
+  toFile(stamp, "testoutputs/stamp_after.pdf", false, false);
+  toFile(stampee, "testoutputs/stampee_after.pdf", false, false);
+  int c1 = fromFile("logo.pdf");
+  int c2 = fromFile("testinputs/hello.pdf");
+  int c3 = combinePages(c1, c2);
+  toFile(c3, "testoutputs/c3after.pdf", false, false);
+
+  int textfile = fromFile("testinputs/hello.pdf");
+  int textfile_all = all(textfile);
+  struct position textpos = {.anchor = topLeft, .coord1 = 20, .coord2 = 20};
+  addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
+  addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
+  toFile(textfile, "testoutputs/added_text.pdf", false, false);
+
+  int bits = addTextHowMany();
+  printf("There are %i text bits to iterate over\n", bits);
+  for (int x = 1; x <= bits; x++)
+  {
+    printf("Text is %s, x is %f, y is %f, rotation = %f, baseline = %f\n",
+      addTextReturnText(x),
+      addTextReturnX(x),
+      addTextReturnY(x),
+      addTextReturnRotation(x),
+      addTextReturnBaselineAdjustment());
+  };
+
+
+  removeText(textfile, textfile_all);
+  toFile(textfile, "testoutputs/removed_text.pdf", false, false);
+  int w = textWidth(1, "Some Text");
+  printf("The textwidth is %i\n", w);
 
   /* Chapter 9. Multipage facilities */
   printf("Two up\n");
