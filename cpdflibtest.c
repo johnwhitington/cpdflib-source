@@ -24,6 +24,45 @@ int main (int argc, char ** argv)
   printf("Write to a file\n");
   toFile(pdf, "testoutputs/out.pdf", false, false);
 
+  /* Chapter 3. Pages */
+
+  int pages_pdf = fromFile("testinputs/london.pdf");
+  int pages_all = all(pages_pdf);
+  scalePages(pages_pdf, pages_all, 2.0, 3.0);
+  toFile(pages_pdf, "testoutputs/scalePages.pdf", false, false);
+  scaleToFit(pages_pdf, pages_all, 400.0, 400.0);
+  toFile(pages_pdf, "testoutputs/scaleToFit.pdf", false, false);
+  scaleToFitPaper(pages_pdf, pages_all, 4);
+  toFile(pages_pdf, "testoutputs/a4.pdf", false, false);
+  
+  struct position p = {.anchor = topLeft, .coord1 = 20, .coord2 = 20};
+  scaleContents(pages_pdf, pages_all, p, 2.0);
+  toFile(pages_pdf, "testoutputs/scaleContents.pdf", false, false);
+  shiftContents(pages_pdf, pages_all, 200.0, 100.0);
+  toFile(pages_pdf, "testoutputs/shiftContents.pdf", false, false);
+  rotate(pages_pdf, pages_all, 270);
+  toFile(pages_pdf, "testoutputs/rotate.pdf", false, false);
+  rotateBy(pages_pdf, pages_all, 90);
+  toFile(pages_pdf, "testoutputs/rotateBy.pdf", false, false);
+  rotateContents(pages_pdf, pages_all, 25.0);
+  toFile(pages_pdf, "testoutputs/rotateContents.pdf", false, false);
+  upright(pages_pdf, pages_all);
+  hFlip(pages_pdf, pages_all);
+  toFile(pages_pdf, "testoutputs/hFlip.pdf", false, false);
+  vFlip(pages_pdf, pages_all);
+  toFile(pages_pdf, "testoutputs/vFlip.pdf", false, false);
+
+  crop(pages_pdf, pages_all, 0.0, 0.0, 200.0, 200.0);
+  toFile(pages_pdf, "testoutputs/cropped.pdf", false, false);
+  removeCrop(pages_pdf, pages_all);
+  removeTrim(pages_pdf, pages_all);
+  removeArt(pages_pdf, pages_all);
+  removeBleed(pages_pdf, pages_all);
+  toFile(pages_pdf, "testoutputs/uncropped.pdf", false, false);
+
+
+  /* Chapter 5. Compression */
+
   printf("Compress it\n");
   compress(pdf);
   toFile(pdf, "testoutputs/compressed.pdf", false, false);
@@ -31,7 +70,18 @@ int main (int argc, char ** argv)
   printf("Decompress it\n");
   decompress(pdf);
   toFile(pdf, "testoutputs/decompressed.pdf", false, false);
-  
+
+
+  /* Chapter 6. Bookmarks */
+  int book = fromFile("testinputs/bookmarks.pdf");
+  startGetBookmarkInfo(book);
+  int num_bookmarks = numberBookmarks();
+  for (int x = 0; x < num_bookmarks; x++)
+  {
+    printf("Bookmark at level %i points to page %i\n", getBookmarkLevel(x), getBookmarkPage(book, x));
+  };
+  endGetBookmarkInfo();
+
   printf("Make a blank range\n");
   int r = blankrange();
   onexit ();
@@ -51,6 +101,14 @@ int main (int argc, char ** argv)
   int allrange = all(pdf);
   int l = rangeLength(r3);
   int l1 = rangeGet(r3, 1);
+
+  int r20 = rangeAdd(r3, 15);
+  int rl = rangeLength(r20);
+  printf("range has length %i\n", rl);
+  for (int x = 0; x < rl; x++)
+  {
+    printf("at position %i the value is %i\n", x, rangeGet(r20, x));
+  };
 
   printf("Delete the pdf\n");
   deletePdf(pdf);
@@ -82,6 +140,8 @@ int main (int argc, char ** argv)
   printf("String of pagespec is %s\n", stringOfPagespec(blanksized, rfrompagespec));
 
   printf("This is documents has isEncrypted = %i\n", isEncrypted(blanksized));
+
+  /* Chapter 8. Logos, Watermarks and Stamps */
 
   /* Chapter 9. Multipage facilities */
   printf("Two up\n");
