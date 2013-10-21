@@ -18,5 +18,5 @@ test:   libcpdf.a cpdflibtest.c
 
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a test *.aux *.idx \
-*.log *.out cpdflibmanual.pdf *.toc
+*.log *.out *.toc
 
