@@ -24,6 +24,51 @@ int main (int argc, char ** argv)
   printf("Write to a file\n");
   toFile(pdf, "testoutputs/out.pdf", false, false);
 
+  printf("Encrypted write to a file\n");
+  int permissions = {noEdit};
+
+  int encmethod = pdf40bit;
+
+  toFileEncrypted(pdf, encmethod, &permissions, 1, "owner", "user", false, false, "testoutputs/encrypted.pdf");
+
+  int pdfenc = fromFile("testoutputs/encrypted.pdf");
+
+  printf("Haspermission %i, %i\n", hasPermission(pdf, noEdit), hasPermission(pdf, noCopy)); //Fails
+
+  printf("decrypting with user password\n");
+  printf("encryption kind was %i\n", encryptionKind(pdfenc));
+  decryptPdf(pdfenc, "user");
+
+  printf("recrypting a file\n");
+  int pdfencnew = fromFile("testoutputs/encrypted.pdf");
+  toFileRecrypting(pdfencnew, pdfenc, "user", "testoutputs/recrypted.pdf");
+
+  int pdfenc2 = fromFile("testoutputs/encrypted.pdf");
+  printf("decrypting with owner password\n");
+  decryptPdfOwner(pdfenc2, "owner");
+
+  /* Chapter 2. Merging */
+  printf("Merging files\n");
+  int pdfs[] = {pdf, pdf, pdf};
+  int merged = mergeSimple(pdfs, 3);
+  toFile(merged, "testoutputs/merged.pdf", false, false);
+  int merged2 = merge(pdfs, 3, false, false);
+  toFile(merged2, "testoutputs/merged2.pdf", false, false);
+
+  int a = all(pdf);
+  int b = all(pdf);
+  int c = all(pdf);
+  int ranges[] = {a, b, c};
+  int merged3 = mergeSame(pdfs, 3, false, false, ranges);
+  toFile(merged3, "testoutputs/merged3.pdf", false, false);
+
+  int many = fromFile("testinputs/bookmarks.pdf");
+  int manyrange = blankrange();
+  rangeAdd(manyrange, 1);
+
+  int selected = selectPages(many, manyrange);
+  toFile(selected, "testoutputs/selected.pdf", false, false);
+ 
   /* Chapter 3. Pages */
 
   int pages_pdf = fromFile("testinputs/london.pdf");
@@ -315,6 +360,13 @@ int main (int argc, char ** argv)
   toFile(london2, "testoutputs/pagelabels.pdf", false, false);
 
   replacePdf(blankdoc, blanksized);
+
+
+  /* Special funcitionalty -- Undo */
+
+
+  /* Special functionality -- Encrption and permission status */
+
 
   onexit();
 
