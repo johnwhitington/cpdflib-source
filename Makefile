@@ -14,9 +14,9 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ar r libcpdf.a *.o 
 
 test:   libcpdf.a cpdflibtest.c
-	cc cpdflibtest.c -o test -L. -lcpdf -lbigarray -lunix
+	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf -lbigarray -lunix
 
 clean:
-	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a test *.aux *.idx \
+	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a cpdflibtest *.aux *.idx \
 *.log *.out *.toc
 

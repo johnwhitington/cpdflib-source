@@ -1824,28 +1824,6 @@ let _ = Callback.register "blackFills" blackFills
 let _ = Callback.register "thinLines" thinLines
 let _ = Callback.register "copyId" copyId
 
-(* Split the given range (which is in order) into multiple contiguous ones. *)
-let rec ranges_of_range curr prev = function
-  | [] -> begin match curr with [] -> rev prev | _ -> rev (rev curr::prev) end
-  | x::xs ->
-      match curr with
-      | [] -> ranges_of_range [x] prev xs
-      | c::cs when x = c + 1 -> ranges_of_range (x::curr) prev xs
-      | cs -> ranges_of_range [x] (rev cs::prev) xs
-
-(* Predicate which is true if at least one page range starts at page 1 *)
-let page1 labels =
-  mem true (map (function l -> l.Pdfpagelabels.startpage = 1) labels)
-
-(*let print_labels =
-  iter
-    (function l -> flprint (Pdfpagelabels.string_of_pagelabel l); flprint "\n")
-
-let print_first20pages labels =
-  for x = 1 to 20 do
-    flprint (Pdfpagelabels.pagelabeltext_of_pagenumber x labels); flprint "\n"
-  donei*)
-
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range =
   if !dbg then flprint "Cpdflib.addPageLabels\n";
@@ -1864,37 +1842,6 @@ let addPageLabels pdf style prefix offset range =
       Cpdf.add_page_labels (lookup_pdf pdf) style prefix offset (Array.to_list (lookup_range range))
   with
     e -> handle_error "addPageLabels" e; err_unit
-
-
-    (*let pdf = lookup_pdf pdf
-    and ranges =
-      map extremes (ranges_of_range [] [] (Array.to_list (lookup_range range)))
-
-
-      let labels = Pdfpagelabels.read pdf in
-        let labels =
-          if not (page1 labels) then
-            ref
-              ({Pdfpagelabels.labelstyle = Some Pdfpagelabels.DecimalArabic;
-                Pdfpagelabels.labelprefix = None;
-                Pdfpagelabels.startpage = 1;
-                Pdfpagelabels.startvalue = 1}::labels)
-          else
-            ref labels
-        in
-          (*flprint "STARTING LABELS\n"; print_labels !labels; print_first20pages !labels;*)
-          iter
-            (function (s, e) ->
-               let label =
-                 {Pdfpagelabels.labelstyle = style;
-                  Pdfpagelabels.labelprefix = prefix;
-                  Pdfpagelabels.startpage = s;
-                  Pdfpagelabels.startvalue = s + offset}
-               in
-                 labels := Pdfpagelabels.add_label !labels label e;
-                 (*flprint "AFTER THIS ADDITION\n"; print_labels !labels; print_first20pages !labels*))
-            ranges;
-            Pdfpagelabels.write pdf !labels*)
 
 let _ = Callback.register "addPageLabels" addPageLabels
 
