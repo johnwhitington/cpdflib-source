@@ -1850,10 +1850,7 @@ let print_first20pages labels =
 let addPageLabels pdf style prefix offset range =
   if !dbg then flprint "Cpdflib.addPageLabels\n";
   try
-    let pdf = lookup_pdf pdf
-    and ranges =
-      map extremes (ranges_of_range [] [] (Array.to_list (lookup_range range)))
-    and style =
+    let style =
       match style with
       | 1 -> Some Pdfpagelabels.DecimalArabic
       | 2 -> Some Pdfpagelabels.UppercaseRoman
@@ -1861,7 +1858,19 @@ let addPageLabels pdf style prefix offset range =
       | 4 -> Some Pdfpagelabels.UppercaseLetters
       | 5 -> Some Pdfpagelabels.LowercaseLetters
       | _ -> failwith "Unknown page label style"
-    and prefix = if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix) in
+    and prefix =
+      if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)
+    in
+      Cpdf.add_page_labels (lookup_pdf pdf) style prefix offset (Array.to_list (lookup_range range))
+  with
+    e -> handle_error "addPageLabels" e; err_unit
+
+
+    (*let pdf = lookup_pdf pdf
+    and ranges =
+      map extremes (ranges_of_range [] [] (Array.to_list (lookup_range range)))
+
+
       let labels = Pdfpagelabels.read pdf in
         let labels =
           if not (page1 labels) then
@@ -1873,9 +1882,7 @@ let addPageLabels pdf style prefix offset range =
           else
             ref labels
         in
-          (*flprint "STARTING LABELS\n";
-          print_labels !labels;
-          print_first20pages !labels;*)
+          (*flprint "STARTING LABELS\n"; print_labels !labels; print_first20pages !labels;*)
           iter
             (function (s, e) ->
                let label =
@@ -1885,13 +1892,9 @@ let addPageLabels pdf style prefix offset range =
                   Pdfpagelabels.startvalue = s + offset}
                in
                  labels := Pdfpagelabels.add_label !labels label e;
-                 (*flprint "AFTER THIS ADDITION\n";
-                 print_labels !labels;
-                 print_first20pages !labels*))
+                 (*flprint "AFTER THIS ADDITION\n"; print_labels !labels; print_first20pages !labels*))
             ranges;
-            Pdfpagelabels.write pdf !labels
-  with
-    e -> handle_error "addPageLabels" e; err_unit
+            Pdfpagelabels.write pdf !labels*)
 
 let _ = Callback.register "addPageLabels" addPageLabels
 

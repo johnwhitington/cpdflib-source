@@ -5,8 +5,6 @@
 #include "cpdflibwrapper.h"
 int main (int argc, char ** argv)
 {
-  setbuf(stdout, NULL);
-
   printf("Set up OCaml runtime\n");
   caml_startup(argv);
 
@@ -363,10 +361,29 @@ int main (int argc, char ** argv)
 
 
   /* Special funcitionalty -- Undo */
+  printf("Undo tests\n");
+  int undotest = fromFile("testinputs/london.pdf");
+  aboutToUpdate(undotest);
+  int all_undotest = all(undotest);
+  thinLines(undotest, all_undotest, 8.0);
+  toFile(undotest, "testoutputs/undo.pdf", false, false);
+  undo(undotest);
+  toFile(undotest, "testoutputs/undone.pdf", false, false);
+  redo(undotest);
+  toFile(undotest, "testoutputs/redone.pdf", false, false);
 
+  int undotest2 = fromFile("testinputs/london.pdf");
+  aboutToUpdateDeep(undotest2);
+  abortUpdate(undotest2);
 
-  /* Special functionality -- Encrption and permission status */
+  /* Special functionality -- Encryption and permission status */
+  printf("Encryption and permission status\n");
 
+  int enctest = fromFile("testinputs/london.pdf");
+  printf("pdf status = %i\n", lookupPdfStatus(enctest));
+  printf("pdf permission status = %i\n", hasPermissionStatus(enctest, 0));
+  printf("pdf encryption status = %i\n", lookupPdfEncryption(enctest));
+  printf("pdf user password was %s\n", lookupPdfUserPassword(enctest));
 
   onexit();
 
