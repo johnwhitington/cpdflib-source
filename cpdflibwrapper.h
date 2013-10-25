@@ -30,6 +30,11 @@ void cpdf_deletePdf(int);
  * no longer available. */
 void cpdf_replacePdf(int, int);
 
+int cpdf_startEnumeratePDFs(void);
+int cpdf_enumeratePDFsKey(int);
+char* cpdf_enumeratePDFsInfo(int);
+void cpdf_endEnumeratePDFs(void);
+
 /* Undo support */
 
 /* Undo a document. Returns true if managed to undo, false if nothing to undo to. */
