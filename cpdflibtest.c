@@ -8,313 +8,313 @@ int main (int argc, char ** argv)
   /* 0. Initialization */
   printf("***** 0. Initialisation\n\n");
 
-  printf("caml_startup()\n");
+  printf("cpdf_startup()\n");
   caml_startup(argv);
 
   printf("setdemo()\n");
-  setdemo(false);
+  cpdf_setDemo(false);
 
   printf("clearError()\n");
-  clearError();
+  cpdf_clearError();
 
-  onexit();
+  cpdf_onExit();
   /* 1. Reading and writing files */
   printf("\n***** 1. Reading and writing files\n\n");
 
   printf("fromFile()\n");
-  int pdf = fromFile("testinputs/hello.pdf");
+  int pdf = cpdf_fromFile("testinputs/hello.pdf");
 
-  printf("Afterwards, Error number = %i, Error string = %s\n", lastError, lastErrorString);
+  printf("Afterwards, Error number = %i, Error string = %s\n", cpdf_lastError, cpdf_lastErrorString);
 
   printf("toFile()\n");
-  toFile(pdf, "testoutputs/out.pdf", false, false);
+  cpdf_toFile(pdf, "testoutputs/out.pdf", false, false);
 
   printf("toFileEncrypted()\n");
-  int permissions = {noEdit};
-  int encmethod = pdf40bit;
-  toFileEncrypted(pdf, encmethod, &permissions, 1, "owner", "user", false, false, "testoutputs/encrypted.pdf");
+  int permissions = {cpdf_noEdit};
+  int encmethod = cpdf_pdf40bit;
+  cpdf_toFileEncrypted(pdf, encmethod, &permissions, 1, "owner", "user", false, false, "testoutputs/encrypted.pdf");
 
-  int pdfenc = fromFile("testoutputs/encrypted.pdf");
+  int pdfenc = cpdf_fromFile("testoutputs/encrypted.pdf");
 
   printf("hasPermission()\n");
-  printf("Haspermission %i, %i\n", hasPermission(pdf, noEdit), hasPermission(pdf, noCopy)); //Fails
+  printf("Haspermission %i, %i\n", cpdf_hasPermission(pdf, cpdf_noEdit), cpdf_hasPermission(pdf, cpdf_noCopy)); //Fails
 
   printf("encryptionKind()\n");
-  printf("encryption kind is %i\n", encryptionKind(pdfenc));
+  printf("encryption kind is %i\n", cpdf_encryptionKind(pdfenc));
 
   printf("decryptPdf\n");
-  decryptPdf(pdfenc, "user");
+  cpdf_decryptPdf(pdfenc, "user");
 
   printf("toFileRecrypting()\n");
-  int pdfenc2 = fromFile("testoutputs/encrypted.pdf");
-  toFileRecrypting(pdfenc2, pdfenc, "user", "testoutputs/recrypted.pdf");
+  int pdfenc2 = cpdf_fromFile("testoutputs/encrypted.pdf");
+  cpdf_toFileRecrypting(pdfenc2, pdfenc, "user", "testoutputs/recrypted.pdf");
 
   printf("decryptPdfOwner()\n");
-  int pdfenc3 = fromFile("testoutputs/encrypted.pdf");
-  decryptPdfOwner(pdfenc3, "owner");
+  int pdfenc3 = cpdf_fromFile("testoutputs/encrypted.pdf");
+  cpdf_decryptPdfOwner(pdfenc3, "owner");
 
-  deletePdf(pdf);
-  deletePdf(pdfenc);
-  deletePdf(pdfenc2);
-  deletePdf(pdfenc3);
+  cpdf_deletePdf(pdf);
+  cpdf_deletePdf(pdfenc);
+  cpdf_deletePdf(pdfenc2);
+  cpdf_deletePdf(pdfenc3);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 2. Merging */
   printf("\n***** 2. Merging\n\n");
 
-  int mergepdf = fromFile("testinputs/hello.pdf");
+  int mergepdf = cpdf_fromFile("testinputs/hello.pdf");
   printf("Merging files\n");
   int pdfs[] = {mergepdf, mergepdf, mergepdf};
   printf("mergeSimple()\n");
-  int merged = mergeSimple(pdfs, 3);
-  toFile(merged, "testoutputs/merged.pdf", false, false);
+  int merged = cpdf_mergeSimple(pdfs, 3);
+  cpdf_toFile(merged, "testoutputs/merged.pdf", false, false);
   printf("merge()\n");
-  int merged2 = merge(pdfs, 3, false, false);
-  toFile(merged2, "testoutputs/merged2.pdf", false, false);
+  int merged2 = cpdf_merge(pdfs, 3, false, false);
+  cpdf_toFile(merged2, "testoutputs/merged2.pdf", false, false);
 
-  int a = all(mergepdf);
-  int b = all(mergepdf);
-  int c = all(mergepdf);
+  int a = cpdf_all(mergepdf);
+  int b = cpdf_all(mergepdf);
+  int c = cpdf_all(mergepdf);
   int ranges[] = {a, b, c};
   printf("mergeSame()\n");
-  int merged3 = mergeSame(pdfs, 3, false, false, ranges);
-  toFile(merged3, "testoutputs/merged3.pdf", false, false);
+  int merged3 = cpdf_mergeSame(pdfs, 3, false, false, ranges);
+  cpdf_toFile(merged3, "testoutputs/merged3.pdf", false, false);
 
-  int many = fromFile("testinputs/bookmarks.pdf");
+  int many = cpdf_fromFile("testinputs/bookmarks.pdf");
   printf("blankrange()\n");
-  int manyrange = blankrange();
+  int manyrange = cpdf_blankRange();
   printf("rangeAdd()\n");
-  int added = rangeAdd(manyrange, 1);
+  int added = cpdf_rangeAdd(manyrange, 1);
 
   printf("selectPages()\n");
-  int selected = selectPages(many, added);
-  toFile(selected, "testoutputs/selected.pdf", false, false);
+  int selected = cpdf_selectPages(many, added);
+  cpdf_toFile(selected, "testoutputs/selected.pdf", false, false);
 
-  deletePdf(mergepdf);
-  deletePdf(merged);
-  deletePdf(merged2);
-  deletePdf(merged3);
-  deletePdf(many);
-  deletePdf(selected);
+  cpdf_deletePdf(mergepdf);
+  cpdf_deletePdf(merged);
+  cpdf_deletePdf(merged2);
+  cpdf_deletePdf(merged3);
+  cpdf_deletePdf(many);
+  cpdf_deletePdf(selected);
 
-  deleterange(a);
-  deleterange(b);
-  deleterange(c);
-  deleterange(manyrange);
-  deleterange(added);
+  cpdf_deleteRange(a);
+  cpdf_deleteRange(b);
+  cpdf_deleteRange(c);
+  cpdf_deleteRange(manyrange);
+  cpdf_deleteRange(added);
 
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 3. Pages */
   printf("\n***** 3. Pages\n\n");
 
-  int pages_pdf = fromFile("testinputs/london.pdf");
-  int pages_all = all(pages_pdf);
+  int pages_pdf = cpdf_fromFile("testinputs/london.pdf");
+  int pages_all = cpdf_all(pages_pdf);
   printf("scalePages()\n");
-  scalePages(pages_pdf, pages_all, 2.0, 3.0);
-  toFile(pages_pdf, "testoutputs/scalePages.pdf", false, false);
+  cpdf_scalePages(pages_pdf, pages_all, 2.0, 3.0);
+  cpdf_toFile(pages_pdf, "testoutputs/scalePages.pdf", false, false);
   printf("scaleToFit()\n");
-  scaleToFit(pages_pdf, pages_all, 400.0, 400.0);
-  toFile(pages_pdf, "testoutputs/scaleToFit.pdf", false, false);
+  cpdf_scaleToFit(pages_pdf, pages_all, 400.0, 400.0);
+  cpdf_toFile(pages_pdf, "testoutputs/scaleToFit.pdf", false, false);
   printf("scaleToFitPaper()\n");
-  scaleToFitPaper(pages_pdf, pages_all, 4);
-  toFile(pages_pdf, "testoutputs/a4.pdf", false, false);
+  cpdf_scaleToFitPaper(pages_pdf, pages_all, 4);
+  cpdf_toFile(pages_pdf, "testoutputs/a4.pdf", false, false);
   
   printf("scaleContents()\n");
-  struct position p = {.anchor = topLeft, .coord1 = 20, .coord2 = 20};
-  scaleContents(pages_pdf, pages_all, p, 2.0);
-  toFile(pages_pdf, "testoutputs/scaleContents.pdf", false, false);
+  struct cpdf_position p = {.cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
+  cpdf_scaleContents(pages_pdf, pages_all, p, 2.0);
+  cpdf_toFile(pages_pdf, "testoutputs/scaleContents.pdf", false, false);
   printf("shiftContents()\n");
-  shiftContents(pages_pdf, pages_all, 200.0, 100.0);
-  toFile(pages_pdf, "testoutputs/shiftContents.pdf", false, false);
+  cpdf_shiftContents(pages_pdf, pages_all, 200.0, 100.0);
+  cpdf_toFile(pages_pdf, "testoutputs/shiftContents.pdf", false, false);
   printf("rotate()\n");
-  rotate(pages_pdf, pages_all, 270);
-  toFile(pages_pdf, "testoutputs/rotate.pdf", false, false);
+  cpdf_rotate(pages_pdf, pages_all, 270);
+  cpdf_toFile(pages_pdf, "testoutputs/rotate.pdf", false, false);
   printf("rotateBy()\n");
-  rotateBy(pages_pdf, pages_all, 90);
-  toFile(pages_pdf, "testoutputs/rotateBy.pdf", false, false);
+  cpdf_rotateBy(pages_pdf, pages_all, 90);
+  cpdf_toFile(pages_pdf, "testoutputs/rotateBy.pdf", false, false);
   printf("rotateContents()\n");
-  rotateContents(pages_pdf, pages_all, 25.0);
-  toFile(pages_pdf, "testoutputs/rotateContents.pdf", false, false);
+  cpdf_rotateContents(pages_pdf, pages_all, 25.0);
+  cpdf_toFile(pages_pdf, "testoutputs/rotateContents.pdf", false, false);
   printf("upright()\n");
-  upright(pages_pdf, pages_all);
+  cpdf_upright(pages_pdf, pages_all);
   printf("hFlip()\n");
-  hFlip(pages_pdf, pages_all);
-  toFile(pages_pdf, "testoutputs/hFlip.pdf", false, false);
+  cpdf_hFlip(pages_pdf, pages_all);
+  cpdf_toFile(pages_pdf, "testoutputs/hFlip.pdf", false, false);
   printf("vFlip()\n");
-  vFlip(pages_pdf, pages_all);
-  toFile(pages_pdf, "testoutputs/vFlip.pdf", false, false);
+  cpdf_vFlip(pages_pdf, pages_all);
+  cpdf_toFile(pages_pdf, "testoutputs/vFlip.pdf", false, false);
 
   printf("crop()\n");
-  crop(pages_pdf, pages_all, 0.0, 0.0, 200.0, 200.0);
-  toFile(pages_pdf, "testoutputs/cropped.pdf", false, false);
+  cpdf_crop(pages_pdf, pages_all, 0.0, 0.0, 200.0, 200.0);
+  cpdf_toFile(pages_pdf, "testoutputs/cropped.pdf", false, false);
   printf("removeCrop()\n");
-  removeCrop(pages_pdf, pages_all);
+  cpdf_removeCrop(pages_pdf, pages_all);
   printf("removeTrim()\n");
-  removeTrim(pages_pdf, pages_all);
+  cpdf_removeTrim(pages_pdf, pages_all);
   printf("removeArt()\n");
-  removeArt(pages_pdf, pages_all);
+  cpdf_removeArt(pages_pdf, pages_all);
   printf("removeBleed()\n");
-  removeBleed(pages_pdf, pages_all);
-  toFile(pages_pdf, "testoutputs/uncropped.pdf", false, false);
+  cpdf_removeBleed(pages_pdf, pages_all);
+  cpdf_toFile(pages_pdf, "testoutputs/uncropped.pdf", false, false);
 
-  deletePdf(pages_pdf);
+  cpdf_deletePdf(pages_pdf);
 
-  deleterange(pages_all);
+  cpdf_deleteRange(pages_all);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 4. Encryption */
   printf("\n***** 4. Encryption\n\n");
   /* See Chapter 1 above for what is logically in Chapter 4. */
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 5. Compression */
   printf("\n***** 5. Compression\n\n");
 
-  int tocompress = fromFile("testinputs/london.pdf");
+  int tocompress = cpdf_fromFile("testinputs/london.pdf");
 
   printf("compress()\n");
-  compress(tocompress);
-  toFile(tocompress, "testoutputs/compressed.pdf", false, false);
+  cpdf_compress(tocompress);
+  cpdf_toFile(tocompress, "testoutputs/compressed.pdf", false, false);
   
   printf("decompress()\n");
-  decompress(tocompress);
-  toFile(tocompress, "testoutputs/decompressed.pdf", false, false);
+  cpdf_decompress(tocompress);
+  cpdf_toFile(tocompress, "testoutputs/decompressed.pdf", false, false);
 
-  deletePdf(tocompress);
+  cpdf_deletePdf(tocompress);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 6. Bookmarks */
   printf("\n***** 6. Bookmarks\n\n");
-  int book = fromFile("testinputs/bookmarks.pdf");
+  int book = cpdf_fromFile("testinputs/bookmarks.pdf");
   printf("startGetBookmarkInfo()\n");
-  startGetBookmarkInfo(book);
+  cpdf_startGetBookmarkInfo(book);
   printf("numberBookmarks()\n");
-  int num_bookmarks = numberBookmarks();
+  int num_bookmarks = cpdf_numberBookmarks();
   printf("getBookmarkLevel()\n");
   printf("getBookmarkPage()\n");
   for (int x = 0; x < num_bookmarks; x++)
   {
-    printf("Bookmark at level %i points to page %i\n", getBookmarkLevel(x), getBookmarkPage(book, x));
+    printf("Bookmark at level %i points to page %i\n", cpdf_getBookmarkLevel(x), cpdf_getBookmarkPage(book, x));
   };
   printf("endGetBookmarkInfo()\n");
-  endGetBookmarkInfo();
+  cpdf_endGetBookmarkInfo();
 
   printf("Make a blank range\n");
   printf("blankrange()\n");
-  int r = blankrange();
+  int r = cpdf_blankRange();
 
   printf("Delete a range\n");
-  printf("deleterange()\n");
-  deleterange(r);
+  printf("deleteRange()\n");
+  cpdf_deleteRange(r);
 
-  int r2 = blankrange();
+  int r2 = cpdf_blankRange();
   printf("range()\n");
-  int r3 = range(1, 10);
+  int r3 = cpdf_range(1, 10);
   printf("even()\n");
-  int r4 = even(r3);
+  int r4 = cpdf_even(r3);
   printf("odd()\n");
-  int r5 = odd(r3);
-  printf("range_union()\n");
-  int r6 = range_union(r4, r5);
+  int r5 = cpdf_odd(r3);
+  printf("rangeUnion()\n");
+  int r6 = cpdf_rangeUnion(r4, r5);
   printf("difference()\n");
-  int r7 = difference(r6, r4);
+  int r7 = cpdf_difference(r6, r4);
   printf("removeDuplicates()\n");
-  int r8 = removeDuplicates(r7);
+  int r8 = cpdf_removeDuplicates(r7);
   printf("isInRange()\n");
-  int isinrange = isInRange(r8, 4);
+  int isinrange = cpdf_isInRange(r8, 4);
   printf("all()\n");
-  int allrange = all(book);
+  int allrange = cpdf_all(book);
   printf("rangeLength()\n");
-  int l = rangeLength(r3);
+  int l = cpdf_rangeLength(r3);
   printf("rangeGet()\n");
-  int l1 = rangeGet(r3, 1);
+  int l1 = cpdf_rangeGet(r3, 1);
 
   printf("rangeAdd()\n");
-  int r20 = rangeAdd(r3, 15);
+  int r20 = cpdf_rangeAdd(r3, 15);
   printf("rangeLength()\n");
-  int rl = rangeLength(r20);
+  int rl = cpdf_rangeLength(r20);
   printf("range has length %i\n", rl);
   printf("rangeGet()\n");
   for (int x = 0; x < rl; x++)
   {
-    printf("at position %i the value is %i\n", x, rangeGet(r20, x));
+    printf("at position %i the value is %i\n", x, cpdf_rangeGet(r20, x));
   };
 
   printf("Delete the pdf\n");
-  deletePdf(book);
+  cpdf_deletePdf(book);
 
-  printf("One inch is %f points\n", ptOfIn(1.0));
-  printf("One centimetre is %f points\n", ptOfCm(1.0));
-  printf("One millimetre is %f points\n", ptOfMm(1.0));
-  printf("One point is %f inches\n", inOfPt(1.0));
-  printf("One point is %f centimetres\n", cmOfPt(1.0));
-  printf("One point is %f millimetres\n", mmOfPt(1.0));
+  printf("One inch is %f points\n", cpdf_ptOfIn(1.0));
+  printf("One centimetre is %f points\n", cpdf_ptOfCm(1.0));
+  printf("One millimetre is %f points\n", cpdf_ptOfMm(1.0));
+  printf("One point is %f inches\n", cpdf_inOfPt(1.0));
+  printf("One point is %f centimetres\n", cpdf_cmOfPt(1.0));
+  printf("One point is %f millimetres\n", cpdf_mmOfPt(1.0));
 
 
 
-  int pdflazy = fromFileLazy("testinputs/hello.pdf");
+  int pdflazy = cpdf_fromFileLazy("testinputs/hello.pdf");
  
-  int blankdoc = blankDocument(100.0, 200.0, 20);
-  toFile(blankdoc, "testoutputs/blank.pdf", false, false);
+  int blankdoc = cpdf_blankDocument(100.0, 200.0, 20);
+  cpdf_toFile(blankdoc, "testoutputs/blank.pdf", false, false);
 
-  int blanksized = blankDocumentPaper(a4portrait, 10);
-  toFile(blanksized, "testoutputs/blanka4.pdf", false, false);
+  int blanksized = cpdf_blankDocumentPaper(cpdf_a4portrait, 10);
+  cpdf_toFile(blanksized, "testoutputs/blanka4.pdf", false, false);
   
-  int rfrompagespec = parsePagespec(blanksized, "1-2,5-end");
-  printf("Validating pagespec gives %i\n", validatePagespec("1-2,5-end"));
+  int rfrompagespec = cpdf_parsePagespec(blanksized, "1-2,5-end");
+  printf("Validating pagespec gives %i\n", cpdf_validatePagespec("1-2,5-end"));
 
-  printf("There are %i pages in the blank sized pdf\n", pages(blanksized));
+  printf("There are %i pages in the blank sized pdf\n", cpdf_pages(blanksized));
  
-  printf("There are %i quick pages in the blank sized pdf\n", pagesFast("", "testoutputs/blanka4.pdf"));
+  printf("There are %i quick pages in the blank sized pdf\n", cpdf_pagesFast("", "testoutputs/blanka4.pdf"));
 
-  printf("String of pagespec is %s\n", stringOfPagespec(blanksized, rfrompagespec));
+  printf("String of pagespec is %s\n", cpdf_stringOfPagespec(blanksized, rfrompagespec));
 
-  printf("This is documents has isEncrypted = %i\n", isEncrypted(blanksized));
+  printf("This is documents has isEncrypted = %i\n", cpdf_isEncrypted(blanksized));
 
-  deletePdf(pdflazy);
-  deletePdf(blankdoc);
-  deletePdf(blanksized);
+  cpdf_deletePdf(pdflazy);
+  cpdf_deletePdf(blankdoc);
+  cpdf_deletePdf(blanksized);
 
-  deleterange(r2);
-  deleterange(r3);
-  deleterange(r4);
-  deleterange(r5);
-  deleterange(r6);
-  deleterange(r7);
-  deleterange(r8);
-  deleterange(allrange);
-  deleterange(r20);
-  deleterange(rfrompagespec);
+  cpdf_deleteRange(r2);
+  cpdf_deleteRange(r3);
+  cpdf_deleteRange(r4);
+  cpdf_deleteRange(r5);
+  cpdf_deleteRange(r6);
+  cpdf_deleteRange(r7);
+  cpdf_deleteRange(r8);
+  cpdf_deleteRange(allrange);
+  cpdf_deleteRange(r20);
+  cpdf_deleteRange(rfrompagespec);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 8. Logos, Watermarks and Stamps */
   printf("\n***** 8. Logos, Watermarks and Stamps\n\n");
-  int stamp = fromFile("logo.pdf");
-  int stampee = fromFile("testinputs/london.pdf");
-  int stamp_range = all(stamp);
+  int stamp = cpdf_fromFile("logo.pdf");
+  int stampee = cpdf_fromFile("testinputs/london.pdf");
+  int stamp_range = cpdf_all(stamp);
   printf("stampOn()\n");
-  stampOn(stamp, stampee, stamp_range);
+  cpdf_stampOn(stamp, stampee, stamp_range);
   printf("stampUnder()\n");
-  stampUnder(stamp, stampee, stamp_range);
-  toFile(stamp, "testoutputs/stamp_after.pdf", false, false);
-  toFile(stampee, "testoutputs/stampee_after.pdf", false, false);
-  int c1 = fromFile("logo.pdf");
-  int c2 = fromFile("testinputs/hello.pdf");
+  cpdf_stampUnder(stamp, stampee, stamp_range);
+  cpdf_toFile(stamp, "testoutputs/stamp_after.pdf", false, false);
+  cpdf_toFile(stampee, "testoutputs/stampee_after.pdf", false, false);
+  int c1 = cpdf_fromFile("logo.pdf");
+  int c2 = cpdf_fromFile("testinputs/hello.pdf");
   printf("combinePages()\n");
-  int c3 = combinePages(c1, c2);
-  toFile(c3, "testoutputs/c3after.pdf", false, false);
+  int c3 = cpdf_combinePages(c1, c2);
+  cpdf_toFile(c3, "testoutputs/c3after.pdf", false, false);
 
-  int textfile = fromFile("testinputs/hello.pdf");
-  int textfile_all = all(textfile);
-  struct position textpos = {.anchor = topLeft, .coord1 = 20, .coord2 = 20};
+  int textfile = cpdf_fromFile("testinputs/hello.pdf");
+  int textfile_all = cpdf_all(textfile);
+  struct cpdf_position textpos = {.cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
   printf("addText()\n");
-  addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
-  addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
-  toFile(textfile, "testoutputs/added_text.pdf", false, false);
+  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
+  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
+  cpdf_toFile(textfile, "testoutputs/added_text.pdf", false, false);
 
   printf("addTextHowMany()\n");
-  int bits = addTextHowMany();
+  int bits = cpdf_addTextHowMany();
   printf("There are %i text bits to iterate over\n", bits);
   printf("addTextReturnText()\n");
   printf("addTextReturnX()\n");
@@ -324,57 +324,57 @@ int main (int argc, char ** argv)
   for (int x = 1; x <= bits; x++)
   {
     printf("Text is %s, x is %f, y is %f, rotation = %f, baseline = %f\n",
-      addTextReturnText(x),
-      addTextReturnX(x),
-      addTextReturnY(x),
-      addTextReturnRotation(x),
-      addTextReturnBaselineAdjustment());
+      cpdf_addTextReturnText(x),
+      cpdf_addTextReturnX(x),
+      cpdf_addTextReturnY(x),
+      cpdf_addTextReturnRotation(x),
+      cpdf_addTextReturnBaselineAdjustment());
   };
 
   printf("removeText()\n");
-  removeText(textfile, textfile_all);
-  toFile(textfile, "testoutputs/removed_text.pdf", false, false);
-  int w = textWidth(1, "Some Text");
+  cpdf_removeText(textfile, textfile_all);
+  cpdf_toFile(textfile, "testoutputs/removed_text.pdf", false, false);
+  int w = cpdf_textWidth(1, "Some Text");
   printf("The textwidth is %i\n", w);
 
-  deletePdf(stamp);
-  deletePdf(stampee);
-  deletePdf(textfile);
-  deletePdf(c1);
-  deletePdf(c2);
-  deletePdf(c3);
+  cpdf_deletePdf(stamp);
+  cpdf_deletePdf(stampee);
+  cpdf_deletePdf(textfile);
+  cpdf_deletePdf(c1);
+  cpdf_deletePdf(c2);
+  cpdf_deletePdf(c3);
 
-  deleterange(textfile_all);
-  deleterange(stamp_range);
+  cpdf_deleteRange(textfile_all);
+  cpdf_deleteRange(stamp_range);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 9. Multipage facilities */
   printf("\n***** 9. Multipage facilities\n\n");
-  int twoup = fromFile("testinputs/london.pdf");
+  int twoup = cpdf_fromFile("testinputs/london.pdf");
   printf("twoUp\n");
-  twoUp(twoup);
-  toFile(twoup, "testoutputs/twoup.pdf", false, false);
+  cpdf_twoUp(twoup);
+  cpdf_toFile(twoup, "testoutputs/twoup.pdf", false, false);
 
-  int pad = fromFile("testinputs/london.pdf");
-  int pad_range = all(pad);
+  int pad = cpdf_fromFile("testinputs/london.pdf");
+  int pad_range = cpdf_all(pad);
   printf("padAfter()\n");
-  padAfter(pad, pad_range);
+  cpdf_padAfter(pad, pad_range);
   printf("padBefore()\n");
-  padBefore(pad, pad_range);
-  toFile(pad, "testoutputs/padded.pdf", false, false);
+  cpdf_padBefore(pad, pad_range);
+  cpdf_toFile(pad, "testoutputs/padded.pdf", false, false);
 
-  deletePdf(twoup);
-  deletePdf(pad);
-  deleterange(pad_range);
+  cpdf_deletePdf(twoup);
+  cpdf_deletePdf(pad);
+  cpdf_deleteRange(pad_range);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 11. Document Information and Metadata */
   printf("\n***** 11. Document Information and Metadata\n\n");
-  int fonts = fromFile("testinputs/london.pdf");
+  int fonts = cpdf_fromFile("testinputs/london.pdf");
   printf("startGetFontInfo()\n");
-  startGetFontInfo(fonts);
+  cpdf_startGetFontInfo(fonts);
   printf("numberFonts()\n");
-  int numfonts = numberFonts();
+  int numfonts = cpdf_numberFonts();
   printf("getFontPage()\n");
   printf("getFontName()\n");
   printf("getFontType()\n");
@@ -382,254 +382,254 @@ int main (int argc, char ** argv)
   for (int x = 0; x < numfonts; x++)
   {
     printf("Page %i, font %s has type %s and encoding %s\n",
-      getFontPage(x),
-      getFontName(x),
-      getFontType(x),
-      getFontEncoding(x));
+      cpdf_getFontPage(x),
+      cpdf_getFontName(x),
+      cpdf_getFontType(x),
+      cpdf_getFontEncoding(x));
   };
   printf("endGetFontInfo()");
-  endGetFontInfo();
+  cpdf_endGetFontInfo();
 
   printf("isLinarized()\n");
-  printf("isLinearized = %i\n", isLinearized("testinputs/london.pdf"));
+  printf("isLinearized = %i\n", cpdf_isLinearized("testinputs/london.pdf"));
   printf("getVersion()\n");
-  printf("pdf version is %i\n", getVersion(fonts));
+  printf("pdf version is %i\n", cpdf_getVersion(fonts));
   printf("getTitle()\n");
-  printf("pdf title is %s\n", getTitle(fonts));
+  printf("pdf title is %s\n", cpdf_getTitle(fonts));
   printf("getAuthor()\n");
-  printf("pdf author is %s\n", getAuthor(fonts));
+  printf("pdf author is %s\n", cpdf_getAuthor(fonts));
   printf("getSubject()\n");
-  printf("pdf subject is %s\n", getSubject(fonts));
+  printf("pdf subject is %s\n", cpdf_getSubject(fonts));
   printf("getKeywords()\n");
-  printf("pdf keywords is %s\n", getKeywords(fonts));
+  printf("pdf keywords is %s\n", cpdf_getKeywords(fonts));
   printf("getCreator()\n");
-  printf("pdf creator is %s\n", getCreator(fonts));
+  printf("pdf creator is %s\n", cpdf_getCreator(fonts));
   printf("getProducer()\n");
-  printf("pdf producer is %s\n", getProducer(fonts));
+  printf("pdf producer is %s\n", cpdf_getProducer(fonts));
 
   printf("getCreationDate()\n");
-  printf("Creation date is %s\n", getCreationDate(fonts));
+  printf("Creation date is %s\n", cpdf_getCreationDate(fonts));
   
   printf("getModificationDate()\n");
-  printf("Modification date is %s\n", getModificationDate(fonts));
+  printf("Modification date is %s\n", cpdf_getModificationDate(fonts));
  
   printf("dateStringOfComponents()\n");
   printf("Make a date string from components: %s\n",
-    dateStringOfComponents(2003, 2, 5, 4, 6, 6, 0, 0));
+    cpdf_dateStringOfComponents(2003, 2, 5, 4, 6, 6, 0, 0));
 
   printf("getDateComponents()\n");
   int year, month, day, hour, minute, second, hour_offset, minute_offset;
-  getDateComponents("D:20061108125017Z", &year, &month, &day, &hour, &minute, &second, &hour_offset, &minute_offset);
+  cpdf_getDateComponents("D:20061108125017Z", &year, &month, &day, &hour, &minute, &second, &hour_offset, &minute_offset);
   printf("Get the components from a date string D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n",
           year, month, day, hour, minute, second, hour_offset, minute_offset);
 
   printf("setVersion()\n");
-  setVersion(fonts, 6);
+  cpdf_setVersion(fonts, 6);
   printf("setTitle()\n");
-  setTitle(fonts, "Title");
+  cpdf_setTitle(fonts, "Title");
   printf("setAuthor()\n");
-  setAuthor(fonts, "Author");
+  cpdf_setAuthor(fonts, "Author");
   printf("setSubject()\n");
-  setSubject(fonts, "Subject");
+  cpdf_setSubject(fonts, "Subject");
   printf("setKeywords()\n");
-  setKeywords(fonts, "Keywords");
+  cpdf_setKeywords(fonts, "Keywords");
   printf("setCreator()\n");
-  setCreator(fonts, "Creator");
+  cpdf_setCreator(fonts, "Creator");
   printf("setProducer()\n");
-  setProducer(fonts, "Producer");
+  cpdf_setProducer(fonts, "Producer");
   printf("markTrapped()\n");
-  markTrapped(fonts);
+  cpdf_markTrapped(fonts);
   printf("markUntrapped()\n");
-  markUntrapped(fonts);
+  cpdf_markUntrapped(fonts);
   printf("setCreationDate()\n");
-  setCreationDate(fonts, "D:20061108125017Z");
+  cpdf_setCreationDate(fonts, "D:20061108125017Z");
   printf("setModificationDate()\n");
-  setModificationDate(fonts, "D:20061108125017Z");
-  toFile(fonts, "testoutputs/settitleetc.pdf", false, false);
+  cpdf_setModificationDate(fonts, "D:20061108125017Z");
+  cpdf_toFile(fonts, "testoutputs/settitleetc.pdf", false, false);
 
   printf("setPageLayout()\n");
-  setPageLayout(fonts, 4);
+  cpdf_setPageLayout(fonts, 4);
   printf("setPageMode()\n");
-  setPageMode(fonts, 3);
+  cpdf_setPageMode(fonts, 3);
 
   printf("hasBox()\n");
-  printf("Has page one a %s box? %i\n", "/CropBox", hasBox(fonts, 1, "/CropBox")); 
-  printf("Has page one a %s box? %i\n", "/BleedBox", hasBox(fonts, 1, "/BleedBox")); 
-  printf("Has page one a %s box? %i\n", "/ArtBox", hasBox(fonts, 1, "/ArtBox")); 
-  printf("Has page one a %s box? %i\n", "/TrimBox", hasBox(fonts, 1, "/TrimBox")); 
+  printf("Has page one a %s box? %i\n", "/CropBox", cpdf_hasBox(fonts, 1, "/CropBox")); 
+  printf("Has page one a %s box? %i\n", "/BleedBox", cpdf_hasBox(fonts, 1, "/BleedBox")); 
+  printf("Has page one a %s box? %i\n", "/ArtBox", cpdf_hasBox(fonts, 1, "/ArtBox")); 
+  printf("Has page one a %s box? %i\n", "/TrimBox", cpdf_hasBox(fonts, 1, "/TrimBox")); 
 
   double minx, maxx, miny, maxy;
 
-  int allbox = all(fonts);
+  int allbox = cpdf_all(fonts);
 
   printf("setMediabox()\n");
-  setMediabox(fonts, allbox, 100, 500, 150, 550);
+  cpdf_setMediabox(fonts, allbox, 100, 500, 150, 550);
   printf("setCropBox()\n");
-  setCropBox(fonts, allbox, 100, 500, 150, 550);
+  cpdf_setCropBox(fonts, allbox, 100, 500, 150, 550);
   printf("setBleedBox()\n");
-  setBleedBox(fonts, allbox, 100, 500, 150, 550);
+  cpdf_setBleedBox(fonts, allbox, 100, 500, 150, 550);
   printf("setArtBox()\n");
-  setArtBox(fonts, allbox, 100, 500, 150, 550);
+  cpdf_setArtBox(fonts, allbox, 100, 500, 150, 550);
   printf("setTrimBox()\n");
-  setTrimBox(fonts, allbox, 100, 500, 150, 550);
+  cpdf_setTrimBox(fonts, allbox, 100, 500, 150, 550);
  
   printf("getMediaBox()\n");
-  getMediaBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  cpdf_getMediaBox(fonts, 1, &minx, &maxx, &miny, &maxy);
   printf("Media: %f %f %f %f\n", minx, maxx, miny, maxy);
   printf("getCropBox()\n");
-  getCropBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  cpdf_getCropBox(fonts, 1, &minx, &maxx, &miny, &maxy);
   printf("Crop: %f %f %f %f\n", minx, maxx, miny, maxy);
   printf("getBleedBox()\n");
-  getBleedBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  cpdf_getBleedBox(fonts, 1, &minx, &maxx, &miny, &maxy);
   printf("Bleed: %f %f %f %f\n", minx, maxx, miny, maxy);
   printf("getArtBox()\n");
-  getArtBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  cpdf_getArtBox(fonts, 1, &minx, &maxx, &miny, &maxy);
   printf("Art: %f %f %f %f\n", minx, maxx, miny, maxy);
   printf("getTrimBox()\n");
-  getTrimBox(fonts, 1, &minx, &maxx, &miny, &maxy);
+  cpdf_getTrimBox(fonts, 1, &minx, &maxx, &miny, &maxy);
   printf("Trim: %f %f %f %f\n", minx, maxx, miny, maxy);
 
   printf("hideToolbar()\n");
-  hideToolbar(fonts, true);
+  cpdf_hideToolbar(fonts, true);
   printf("hideMenubar()\n");
-  hideMenubar(fonts, true);
+  cpdf_hideMenubar(fonts, true);
   printf("hideWindowUi()\n");
-  hideWindowUi(fonts, true);
+  cpdf_hideWindowUi(fonts, true);
   printf("fitWindow()\n");
-  fitWindow(fonts, true);
+  cpdf_fitWindow(fonts, true);
   printf("centerWindow()\n");
-  centerWindow(fonts, true);
+  cpdf_centerWindow(fonts, true);
   printf("displayDocTitle()\n");
-  displayDocTitle(fonts, true);
+  cpdf_displayDocTitle(fonts, true);
 
   printf("setMetadataFromFile()\n");
-  setMetadataFromFile(fonts, "cpdflib.ml");
-  toFile(fonts, "testoutputs/metadata1.pdf", false, false);
+  cpdf_setMetadataFromFile(fonts, "cpdflib.ml");
+  cpdf_toFile(fonts, "testoutputs/metadata1.pdf", false, false);
   printf("setMetadataFromByteArray()\n");
-  setMetadataFromByteArray(fonts, "BYTEARRAY", 9);
-  toFile(fonts, "testoutputs/metadata2.pdf", false, false);
+  cpdf_setMetadataFromByteArray(fonts, "BYTEARRAY", 9);
+  cpdf_toFile(fonts, "testoutputs/metadata2.pdf", false, false);
   int metadata_length;
   printf("getMetadata()\n");
-  void* metadata = getMetadata(fonts, &metadata_length);
+  void* metadata = cpdf_getMetadata(fonts, &metadata_length);
   printf("removeMetadata()\n");
-  removeMetadata(fonts);
+  cpdf_removeMetadata(fonts);
 
-  deletePdf(fonts);
-  deleterange(allbox);
+  cpdf_deletePdf(fonts);
+  cpdf_deleteRange(allbox);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 12. File attachments */
   printf("\n***** 12. File attachments\n\n");
-  int toattachto = fromFile("testinputs/london.pdf");
+  int toattachto = cpdf_fromFile("testinputs/london.pdf");
   printf("attachFile()\n");
-  attachFile("cpdflibtest.c", toattachto);
-  toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
+  cpdf_attachFile("cpdflibtest.c", toattachto);
+  cpdf_toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
 
   printf("startGetAttachments()\n");
-  startGetAttachments(toattachto);
+  cpdf_startGetAttachments(toattachto);
   printf("numberGetAttachments()\n");
-  int numatt = numberGetAttachments();
+  int numatt = cpdf_numberGetAttachments();
   printf("There are %i attachements to get\n", numatt);
   printf("getAttachmentName()\n");
   for (int x = 0; x < numatt; x++)
   {
-    printf("Attachment %i is named %s\n", x, getAttachmentName(x));
+    printf("Attachment %i is named %s\n", x, cpdf_getAttachmentName(x));
   };
   printf("endGetAttachments()\n");
-  endGetAttachments();
+  cpdf_endGetAttachments();
 
   printf("removeAttachedFiles()\n");
-  removeAttachedFiles(toattachto);
-  toFile(toattachto, "testoutputs/removedattachments.pdf", false, false);
+  cpdf_removeAttachedFiles(toattachto);
+  cpdf_toFile(toattachto, "testoutputs/removedattachments.pdf", false, false);
 
-  deletePdf(toattachto);
+  cpdf_deletePdf(toattachto);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 13. Miscellaneous */
   printf("\n***** 13. Miscellaneous\n\n");
-  int london = fromFile("testinputs/london.pdf");
-  int all_london = all(london);
+  int london = cpdf_fromFile("testinputs/london.pdf");
+  int all_london = cpdf_all(london);
   printf("draft()\n");
-  draft(london, all_london, true);
-  toFile(london, "testoutputs/draft.pdf", false, false);
+  cpdf_draft(london, all_london, true);
+  cpdf_toFile(london, "testoutputs/draft.pdf", false, false);
   printf("blackText()\n");
-  blackText(london, all_london);
+  cpdf_blackText(london, all_london);
   printf("blackFills()\n");
-  blackFills(london, all_london);
+  cpdf_blackFills(london, all_london);
   printf("blackLines()\n");
-  blackLines(london, all_london);
-  toFile(london, "testoutputs/black.pdf", false, false);
-  int london2 = fromFile("testinputs/london.pdf");
+  cpdf_blackLines(london, all_london);
+  cpdf_toFile(london, "testoutputs/black.pdf", false, false);
+  int london2 = cpdf_fromFile("testinputs/london.pdf");
   printf("thinLines()\n");
-  thinLines(london2, all_london, 8.0);
+  cpdf_thinLines(london2, all_london, 8.0);
   printf("copyId()\n");
-  copyId(london, london2);
-  toFile(london2, "testoutputs/thinlines.pdf", false, false);
+  cpdf_copyId(london, london2);
+  cpdf_toFile(london2, "testoutputs/thinlines.pdf", false, false);
 
-  deletePdf(london);
-  deletePdf(london2);
-  deleterange(all_london);
+  cpdf_deletePdf(london);
+  cpdf_deletePdf(london2);
+  cpdf_deleteRange(all_london);
 
-  onexit();
+  cpdf_onExit();
   /* Chapter 14. Page labels */
   printf("\n***** 14. Page labels\n\n");
-  int pl = fromFile("testinputs/london.pdf");
-  int pl_all = all(pl);
+  int pl = cpdf_fromFile("testinputs/london.pdf");
+  int pl_all = cpdf_all(pl);
   printf("addPageLabels()\n");
-  addPageLabels(pl, 4, "PREFIX-", 1, pl_all);
-  toFile(pl, "testoutputs/pagelabels.pdf", false, false);
+  cpdf_addPageLabels(pl, 4, "PREFIX-", 1, pl_all);
+  cpdf_toFile(pl, "testoutputs/pagelabels.pdf", false, false);
 
-  int toreplace = fromFile("testinputs/london.pdf");
+  int toreplace = cpdf_fromFile("testinputs/london.pdf");
   printf("replacePdf()\n");
-  replacePdf(pl, toreplace);
+  cpdf_replacePdf(pl, toreplace);
 
-  deletePdf(toreplace); //FIXME - replacePdf not doing the right thing here. Also, why is it here?
-  deletePdf(pl);
-  deleterange(pl_all);
+  cpdf_deletePdf(toreplace); //FIXME - replacePdf not doing the right thing here. Also, why is it here?
+  cpdf_deletePdf(pl);
+  cpdf_deleteRange(pl_all);
 
-  onexit();
+  cpdf_onExit();
   /* Special functionality -- Undo */
   printf("\n***** Special functionality -- Undo\n\n");
-  int undotest = fromFile("testinputs/london.pdf");
+  int undotest = cpdf_fromFile("testinputs/london.pdf");
   printf("aboutToUpdate()\n");
-  aboutToUpdate(undotest);
-  int all_undotest = all(undotest);
-  thinLines(undotest, all_undotest, 8.0);
-  toFile(undotest, "testoutputs/undo.pdf", false, false);
+  cpdf_aboutToUpdate(undotest);
+  int all_undotest = cpdf_all(undotest);
+  cpdf_thinLines(undotest, all_undotest, 8.0);
+  cpdf_toFile(undotest, "testoutputs/undo.pdf", false, false);
   printf("undo()\n");
-  undo(undotest);
-  toFile(undotest, "testoutputs/undone.pdf", false, false);
+  cpdf_undo(undotest);
+  cpdf_toFile(undotest, "testoutputs/undone.pdf", false, false);
   printf("redo()\n");
-  redo(undotest);
-  toFile(undotest, "testoutputs/redone.pdf", false, false);
+  cpdf_redo(undotest);
+  cpdf_toFile(undotest, "testoutputs/redone.pdf", false, false);
 
-  int undotest2 = fromFile("testinputs/london.pdf");
+  int undotest2 = cpdf_fromFile("testinputs/london.pdf");
   printf("aboutToUpdateDeep()\n");
-  aboutToUpdateDeep(undotest2);
+  cpdf_aboutToUpdateDeep(undotest2);
 
-  deletePdf(undotest);
-  deletePdf(undotest2);
-  deleterange(all_undotest);
+  cpdf_deletePdf(undotest);
+  cpdf_deletePdf(undotest2);
+  cpdf_deleteRange(all_undotest);
 
-  onexit();
+  cpdf_onExit();
   /* Special functionality -- Encryption and permission status */
   printf("\n***** Special functionality -- Encryption and permission status\n\n");
   printf("Encryption and permission status\n");
 
-  int enctest = fromFile("testoutputs/encrypted.pdf");
+  int enctest = cpdf_fromFile("testoutputs/encrypted.pdf");
   printf("lookupPdfStatus()\n");
-  printf("pdf status = %i\n", lookupPdfStatus(enctest));
-  decryptPdf(enctest, "user");
+  printf("pdf status = %i\n", cpdf_lookupPdfStatus(enctest));
+  cpdf_decryptPdf(enctest, "user");
   printf("hasPermissionStatus()\n");
-  printf("pdf permission status = %i\n", hasPermissionStatus(enctest, 0));
+  printf("pdf permission status = %i\n", cpdf_hasPermissionStatus(enctest, 0));
   printf("lookupPdfEncryption()\n");
-  printf("pdf encryption status = %i\n", lookupPdfEncryption(enctest));
+  printf("pdf encryption status = %i\n", cpdf_lookupPdfEncryption(enctest));
   printf("lookupPdfUserPassword()\n");
-  printf("pdf user password was %s\n", lookupPdfUserPassword(enctest));
+  printf("pdf user password was %s\n", cpdf_lookupPdfUserPassword(enctest));
   
-  deletePdf(enctest);
+  cpdf_deletePdf(enctest);
 
-  onexit();
+  cpdf_onExit();
 
   printf("*****Tests finished\n");
   return 0;

@@ -9,253 +9,253 @@
 extern void caml_startup (char **);
 
 /* Set demo mode. Upon library startup is false */
-void setdemo(int);
+void cpdf_setDemo(int);
 
 /* Errors. lastError and lastErrorString hold information about the last error
  * to have occurred. */
-int lastError;
-char* lastErrorString;
+int cpdf_lastError;
+char* cpdf_lastErrorString;
 
 /* Clear the current error state. */
-void clearError (void);
+void cpdf_clearError (void);
 
 /* A debug function which prints some information about resource usage. This
  * can be used to detect if PDFs or ranges are not being deallocated properly. */
-void onexit (void);
+void cpdf_onExit (void);
 
 /* Remove a PDF from memory */
-void deletePdf(int);
+void cpdf_deletePdf(int);
 
 /* Calling replacePdf(a, b) places PDF b under number a. Original a and b are
  * no longer available. */
-void replacePdf(int, int);
+void cpdf_replacePdf(int, int);
 
 /* Undo support */
 
 /* Undo a document. Returns true if managed to undo, false if nothing to undo to. */
-int undo(int);
+int cpdf_undo(int);
 
 /* Redo a document. Returns true if managed to redo, false if nothing to redo to. */
-int redo(int);
+int cpdf_redo(int);
 
 /* Mark a document for update. This copies the document so the change can be undone later */
-void aboutToUpdate(int);
+void cpdf_aboutToUpdate(int);
 
 /* Same, but when a deep copy (no sharing of data) is required. */
-void aboutToUpdateDeep(int);
+void cpdf_aboutToUpdateDeep(int);
 
 /* Abort such an update due to an error part-way through the update */
-void abortUpdate(int);
+void cpdf_abortUpdate(int);
 
 /* CHAPTER 1. Basics */
-double ptOfCm (double);
-double ptOfMm (double);
-double ptOfIn (double);
-double cmOfPt (double);
-double mmOfPt (double);
-double inOfPt (double);
+double cpdf_ptOfCm (double);
+double cpdf_ptOfMm (double);
+double cpdf_ptOfIn (double);
+double cpdf_cmOfPt (double);
+double cpdf_mmOfPt (double);
+double cpdf_inOfPt (double);
 
-int parsePagespec(int, char*);
-int validatePagespec(char *);
-char* stringOfPagespec(int, int);
+int cpdf_parsePagespec(int, char*);
+int cpdf_validatePagespec(char *);
+char* cpdf_stringOfPagespec(int, int);
 
-int blankrange(void);
-void deleterange(int);
-int range(int, int);
-int even(int);
-int odd(int);
-int range_union(int, int);
-int difference(int, int);
-int removeDuplicates(int);
-int rangeLength(int);
-int rangeGet(int, int);
-int rangeAdd(int, int);
-int isInRange(int, int);
+int cpdf_blankRange(void);
+void cpdf_deleteRange(int);
+int cpdf_range(int, int);
+int cpdf_even(int);
+int cpdf_odd(int);
+int cpdf_rangeUnion(int, int);
+int cpdf_difference(int, int);
+int cpdf_removeDuplicates(int);
+int cpdf_rangeLength(int);
+int cpdf_rangeGet(int, int);
+int cpdf_rangeAdd(int, int);
+int cpdf_isInRange(int, int);
 
-int fromFile(char*);
+int cpdf_fromFile(char*);
 
-int fromFileLazy(char*);
+int cpdf_fromFileLazy(char*);
 
-int blankDocument(double, double, int);
+int cpdf_blankDocument(double, double, int);
 
-enum papersize {a0portrait, a1portrait, a2portrait, a3portrait, a4portrait, a5portrait, a0landscape, a1landscape, a2landscape, a3landscape, a4landscape, a5landscape, usletterportrait, usletterlandscape, uslegalportrait, uslegallandscape};
+enum cpdf_papersize {cpdf_a0portrait, cpdf_a1portrait, cpdf_a2portrait, cpdf_a3portrait, cpdf_a4portrait, cpdf_a5portrait, cpdf_a0landscape, cpdf_a1landscape, cpdf_a2landscape, cpdf_a3landscape, cpdf_a4landscape, cpdf_a5landscape, cpdf_usletterportrait, cpdf_usletterlandscape, cpdf_uslegalportrait, cpdf_uslegallandscape};
 
-int blankDocumentPaper(int, int);
+int cpdf_blankDocumentPaper(int, int);
 
-int pages(int);
+int cpdf_pages(int);
 
-int pagesFast(char*, char*);
+int cpdf_pagesFast(char*, char*);
 
-void toFile(int, char*, int, int);
+void cpdf_toFile(int, char*, int, int);
 
-int all(int);
+int cpdf_all(int);
 
-int isEncrypted(int);
-int lookupPdfStatus(int);
-int hasPermissionStatus(int, int);
-int lookupPdfEncryption(int);
-char* lookupPdfUserPassword(int);
+int cpdf_isEncrypted(int);
+int cpdf_lookupPdfStatus(int);
+int cpdf_hasPermissionStatus(int, int);
+int cpdf_lookupPdfEncryption(int);
+char* cpdf_lookupPdfUserPassword(int);
 
-void decryptPdf(int, char*);
+void cpdf_decryptPdf(int, char*);
 
-void decryptPdfOwner(int, char*);
+void cpdf_decryptPdfOwner(int, char*);
 
-enum permission {noEdit, noPrint, noCopy, noAnnot, noForms, noExtract, noAssemble, noHqPrint};
+enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
 
-enum encryption_method {pdf40bit, pdf128bit, aes128bitfalse, aes128bittrue};
+enum cpdf_encryptionMethod {cpdf_pdf40bit, cpdf_pdf128bit, cpdf_aes128bitfalse, cpdf_aes128bittrue};
 
-void toFileEncrypted(int, int, int*, int, char*, char*, int, int, char*);
+void cpdf_toFileEncrypted(int, int, int*, int, char*, char*, int, int, char*);
 
-void toFileRecrypting(int, int, char*, char*);
+void cpdf_toFileRecrypting(int, int, char*, char*);
 
-int hasPermission(int, enum permission);
+int cpdf_hasPermission(int, enum cpdf_permission);
 
-enum encryption_method encryptionKind(int);
+enum cpdf_encryptionMethod cpdf_encryptionKind(int);
 
 /* CHAPTER 2. Merging and Splitting */
-int mergeSimple(int*, int);
+int cpdf_mergeSimple(int*, int);
 
-int merge(int*, int, int, int);
+int cpdf_merge(int*, int, int, int);
 
-int mergeSame(int*, int, int, int, int*);
+int cpdf_mergeSame(int*, int, int, int, int*);
 
-int selectPages(int, int);
+int cpdf_selectPages(int, int);
 
 /* CHAPTER 3. Pages */
-void scalePages(int, int, double, double);
-void scaleToFit(int, int, double, double);
-void scaleToFitPaper(int, int, int);
+void cpdf_scalePages(int, int, double, double);
+void cpdf_scaleToFit(int, int, double, double);
+void cpdf_scaleToFitPaper(int, int, int);
 
-enum anchor { posCentre, posLeft, posRight, top, topLeft, topRight, left, bottomLeft, bottom, bottomRight, right };
+enum cpdf_anchor { cpdf_posCentre, cpdf_posLeft, cpdf_posRight, cpdf_top, cpdf_topLeft, cpdf_topRight, cpdf_left, cpdf_bottomLeft, cpdf_bottom, cpdf_bottomRight, cpdf_right };
 
-struct position {
-  int anchor;
-  double coord1;
-  double coord2;
+struct cpdf_position {
+  int cpdf_anchor;
+  double cpdf_coord1;
+  double cpdf_coord2;
 };
 
-void scaleContents(int, int, struct position, double);
-void shiftContents(int, int, double, double);
-void rotate(int, int, int);
-void rotateBy(int, int, int);
-void rotateContents(int, int, double);
-void upright(int, int);
-void hFlip(int, int);
-void vFlip(int, int);
-void crop(int, int, double, double, double, double);
-void removeCrop(int, int);
-void removeTrim(int, int);
-void removeArt(int, int);
-void removeBleed(int, int);
+void cpdf_scaleContents(int, int, struct cpdf_position, double);
+void cpdf_shiftContents(int, int, double, double);
+void cpdf_rotate(int, int, int);
+void cpdf_rotateBy(int, int, int);
+void cpdf_rotateContents(int, int, double);
+void cpdf_upright(int, int);
+void cpdf_hFlip(int, int);
+void cpdf_vFlip(int, int);
+void cpdf_crop(int, int, double, double, double, double);
+void cpdf_removeCrop(int, int);
+void cpdf_removeTrim(int, int);
+void cpdf_removeArt(int, int);
+void cpdf_removeBleed(int, int);
 
 
 /* CHAPTER 5. Compression */
-void compress(int);
+void cpdf_compress(int);
 
-void decompress(int);
+void cpdf_decompress(int);
 
 /* CHAPTER 6. Bookmarks */
-void startGetBookmarkInfo(int);
-void endGetBookmarkInfo(void);
-int numberBookmarks(void);
-int getBookmarkLevel(int);
-int getBookmarkPage(int, int);
+void cpdf_startGetBookmarkInfo(int);
+void cpdf_endGetBookmarkInfo(void);
+int cpdf_numberBookmarks(void);
+int cpdf_getBookmarkLevel(int);
+int cpdf_getBookmarkPage(int, int);
 
 /* CHAPTER 7. Presentations */
 /* CHAPTER 8. Logos, Watermarks and Stamps */
-void stampOn(int, int, int);
-void stampUnder(int, int, int);
-int combinePages(int, int);
-void addText(int, int, int, char*, struct position, double, int, int, double, double, double, double, int, int, int, double, int, int, char*);
-int addTextHowMany(void);
-char* addTextReturnText(int);
-double addTextReturnX(int);
-double addTextReturnY(int);
-double addTextReturnRotation(int);
-double addTextReturnBaselineAdjustment(void);
+void cpdf_stampOn(int, int, int);
+void cpdf_stampUnder(int, int, int);
+int cpdf_combinePages(int, int);
+void cpdf_addText(int, int, int, char*, struct cpdf_position, double, int, int, double, double, double, double, int, int, int, double, int, int, char*);
+int cpdf_addTextHowMany(void);
+char* cpdf_addTextReturnText(int);
+double cpdf_addTextReturnX(int);
+double cpdf_addTextReturnY(int);
+double cpdf_addTextReturnRotation(int);
+double cpdf_addTextReturnBaselineAdjustment(void);
 
-void removeText(int, int);
-int textWidth (int, char*);
+void cpdf_removeText(int, int);
+int cpdf_textWidth (int, char*);
 
 /* CHAPTER 9. Multipage facilities */
-void twoUp(int);
-void padBefore(int, int);
-void padAfter(int, int);
+void cpdf_twoUp(int);
+void cpdf_padBefore(int, int);
+void cpdf_padAfter(int, int);
 
 /* CHAPTER 10. Annotations */
 /* CHAPTER 11. Document Information and Metadata */
-int numberFonts(void);
-int getFontPage(int);
-char* getFontName(int);
-char* getFontType(int);
-char* getFontEncoding(int);
-void startGetFontInfo(int);
-void endGetFontInfo(void);
+int cpdf_numberFonts(void);
+int cpdf_getFontPage(int);
+char* cpdf_getFontName(int);
+char* cpdf_getFontType(int);
+char* cpdf_getFontEncoding(int);
+void cpdf_startGetFontInfo(int);
+void cpdf_endGetFontInfo(void);
 
-int isLinearized(char*);
-int getVersion(int);
-char* getTitle(int);
-char* getAuthor(int);
-char* getSubject(int);
-char* getKeywords(int);
-char* getCreator(int);
-char* getProducer(int);
-char* getCreationDate(int);
-void getDateComponents(char*, int*, int*, int*, int*, int*, int*, int*, int*);
-char* dateStringOfComponents(int, int, int, int, int, int, int, int);
-char* getModificationDate(int);
-void setVersion(int, int);
-void setTitle(int, char*);
-void setAuthor(int, char*);
-void setSubject(int, char*);
-void setKeywords(int, char*);
-void setCreator(int, char*);
-void setProducer(int, char*);
-void setCreationDate(int, char*);
-void setModificationDate(int, char*);
-void markTrapped(int);
-void markUntrapped(int);
-void setPageLayout(int, int);
-void setPageMode(int, int);
-int hasBox(int, int, char*);
-void getMediaBox(int, int, double*, double*, double*, double*);
-void setMediabox(int, int, double, double, double, double);
-void getCropBox(int, int, double*, double*, double*, double*);
-void setCropBox(int, int, double, double, double, double);
-void getTrimBox(int, int, double*, double*, double*, double*);
-void setTrimBox(int, int, double, double, double, double);
-void getArtBox(int, int, double*, double*, double*, double*);
-void setArtBox(int, int, double, double, double, double);
-void getBleedBox(int, int, double*, double*, double*, double*);
-void setBleedBox(int, int, double, double, double, double);
+int cpdf_isLinearized(char*);
+int cpdf_getVersion(int);
+char* cpdf_getTitle(int);
+char* cpdf_getAuthor(int);
+char* cpdf_getSubject(int);
+char* cpdf_getKeywords(int);
+char* cpdf_getCreator(int);
+char* cpdf_getProducer(int);
+char* cpdf_getCreationDate(int);
+void cpdf_getDateComponents(char*, int*, int*, int*, int*, int*, int*, int*, int*);
+char* cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
+char* cpdf_getModificationDate(int);
+void cpdf_setVersion(int, int);
+void cpdf_setTitle(int, char*);
+void cpdf_setAuthor(int, char*);
+void cpdf_setSubject(int, char*);
+void cpdf_setKeywords(int, char*);
+void cpdf_setCreator(int, char*);
+void cpdf_setProducer(int, char*);
+void cpdf_setCreationDate(int, char*);
+void cpdf_setModificationDate(int, char*);
+void cpdf_markTrapped(int);
+void cpdf_markUntrapped(int);
+void cpdf_setPageLayout(int, int);
+void cpdf_setPageMode(int, int);
+int cpdf_hasBox(int, int, char*);
+void cpdf_getMediaBox(int, int, double*, double*, double*, double*);
+void cpdf_setMediabox(int, int, double, double, double, double);
+void cpdf_getCropBox(int, int, double*, double*, double*, double*);
+void cpdf_setCropBox(int, int, double, double, double, double);
+void cpdf_getTrimBox(int, int, double*, double*, double*, double*);
+void cpdf_setTrimBox(int, int, double, double, double, double);
+void cpdf_getArtBox(int, int, double*, double*, double*, double*);
+void cpdf_setArtBox(int, int, double, double, double, double);
+void cpdf_getBleedBox(int, int, double*, double*, double*, double*);
+void cpdf_setBleedBox(int, int, double, double, double, double);
 
-void hideToolbar(int, int);
-void hideMenubar(int, int);
-void hideWindowUi(int, int);
-void fitWindow(int, int);
-void centerWindow(int, int);
-void displayDocTitle(int, int);
-void setMetadataFromFile(int, char*);
-void setMetadataFromByteArray(int, char*, int);
-void* getMetadata(int, int*);
-void removeMetadata(int);
+void cpdf_hideToolbar(int, int);
+void cpdf_hideMenubar(int, int);
+void cpdf_hideWindowUi(int, int);
+void cpdf_fitWindow(int, int);
+void cpdf_centerWindow(int, int);
+void cpdf_displayDocTitle(int, int);
+void cpdf_setMetadataFromFile(int, char*);
+void cpdf_setMetadataFromByteArray(int, char*, int);
+void* cpdf_getMetadata(int, int*);
+void cpdf_removeMetadata(int);
 
 /* CHAPTER 12. File Attachments */
-void attachFile(char*, int);
-void removeAttachedFiles(int);
-void startGetAttachments(int);
-int numberGetAttachments(void);
-void endGetAttachments(void);
-char* getAttachmentName(int);
+void cpdf_attachFile(char*, int);
+void cpdf_removeAttachedFiles(int);
+void cpdf_startGetAttachments(int);
+int cpdf_numberGetAttachments(void);
+void cpdf_endGetAttachments(void);
+char* cpdf_getAttachmentName(int);
 
 /* CHAPTER 13. Miscellaneous */
-void draft(int, int, int);
-void blackText(int, int);
-void blackLines(int, int);
-void blackFills(int, int);
-void thinLines(int, int, double);
-void copyId(int, int);
+void cpdf_draft(int, int, int);
+void cpdf_blackText(int, int);
+void cpdf_blackLines(int, int);
+void cpdf_blackFills(int, int);
+void cpdf_thinLines(int, int, double);
+void cpdf_copyId(int, int);
 
-void addPageLabels(int, int, char*, int, int);
+void cpdf_addPageLabels(int, int, char*, int, int);
 
 

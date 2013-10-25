@@ -5,8 +5,8 @@
 #include <caml/alloc.h>
 #include <caml/bigarray.h>
 
-int lastError = 0;
-char* lastErrorString = "";
+int cpdf_lastError = 0;
+char* cpdf_lastErrorString = "";
 
 //Get the latest error from OCaml and replicate it here in C
 //Also update the lastErrorString
@@ -19,26 +19,26 @@ void updateLastError (void)
   getLastError_v = *caml_named_value("getLastError");
   unit_v = Val_unit;
   result_v = caml_callback(getLastError_v, unit_v);
-  lastError = Int_val(result_v);
+  cpdf_lastError = Int_val(result_v);
   getLastErrorString_v = *caml_named_value("getLastErrorString");
   string_result_v = caml_callback(getLastErrorString_v, unit_v);
-  lastErrorString = String_val(string_result_v);
+  cpdf_lastErrorString = String_val(string_result_v);
   CAMLreturn0;
 }
 
 //Clear the error in the Ocaml bit, and here in C
-void clearError (void)
+void cpdf_clearError (void)
 {
   CAMLparam0 ();
   CAMLlocal3(clearError_v, unit_v, result_v);
   clearError_v = *caml_named_value("clearError");
   unit_v = Val_unit;
   result_v = caml_callback(clearError_v, unit_v);
-  lastError = 0;
+  cpdf_lastError = 0;
   CAMLreturn0;
 }
 
-void onexit (void)
+void cpdf_onExit (void)
 {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
@@ -48,7 +48,7 @@ void onexit (void)
 }
 
 /* undo */
-int undo(int i)
+int cpdf_undo(int i)
 {
   CAMLparam0 ();
   CAMLlocal3(undo_v, int_v, out_v);
@@ -59,7 +59,7 @@ int undo(int i)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int redo(int i)
+int cpdf_redo(int i)
 {
   CAMLparam0 ();
   CAMLlocal3(redo_v, int_v, out_v);
@@ -70,7 +70,7 @@ int redo(int i)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-void aboutToUpdate(int i)
+void cpdf_aboutToUpdate(int i)
 {
   CAMLparam0 ();
   CAMLlocal3(about_to_update_v, int_v, unit_v);
@@ -81,7 +81,7 @@ void aboutToUpdate(int i)
   CAMLreturn0;
 }
 
-void aboutToUpdateDeep(int i)
+void cpdf_aboutToUpdateDeep(int i)
 {
   CAMLparam0 ();
   CAMLlocal3(about_to_update_v, int_v, unit_v);
@@ -92,7 +92,7 @@ void aboutToUpdateDeep(int i)
   CAMLreturn0;
 }
 
-void abortUpdate(int i)
+void cpdf_abortUpdate(int i)
 {
   CAMLparam0 ();
   CAMLlocal3(abort_update_v, int_v, unit_v);
@@ -103,7 +103,7 @@ void abortUpdate(int i)
   CAMLreturn0;
 }
 
-int startEnumeratePDFs(void)
+int cpdf_startEnumeratePDFs(void)
 {
   CAMLparam0 ();
   CAMLlocal3(enumeratePDFs_v, unit_v, int_v);
@@ -114,7 +114,7 @@ int startEnumeratePDFs(void)
   CAMLreturnT(int, Int_val(int_v));
 }
 
-int enumeratePDFsKey(int key)
+int cpdf_enumeratePDFsKey(int key)
 {
   CAMLparam0 ();
   CAMLlocal3(enumeratePDFsKey, key_v, out_v);
@@ -125,7 +125,7 @@ int enumeratePDFsKey(int key)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-char* enumeratePDFsInfo(int key)
+char* cpdf_enumeratePDFsInfo(int key)
 {
   CAMLparam0 ();
   CAMLlocal3(enumeratePDFsInfo, key_v, out_v);
@@ -136,7 +136,7 @@ char* enumeratePDFsInfo(int key)
   CAMLreturnT(char*, String_val(out_v));
 }
 
-void endEnumeratePDFs(void)
+void cpdf_endEnumeratePDFs(void)
 {
   CAMLparam0 ();
   CAMLlocal3(endEnumeratePDFs, unit_v, out_v);
@@ -147,7 +147,7 @@ void endEnumeratePDFs(void)
   CAMLreturn0;
 }
 
-void deletePdf(int pdf)
+void cpdf_deletePdf(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(deletePdf, int_in, unit_out);
@@ -158,7 +158,7 @@ void deletePdf(int pdf)
   CAMLreturn0;
 }
 
-void replacePdf(int o, int n)
+void cpdf_replacePdf(int o, int n)
 {
   CAMLparam0 ();
   CAMLlocal4(replacePdf, o_v, n_v, unit_out);
@@ -170,7 +170,7 @@ void replacePdf(int o, int n)
   CAMLreturn0;
 }
 
-void setdemo(int b)
+void cpdf_setDemo(int b)
 {
   CAMLparam0 ();
   CAMLlocal3(setdemo_v, int_v, result_v);
@@ -182,7 +182,7 @@ void setdemo(int b)
 }
 
 /* CHAPTER 1. Basics */
-double ptOfCm (double f)
+double cpdf_ptOfCm (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -193,7 +193,7 @@ double ptOfCm (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-double ptOfMm (double f)
+double cpdf_ptOfMm (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -204,7 +204,7 @@ double ptOfMm (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-double ptOfIn (double f)
+double cpdf_ptOfIn (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -215,7 +215,7 @@ double ptOfIn (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-double cmOfPt (double f)
+double cpdf_cmOfPt (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -226,7 +226,7 @@ double cmOfPt (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-double mmOfPt (double f)
+double cpdf_mmOfPt (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -237,7 +237,7 @@ double mmOfPt (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-double inOfPt (double f)
+double cpdf_inOfPt (double f)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, in, out);
@@ -248,7 +248,7 @@ double inOfPt (double f)
   CAMLreturnT(double, Double_val(out));
 }
 
-int parsePagespec(int pdf, char* str)
+int cpdf_parsePagespec(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, inpdf, instr, out);
@@ -260,7 +260,7 @@ int parsePagespec(int pdf, char* str)
   CAMLreturnT(int, Int_val(out));
 }
 
-int validatePagespec(char* str)
+int cpdf_validatePagespec(char* str)
 {
   CAMLparam0();
   CAMLlocal3(fn, instr, out);
@@ -271,7 +271,7 @@ int validatePagespec(char* str)
   CAMLreturnT(int, Int_val(out));
 }
 
-char* stringOfPagespec(int pdf, int range)
+char* cpdf_stringOfPagespec(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, inpdf, inrange, out);
@@ -283,7 +283,7 @@ char* stringOfPagespec(int pdf, int range)
   CAMLreturnT(char*, String_val(out));
 }
 
-int blankrange(void)
+int cpdf_blankRange(void)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, unitin, rangeout);
@@ -294,7 +294,7 @@ int blankrange(void)
   CAMLreturnT(int, Int_val(rangeout));
 }
 
-void deleterange(int range)
+void cpdf_deleteRange(int range)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, range_v, out_v);
@@ -305,7 +305,7 @@ void deleterange(int range)
   CAMLreturn0;
 }
 
-int range(int a, int b)
+int cpdf_range(int a, int b)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, range, av, bv);
@@ -317,7 +317,7 @@ int range(int a, int b)
   CAMLreturnT (int, Int_val(range));
 }
 
-int even(int r)
+int cpdf_even(int r)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, r_v, out_v);
@@ -328,7 +328,7 @@ int even(int r)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int odd(int r)
+int cpdf_odd(int r)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, r_v, out_v);
@@ -339,7 +339,7 @@ int odd(int r)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int range_union(int a, int b)
+int cpdf_rangeUnion(int a, int b)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, a_v, b_v, out_v);
@@ -351,7 +351,7 @@ int range_union(int a, int b)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int difference(int a, int b)
+int cpdf_difference(int a, int b)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, a_v, b_v, out_v);
@@ -363,7 +363,7 @@ int difference(int a, int b)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int removeDuplicates(int r)
+int cpdf_removeDuplicates(int r)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, r_v, out_v);
@@ -374,7 +374,7 @@ int removeDuplicates(int r)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int rangeLength(int r)
+int cpdf_rangeLength(int r)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, r_v, out_v);
@@ -386,7 +386,7 @@ int rangeLength(int r)
 }
 
 //Get the item at position pos in r. pos starts at 0
-int rangeGet(int r, int pos)
+int cpdf_rangeGet(int r, int pos)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, r_v, pos_v, out_v);
@@ -398,7 +398,7 @@ int rangeGet(int r, int pos)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int rangeAdd(int r, int n)
+int cpdf_rangeAdd(int r, int n)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, r_v, n_v, out_v);
@@ -410,7 +410,7 @@ int rangeAdd(int r, int n)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int isInRange(int r, int i)
+int cpdf_isInRange(int r, int i)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, r_v, i_v, out_v);
@@ -422,7 +422,7 @@ int isInRange(int r, int i)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int fromFile(char* filename)
+int cpdf_fromFile(char* filename)
 {
   CAMLparam0 ();
   CAMLlocal3(fromfile_v, filename_v, result_v);
@@ -433,7 +433,7 @@ int fromFile(char* filename)
   CAMLreturnT(int, Int_val(result_v));
 }
 
-int fromFileLazy(char* filename)
+int cpdf_fromFileLazy(char* filename)
 {
   CAMLparam0 ();
   CAMLlocal3(fromfile_v, filename_v, result_v);
@@ -444,7 +444,7 @@ int fromFileLazy(char* filename)
   CAMLreturnT(int, Int_val(result_v));
 }
 
-int blankDocument(double width, double height, int pages)
+int cpdf_blankDocument(double width, double height, int pages)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, width_v, height_v, pages_v, out);
@@ -457,9 +457,9 @@ int blankDocument(double width, double height, int pages)
   CAMLreturnT(int, Int_val(out));
 }
 
-enum papersize {a0portrait, a1portrait, a2portrait, a3portrait, a4portrait, a5portrait, a0landscape, a1landscape, a2landscape, a3landscape, a4landscape, a5landscape, usletterportrait, usletterlandscape, uslegalportrait, uslegallandscape};
+enum cpdf_papersize {cpdf_a0portrait, cpdf_a1portrait, cpdf_a2portrait, cpdf_a3portrait, cpdf_a4portrait, cpdf_a5portrait, cpdf_a0landscape, cpdf_a1landscape, cpdf_a2landscape, cpdf_a3landscape, cpdf_a4landscape, cpdf_a5landscape, cpdf_usletterportrait, cpdf_usletterlandscape, cpdf_uslegalportrait, cpdf_uslegallandscape};
 
-int blankDocumentPaper(int papersize, int pages)
+int cpdf_blankDocumentPaper(int papersize, int pages)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, papersize_v, pages_v, out);
@@ -471,7 +471,7 @@ int blankDocumentPaper(int papersize, int pages)
   CAMLreturnT(int, Int_val(out));
 }
 
-int pages(int pdf)
+int cpdf_pages(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, pdf_v, out);
@@ -482,7 +482,7 @@ int pages(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-int pagesFast(char* password, char* filename)
+int cpdf_pagesFast(char* password, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal4(pagesFast_v, filename_v, password_v, result_v);
@@ -494,7 +494,7 @@ int pagesFast(char* password, char* filename)
   CAMLreturnT(int, Int_val(result_v));
 }
 
-void toFile(int pdf, char* filename, int linearize, int make_id)
+void cpdf_toFile(int pdf, char* filename, int linearize, int make_id)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, unit);
@@ -509,7 +509,7 @@ void toFile(int pdf, char* filename, int linearize, int make_id)
   CAMLreturn0;
 }
 
-int all(int pdf)
+int cpdf_all(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(out_v, fn, pdf_v);
@@ -520,7 +520,7 @@ int all(int pdf)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int isEncrypted(int pdf)
+int cpdf_isEncrypted(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, pdf_v, out);
@@ -531,7 +531,7 @@ int isEncrypted(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-int lookupPdfStatus(int pdf)
+int cpdf_lookupPdfStatus(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, pdf_v, out);
@@ -542,7 +542,7 @@ int lookupPdfStatus(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-int hasPermissionStatus(int pdf, int tocheck)
+int cpdf_hasPermissionStatus(int pdf, int tocheck)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, pdf_v, tocheck_v, out_v);
@@ -554,7 +554,7 @@ int hasPermissionStatus(int pdf, int tocheck)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int lookupPdfEncryption(int pdf)
+int cpdf_lookupPdfEncryption(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out_v);
@@ -565,7 +565,7 @@ int lookupPdfEncryption(int pdf)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-char* lookupPdfUserPassword(int pdf)
+char* cpdf_lookupPdfUserPassword(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out_v);
@@ -576,7 +576,7 @@ char* lookupPdfUserPassword(int pdf)
   CAMLreturnT(char*, String_val(out_v)); 
 }
 
-void decryptPdf(int pdf, char* password)
+void cpdf_decryptPdf(int pdf, char* password)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, password_v);
@@ -588,7 +588,7 @@ void decryptPdf(int pdf, char* password)
   CAMLreturn0;
 }
 
-void decryptPdfOwner(int pdf, char* password)
+void cpdf_decryptPdfOwner(int pdf, char* password)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, password_v);
@@ -600,11 +600,11 @@ void decryptPdfOwner(int pdf, char* password)
   CAMLreturn0;
 }
 
-enum permission {noEdit, noPrint, noCopy, noAnnot, noForms, noExtract, noAssemble, noHqPrint};
+enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
 
-enum encryption_method {pdf40bit, pdf218bit, aes128bitfalse, aes128bittrue};
+enum cpdf_encryptionMethod {cpdf_pdf40bit, cpdf_pdf218bit, cpdf_aes128bitfalse, cpdf_aes128bittrue};
 
-void toFileEncrypted(int pdf, int e, int* ps, int len, char* owner, char* user, int linearize, int makeid, char* filename)
+void cpdf_toFileEncrypted(int pdf, int e, int* ps, int len, char* owner, char* user, int linearize, int makeid, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, temp, permissions);
@@ -633,7 +633,7 @@ void toFileEncrypted(int pdf, int e, int* ps, int len, char* owner, char* user, 
   CAMLreturn0;
 }
 
-void toFileRecrypting(int original, int decrypted_and_modified, char* userpw, char* filename)
+void cpdf_toFileRecrypting(int original, int decrypted_and_modified, char* userpw, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal2 (unit, fn);
@@ -648,7 +648,7 @@ void toFileRecrypting(int original, int decrypted_and_modified, char* userpw, ch
   CAMLreturn0;
 }
 
-int hasPermission(int pdf, enum permission tocheck)
+int cpdf_hasPermission(int pdf, enum cpdf_permission tocheck)
 {
   CAMLparam0 ();
   CAMLlocal4(fn_v, pdf_v, tocheck_v, out_v);
@@ -660,7 +660,7 @@ int hasPermission(int pdf, enum permission tocheck)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-enum encryption_method encryptionKind(int pdf)
+enum cpdf_encryptionMethod cpdf_encryptionKind(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn_v, pdf_v, out_v);
@@ -672,7 +672,7 @@ enum encryption_method encryptionKind(int pdf)
 }
 
 /* CHAPTER 2. Merging and Splitting */
-int mergeSimple(int* pdfs, int len)
+int cpdf_mergeSimple(int* pdfs, int len)
 { 
   CAMLparam0 ();
   CAMLlocal4(fn, array, temp, out);
@@ -689,7 +689,7 @@ int mergeSimple(int* pdfs, int len)
   CAMLreturnT(int, Int_val(out));
 }
 
-int merge(int* pdfs, int len, int retain_numbering, int remove_duplicate_fonts)
+int cpdf_merge(int* pdfs, int len, int retain_numbering, int remove_duplicate_fonts)
 {
   CAMLparam0();
   CAMLlocal5(fn, array, temp, len_v, retain_numbering_v);
@@ -709,7 +709,7 @@ int merge(int* pdfs, int len, int retain_numbering, int remove_duplicate_fonts)
   CAMLreturnT(int, Int_val(out));
 }
 
-int mergeSame(int* pdfs, int len, int retain_numbering, int remove_duplicate_fonts, int* ranges)
+int cpdf_mergeSame(int* pdfs, int len, int retain_numbering, int remove_duplicate_fonts, int* ranges)
 {
   CAMLparam0();
   CAMLlocal3(array, rangearray, fn);
@@ -738,7 +738,7 @@ int mergeSame(int* pdfs, int len, int retain_numbering, int remove_duplicate_fon
   CAMLreturnT(int, Int_val(out));
 }
 
-int selectPages(int pdf, int range)
+int cpdf_selectPages(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, pdf_v, range_v, out);
@@ -751,7 +751,7 @@ int selectPages(int pdf, int range)
 }
 
 /* CHAPTER 3. Pages */
-void scalePages(int pdf, int range, double sx, double sy)
+void cpdf_scalePages(int pdf, int range, double sx, double sy)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, unit);
@@ -766,7 +766,7 @@ void scalePages(int pdf, int range, double sx, double sy)
   CAMLreturn0;
 }
 
-void scaleToFit(int pdf, int range, double w, double h)
+void cpdf_scaleToFit(int pdf, int range, double w, double h)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 4);
@@ -781,7 +781,7 @@ void scaleToFit(int pdf, int range, double w, double h)
   CAMLreturn0;
 }
 
-void scaleToFitPaper(int pdf, int range, int papersize)
+void cpdf_scaleToFitPaper(int pdf, int range, int papersize)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 3);
@@ -795,24 +795,24 @@ void scaleToFitPaper(int pdf, int range, int papersize)
   CAMLreturn0;
 }
 
-enum anchor { posCentre, posLeft, posRight, top, topLeft, topRight, left, bottomLeft, bottom, bottomRight, right };
+enum cpdf_anchor { cpdf_posCentre, cpdf_posLeft, cpdf_posRight, cpdf_top, cpdf_topLeft, cpdf_topRight, cpdf_left, cpdf_bottomLeft, cpdf_bottom, cpdf_bottomRight, cpdf_right };
 
-struct position {
-  int anchor;
-  double coord1;
-  double coord2;
+struct cpdf_position {
+  int cpdf_anchor;
+  double cpdf_coord1;
+  double cpdf_coord2;
 };
 
-void scaleContents(int pdf, int range, struct position pos, double scale)
+void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos, double scale)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 6);
   CAMLlocal3 (unit, camlpos, fn);
   args[0] = Val_int(pdf);
   args[1] = Val_int(range);
-  args[2] = Val_int(pos.anchor);
-  args[3] = caml_copy_double(pos.coord1);
-  args[4] = caml_copy_double(pos.coord2);
+  args[2] = Val_int(pos.cpdf_anchor);
+  args[3] = caml_copy_double(pos.cpdf_coord1);
+  args[4] = caml_copy_double(pos.cpdf_coord2);
   args[5] = caml_copy_double(scale);
   fn = *caml_named_value("scaleContents");
   unit = caml_callbackN(fn, 6, args);
@@ -820,7 +820,7 @@ void scaleContents(int pdf, int range, struct position pos, double scale)
   CAMLreturn0;
 }
 
-void shiftContents(int pdf, int range, double dx, double dy)
+void cpdf_shiftContents(int pdf, int range, double dx, double dy)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 4);
@@ -835,7 +835,7 @@ void shiftContents(int pdf, int range, double dx, double dy)
   CAMLreturn0;
 }
 
-void rotate(int pdf, int range, int angle)
+void cpdf_rotate(int pdf, int range, int angle)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, fn, pdf_v, range_v, angle_v);
@@ -848,7 +848,7 @@ void rotate(int pdf, int range, int angle)
   CAMLreturn0;
 }
 
-void rotateBy(int pdf, int range, int angle)
+void cpdf_rotateBy(int pdf, int range, int angle)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, fn, pdf_v, range_v, angle_v);
@@ -861,7 +861,7 @@ void rotateBy(int pdf, int range, int angle)
   CAMLreturn0;
 }
 
-void rotateContents(int pdf, int range, double angle)
+void cpdf_rotateContents(int pdf, int range, double angle)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, fn, pdf_v, range_v, angle_v);
@@ -874,7 +874,7 @@ void rotateContents(int pdf, int range, double angle)
   CAMLreturn0;
 }
 
-void upright(int pdf, int range)
+void cpdf_upright(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, range_v);
@@ -886,7 +886,7 @@ void upright(int pdf, int range)
   CAMLreturn0;
 }
 
-void hFlip(int pdf, int range)
+void cpdf_hFlip(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, range_v);
@@ -898,7 +898,7 @@ void hFlip(int pdf, int range)
   CAMLreturn0;
 }
 
-void vFlip(int pdf, int range)
+void cpdf_vFlip(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, range_v);
@@ -910,7 +910,7 @@ void vFlip(int pdf, int range)
   CAMLreturn0;
 }
 
-void crop(int pdf, int range, double x, double y, double w, double h)
+void cpdf_crop(int pdf, int range, double x, double y, double w, double h)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 6);
@@ -927,7 +927,7 @@ void crop(int pdf, int range, double x, double y, double w, double h)
   CAMLreturn0;
 }
 
-void removeCrop(int pdf, int range)
+void cpdf_removeCrop(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -939,7 +939,7 @@ void removeCrop(int pdf, int range)
   CAMLreturn0;
 }
 
-void removeTrim(int pdf, int range)
+void cpdf_removeTrim(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -951,7 +951,7 @@ void removeTrim(int pdf, int range)
   CAMLreturn0;
 }
 
-void removeArt(int pdf, int range)
+void cpdf_removeArt(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -963,7 +963,7 @@ void removeArt(int pdf, int range)
   CAMLreturn0;
 }
 
-void removeBleed(int pdf, int range)
+void cpdf_removeBleed(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -976,7 +976,7 @@ void removeBleed(int pdf, int range)
 }
 
 /* CHAPTER 5. Compression */
-void compress(int pdf)
+void cpdf_compress(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (unit, fn, pdf_v);
@@ -987,7 +987,7 @@ void compress(int pdf)
   CAMLreturn0;
 }
 
-void decompress(int pdf)
+void cpdf_decompress(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (unit, fn, pdf_v);
@@ -999,7 +999,7 @@ void decompress(int pdf)
 }
 
 /* CHAPTER 6. Bookmarks */
-void startGetBookmarkInfo (int pdf)
+void cpdf_startGetBookmarkInfo (int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn_v, pdf_v, out_v);
@@ -1010,7 +1010,7 @@ void startGetBookmarkInfo (int pdf)
   CAMLreturn0;
 }
 
-void endGetBookmarkInfo (void)
+void cpdf_endGetBookmarkInfo (void)
 {
   CAMLparam0 ();
   CAMLlocal3(fn_v, unit_v, out_v);
@@ -1021,7 +1021,7 @@ void endGetBookmarkInfo (void)
   CAMLreturn0;
 }
 
-int numberBookmarks(void)
+int cpdf_numberBookmarks(void)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn_v, out_v, unit_v);
@@ -1032,7 +1032,7 @@ int numberBookmarks(void)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int getBookmarkPage(int pdf, int serial)
+int cpdf_getBookmarkPage(int pdf, int serial)
 {
   CAMLparam0 ();
   CAMLlocal4 (serial_v, fn_v, out_v, pdf_v);
@@ -1044,7 +1044,7 @@ int getBookmarkPage(int pdf, int serial)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int getBookmarkLevel(int serial)
+int cpdf_getBookmarkLevel(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (serial_v, fn_v, out_v);
@@ -1058,7 +1058,7 @@ int getBookmarkLevel(int serial)
 /* CHAPTER 7. Presentations */
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
-void stampOn(int pdf, int pdf2, int range)
+void cpdf_stampOn(int pdf, int pdf2, int range)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pdf2_v, range_v, unit);
@@ -1070,7 +1070,7 @@ void stampOn(int pdf, int pdf2, int range)
   updateLastError();
   CAMLreturn0;
 }
-void stampUnder(int pdf, int pdf2, int range)
+void cpdf_stampUnder(int pdf, int pdf2, int range)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, fn, pdf_v, pdf2_v, range_v);
@@ -1083,7 +1083,7 @@ void stampUnder(int pdf, int pdf2, int range)
   CAMLreturn0;
 }
 
-int combinePages(int pdf, int pdf2)
+int cpdf_combinePages(int pdf, int pdf2)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, pdf_v, pdf2_v, pdfout);
@@ -1095,7 +1095,7 @@ int combinePages(int pdf, int pdf2)
   CAMLreturnT(int, Int_val(pdfout));
 }
 
-void removeText(int pdf, int range)
+void cpdf_removeText(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, unit, pdf_v, range_v);
@@ -1107,7 +1107,7 @@ void removeText(int pdf, int range)
   CAMLreturn0;
 }
 
-int addTextHowMany(void)
+int cpdf_addTextHowMany(void)
 {
   CAMLparam0();
   CAMLlocal3(fn, unit, out_v);
@@ -1118,7 +1118,7 @@ int addTextHowMany(void)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-char* addTextReturnText(int serial)
+char* cpdf_addTextReturnText(int serial)
 {
   CAMLparam0();
   CAMLlocal3(fn, serial_v, out_v);
@@ -1129,7 +1129,7 @@ char* addTextReturnText(int serial)
   CAMLreturnT(char*, String_val(out_v));
 }
 
-double addTextReturnX(int serial)
+double cpdf_addTextReturnX(int serial)
 {
   CAMLparam0();
   CAMLlocal3(fn, serial_v, out_v);
@@ -1140,7 +1140,7 @@ double addTextReturnX(int serial)
   CAMLreturnT(double, Double_val(out_v));
 }
 
-double addTextReturnY(int serial)
+double cpdf_addTextReturnY(int serial)
 {
   CAMLparam0();
   CAMLlocal3(fn, serial_v, out_v);
@@ -1151,7 +1151,7 @@ double addTextReturnY(int serial)
   CAMLreturnT(double, Double_val(out_v));
 }
 
-double addTextReturnRotation(int serial)
+double cpdf_addTextReturnRotation(int serial)
 {
   CAMLparam0();
   CAMLlocal3(fn, serial_v, out_v);
@@ -1162,7 +1162,7 @@ double addTextReturnRotation(int serial)
   CAMLreturnT(double, Double_val(out_v));
 }
 
-double addTextReturnBaselineAdjustment(void)
+double cpdf_addTextReturnBaselineAdjustment(void)
 {
   CAMLparam0();
   CAMLlocal2(fn, out_v);
@@ -1172,7 +1172,7 @@ double addTextReturnBaselineAdjustment(void)
   CAMLreturnT(double, Double_val(out_v));
 }
 
-void addText(int metrics, int pdf, int range, char* text, struct position pos, double linespacing, int bates, int font, double fontsize, double r, double g, double b, int underneath, int cropbox, int outline, double opacity, int justification, int midline, char* filename)
+void cpdf_addText(int metrics, int pdf, int range, char* text, struct cpdf_position pos, double linespacing, int bates, int font, double fontsize, double r, double g, double b, int underneath, int cropbox, int outline, double opacity, int justification, int midline, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, unit);
@@ -1182,9 +1182,9 @@ void addText(int metrics, int pdf, int range, char* text, struct position pos, d
   args[1] = Val_int(pdf);
   args[2] = Val_int(range);
   args[3] = caml_copy_string(text);
-  args[4] = Val_int(pos.anchor);
-  args[5] = caml_copy_double(pos.coord1);
-  args[6] = caml_copy_double(pos.coord2);
+  args[4] = Val_int(pos.cpdf_anchor);
+  args[5] = caml_copy_double(pos.cpdf_coord1);
+  args[6] = caml_copy_double(pos.cpdf_coord2);
   args[7] = caml_copy_double(linespacing);
   args[8] = Val_int(bates);
   args[9] = Val_int(font);
@@ -1204,7 +1204,7 @@ void addText(int metrics, int pdf, int range, char* text, struct position pos, d
   CAMLreturn0;
 }
 
-int textWidth(int font, char* text)
+int cpdf_textWidth(int font, char* text)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
@@ -1218,7 +1218,7 @@ int textWidth(int font, char* text)
 }
 
 /* CHAPTER 9. Multipage facilities */
-void twoUp(int pdf)
+void cpdf_twoUp(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(unit, fn, pdf_v);
@@ -1229,7 +1229,7 @@ void twoUp(int pdf)
   CAMLreturn0;
 }
 
-void padBefore(int pdf, int range)
+void cpdf_padBefore(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, range_v, fn);
@@ -1241,7 +1241,7 @@ void padBefore(int pdf, int range)
   CAMLreturn0;
 }
 
-void padAfter(int pdf, int range)
+void cpdf_padAfter(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, range_v, fn);
@@ -1255,7 +1255,7 @@ void padAfter(int pdf, int range)
 
 /* CHAPTER 10. Annotations */
 /* CHAPTER 11. Document Information and Metadata */
-int numberFonts(void)
+int cpdf_numberFonts(void)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn_v, out_v, unit_v);
@@ -1266,7 +1266,7 @@ int numberFonts(void)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int getFontPage(int serial)
+int cpdf_getFontPage(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (serial_v, fn_v, out_v);
@@ -1277,7 +1277,7 @@ int getFontPage(int serial)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-char* getFontName(int serial)
+char* cpdf_getFontName(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (serial_v, fn_v, out_v);
@@ -1288,7 +1288,7 @@ char* getFontName(int serial)
   CAMLreturnT(char*, String_val(out_v));
 }
 
-char* getFontType(int serial)
+char* cpdf_getFontType(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (serial_v, fn_v, out_v);
@@ -1299,7 +1299,7 @@ char* getFontType(int serial)
   CAMLreturnT(char*, String_val(out_v));
 }
 
-char* getFontEncoding(int serial)
+char* cpdf_getFontEncoding(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (serial_v, fn_v, out_v);
@@ -1310,7 +1310,7 @@ char* getFontEncoding(int serial)
   CAMLreturnT(char*, String_val(out_v));
 }
 
-void startGetFontInfo (int pdf)
+void cpdf_startGetFontInfo (int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn_v, pdf_v, out_v);
@@ -1321,7 +1321,7 @@ void startGetFontInfo (int pdf)
   CAMLreturn0;
 }
 
-void endGetFontInfo (void)
+void cpdf_endGetFontInfo (void)
 {
   CAMLparam0 ();
   CAMLlocal3(fn_v, unit_v, out_v);
@@ -1332,7 +1332,7 @@ void endGetFontInfo (void)
   CAMLreturn0;
 }
 
-int isLinearized(char* filename)
+int cpdf_isLinearized(char* filename)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn_v, filename_v, out_v);
@@ -1343,7 +1343,7 @@ int isLinearized(char* filename)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int getVersion(int pdf)
+int cpdf_getVersion(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1354,7 +1354,7 @@ int getVersion(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-char* getTitle(int pdf)
+char* cpdf_getTitle(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1365,7 +1365,7 @@ char* getTitle(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getAuthor(int pdf)
+char* cpdf_getAuthor(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1376,7 +1376,7 @@ char* getAuthor(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getSubject(int pdf)
+char* cpdf_getSubject(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1387,7 +1387,7 @@ char* getSubject(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getKeywords(int pdf)
+char* cpdf_getKeywords(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1398,7 +1398,7 @@ char* getKeywords(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getCreator(int pdf)
+char* cpdf_getCreator(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1409,7 +1409,7 @@ char* getCreator(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getProducer(int pdf)
+char* cpdf_getProducer(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1420,7 +1420,7 @@ char* getProducer(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getCreationDate(int pdf)
+char* cpdf_getCreationDate(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1431,7 +1431,7 @@ char* getCreationDate(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-char* getModificationDate(int pdf)
+char* cpdf_getModificationDate(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
@@ -1443,7 +1443,7 @@ char* getModificationDate(int pdf)
 }
 
 //FIXME: will need exception handling here.
-void getDateComponents(char* date, int* year, int* month, int* day, int* hour, int* minute, int* second, int* hour_offset, int* minute_offset)
+void cpdf_getDateComponents(char* date, int* year, int* month, int* day, int* hour, int* minute, int* second, int* hour_offset, int* minute_offset)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, str_v, out_v, year_v, month_v);
@@ -1472,7 +1472,7 @@ void getDateComponents(char* date, int* year, int* month, int* day, int* hour, i
   CAMLreturn0;
 }
 
-char* dateStringOfComponents(int year, int month, int day, int hour, int minute, int second, int hour_offset, int minute_offset)
+char* cpdf_dateStringOfComponents(int year, int month, int day, int hour, int minute, int second, int hour_offset, int minute_offset)
 {
   CAMLparam0 ();
   CAMLlocalN(args, 8);
@@ -1491,7 +1491,7 @@ char* dateStringOfComponents(int year, int month, int day, int hour, int minute,
   CAMLreturnT(char *, String_val(string_out));
 }
 
-void setVersion(int pdf, int version)
+void cpdf_setVersion(int pdf, int version)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, version_v);
@@ -1503,7 +1503,7 @@ void setVersion(int pdf, int version)
   CAMLreturn0;
 }
 
-void setTitle(int pdf, char* str)
+void cpdf_setTitle(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1515,7 +1515,7 @@ void setTitle(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setAuthor(int pdf, char* str)
+void cpdf_setAuthor(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1527,7 +1527,7 @@ void setAuthor(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setSubject(int pdf, char* str)
+void cpdf_setSubject(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1539,7 +1539,7 @@ void setSubject(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setKeywords(int pdf, char* str)
+void cpdf_setKeywords(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1551,7 +1551,7 @@ void setKeywords(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setCreator(int pdf, char* str)
+void cpdf_setCreator(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1563,7 +1563,7 @@ void setCreator(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setProducer(int pdf, char* str)
+void cpdf_setProducer(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1575,7 +1575,7 @@ void setProducer(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setCreationDate(int pdf, char* str)
+void cpdf_setCreationDate(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1587,7 +1587,7 @@ void setCreationDate(int pdf, char* str)
   CAMLreturn0;
 }
 
-void setModificationDate(int pdf, char* str)
+void cpdf_setModificationDate(int pdf, char* str)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
@@ -1599,7 +1599,7 @@ void setModificationDate(int pdf, char* str)
   CAMLreturn0;
 }
 
-void markTrapped(int pdf)
+void cpdf_markTrapped(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(unit, fn, pdf_v);
@@ -1610,7 +1610,7 @@ void markTrapped(int pdf)
   CAMLreturn0;
 }
 
-void markUntrapped(int pdf)
+void cpdf_markUntrapped(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(unit, fn, pdf_v);
@@ -1621,7 +1621,7 @@ void markUntrapped(int pdf)
   CAMLreturn0;
 }
 
-void setPageLayout(int pdf, int layout)
+void cpdf_setPageLayout(int pdf, int layout)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, unit, pdf_v, layout_v);
@@ -1633,7 +1633,7 @@ void setPageLayout(int pdf, int layout)
   CAMLreturn0;
 }
 
-void setPageMode(int pdf, int mode)
+void cpdf_setPageMode(int pdf, int mode)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, unit, pdf_v, mode_v);
@@ -1645,7 +1645,7 @@ void setPageMode(int pdf, int mode)
   CAMLreturn0;
 }
 
-int hasBox(int pdf, int pagenumber, char* boxname)
+int cpdf_hasBox(int pdf, int pagenumber, char* boxname)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, pdf_v, pagenumber_v, boxname_v);
@@ -1659,7 +1659,7 @@ int hasBox(int pdf, int pagenumber, char* boxname)
   CAMLreturnT(int, Int_val(out_v)); 
 }
 
-void getMediaBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
+void cpdf_getMediaBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -1680,7 +1680,7 @@ void getMediaBox(int pdf, int pagenumber, double *minx, double* maxx, double* mi
   CAMLreturn0;
 }
 
-void setMediabox(int pdf, int range, double minx, double maxx, double miny, double maxy)
+void cpdf_setMediabox(int pdf, int range, double minx, double maxx, double miny, double maxy)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 6);
@@ -1697,7 +1697,7 @@ void setMediabox(int pdf, int range, double minx, double maxx, double miny, doub
   CAMLreturn0;
 }
 
-void getCropBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
+void cpdf_getCropBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -1718,7 +1718,7 @@ void getCropBox(int pdf, int pagenumber, double *minx, double* maxx, double* min
   CAMLreturn0;
 }
 
-void setCropBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
+void cpdf_setCropBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
@@ -1735,7 +1735,7 @@ void setCropBox(int pdf, int range, double minx, double maxx, double miny, doubl
   CAMLreturn0;
 }
 
-void getTrimBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
+void cpdf_getTrimBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -1756,7 +1756,7 @@ void getTrimBox(int pdf, int pagenumber, double *minx, double* maxx, double* min
   CAMLreturn0;
 }
 
-void setTrimBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
+void cpdf_setTrimBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
@@ -1773,7 +1773,7 @@ void setTrimBox(int pdf, int range, double minx, double maxx, double miny, doubl
   CAMLreturn0;
 }
 
-void getArtBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
+void cpdf_getArtBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -1794,7 +1794,7 @@ void getArtBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny
   CAMLreturn0;
 }
 
-void setArtBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
+void cpdf_setArtBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
@@ -1811,7 +1811,7 @@ void setArtBox(int pdf, int range, double minx, double maxx, double miny, double
   CAMLreturn0;
 }
 
-void getBleedBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
+void cpdf_getBleedBox(int pdf, int pagenumber, double *minx, double* maxx, double* miny, double* maxy)
 {
   CAMLparam0 ();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -1832,7 +1832,7 @@ void getBleedBox(int pdf, int pagenumber, double *minx, double* maxx, double* mi
   CAMLreturn0;
 }
 
-void setBleedBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
+void cpdf_setBleedBox(int pdf, int range, double minx, double maxx, double miny, double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
@@ -1849,7 +1849,7 @@ void setBleedBox(int pdf, int range, double minx, double maxx, double miny, doub
   CAMLreturn0;
 }
 
-void hideToolbar(int pdf, int flag)
+void cpdf_hideToolbar(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1861,7 +1861,7 @@ void hideToolbar(int pdf, int flag)
   CAMLreturn0;
 }
 
-void hideMenubar(int pdf, int flag)
+void cpdf_hideMenubar(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1873,7 +1873,7 @@ void hideMenubar(int pdf, int flag)
   CAMLreturn0;
 }
 
-void hideWindowUi(int pdf, int flag)
+void cpdf_hideWindowUi(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1885,7 +1885,7 @@ void hideWindowUi(int pdf, int flag)
   CAMLreturn0;
 }
 
-void fitWindow(int pdf, int flag)
+void cpdf_fitWindow(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1897,7 +1897,7 @@ void fitWindow(int pdf, int flag)
   CAMLreturn0;
 }
 
-void centerWindow(int pdf, int flag)
+void cpdf_centerWindow(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1909,7 +1909,7 @@ void centerWindow(int pdf, int flag)
   CAMLreturn0;
 }
 
-void displayDocTitle(int pdf, int flag)
+void cpdf_displayDocTitle(int pdf, int flag)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, pdf_v, flag_v, fn);
@@ -1921,7 +1921,7 @@ void displayDocTitle(int pdf, int flag)
   CAMLreturn0;
 }
 
-void setMetadataFromFile(int pdf, char* filename)
+void cpdf_setMetadataFromFile(int pdf, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, filename_v);
@@ -1933,7 +1933,7 @@ void setMetadataFromFile(int pdf, char* filename)
   CAMLreturn0;
 }
 
-void setMetadataFromByteArray(int pdf, char* data, int len)
+void cpdf_setMetadataFromByteArray(int pdf, char* data, int len)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, bytestream, setMetadataFromByteArray, valpdf);
@@ -1945,7 +1945,7 @@ void setMetadataFromByteArray(int pdf, char* data, int len)
   CAMLreturn0;
 }
 
-void* getMetadata(int pdf, int *retlen)
+void* cpdf_getMetadata(int pdf, int *retlen)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, bytestream, pdf_v);
@@ -1967,7 +1967,7 @@ void* getMetadata(int pdf, int *retlen)
   CAMLreturnT(void*, memory);
 }
 
-void removeMetadata(int pdf)
+void cpdf_removeMetadata(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (unit, fn, pdf_v);
@@ -1979,7 +1979,7 @@ void removeMetadata(int pdf)
 }
 
 /* CHAPTER 12. File Attachments */
-void attachFile(char* filename, int pdf)
+void cpdf_attachFile(char* filename, int pdf)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, filename_v, pdf_v);
@@ -1991,7 +1991,7 @@ void attachFile(char* filename, int pdf)
   CAMLreturn0;
 }
 
-void removeAttachedFiles(int pdf)
+void cpdf_removeAttachedFiles(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(removeAttachedFiles, valpdf, unit);
@@ -2002,7 +2002,7 @@ void removeAttachedFiles(int pdf)
   CAMLreturn0;
 }
 
-void startGetAttachments (int pdf)
+void cpdf_startGetAttachments (int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out_v);
@@ -2013,7 +2013,7 @@ void startGetAttachments (int pdf)
   CAMLreturn0;
 }
 
-int numberGetAttachments (void)
+int cpdf_numberGetAttachments (void)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, unit_v, out_v);
@@ -2024,7 +2024,7 @@ int numberGetAttachments (void)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-void endGetAttachments (void)
+void cpdf_endGetAttachments (void)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, unit_v, out_v);
@@ -2035,7 +2035,7 @@ void endGetAttachments (void)
   CAMLreturn0;
 }
 
-char* getAttachmentName(int serial)
+char* cpdf_getAttachmentName(int serial)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn, serial_v, out_v);
@@ -2047,7 +2047,7 @@ char* getAttachmentName(int serial)
 }
 
 /* CHAPTER 13. Miscellaneous */
-void draft(int pdf, int range, int boxes)
+void cpdf_draft(int pdf, int range, int boxes)
 {
   CAMLparam0 ();
   CAMLlocal5(unit, pdf_v, range_v, boxes_v, fn);
@@ -2060,7 +2060,7 @@ void draft(int pdf, int range, int boxes)
   CAMLreturn0;
 }
 
-void blackText(int pdf, int range)
+void cpdf_blackText(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -2072,7 +2072,7 @@ void blackText(int pdf, int range)
   CAMLreturn0;
 }
 
-void blackLines(int pdf, int range)
+void cpdf_blackLines(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -2084,7 +2084,7 @@ void blackLines(int pdf, int range)
   CAMLreturn0;
 }
 
-void blackFills(int pdf, int range)
+void cpdf_blackFills(int pdf, int range)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, range_v);
@@ -2096,7 +2096,7 @@ void blackFills(int pdf, int range)
   CAMLreturn0;
 }
 
-void thinLines(int pdf, int range, double minwidth)
+void cpdf_thinLines(int pdf, int range, double minwidth)
 {
   CAMLparam0 ();
   CAMLlocal5(unit, fn, pdf_v, range_v, minwidth_v);
@@ -2109,7 +2109,7 @@ void thinLines(int pdf, int range, double minwidth)
   CAMLreturn0;
 }
 
-void copyId(int pdf, int pdf2)
+void cpdf_copyId(int pdf, int pdf2)
 {
   CAMLparam0 ();
   CAMLlocal4(unit, fn, pdf_v, pdf2_v);
@@ -2121,7 +2121,7 @@ void copyId(int pdf, int pdf2)
   CAMLreturn0;
 }
 
-void addPageLabels(int pdf, int style, char* prefix, int offset, int range)
+void cpdf_addPageLabels(int pdf, int style, char* prefix, int offset, int range)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
