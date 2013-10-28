@@ -1069,6 +1069,17 @@ int cpdf_getBookmarkLevel(int serial)
   CAMLreturnT(int, Int_val(out_v));
 }
 
+char* cpdf_getBookmarkText(int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value("getBookmarkText");
+  serial_v = Val_int(serial);
+  out_v = caml_callback(fn, serial_v);
+  updateLastError();
+  CAMLreturnT(char*, String_val(out_v)); 
+}
+
 /* CHAPTER 7. Presentations */
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 

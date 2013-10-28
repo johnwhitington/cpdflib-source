@@ -146,16 +146,42 @@ void cpdf_removeBleed(int, int);
 
 
 /* CHAPTER 5. Compression */
+
+/* These functions can be used to compress and decompress all the streams in a
+ * PDF file, for example for manual inspection. A PDF's streams are typically
+ * compressed. Do not expect compression to reduce the size of an
+ * already-compressed PDF. */
+
+/* Compress any uncompressed streams in the given PDF using the Flate
+ * algorithm. */
 void cpdf_compress(int);
 
+/* Uncompress any streams in the given PDF, so long as the compression method
+ * is supported. */
 void cpdf_decompress(int);
 
 /* CHAPTER 6. Bookmarks */
+
+/* Start the bookmark retrieval process for a given PDF. */
 void cpdf_startGetBookmarkInfo(int);
-void cpdf_endGetBookmarkInfo(void);
+
+/* Get the number of bookmarks for the PDF given to cpdf_startGetBookmarkInfo
+ * */
 int cpdf_numberBookmarks(void);
+
+/* Get bookmark level for the given bookmark (0...(n - 1)) */
 int cpdf_getBookmarkLevel(int);
+
+/* Get the bookmark target page for the given PDF (which must be the same as
+ * the PDF passed to cpdf_startGetBookmarkInfo) and bookmark (0...(n - 1)) */
 int cpdf_getBookmarkPage(int, int);
+
+/* Return the text of bookmark (0...(n - 1)) */
+char* cpdf_getBookmarkText(int);
+
+/* End the bookmark retrieval process, cleaning up. */
+void cpdf_endGetBookmarkInfo(void);
+
 
 /* CHAPTER 7. Presentations */
 /* CHAPTER 8. Logos, Watermarks and Stamps */

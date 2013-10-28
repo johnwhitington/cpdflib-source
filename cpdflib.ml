@@ -1046,9 +1046,15 @@ let getBookmarkLevel serial =
   try !bookmarkinfo.(serial).Pdfmarks.level with
     e -> handle_error "getBookmarkLevel" e; err_int
 
+let getBookmarkText serial =
+  if !dbg then flprint "Cpdflib.getBookmarkText\n";
+  try !bookmarkinfo.(serial).Pdfmarks.text with
+    e -> handle_error "getBookmarkText" e; err_string
+
 let _ = Callback.register "numberBookmarks" numberBookmarks
 let _ = Callback.register "getBookmarkPage" getBookmarkPage
 let _ = Callback.register "getBookmarkLevel" getBookmarkLevel
+let _ = Callback.register "getBookmarkText" getBookmarkText
 let _ = Callback.register "startGetBookmarkInfo" startGetBookmarkInfo
 let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
 

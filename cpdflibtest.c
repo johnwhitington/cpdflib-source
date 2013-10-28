@@ -193,9 +193,13 @@ int main (int argc, char ** argv)
   int num_bookmarks = cpdf_numberBookmarks();
   printf("getBookmarkLevel()\n");
   printf("getBookmarkPage()\n");
+  printf("getBookmarkText()\n");
   for (int x = 0; x < num_bookmarks; x++)
   {
-    printf("Bookmark at level %i points to page %i\n", cpdf_getBookmarkLevel(x), cpdf_getBookmarkPage(book, x));
+    printf("Bookmark at level %i points to page %i and has text %s\n",
+      cpdf_getBookmarkLevel(x),
+      cpdf_getBookmarkPage(book, x),
+      cpdf_getBookmarkText(x));
   };
   printf("endGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo();
