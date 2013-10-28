@@ -8,6 +8,12 @@
 int cpdf_lastError = 0;
 char* cpdf_lastErrorString = "";
 
+void cpdf_startup(char ** argv)
+{
+  caml_startup(argv);
+  return;
+}
+
 //Get the latest error from OCaml and replicate it here in C
 //Also update the lastErrorString
 //This function is not exposed in the interface
@@ -531,7 +537,13 @@ int cpdf_isEncrypted(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-int cpdf_lookupPdfStatus(int pdf)
+enum cpdf_pdfStatus
+  {cpdf_notEncrypted,
+   cpdf_encrypted,
+   cpdf_wasDecryptedWithUser,
+   cpdf_wasDecryptedWithOwner};
+
+enum cpdf_pdfStatus cpdf_lookupPdfStatus(int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3(fn, pdf_v, out);
@@ -542,7 +554,9 @@ int cpdf_lookupPdfStatus(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-int cpdf_hasPermissionStatus(int pdf, int tocheck)
+enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
+
+int cpdf_hasPermissionStatus(int pdf, enum cpdf_permission tocheck)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, pdf_v, tocheck_v, out_v);
@@ -600,7 +614,7 @@ void cpdf_decryptPdfOwner(int pdf, char* password)
   CAMLreturn0;
 }
 
-enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
+
 
 enum cpdf_encryptionMethod {cpdf_pdf40bit, cpdf_pdf218bit, cpdf_aes128bitfalse, cpdf_aes128bittrue};
 

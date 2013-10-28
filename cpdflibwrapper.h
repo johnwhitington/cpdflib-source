@@ -5,14 +5,20 @@
 
 /* CHAPTER 0. Preliminaries */
 
-/* This function must be called with argv before using the library. */
-extern void caml_startup (char **);
+/* The function cpdf_startup must be called with argv before using the library.
+ * */
+void cpdf_startup (char **);
 
-/* Set demo mode. Upon library startup is false */
+/* Set demo mode. Upon library startup is false. If set, files written will
+ * have the text DEMO stamped over each page. This stamping will also slow down
+ * the library significantly.  */
 void cpdf_setDemo(int);
 
 /* Errors. lastError and lastErrorString hold information about the last error
- * to have occurred. */
+ * to have occurred. They should be consulted after each call. If
+ * cpdf_lastError is non-zero, there was an error, and cpdf_lastErrorString
+ * gives details. If cpdf_lastError is zero, there was no error on the most
+ * recent cpdf call. */
 int cpdf_lastError;
 char* cpdf_lastErrorString;
 
@@ -20,37 +26,25 @@ char* cpdf_lastErrorString;
 void cpdf_clearError (void);
 
 /* A debug function which prints some information about resource usage. This
- * can be used to detect if PDFs or ranges are not being deallocated properly. */
+ * can be used to detect if PDFs or ranges are being deallocated properly. */
 void cpdf_onExit (void);
 
-/* Remove a PDF from memory */
+/* Remove a PDF from memory, given its number. */
 void cpdf_deletePdf(int);
 
 /* Calling replacePdf(a, b) places PDF b under number a. Original a and b are
  * no longer available. */
 void cpdf_replacePdf(int, int);
 
+/* To enumerate the list of currently allocated PDFs, call
+ * cpdf_startEnumeratePDFs which gives the number, n, of PDFs allocated, then
+ * cpdf_enumeratePDFsInfo and cpdf_enumeratePDFsKey with index numbers from
+ * 0...(n - 1). Call cpdf_endEnumeratePDFs to clean up. */
 int cpdf_startEnumeratePDFs(void);
 int cpdf_enumeratePDFsKey(int);
 char* cpdf_enumeratePDFsInfo(int);
 void cpdf_endEnumeratePDFs(void);
 
-/* Undo support */
-
-/* Undo a document. Returns true if managed to undo, false if nothing to undo to. */
-int cpdf_undo(int);
-
-/* Redo a document. Returns true if managed to redo, false if nothing to redo to. */
-int cpdf_redo(int);
-
-/* Mark a document for update. This copies the document so the change can be undone later */
-void cpdf_aboutToUpdate(int);
-
-/* Same, but when a deep copy (no sharing of data) is required. */
-void cpdf_aboutToUpdateDeep(int);
-
-/* Abort such an update due to an error part-way through the update */
-void cpdf_abortUpdate(int);
 
 /* CHAPTER 1. Basics */
 double cpdf_ptOfCm (double);
@@ -96,10 +90,7 @@ void cpdf_toFile(int, char*, int, int);
 int cpdf_all(int);
 
 int cpdf_isEncrypted(int);
-int cpdf_lookupPdfStatus(int);
-int cpdf_hasPermissionStatus(int, int);
-int cpdf_lookupPdfEncryption(int);
-char* cpdf_lookupPdfUserPassword(int);
+
 
 void cpdf_decryptPdf(int, char*);
 
@@ -261,6 +252,54 @@ void cpdf_blackFills(int, int);
 void cpdf_thinLines(int, int, double);
 void cpdf_copyId(int, int);
 
+/* CHAPTER 14. Page labels */
 void cpdf_addPageLabels(int, int, char*, int, int);
+
+
+/* Special functionality 1. -- Encryption and Permission status */
+
+/* Internal status of a pdf loaded by the library. This is data kept separate
+ * from the actual PDF. */
+enum cpdf_pdfStatus
+  {cpdf_notEncrypted,
+   cpdf_encrypted,
+   cpdf_wasDecryptedWithUser,
+   cpdf_wasDecryptedWithOwner};
+
+/* Return the status of a PDF */
+enum cpdf_pdfStatus cpdf_lookupPdfStatus(int);
+
+/* Does a PDF have a given permission, assuming it is or was encrypted? */
+int cpdf_hasPermissionStatus(int, enum cpdf_permission);
+
+/* What is (or was) the encryption method? */
+enum cpdf_encryptionMethod cpdf_lookupPdfEncryption(int);
+
+/* Find the user password which was used to decrypt a PDF, if is has status
+ * cpdf_wasDecryptedWithUser */
+char* cpdf_lookupPdfUserPassword(int);
+
+/* Special functionality 2. -- Undo */
+
+/* Cpdf can hold multiple versions of each PDF, sharing data between them to
+ * save memory. */
+
+/* Mark a document for update. This copies the document so the change can be
+ * undone later */
+void cpdf_aboutToUpdate(int);
+
+/* Same, but when a deep copy (no sharing of data) is required. */
+void cpdf_aboutToUpdateDeep(int);
+
+/* Abort such an update due to an error part-way through the update */
+void cpdf_abortUpdate(int);
+
+/* Undo a document. Returns true if managed to undo, false if nothing to undo
+ * to. */
+int cpdf_undo(int);
+
+/* Redo a document. Returns true if managed to redo, false if nothing to redo
+ * to. */
+int cpdf_redo(int);
 
 

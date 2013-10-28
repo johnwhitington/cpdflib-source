@@ -9,7 +9,7 @@ int main (int argc, char ** argv)
   printf("***** 0. Initialisation\n\n");
 
   printf("cpdf_startup()\n");
-  caml_startup(argv);
+  cpdf_startup(argv);
 
   printf("setdemo()\n");
   cpdf_setDemo(false);
@@ -621,7 +621,7 @@ int main (int argc, char ** argv)
   printf("pdf status = %i\n", cpdf_lookupPdfStatus(enctest));
   cpdf_decryptPdf(enctest, "user");
   printf("hasPermissionStatus()\n");
-  printf("pdf permission status = %i\n", cpdf_hasPermissionStatus(enctest, 0));
+  printf("pdf permission status = %i\n", cpdf_hasPermissionStatus(enctest, cpdf_noEdit));
   printf("lookupPdfEncryption()\n");
   printf("pdf encryption status = %i\n", cpdf_lookupPdfEncryption(enctest));
   printf("lookupPdfUserPassword()\n");
