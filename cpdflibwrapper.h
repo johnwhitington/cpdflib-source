@@ -263,12 +263,26 @@ void* cpdf_getMetadata(int, int*);
 void cpdf_removeMetadata(int);
 
 /* CHAPTER 12. File Attachments */
+
+/* Attach a file, given its file name, and the pdf. It is attached at document
+ * level. */
 void cpdf_attachFile(char*, int);
+
+/* Attach a file, given its file name, pdf, and the page number to which it
+ * should be attached. */
+void cpdf_attachFileToPage(char*, int, int);
+
+/* Remove all page- and document-level attachments from a document */
 void cpdf_removeAttachedFiles(int);
+
+/* List information about attachments. Call cpdf_startGetAttachments first,
+ * then cpdf_startGetAttachments to find out how many there are. Then
+ * cpdf_getAttachmentName to return each one 0...(n - 1). Finally, call
+ * cpdf_endGetAttachments to clean up. */
 void cpdf_startGetAttachments(int);
 int cpdf_numberGetAttachments(void);
-void cpdf_endGetAttachments(void);
 char* cpdf_getAttachmentName(int);
+void cpdf_endGetAttachments(void);
 
 /* CHAPTER 13. Miscellaneous */
 void cpdf_draft(int, int, int);

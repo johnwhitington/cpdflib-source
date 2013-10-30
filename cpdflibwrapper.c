@@ -2016,6 +2016,19 @@ void cpdf_attachFile(char* filename, int pdf)
   CAMLreturn0;
 }
 
+void cpdf_attachFileToPage(char* filename, int pdf, int pagenumber)
+{
+  CAMLparam0 ();
+  CAMLlocal5(unit, fn, filename_v, pdf_v, pagenumber_v);
+  fn = *caml_named_value("attachFileToPage");
+  filename_v = caml_copy_string(filename);
+  pdf_v = Val_int(pdf);
+  pagenumber_v = Val_int(pagenumber);
+  unit = caml_callback3(fn, filename_v, pdf_v, pagenumber_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_removeAttachedFiles(int pdf)
 {
   CAMLparam0 ();

@@ -1746,6 +1746,13 @@ let attachFile filename pdf =
   with
     e -> handle_error "attachFile" e; err_unit
 
+let attachFileToPage filename pdf pagenumber =
+  if !dbg then flprint "Cpdflib.attachFileToPage\n";
+  try
+    update_pdf (Cpdf.attach_file false (Some pagenumber) (lookup_pdf pdf) filename) (lookup_pdf pdf)
+  with
+    e -> handle_error "attachFileToPage" e; err_unit
+
 let removeAttachedFiles pdf =
   if !dbg then flprint "Cpdflib.removeAttachedFiles\n";
   try
@@ -1774,6 +1781,7 @@ let getAttachmentName serial =
   try select (serial + 1) !attachments with e -> handle_error "getAttachmentName" e; err_string
 
 let _ = Callback.register "attachFile" attachFile
+let _ = Callback.register "attachFileToPage" attachFileToPage
 let _ = Callback.register "removeAttachedFiles" removeAttachedFiles
 let _ = Callback.register "startGetAttachments" startGetAttachments
 let _ = Callback.register "endGetAttachments" endGetAttachments

@@ -253,6 +253,7 @@ val removeMetadata : pdf -> unit
 
 (* CHAPTER 12. File Attachments *)
 val attachFile : string -> pdf -> unit
+val attachFileToPage : string -> pdf -> int -> unit
 val removeAttachedFiles : pdf -> unit
 val startGetAttachments : pdf -> unit
 val endGetAttachments : unit -> unit

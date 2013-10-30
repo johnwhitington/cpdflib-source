@@ -527,6 +527,8 @@ int main (int argc, char ** argv)
   int toattachto = cpdf_fromFile("testinputs/london.pdf");
   printf("attachFile()\n");
   cpdf_attachFile("cpdflibtest.c", toattachto);
+  printf("attachFileToPage()\n");
+  cpdf_attachFileToPage("logo.pdf", toattachto, 1);
   cpdf_toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
 
   printf("startGetAttachments()\n");
