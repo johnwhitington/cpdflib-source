@@ -77,7 +77,23 @@ int cpdf_fromFileLazy(char*);
 
 int cpdf_blankDocument(double, double, int);
 
-enum cpdf_papersize {cpdf_a0portrait, cpdf_a1portrait, cpdf_a2portrait, cpdf_a3portrait, cpdf_a4portrait, cpdf_a5portrait, cpdf_a0landscape, cpdf_a1landscape, cpdf_a2landscape, cpdf_a3landscape, cpdf_a4landscape, cpdf_a5landscape, cpdf_usletterportrait, cpdf_usletterlandscape, cpdf_uslegalportrait, cpdf_uslegallandscape};
+enum cpdf_papersize
+  {cpdf_a0portrait,
+   cpdf_a1portrait,
+   cpdf_a2portrait,
+   cpdf_a3portrait,
+   cpdf_a4portrait,
+   cpdf_a5portrait,
+   cpdf_a0landscape,
+   cpdf_a1landscape,
+   cpdf_a2landscape,
+   cpdf_a3landscape,
+   cpdf_a4landscape,
+   cpdf_a5landscape,
+   cpdf_usletterportrait,
+   cpdf_usletterlandscape,
+   cpdf_uslegalportrait,
+   cpdf_uslegallandscape};
 
 int cpdf_blankDocumentPaper(int, int);
 
@@ -96,9 +112,21 @@ void cpdf_decryptPdf(int, char*);
 
 void cpdf_decryptPdfOwner(int, char*);
 
-enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
+enum cpdf_permission
+  {cpdf_noEdit,
+   cpdf_noPrint,
+   cpdf_noCopy,
+   cpdf_noAnnot,
+   cpdf_noForms,
+   cpdf_noExtract,
+   cpdf_noAssemble,
+   cpdf_noHqPrint};
 
-enum cpdf_encryptionMethod {cpdf_pdf40bit, cpdf_pdf128bit, cpdf_aes128bitfalse, cpdf_aes128bittrue};
+enum cpdf_encryptionMethod
+  {cpdf_pdf40bit,
+   cpdf_pdf128bit,
+   cpdf_aes128bitfalse,
+   cpdf_aes128bittrue};
 
 void cpdf_toFileEncrypted(int, int, int*, int, char*, char*, int, int, char*);
 
@@ -122,7 +150,18 @@ void cpdf_scalePages(int, int, double, double);
 void cpdf_scaleToFit(int, int, double, double);
 void cpdf_scaleToFitPaper(int, int, int);
 
-enum cpdf_anchor { cpdf_posCentre, cpdf_posLeft, cpdf_posRight, cpdf_top, cpdf_topLeft, cpdf_topRight, cpdf_left, cpdf_bottomLeft, cpdf_bottom, cpdf_bottomRight, cpdf_right };
+enum cpdf_anchor
+  { cpdf_posCentre,
+    cpdf_posLeft,
+    cpdf_posRight,
+    cpdf_top,
+    cpdf_topLeft,
+    cpdf_topRight,
+    cpdf_left,
+    cpdf_bottomLeft,
+    cpdf_bottom,
+    cpdf_bottomRight,
+    cpdf_right };
 
 struct cpdf_position {
   int cpdf_anchor;
@@ -160,6 +199,7 @@ void cpdf_compress(int);
  * is supported. */
 void cpdf_decompress(int);
 
+
 /* CHAPTER 6. Bookmarks */
 
 /* Start the bookmark retrieval process for a given PDF. */
@@ -188,7 +228,10 @@ void cpdf_endGetBookmarkInfo(void);
 void cpdf_stampOn(int, int, int);
 void cpdf_stampUnder(int, int, int);
 int cpdf_combinePages(int, int);
-void cpdf_addText(int, int, int, char*, struct cpdf_position, double, int, int, double, double, double, double, int, int, int, double, int, int, char*);
+
+void cpdf_addText(int, int, int, char*, struct cpdf_position, double, int, int,
+double, double, double, double, int, int, int, double, int, int, char*);
+
 int cpdf_addTextHowMany(void);
 char* cpdf_addTextReturnText(int);
 double cpdf_addTextReturnX(int);
@@ -200,8 +243,16 @@ void cpdf_removeText(int, int);
 int cpdf_textWidth (int, char*);
 
 /* CHAPTER 9. Multipage facilities */
+
+/* Impose a document two up */
 void cpdf_twoUp(int);
+
+/* Pad a document (first argument) before each page in the given range (second
+ * argument) */
 void cpdf_padBefore(int, int);
+
+/* Pad a document (first argument) after each page in the given range (second
+ * argument) */
 void cpdf_padAfter(int, int);
 
 /* CHAPTER 10. Annotations */
@@ -284,13 +335,30 @@ int cpdf_numberGetAttachments(void);
 char* cpdf_getAttachmentName(int);
 void cpdf_endGetAttachments(void);
 
+
 /* CHAPTER 13. Miscellaneous */
+
+/* Make a draft document. The first argument is the document, second the range,
+ * third is a boolean -- true to replace images with boxes, false to replace
+ * them with nothing. */
 void cpdf_draft(int, int, int);
+
+/* Blacken all text in the given document and range */
 void cpdf_blackText(int, int);
+
+/* Blacken all lines in the given document and range */
 void cpdf_blackLines(int, int);
+
+/* Blacken all fills in the given document and range */
 void cpdf_blackFills(int, int);
+
+/* Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every line
+ * less than min_thickness to min_thickness */
 void cpdf_thinLines(int, int, double);
+
+/* Copy the /ID from the first document to the second. */
 void cpdf_copyId(int, int);
+
 
 /* CHAPTER 14. Page labels */
 void cpdf_addPageLabels(int, int, char*, int, int);
@@ -318,6 +386,7 @@ enum cpdf_encryptionMethod cpdf_lookupPdfEncryption(int);
 /* Find the user password which was used to decrypt a PDF, if is has status
  * cpdf_wasDecryptedWithUser */
 char* cpdf_lookupPdfUserPassword(int);
+
 
 /* Special functionality 2. -- Undo */
 
