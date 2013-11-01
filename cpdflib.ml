@@ -688,6 +688,10 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
       | 1 -> Pdfwrite.PDF128bit
       | 2 -> Pdfwrite.AES128bit false
       | 3 -> Pdfwrite.AES128bit true
+      | 4 -> Pdfwrite.AES256bit false
+      | 5 -> Pdfwrite.AES256bit true
+      | 6 -> Pdfwrite.AES256bitISO false
+      | 7 -> Pdfwrite.AES256bitISO true
       | _ -> failwith "bad encryption method"
     and perms =
       Array.map

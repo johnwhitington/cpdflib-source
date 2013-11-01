@@ -465,7 +465,7 @@ int cpdf_blankDocument(double width, double height, int pages)
 
 enum cpdf_papersize {cpdf_a0portrait, cpdf_a1portrait, cpdf_a2portrait, cpdf_a3portrait, cpdf_a4portrait, cpdf_a5portrait, cpdf_a0landscape, cpdf_a1landscape, cpdf_a2landscape, cpdf_a3landscape, cpdf_a4landscape, cpdf_a5landscape, cpdf_usletterportrait, cpdf_usletterlandscape, cpdf_uslegalportrait, cpdf_uslegallandscape};
 
-int cpdf_blankDocumentPaper(int papersize, int pages)
+int cpdf_blankDocumentPaper(enum cpdf_papersize papersize, int pages)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, papersize_v, pages_v, out);
@@ -616,7 +616,15 @@ void cpdf_decryptPdfOwner(int pdf, char* password)
 
 
 
-enum cpdf_encryptionMethod {cpdf_pdf40bit, cpdf_pdf218bit, cpdf_aes128bitfalse, cpdf_aes128bittrue};
+enum cpdf_encryptionMethod
+  {cpdf_pdf40bit,
+   cpdf_pdf218bit,
+   cpdf_aes128bitfalse,
+   cpdf_aes128bittrue,
+   cpdf_aes256bitfalse,
+   cpdf_aes256bittrue,
+   cpdf_aes256bitisofalse,
+   cpdf_aes256bitisotrue};
 
 void cpdf_toFileEncrypted(int pdf, int e, int* ps, int len, char* owner, char* user, int linearize, int makeid, char* filename)
 {

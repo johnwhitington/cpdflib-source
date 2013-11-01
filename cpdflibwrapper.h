@@ -1,4 +1,3 @@
-/* cpdflibwrapper.h */
 /* A C wrapper to cpdf PDF tools library */
 /* Free for non-commercial use. See LICENSE for details */
 /* To purchase a license, please visit http://www.coherentpdf.com/ */
@@ -47,36 +46,117 @@ void cpdf_endEnumeratePDFs(void);
 
 
 /* CHAPTER 1. Basics */
+
+/* Convert a figure in centimetres to points (72 points to 1 inch) */
 double cpdf_ptOfCm (double);
+
+/* Convert a figure in millimetres to points (72 points to 1 inch) */
 double cpdf_ptOfMm (double);
+
+/* Convert a figure in inches to points (72 points to 1 inch) */
 double cpdf_ptOfIn (double);
+
+/* Convert a figure in points to centimetres (72 points to 1 inch) */
 double cpdf_cmOfPt (double);
+
+/* Convert a figure in points to millimetres (72 points to 1 inch) */
 double cpdf_mmOfPt (double);
+
+/* Convert a figure in points to inches (72 points to 1 inch) */
 double cpdf_inOfPt (double);
 
+/* A page range is a list of page numbers used to restrict operations to
+ * certain pages. A page specification is a textual description of a page
+ * range, such as "1-12,18-end". Here is the syntax:
+
+ o A dash (-) defines ranges, e.g. 1-5 or 6-3.
+
+ o A comma (,) allows one to specify several ranges, e.g. 1-2,4-5.
+
+ o The word end represents the last page number.
+
+ o The words odd and even can be used in place of or at the end of a page range
+ to restrict to just the odd or even pages.
+
+ o The word reverse is the same as end-1.
+
+ o The word all is the same as 1-end.
+
+ o A range must contain no spaces.
+
+ o A tilde ( ̃) defines a page number counting from the end of the document
+ rather than the beginning. Page  ̃1 is the last page,  ̃2 the penultimate page
+ etc. */
+
+/* Parse a page specification with reference to a given PDF (the PDF is
+ * supplied so that page ranges which reference pages which do not exist are
+ * rejected). */
 int cpdf_parsePagespec(int, char*);
+
+/* Validates a page specification so far as is possible in the absence of the
+ * actual document */
 int cpdf_validatePagespec(char *);
+
+/* Build a page specification from a page range. For example, the range
+ * containing 1,2,3,6,7,8 in a document of 8 pages might yield "1-3,6-end" */
 char* cpdf_stringOfPagespec(int, int);
 
+/* Create a range with no pages in */
 int cpdf_blankRange(void);
+
+/* Delete a range. Ranges should be deleted once finished with. */
 void cpdf_deleteRange(int);
+
+/* Build a range from one page to another inclusive. For example,
+ * cpdf_range(3,7) gives the range 3,4,5,6,7 */
 int cpdf_range(int, int);
+
+/* Make a range which contains just the even pages of another range */
 int cpdf_even(int);
+
+/* Make a range which contains just the odd pages of another range */
 int cpdf_odd(int);
+
+/* Make the union of two ranges cpdf_union(a,b) gives a range containing the
+ * pages in range a and range b. */
 int cpdf_rangeUnion(int, int);
+
+/* Make the difference of two ranges. cpdf_difference(a, b) gives a range
+ * containing all the pages in a except for those which are also in b */
 int cpdf_difference(int, int);
+
+/* Deduplicate a range, making a new one */
 int cpdf_removeDuplicates(int);
+
+/* Give the number of pages in a range */
 int cpdf_rangeLength(int);
+
+/* Get the page number at position n in a range, where n runs from 0 to
+ * rangeLength - 1. For example, cpdf_rangeGet(range, n) gives the page number
+ * at position n in the range. */
 int cpdf_rangeGet(int, int);
+
+/* Calling cpdf_rangeAdd(range, page) will add the page to a range, if it is
+ * not already there. */
 int cpdf_rangeAdd(int, int);
+
+/* cpdf_isInRange(range, page) returns true if the page is in the range, false
+ * otherwise. */
 int cpdf_isInRange(int, int);
 
+/* Load a PDF file from a given file. */
 int cpdf_fromFile(char*);
 
+/* Load a PDF from a file, doing only minimal parsing. The objects will be read
+ * and parsed when they are actually needed. Use this when the whole file won't
+ * be required. */
 int cpdf_fromFileLazy(char*);
 
+/* Create a blank document with pages of the given width (in points), height
+ * (in points), and number of pages. */
 int cpdf_blankDocument(double, double, int);
 
+/* Standard page sizes. */
 enum cpdf_papersize
   {cpdf_a0portrait,
    cpdf_a1portrait,
@@ -95,23 +175,38 @@ enum cpdf_papersize
    cpdf_uslegalportrait,
    cpdf_uslegallandscape};
 
-int cpdf_blankDocumentPaper(int, int);
+/* Make a blank document given a page size and number of pages. */
+int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
 
+/* Return the number of pages in a PDF. */
 int cpdf_pages(int);
 
+/* Return the number of pages in a given PDF, with given user encryption
+ * password.  cpdf_pagesFast(password, filename) tries to do this as fast as
+ * possible, without loading the whole file. */
 int cpdf_pagesFast(char*, char*);
 
+/* cpdf_toFile (pdf, filename, linearize, make_id) writes the file to a given
+ * filename. If linearize is true, it will be linearized. If make_id is true,
+ * it will be given a new ID. */
 void cpdf_toFile(int, char*, int, int);
 
+/* The range containing all the pages in a given document */
 int cpdf_all(int);
 
+/* Returns true if a documented is encrypted, false otherwise. */
 int cpdf_isEncrypted(int);
 
-
+/* Attempt to decrypt a PDF using the given user password. The error code is
+ * non-zero if the decryption fails. */
 void cpdf_decryptPdf(int, char*);
 
+/* Attempt to decrypt a PDF using the given owner password. The error code is
+ * non-zero if the decryption fails. */
 void cpdf_decryptPdfOwner(int, char*);
 
+/* File permissions. These are inverted, in the sense that the presence of one
+ * of them indicates a restriction. */
 enum cpdf_permission
   {cpdf_noEdit,
    cpdf_noPrint,
@@ -122,18 +217,48 @@ enum cpdf_permission
    cpdf_noAssemble,
    cpdf_noHqPrint};
 
+/* Encryption methods. Suffixes 'false' and 'true' indicates lack of or
+ * presence of encryption for XML metadata streams */
 enum cpdf_encryptionMethod
   {cpdf_pdf40bit,
    cpdf_pdf128bit,
    cpdf_aes128bitfalse,
-   cpdf_aes128bittrue};
+   cpdf_aes128bittrue,
+   cpdf_aes256bitfalse,
+   cpdf_aes256bittrue,
+   cpdf_aes256bitisofalse,
+   cpdf_aes256bitisotrue};
 
+/* Write a file with encryption:
+  cpdf_toFileEncrypted(
+    pdf,                   Document
+    encryption_method,     Encryption method
+    permissions,           Permissions array
+    permission_length,     Length of permissions array
+    owner_password,        Owner password, blank if none
+    user_passwordi,        User password, blank if none
+    linearize,             If true, linearize
+    makeid,                If true, make a new ID
+    filename)              Filename
+*/
 void cpdf_toFileEncrypted(int, int, int*, int, char*, char*, int, int, char*);
 
+/* Write a modified file, re-encrypting it.
+
+cpdf_toFileRecrypting(original, decrypted_and_modified, userpw, filename)
+
+original is the original document, as read from file. decrypted_and_modified is
+the processed file, ready to write. userpw is the user password for the PDF.
+filename is the name of the file to write.
+
+The PDF 'modified' is no longer usable and can be deleted.
+*/
 void cpdf_toFileRecrypting(int, int, char*, char*);
 
+/* Return true if the given permission (restriction) is present. */
 int cpdf_hasPermission(int, enum cpdf_permission);
 
+/* Return the encryption method currently in use on a file. */
 enum cpdf_encryptionMethod cpdf_encryptionKind(int);
 
 /* CHAPTER 2. Merging and Splitting */
