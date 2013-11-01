@@ -1848,11 +1848,11 @@ let addPageLabels pdf style prefix offset range =
   try
     let style =
       match style with
-      | 1 -> Some Pdfpagelabels.DecimalArabic
-      | 2 -> Some Pdfpagelabels.UppercaseRoman
-      | 3 -> Some Pdfpagelabels.LowercaseRoman
-      | 4 -> Some Pdfpagelabels.UppercaseLetters
-      | 5 -> Some Pdfpagelabels.LowercaseLetters
+      | 0 -> Some Pdfpagelabels.DecimalArabic
+      | 1 -> Some Pdfpagelabels.UppercaseRoman
+      | 2 -> Some Pdfpagelabels.LowercaseRoman
+      | 3 -> Some Pdfpagelabels.UppercaseLetters
+      | 4 -> Some Pdfpagelabels.LowercaseLetters
       | _ -> failwith "Unknown page label style"
     and prefix =
       if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)

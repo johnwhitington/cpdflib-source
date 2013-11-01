@@ -266,12 +266,24 @@ int cpdf_hasPermission(int, enum cpdf_permission);
 enum cpdf_encryptionMethod cpdf_encryptionKind(int);
 
 /* CHAPTER 2. Merging and Splitting */
+
+/* Given an array of PDFs, and its length, merge the files into a new one */
 int cpdf_mergeSimple(int*, int);
 
+/* cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts) merges the
+ * PDFs. If retain_numbering is true page labels are not rewritten. If
+ * remove_duplicate_fonts is true, duplicate fonts are merged. This is useful
+ * when the source documents for merging originate from the same source. */
 int cpdf_merge(int*, int, int, int);
 
+/* This is the same as cpdf_merge, except that it has an additional argument -
+ * an array of page ranges. This is used to select the pages to pick from each
+ * PDF. This avoids duplication of information when multiple discrete parts of
+ * a source PDF are included. */
 int cpdf_mergeSame(int*, int, int, int, int*);
 
+/* cpdf_selectPages(pdf, range) returns a new document which just those pages
+ * in the page range. */
 int cpdf_selectPages(int, int);
 
 /* CHAPTER 3. Pages */
@@ -280,17 +292,17 @@ void cpdf_scaleToFit(int, int, double, double);
 void cpdf_scaleToFitPaper(int, int, int);
 
 enum cpdf_anchor
-  { cpdf_posCentre,
-    cpdf_posLeft,
-    cpdf_posRight,
-    cpdf_top,
-    cpdf_topLeft,
-    cpdf_topRight,
-    cpdf_left,
-    cpdf_bottomLeft,
-    cpdf_bottom,
-    cpdf_bottomRight,
-    cpdf_right };
+  {cpdf_posCentre,
+   cpdf_posLeft,
+   cpdf_posRight,
+   cpdf_top,
+   cpdf_topLeft,
+   cpdf_topRight,
+   cpdf_left,
+   cpdf_bottomLeft,
+   cpdf_bottom,
+   cpdf_bottomRight,
+   cpdf_right};
 
 struct cpdf_position {
   int cpdf_anchor;
@@ -312,6 +324,9 @@ void cpdf_removeTrim(int, int);
 void cpdf_removeArt(int, int);
 void cpdf_removeBleed(int, int);
 
+/* CHAPTER 4. Encryption */
+
+/* Covered elsewhere. */
 
 /* CHAPTER 5. Compression */
 
@@ -353,6 +368,9 @@ void cpdf_endGetBookmarkInfo(void);
 
 
 /* CHAPTER 7. Presentations */
+
+/* Not included in the library version */
+
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 void cpdf_stampOn(int, int, int);
 void cpdf_stampUnder(int, int, int);
@@ -385,6 +403,9 @@ void cpdf_padBefore(int, int);
 void cpdf_padAfter(int, int);
 
 /* CHAPTER 10. Annotations */
+
+/* Not in the library version */
+
 /* CHAPTER 11. Document Information and Metadata */
 int cpdf_numberFonts(void);
 int cpdf_getFontPage(int);
@@ -490,7 +511,22 @@ void cpdf_copyId(int, int);
 
 
 /* CHAPTER 14. Page labels */
-void cpdf_addPageLabels(int, int, char*, int, int);
+enum cpdf_pageLabelStyle
+  {cpdf_decimalArabic,    /* 1,2,3... */
+   cpdf_uppercaseRoman,   /* I, II, III... */
+   cpdf_lowercaseRoman,   /* i, ii, iii... */
+   cpdf_uppercaseLetters, /* A, B, C... */
+   cpdf_lowercaseLetters}; /* a, b, c... */
+
+/* Add a set of page labels.
+
+cpdf_addPageLabels(pdf, style, prefix, offset, range)
+
+The prefix is prefix text for each label. The range is the page range the
+labels apply to. Offset can be used to shift the numbering up or down.
+
+*/
+void cpdf_addPageLabels(int, enum cpdf_pageLabelStyle, char*, int, int);
 
 
 /* Special functionality 1. -- Encryption and Permission status */

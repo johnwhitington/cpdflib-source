@@ -2169,7 +2169,14 @@ void cpdf_copyId(int pdf, int pdf2)
   CAMLreturn0;
 }
 
-void cpdf_addPageLabels(int pdf, int style, char* prefix, int offset, int range)
+enum cpdf_pageLabelStyle
+  {cpdf_decimalArabic,
+   cpdf_uppercaseRoman,
+   cpdf_lowercaseRoman,
+   cpdf_uppercaseLetters,
+   cpdf_lowercaseLetters};
+
+void cpdf_addPageLabels(int pdf, enum cpdf_pageLabelStyle style, char* prefix, int offset, int range)
 {
   CAMLparam0 ();
   CAMLlocal2(fn, out_v);
