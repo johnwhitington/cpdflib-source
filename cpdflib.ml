@@ -127,7 +127,6 @@ let new_range arr =
   !rangekey
 
 let lookup_range i =
-  (*Printf.printf "lookup_range: %i ranges in table" (Hashtbl.length ranges); flprint "\n";*)
   Hashtbl.find ranges i
 
 let blankrange () =
@@ -285,7 +284,6 @@ let lookup_pdf_status i =
 
 let lookupPdfStatus i =
   if !dbg then flprint "Cpdflib.lookupPdfStatus\n";
-  (*flprint "Cpdflib.lookupPdfStatus\n";*)
   try
     number_of_encryption_status (lookup_pdf_status i)
   with
@@ -337,8 +335,6 @@ let endEnumeratePDFs () =
 (* Remove a PDF from memory *)
 let deletePdf i =
   if !dbg then flprint "Cpdflib.deletePdf\n";
-  (*Printf.printf "deletePdf %i" i;
-  flprint "\n";*)
   try delete_pdf i with e -> handle_error "deletePdf" e; err_unit
 
 (* Replace a PDF under the same pdf number *)
@@ -360,7 +356,6 @@ let flatten_encryptionKind = function
 (* hasPermissionStatus looks for a permission in the /status/ of a PDF, not the PDF itself *)
 let hasPermissionStatus i tocheck =
   if !dbg then flprint "Cpdflib.hasPermissionStatus\n";
-  (*flprint "Cpdflib.hasPermissionStatus\n";*)
   let status_permissions i =
     match lookup_pdf_status i with
     | NotEncrypted | Encrypted ->
@@ -383,7 +378,8 @@ let hasPermissionStatus i tocheck =
     with
       e -> handle_error "hasPermissionStatus" e; err_bool
 
-(* lookupPdfEncryption looks for the encryption type in the /status/ of a PDF which is decryptedWithUser or decryptedWithOwner *)
+(* lookupPdfEncryption looks for the encryption type in the /status/ of a PDF
+which is decryptedWithUser or decryptedWithOwner *)
 let lookupPdfEncryption i =
   if !dbg then flprint "Cpdflib.lookupPdfEncryption\n";
   try
@@ -521,14 +517,6 @@ let fromFileLazy filename userpw =
   with
     e -> handle_error "fromFileLazy" e; err_int
 
-(* Simple full read from a file. Tries owner password first, then user. If
-neither right, works, but doesn't decrypt. *)
-(*let fromFileDecrypt password filename =
-  try
-    new_pdf (Pdfread.pdf_of_file (Some password) None filename)
-  with
-    e -> handle_error "fromFileDecrypt" e; err_int*)
-
 (* Simple full write to a file *)
 let toFile pdf filename linearize make_id =
   if !dbg then flprint "Cpdflib.toFile\n";
@@ -574,12 +562,11 @@ let pages i =
   try Pdfpage.endpage (lookup_pdf i) with
     e -> handle_error "pages" e; err_int
 
-(* FIXME: May need owner password or userpassword *)
 let pagesFast password filename =
   if !dbg then flprint "Cpdflib.pagesFast\n";
   try
     let channel = open_in_bin filename in
-      let r = Cpdf.endpage_io (Pdfio.input_of_channel channel) (Some password) None (* <<- FIXME *) in
+      let r = Cpdf.endpage_io (Pdfio.input_of_channel channel) (Some password) (Some password) in
         close_in channel;
         r
   with
@@ -714,7 +701,6 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
 
 let toFileRecrypting original decrypted_and_modified userpw filename =
   if !dbg then flprint "Cpdflib.toFileRecrypting\n";
-  (*i Printf.printf "Cpdflibc.toFileRecrypting, userpw = %s\n" userpw; i*)
   try
     Pdfwrite.pdf_to_file_recrypting (lookup_pdf original) (lookup_pdf decrypted_and_modified) userpw filename
   with
@@ -722,7 +708,6 @@ let toFileRecrypting original decrypted_and_modified userpw filename =
 
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
-(*let _ = Callback.register "fromFileDecrypt" fromFileDecrypt*)
 let _ = Callback.register "decryptPdf" decryptPdf
 let _ = Callback.register "decryptPdfOwner" decryptPdfOwner
 let _ = Callback.register "toFile" toFile
@@ -865,10 +850,10 @@ let scaleToFit i range w h =
     e -> handle_error "scaleToFit" e; err_unit
 
 let points_of_papersize p =
-  let unit = Pdfpaper.unit p
-  in let w = Pdfpaper.width p
-  in let h = Pdfpaper.height p in
-    let c  = Pdfunits.convert 0. unit Pdfunits.PdfPoint in
+  let u = Pdfpaper.unit p
+  and w = Pdfpaper.width p
+  and h = Pdfpaper.height p in
+    let c  = Pdfunits.convert 0. u Pdfunits.PdfPoint in
       c w, c h
 
 let scaleToFitPaper i range papersize =

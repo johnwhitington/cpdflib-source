@@ -556,7 +556,15 @@ enum cpdf_pdfStatus cpdf_lookupPdfStatus(int pdf)
   CAMLreturnT(int, Int_val(out));
 }
 
-enum cpdf_permission {cpdf_noEdit, cpdf_noPrint, cpdf_noCopy, cpdf_noAnnot, cpdf_noForms, cpdf_noExtract, cpdf_noAssemble, cpdf_noHqPrint};
+enum cpdf_permission
+  {cpdf_noEdit,
+   cpdf_noPrint,
+   cpdf_noCopy,
+   cpdf_noAnnot,
+   cpdf_noForms,
+   cpdf_noExtract,
+   cpdf_noAssemble,
+   cpdf_noHqPrint};
 
 int cpdf_hasPermissionStatus(int pdf, enum cpdf_permission tocheck)
 {
@@ -1091,6 +1099,7 @@ char* cpdf_getBookmarkText(int serial)
 }
 
 /* CHAPTER 7. Presentations */
+
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
 void cpdf_stampOn(int pdf, int pdf2, int range)
@@ -1289,6 +1298,7 @@ void cpdf_padAfter(int pdf, int range)
 }
 
 /* CHAPTER 10. Annotations */
+
 /* CHAPTER 11. Document Information and Metadata */
 int cpdf_numberFonts(void)
 {
