@@ -428,24 +428,26 @@ int cpdf_isInRange(int r, int i)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int cpdf_fromFile(char* filename)
+int cpdf_fromFile(char* filename, char* userpw)
 {
   CAMLparam0 ();
-  CAMLlocal3(fromfile_v, filename_v, result_v);
+  CAMLlocal4(fromfile_v, filename_v, userpw_v, result_v);
   fromfile_v = *caml_named_value("fromFile");
   filename_v = caml_copy_string(filename);
-  result_v = caml_callback(fromfile_v, filename_v);
+  userpw_v = caml_copy_string(userpw);
+  result_v = caml_callback2(fromfile_v, filename_v, userpw_v);
   updateLastError ();
   CAMLreturnT(int, Int_val(result_v));
 }
 
-int cpdf_fromFileLazy(char* filename)
+int cpdf_fromFileLazy(char* filename, char* userpw)
 {
   CAMLparam0 ();
-  CAMLlocal3(fromfile_v, filename_v, result_v);
+  CAMLlocal4(fromfile_v, filename_v, userpw_v, result_v);
   fromfile_v = *caml_named_value("fromFileLazy");
   filename_v = caml_copy_string(filename);
-  result_v = caml_callback(fromfile_v, filename_v);
+  userpw_v = caml_copy_string(userpw);
+  result_v = caml_callback2(fromfile_v, filename_v, userpw_v);
   updateLastError();
   CAMLreturnT(int, Int_val(result_v));
 }

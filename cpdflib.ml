@@ -505,19 +505,19 @@ let _ = Callback.register "stringOfPagespec" stringOfPagespec
 let _ = Callback.register "validatePagespec" validatePagespec
 
 (* Read a file, no attempt at decryption, unless it's the blank user password. *)
-let fromFile filename =
+let fromFile filename userpw =
   if !dbg then flprint "Cpdflib.fromFile\n";
   try
-    new_pdf (Pdfread.pdf_of_file (Some "") None filename)
+    new_pdf (Pdfread.pdf_of_file (Some userpw) None filename)
   with
     e -> handle_error "fromFile" e; err_int
 
 (* Same, but don't attempt to decrypt, and read it lazily. Use only when
 decryption not required at any time. *)
-let fromFileLazy filename =
+let fromFileLazy filename userpw =
   if !dbg then flprint "Cpdflib.fromFileLazy\n";
   try
-    new_pdf (Pdfread.pdf_of_channel_lazy None None (*FIXME*) (open_in_bin filename))
+    new_pdf (Pdfread.pdf_of_channel_lazy (Some userpw) None (open_in_bin filename))
   with
     e -> handle_error "fromFileLazy" e; err_int
 

@@ -61,11 +61,9 @@ val removeDuplicates : range -> range
 
 val isInRange: range -> int -> bool
 
-val fromFile : string -> pdf
+val fromFile : string -> string -> pdf
 
-val fromFileLazy : string -> pdf
-
-(*val fromFileDecrypt : string -> string -> pdf*)
+val fromFileLazy : string -> string -> pdf
 
 val blankDocument : float -> float -> int -> pdf
 

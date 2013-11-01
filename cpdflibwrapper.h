@@ -144,13 +144,17 @@ int cpdf_rangeAdd(int, int);
  * otherwise. */
 int cpdf_isInRange(int, int);
 
-/* Load a PDF file from a given file. */
-int cpdf_fromFile(char*);
+/* Load a PDF file from a given file. Also supply a user password (possibly
+ * blank) in case the file is encypted. It won't be decrypted, but sometimes
+ * the password is needed just to load the file. */
+int cpdf_fromFile(char*, char*);
 
 /* Load a PDF from a file, doing only minimal parsing. The objects will be read
  * and parsed when they are actually needed. Use this when the whole file won't
- * be required. */
-int cpdf_fromFileLazy(char*);
+ * be required. Also supply a user password (possibly blank) in case the file
+ * is encypted. It won't be decrypted, but sometimes the password is needed
+ * just to load the file. */
+int cpdf_fromFileLazy(char*, char*);
 
 /* Create a blank document with pages of the given width (in points), height
  * (in points), and number of pages. */
@@ -224,8 +228,8 @@ enum cpdf_encryptionMethod
    cpdf_pdf128bit,
    cpdf_aes128bitfalse,
    cpdf_aes128bittrue,
-   cpdf_aes256bitfalse,
-   cpdf_aes256bittrue,
+   cpdf_aes256bitfalse, /* Deprecated. Do not use for new files */
+   cpdf_aes256bittrue,  /* Deprecated. Do not use for new files */
    cpdf_aes256bitisofalse,
    cpdf_aes256bitisotrue};
 
