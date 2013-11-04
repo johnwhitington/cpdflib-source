@@ -827,7 +827,20 @@ void cpdf_scaleToFitPaper(int pdf, int range, int papersize)
   CAMLreturn0;
 }
 
-enum cpdf_anchor { cpdf_posCentre, cpdf_posLeft, cpdf_posRight, cpdf_top, cpdf_topLeft, cpdf_topRight, cpdf_left, cpdf_bottomLeft, cpdf_bottom, cpdf_bottomRight, cpdf_right };
+enum cpdf_anchor
+  {cpdf_posCentre,
+   cpdf_posLeft,
+   cpdf_posRight,
+   cpdf_top,
+   cpdf_topLeft,
+   cpdf_topRight,
+   cpdf_left,
+   cpdf_bottomLeft,
+   cpdf_bottom,
+   cpdf_bottomRight,
+   cpdf_right,
+   cpdf_diagonal,
+   cpdf_reversediagonal};
 
 struct cpdf_position {
   int cpdf_anchor;

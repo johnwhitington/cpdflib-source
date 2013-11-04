@@ -287,46 +287,105 @@ int cpdf_mergeSame(int*, int, int, int, int*);
 int cpdf_selectPages(int, int);
 
 /* CHAPTER 3. Pages */
+
+/* cpdf_scalePages(pdf, range, x scale, y scale) scales the page dimensions and
+ * content by the given scale, about (0, 0). Other boxes (crop etc. are altered
+ * as appropriate) */
 void cpdf_scalePages(int, int, double, double);
+
+/* cpdf_scaleToFit(pdf, range, width height) scales the content to fit new page
+ * dimensions (width x height). Other boxed (crop etc. are altered as
+ * appropriate) */
 void cpdf_scaleToFit(int, int, double, double);
-void cpdf_scaleToFitPaper(int, int, int);
 
+/* cpdf_scaleToFitPaper(pdf, range, papersize) scales the page content to fit
+ * the given page size. */
+void cpdf_scaleToFitPaper(int, int, enum cpdf_papersize);
+
+/* Positions on the page. Used for scaling about a point, and adding text. */
 enum cpdf_anchor
-  {cpdf_posCentre,
-   cpdf_posLeft,
-   cpdf_posRight,
-   cpdf_top,
-   cpdf_topLeft,
-   cpdf_topRight,
-   cpdf_left,
-   cpdf_bottomLeft,
-   cpdf_bottom,
-   cpdf_bottomRight,
-   cpdf_right};
+  {cpdf_posCentre, /* Absolute centre */ 
+   cpdf_posLeft, /* Absolute left */
+   cpdf_posRight, /* Absolute right */
+   cpdf_top, /* Top top centre of the page */
+   cpdf_topLeft, /* The top left of the page */
+   cpdf_topRight, /* The top right of the page */
+   cpdf_left, /* The left hand side of the page, halfway down */
+   cpdf_bottomLeft, /* The bottom left of the page */
+   cpdf_bottom, /* The bottom middle of the page */
+   cpdf_bottomRight, /* The bottom right of the page */
+   cpdf_right, /* The right hand side of the page, halfway down */
+   cpdf_diagonal, /* Diagonal, bottom left to top right */
+   cpdf_reverseDiagonal}; /* Diagonal, top left to bottom right */
 
+/* A position is an anchor (above) and zero or one or two parameters
+ *  (cpdf_coord1, cpdf_coord2).
+ * cpdf_posCentre: Two parameters, x and y
+ * cpdf_posLeft: Two parameters, x and y
+ * cpdf_posRight: Two parameters, x and y
+ * cpdf_top: One parameter -- distance from top
+ * cpdf_topLeft: One parameter -- distance from top left
+ * cpdf_topRight: One parameter -- distance from top right
+ * cpdf_left: One parameter -- distance from left middle
+ * cpdf_bottomLeft: One parameter -- distance from bottom left
+ * cpdf_bottom: One parameter -- distance from bottom
+ * cpdf_bottomRight: One parameter -- distance from bottom right
+ * cpdf_right: One parameter -- distance from right
+ * cpdf_diagonal: Zero parameters
+ * cpdf_reverseDiagonal: Zero paremeters
+*/
 struct cpdf_position {
   int cpdf_anchor;
   double cpdf_coord1;
   double cpdf_coord2;
 };
 
+/* */
 void cpdf_scaleContents(int, int, struct cpdf_position, double);
+
+/* */
 void cpdf_shiftContents(int, int, double, double);
+
+/* */
 void cpdf_rotate(int, int, int);
+
+/* */
 void cpdf_rotateBy(int, int, int);
+
+/* */
 void cpdf_rotateContents(int, int, double);
+
+/* cpdf_upright(pdf, range) changes the viewing rotation of the pages in the
+ * range, counter-rotating the dimensions and content such that there is no
+ * visual change. */
 void cpdf_upright(int, int);
+
+/* cpdf_hFlip(pdf, range) flips horizontally the pages in the range. */
 void cpdf_hFlip(int, int);
+
+/* cpdf_vFlip(pdf, range) flips vertically the pages in the range. */
 void cpdf_vFlip(int, int);
+
+/* cpdf_crop(pdf, range, x, y, w, h) crops a page, replacing any existing crop
+ * box. The dimensions are in points. */ 
 void cpdf_crop(int, int, double, double, double, double);
+
+/* cpdf_removeCrop(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeCrop(int, int);
+
+/* cpdf_removeTrim(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeTrim(int, int);
+
+/* cpdf_removeArt(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeArt(int, int);
+
+/* cpdf_removeBleed(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeBleed(int, int);
 
 /* CHAPTER 4. Encryption */
 
 /* Covered elsewhere. */
+
 
 /* CHAPTER 5. Compression */
 
