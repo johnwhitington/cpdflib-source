@@ -1,4 +1,3 @@
-/* cpdflibwrapper.c */
 #include <stdio.h>
 #include <caml/memory.h>
 #include <caml/callback.h>

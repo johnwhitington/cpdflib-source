@@ -437,12 +437,56 @@ void cpdf_endGetBookmarkInfo(void);
 /* Not included in the library version */
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
+
 void cpdf_stampOn(int, int, int);
 void cpdf_stampUnder(int, int, int);
 int cpdf_combinePages(int, int);
 
-void cpdf_addText(int, int, int, char*, struct cpdf_position, double, int, int,
-double, double, double, double, int, int, int, double, int, int, char*);
+/* FIXME: Introductory stuff about text and special codes */
+
+/* The standard fonts */
+enum cpdf_font
+ {cpdf_timesRoman,
+  cpdf_timesBold,
+  cpdf_timesItalic,
+  cpdf_timesBoldItalic,
+  cpdf_helvetica,
+  cpdf_helveticaBold,
+  cpdf_helveticaOblique,
+  cpdf_helveticaBoldOblique,
+  cpdf_courier,
+  cpdf_courierBold,
+  cpdf_courierOblique,
+  cpdf_courierBoldOblique};
+
+/* Justifications for multi line text */
+enum cpdf_justification
+ {cpdf_leftJustify,
+  cpdf_CentreJustify,
+  cpdf_RightJustify};
+
+/* Add text */
+void cpdf_addText
+  (int, /* If true, don't actually add text but collect metrics. */
+   int, /* Document */
+   int, /* Page Range */
+   char*, /* The text to add */
+   struct cpdf_position, /* Position to add text at */
+   double, /* Linespacing, 1.0 = normal */
+   int, /* Starting Bates number */
+   enum cpdf_font, /* Font */
+   double, /* Font size in points */
+   double, /* Red component of colour, 0.0 - 1.0 */
+   double, /* Green component of colour, 0.0 - 1.0 */
+   double, /* Blue component of colour, 0.0 - 1.0 */
+   int, /* If true, text is added underneath rather than on top */
+   int, /* If true, position is relative to crop box not media box */
+   int, /* If true, text is outline rather than filled */
+   double, /* Opacity, 1.0 = opaque, 0.0 = wholly transparent */
+   enum cpdf_justification, /* Justification */
+   int, /* If true, position is relative to midline of text, not baseline */
+   char* /* filename that this document was read from (optional) */
+  );
 
 int cpdf_addTextHowMany(void);
 char* cpdf_addTextReturnText(int);
@@ -451,7 +495,10 @@ double cpdf_addTextReturnY(int);
 double cpdf_addTextReturnRotation(int);
 double cpdf_addTextReturnBaselineAdjustment(void);
 
+/* cpdf_removeText will remove any text added by libcpdf. */
 void cpdf_removeText(int, int);
+
+/* FIXME */
 int cpdf_textWidth (int, char*);
 
 /* CHAPTER 9. Multipage facilities */
