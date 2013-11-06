@@ -545,7 +545,9 @@ void cpdf_setCreationDate(int, char*);
 /* Set the modification date of a document from a UTF8 encoded string */
 void cpdf_setModificationDate(int, char*);
 
-/* FIXME: explain date components */
+/* Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
+ * h_offset is the offset from UT in hours (-23 to 23); h_offset is the offset
+ * from UT in minutes (-59 to 59). */
 
 /* cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
  * hour_offset, minute_offset) returns the components from a PDF date string. */
@@ -560,14 +562,16 @@ char* cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
  * given box. E.g "/CropBox" */
 int cpdf_hasBox(int, int, char*);
 
-/* FIXME document */
+/* Get a box given the document, page range, min x, max x, min y, max y in
+ * points. Only suceeds if such a box exists, as checked by cpdf_hasBox */
 void cpdf_getMediaBox(int, int, double*, double*, double*, double*);
 void cpdf_getCropBox(int, int, double*, double*, double*, double*);
 void cpdf_getTrimBox(int, int, double*, double*, double*, double*);
 void cpdf_getArtBox(int, int, double*, double*, double*, double*);
 void cpdf_getBleedBox(int, int, double*, double*, double*, double*);
 
-/* FIXME document */
+/* Set a box given the document, page range, min x, max x, min y, max y in
+ * points. */
 void cpdf_setMediabox(int, int, double, double, double, double);
 void cpdf_setCropBox(int, int, double, double, double, double);
 void cpdf_setTrimBox(int, int, double, double, double, double);
@@ -685,10 +689,10 @@ void cpdf_copyId(int, int);
 
 /* CHAPTER 14. Page labels */
 enum cpdf_pageLabelStyle
-  {cpdf_decimalArabic,    /* 1,2,3... */
-   cpdf_uppercaseRoman,   /* I, II, III... */
-   cpdf_lowercaseRoman,   /* i, ii, iii... */
-   cpdf_uppercaseLetters, /* A, B, C... */
+  {cpdf_decimalArabic,     /* 1,2,3... */
+   cpdf_uppercaseRoman,    /* I, II, III... */
+   cpdf_lowercaseRoman,    /* i, ii, iii... */
+   cpdf_uppercaseLetters,  /* A, B, C... */
    cpdf_lowercaseLetters}; /* a, b, c... */
 
 /* Add a set of page labels.
