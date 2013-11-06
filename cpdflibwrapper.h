@@ -340,19 +340,25 @@ struct cpdf_position {
   double cpdf_coord2;
 };
 
-/* */
+/* cpdf_scaleContents(pdf, range, position, scale) scales the contents of the
+ * pages in the range about the point given by the cpdf_position, by the scale
+ * given. */
 void cpdf_scaleContents(int, int, struct cpdf_position, double);
 
-/* */
+/* cpdf_shiftContents(pdf, range, dx, dy) shifts the content of the pages in
+ * the range. */
 void cpdf_shiftContents(int, int, double, double);
 
-/* */
+/* cpdf_rotate(pdf, range, rotation) changes the viewing rotation to an
+ * absolute value. Appropriate rotations are 0, 90, 180, 270. */
 void cpdf_rotate(int, int, int);
 
-/* */
+/* cpdf_rotateBy(pdf, range, rotation) changes the viewing rotation by a given
+ * number of degrees. Appropriate values are 90, 180, 270. */
 void cpdf_rotateBy(int, int, int);
 
-/* */
+/* cpdf_rotateContents rotates the content about the centre of the page by the
+ * given number of degrees, in a clockwise direction. */
 void cpdf_rotateContents(int, int, double);
 
 /* cpdf_upright(pdf, range) changes the viewing rotation of the pages in the
@@ -465,62 +471,170 @@ void cpdf_padAfter(int, int);
 
 /* Not in the library version */
 
+
 /* CHAPTER 11. Document Information and Metadata */
+
+/* Retrieving font information. First, call cpdf_startGetFontInfo(pdf). Now
+ * call cpdf_numberFonts to return the number of fonts. For each font, call one
+ * or more of cpdf_getFontPage, cpdf_getFontName, cpdf_getFontType, and
+ * cpdf_getFontEncoding to return information. Finally, call
+ * cpdf_endGetFontInfo to clean up. */
+void cpdf_startGetFontInfo(int);
 int cpdf_numberFonts(void);
 int cpdf_getFontPage(int);
 char* cpdf_getFontName(int);
 char* cpdf_getFontType(int);
 char* cpdf_getFontEncoding(int);
-void cpdf_startGetFontInfo(int);
 void cpdf_endGetFontInfo(void);
 
+/* Find out if a document is linearized as quickly as possible without loading
+ * it. */
 int cpdf_isLinearized(char*);
+
+/* Return the minor version number of a document. */
 int cpdf_getVersion(int);
+
+/* Return the title of a document. */
 char* cpdf_getTitle(int);
+
+/* Return the author of a document. */
 char* cpdf_getAuthor(int);
+
+/* Return the subject of a document. */
 char* cpdf_getSubject(int);
+
+/* Return the keywords of a document. */
 char* cpdf_getKeywords(int);
+
+/* Return the creator of a document. */
 char* cpdf_getCreator(int);
+
+/* Return the producer of a document. */
 char* cpdf_getProducer(int);
+
+/* Return the creation date of a document. */
 char* cpdf_getCreationDate(int);
-void cpdf_getDateComponents(char*, int*, int*, int*, int*, int*, int*, int*, int*);
-char* cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
+
+/* Return the modification date of a document. */
 char* cpdf_getModificationDate(int);
+
+/* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
 void cpdf_setVersion(int, int);
+
+/* Set the title of a document from a UTF8 encoded string */
 void cpdf_setTitle(int, char*);
+
+/* Set the author of a document from a UTF8 encoded string */
 void cpdf_setAuthor(int, char*);
+
+/* Set the subject of a document from a UTF8 encoded string */
 void cpdf_setSubject(int, char*);
+
+/* Set the keywords of a document from a UTF8 encoded string */
 void cpdf_setKeywords(int, char*);
+
+/* Set the creator of a document from a UTF8 encoded string */
 void cpdf_setCreator(int, char*);
+
+/* Set the producer of a document from a UTF8 encoded string */
 void cpdf_setProducer(int, char*);
+
+/* Set the creation date of a document from a UTF8 encoded string */
 void cpdf_setCreationDate(int, char*);
+
+/* Set the modification date of a document from a UTF8 encoded string */
 void cpdf_setModificationDate(int, char*);
-void cpdf_markTrapped(int);
-void cpdf_markUntrapped(int);
-void cpdf_setPageLayout(int, int);
-void cpdf_setPageMode(int, int);
+
+/* FIXME: explain date components */
+
+/* cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
+ * hour_offset, minute_offset) returns the components from a PDF date string. */
+void cpdf_getDateComponents(char*, int*, int*, int*, int*, int*, int*, int*, int*);
+
+/* cpdf_dateStringOfComponents(year, month, day, hour, minute, second,
+ * hour_offset, minute_offset) builds a PDF date string from individual
+ * components. */
+char* cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
+
+/* cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
+ * given box. E.g "/CropBox" */
 int cpdf_hasBox(int, int, char*);
+
+/* FIXME document */
 void cpdf_getMediaBox(int, int, double*, double*, double*, double*);
-void cpdf_setMediabox(int, int, double, double, double, double);
 void cpdf_getCropBox(int, int, double*, double*, double*, double*);
-void cpdf_setCropBox(int, int, double, double, double, double);
 void cpdf_getTrimBox(int, int, double*, double*, double*, double*);
-void cpdf_setTrimBox(int, int, double, double, double, double);
 void cpdf_getArtBox(int, int, double*, double*, double*, double*);
-void cpdf_setArtBox(int, int, double, double, double, double);
 void cpdf_getBleedBox(int, int, double*, double*, double*, double*);
+
+/* FIXME document */
+void cpdf_setMediabox(int, int, double, double, double, double);
+void cpdf_setCropBox(int, int, double, double, double, double);
+void cpdf_setTrimBox(int, int, double, double, double, double);
+void cpdf_setArtBox(int, int, double, double, double, double);
 void cpdf_setBleedBox(int, int, double, double, double, double);
 
+/* Mark a document as trapped. */
+void cpdf_markTrapped(int);
+
+/* Mark a document as untrapped. */
+void cpdf_markUntrapped(int);
+
+/* Document Layouts. See ISO standard for details. */
+enum cpdf_layout
+  {cpdf_singlePage,
+   cpdf_oneColumn,
+   cpdf_twoColumnLeft,
+   cpdf_twoColumnRight,
+   cpdf_twoPageLeft,
+   cpdf_twoPageRight};
+
+/* Set the page layout for a document */
+void cpdf_setPageLayout(int, enum cpdf_layout);
+
+/* Document page modes. See ISO standard for details. */
+enum cpdf_pageMode
+  {cpdf_useNone,
+   cpdf_useOutlines,
+   cpdf_useThumbs,
+   cpdf_useOC,
+   cpdf_useAttachments};
+
+/* Set the page mode for a document */
+void cpdf_setPageMode(int, enum cpdf_pageMode);
+
+/* cpdf_hideToolbar(doc, flag) sets the hide toolbar flag */
 void cpdf_hideToolbar(int, int);
+
+/* cpdf_hideMenubar(doc, flag) sets the hide menu bar flag */
 void cpdf_hideMenubar(int, int);
+
+/* cpdf_hideWindowUi(doc, flag) sets the hide window UI flag */
 void cpdf_hideWindowUi(int, int);
+
+/* cpdf_fitWindow(doc, flag) sets the fit window flag */
 void cpdf_fitWindow(int, int);
+
+/* cpdf_centerWindow(doc, flag) sets the center window flag */
 void cpdf_centerWindow(int, int);
+
+/* cpdf_displayDocTitle(doc, flag) sets the display doc title flag */
 void cpdf_displayDocTitle(int, int);
+
+/* Set the XML metadata of a document, given a file name */
 void cpdf_setMetadataFromFile(int, char*);
-void cpdf_setMetadataFromByteArray(int, char*, int);
+
+/* Set the XML metadata from a byte array. cpdf_setMetadataFromByteArray(pdf,
+ * data, length) uses length characters from data. */
+void cpdf_setMetadataFromByteArray(int, void*, int);
+
+/* Return the XML metadata. cpdf_getMetadata(pdf, &length) returns the metadata
+ * and fills in length. */ 
 void* cpdf_getMetadata(int, int*);
+
+/* Remove the XML metadata from a document */
 void cpdf_removeMetadata(int);
+
 
 /* CHAPTER 12. File Attachments */
 

@@ -1679,7 +1679,15 @@ void cpdf_markUntrapped(int pdf)
   CAMLreturn0;
 }
 
-void cpdf_setPageLayout(int pdf, int layout)
+enum cpdf_layout
+  {cpdf_singlePage,
+   cpdf_oneColumn,
+   cpdf_twoColumnLeft,
+   cpdf_twoColumnRight,
+   cpdf_twoPageLeft,
+   cpdf_twoPageRight};
+
+void cpdf_setPageLayout(int pdf, enum cpdf_layout layout)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, unit, pdf_v, layout_v);
@@ -1691,7 +1699,14 @@ void cpdf_setPageLayout(int pdf, int layout)
   CAMLreturn0;
 }
 
-void cpdf_setPageMode(int pdf, int mode)
+enum cpdf_pageMode
+  {cpdf_useNone,
+   cpdf_useOutlines,
+   cpdf_useThumbs,
+   cpdf_useOC,
+   cpdf_useAttachments};
+
+void cpdf_setPageMode(int pdf, enum cpdf_pageMode mode)
 {
   CAMLparam0 ();
   CAMLlocal4(fn, unit, pdf_v, mode_v);
@@ -1991,7 +2006,7 @@ void cpdf_setMetadataFromFile(int pdf, char* filename)
   CAMLreturn0;
 }
 
-void cpdf_setMetadataFromByteArray(int pdf, char* data, int len)
+void cpdf_setMetadataFromByteArray(int pdf, void* data, int len)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, bytestream, setMetadataFromByteArray, valpdf);
