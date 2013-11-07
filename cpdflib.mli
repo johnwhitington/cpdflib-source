@@ -11,12 +11,6 @@ val endEnumeratePDFs : unit -> unit
 val deletePdf : int -> unit
 val replacePdf : int -> int -> unit
 
-(* val lookupPdfStatus :
-val hasPermissionStatus :
-val lookupPdfUserPassword :
-val lookupPdfEncryption : FIXME: add these *)
-(*i val recryptPdf : pdf -> pdf -> string -> pdf  i*)
-
 val undo : int -> bool
 val redo : int -> bool
 val aboutToUpdate : int -> unit

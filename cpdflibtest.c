@@ -3,8 +3,14 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "cpdflibwrapper.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+
+
+
 int main (int argc, char ** argv)
 {
+  mkdir("testoutputs", 0777);
   /* 0. Initialization */
   printf("***** 0. Initialisation\n\n");
 

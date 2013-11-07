@@ -436,13 +436,53 @@ void cpdf_endGetBookmarkInfo(void);
 
 /* Not included in the library version */
 
+
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
+/* cpdf_stampOn(pdf, stamp_pdf, range) stamps stamp_pdf on top of all the pages
+ * in the document which are in the range. The stamp is placed with its origin
+ * at the origin of the target document. */
 void cpdf_stampOn(int, int, int);
+
+/* cpdf_stampOn(pdf, stamp_pdf, range) stamps stamp_pdf under all the pages in
+ * the document which are in the range. The stamp is placed with its origin at
+ * the origin of the target document. */
 void cpdf_stampUnder(int, int, int);
+
+/* cpdf_combinePages(under, over) combines the PDFs page-by-page, putting each
+ * page of 'over' over each page of 'under' */
 int cpdf_combinePages(int, int);
 
-/* FIXME: Introductory stuff about text and special codes */
+/* Adding text. Adds UTF8 text to a PDF, if the characters exist in the font.
+ * */
+
+/* Special codes
+
+%Page     Page number in arabic notation (1, 2, 3...)
+%roman    Page number in lower-case roman notation (i, ii, iii...)
+%Roman    Page number in upper-case roman notation (I, II, III...)
+%EndPage  Last page of document in arabic notation
+%Label    The page label of the page
+%EndLabel The page label of the last page
+%filename The full file name of the input document
+%a        Abbreviated weekday name (Sun, Mon etc.)
+%A        Full weekday name (Sunday, Monday etc.)
+%b        Abbreviated month name (Jan, Feb etc.)
+%B        Full month name (January, February etc.)
+%d        Day of the month (01–31)
+%e        Day of the month (1–31)
+%H        Hour in 24-hour clock (00–23)
+%I        Hour in 12-hour clock (01–12)
+%j        Day of the year (001–366) %m Month of the year (01–12)
+%M        Minute of the hour (00–59) %p ”a.m” or ”p.m”
+%S        Second of the minute (00–61)
+%T        Same as %H:%M:%S
+%u        Weekday (1–7, 1 = Monday)
+%w        Weekday (0–6, 0 = Monday)
+%Y        Year (0000–9999)
+%%        The % character.
+
+*/
 
 /* The standard fonts */
 enum cpdf_font
@@ -488,6 +528,12 @@ void cpdf_addText
    char* /* filename that this document was read from (optional) */
   );
 
+/* To return metrics about the text which would be added. Call cpdf_addText
+ * first with the first argument set to false, and the other arguments filled
+ * in as appropriate. Now, the metrics have been collected. Call
+ * cpdf_addTextHowMany to find out how many lines of text there are. Now, for
+ * each line (1...n), the functions cpdf_addTextReturn* give the metrics of the
+ * text as calculated. */
 int cpdf_addTextHowMany(void);
 char* cpdf_addTextReturnText(int);
 double cpdf_addTextReturnX(int);
@@ -498,8 +544,10 @@ double cpdf_addTextReturnBaselineAdjustment(void);
 /* cpdf_removeText will remove any text added by libcpdf. */
 void cpdf_removeText(int, int);
 
-/* FIXME */
-int cpdf_textWidth (int, char*);
+/* Return the width of a given string in the given font in thousandths of a
+ * point. */
+int cpdf_textWidth (enum cpdf_font, char*);
+
 
 /* CHAPTER 9. Multipage facilities */
 
