@@ -123,7 +123,7 @@ int main (int argc, char ** argv)
   cpdf_scaleToFit(pages_pdf, pages_all, 400.0, 400.0);
   cpdf_toFile(pages_pdf, "testoutputs/scaleToFit.pdf", false, false);
   printf("scaleToFitPaper()\n");
-  cpdf_scaleToFitPaper(pages_pdf, pages_all, 4);
+  cpdf_scaleToFitPaper(pages_pdf, pages_all, cpdf_a4portrait);
   cpdf_toFile(pages_pdf, "testoutputs/a4.pdf", false, false);
   
   printf("scaleContents()\n");
@@ -319,8 +319,8 @@ int main (int argc, char ** argv)
   int textfile_all = cpdf_all(textfile);
   struct cpdf_position textpos = {.cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
   printf("addText()\n");
-  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
-  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, 1, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, 0, false, "");
+  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, "");
+  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, "");
   cpdf_toFile(textfile, "testoutputs/added_text.pdf", false, false);
 
   printf("addTextHowMany()\n");
@@ -344,7 +344,7 @@ int main (int argc, char ** argv)
   printf("removeText()\n");
   cpdf_removeText(textfile, textfile_all);
   cpdf_toFile(textfile, "testoutputs/removed_text.pdf", false, false);
-  int w = cpdf_textWidth(1, "Some Text");
+  int w = cpdf_textWidth(cpdf_timesRoman, "Some Text");
   printf("The textwidth is %i\n", w);
 
   cpdf_deletePdf(stamp);
@@ -458,9 +458,9 @@ int main (int argc, char ** argv)
   cpdf_toFile(fonts, "testoutputs/settitleetc.pdf", false, false);
 
   printf("setPageLayout()\n");
-  cpdf_setPageLayout(fonts, 4);
+  cpdf_setPageLayout(fonts, cpdf_twoColumnLeft);
   printf("setPageMode()\n");
-  cpdf_setPageMode(fonts, 3);
+  cpdf_setPageMode(fonts, cpdf_useThumbs);
 
   printf("hasBox()\n");
   printf("Has page one a %s box? %i\n", "/CropBox", cpdf_hasBox(fonts, 1, "/CropBox")); 
@@ -588,7 +588,7 @@ int main (int argc, char ** argv)
   int pl = cpdf_fromFile("testinputs/london.pdf", "");
   int pl_all = cpdf_all(pl);
   printf("addPageLabels()\n");
-  cpdf_addPageLabels(pl, 4, "PREFIX-", 1, pl_all);
+  cpdf_addPageLabels(pl, cpdf_uppercaseRoman, "PREFIX-", 1, pl_all);
   cpdf_toFile(pl, "testoutputs/pagelabels.pdf", false, false);
 
   int toreplace = cpdf_fromFile("testinputs/london.pdf", "");

@@ -1439,7 +1439,6 @@ char* cpdf_getModificationDate(int pdf)
   CAMLreturnT(char*, String_val(out));
 }
 
-//FIXME: will need exception handling here.
 void cpdf_getDateComponents
 (char* date,
  int* year,

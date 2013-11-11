@@ -1,41 +1,52 @@
-/* A C wrapper to cpdf PDF tools library */
-/* Free for non-commercial use. See LICENSE for details */
-/* To purchase a license, please visit http://www.coherentpdf.com/ */
+/**
 
-/* CHAPTER 0. Preliminaries */
+\file cpdflibwrapper.h
 
-/* The function cpdf_startup must be called with argv before using the library.
- * */
+\brief
+
+A C wrapper to cpdf PDF tools library. Free for non-commercial use. See LICENSE
+for details. To purchase a license, please visit http://www.coherentpdf.com/
+
+*/
+
+/** CHAPTER 0. Preliminaries */
+
+/** The function cpdf_startup must be called with argv before using the library.
+ \param argv the standard argument vector
+*/
 void cpdf_startup (char **);
 
-/* Set demo mode. Upon library startup is false. If set, files written will
+/** Set demo mode. Upon library startup is false. If set, files written will
  * have the text DEMO stamped over each page. This stamping will also slow down
- * the library significantly.  */
+ * the library significantly.
+ \param isdemo If set, in demo mode. 
+*/
 void cpdf_setDemo(int);
 
-/* Errors. lastError and lastErrorString hold information about the last error
+/** Errors. lastError and lastErrorString hold information about the last error
  * to have occurred. They should be consulted after each call. If
  * cpdf_lastError is non-zero, there was an error, and cpdf_lastErrorString
  * gives details. If cpdf_lastError is zero, there was no error on the most
- * recent cpdf call. */
+ * recent cpdf call.
+*/
 int cpdf_lastError;
 char* cpdf_lastErrorString;
 
-/* Clear the current error state. */
+/** Clear the current error state. */
 void cpdf_clearError (void);
 
-/* A debug function which prints some information about resource usage. This
+/** A debug function which prints some information about resource usage. This
  * can be used to detect if PDFs or ranges are being deallocated properly. */
 void cpdf_onExit (void);
 
-/* Remove a PDF from memory, given its number. */
+/** Remove a PDF from memory, given its number. */
 void cpdf_deletePdf(int);
 
-/* Calling replacePdf(a, b) places PDF b under number a. Original a and b are
+/** Calling replacePdf(a, b) places PDF b under number a. Original a and b are
  * no longer available. */
 void cpdf_replacePdf(int, int);
 
-/* To enumerate the list of currently allocated PDFs, call
+/** To enumerate the list of currently allocated PDFs, call
  * cpdf_startEnumeratePDFs which gives the number, n, of PDFs allocated, then
  * cpdf_enumeratePDFsInfo and cpdf_enumeratePDFsKey with index numbers from
  * 0...(n - 1). Call cpdf_endEnumeratePDFs to clean up. */
@@ -162,22 +173,22 @@ int cpdf_blankDocument(double, double, int);
 
 /* Standard page sizes. */
 enum cpdf_papersize
-  {cpdf_a0portrait,
-   cpdf_a1portrait,
-   cpdf_a2portrait,
-   cpdf_a3portrait,
-   cpdf_a4portrait,
-   cpdf_a5portrait,
-   cpdf_a0landscape,
-   cpdf_a1landscape,
-   cpdf_a2landscape,
-   cpdf_a3landscape,
-   cpdf_a4landscape,
-   cpdf_a5landscape,
-   cpdf_usletterportrait,
-   cpdf_usletterlandscape,
-   cpdf_uslegalportrait,
-   cpdf_uslegallandscape};
+  {cpdf_a0portrait /** A0 portrait */,
+   cpdf_a1portrait /** A1 portrait */,
+   cpdf_a2portrait /** A2 portrait */,
+   cpdf_a3portrait /** A3 portrait */,
+   cpdf_a4portrait /** A4 portrait */,
+   cpdf_a5portrait /** A5 portrait */,
+   cpdf_a0landscape /** A0 landscape */,
+   cpdf_a1landscape /** A1 landscape */,
+   cpdf_a2landscape /** A2 landscape */,
+   cpdf_a3landscape /** A3 landscape */,
+   cpdf_a4landscape /** A4 landscape */,
+   cpdf_a5landscape /** A5 landscape */,
+   cpdf_usletterportrait /** US Letter portrait */,
+   cpdf_usletterlandscape /** US Letter landscape */,
+   cpdf_uslegalportrait /** US Legal portrait */,
+   cpdf_uslegallandscape /** US Legal landscape */};
 
 /* Make a blank document given a page size and number of pages. */
 int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
@@ -212,26 +223,26 @@ void cpdf_decryptPdfOwner(int, char*);
 /* File permissions. These are inverted, in the sense that the presence of one
  * of them indicates a restriction. */
 enum cpdf_permission
-  {cpdf_noEdit,
-   cpdf_noPrint,
-   cpdf_noCopy,
-   cpdf_noAnnot,
-   cpdf_noForms,
-   cpdf_noExtract,
-   cpdf_noAssemble,
-   cpdf_noHqPrint};
+  {cpdf_noEdit /** Cannot edit the document */,
+   cpdf_noPrint /** Cannot print the document */,
+   cpdf_noCopy /** Cannot copy the document */,
+   cpdf_noAnnot /** Cannot annotate the document */,
+   cpdf_noForms /** Cannot edit forms in the document */,
+   cpdf_noExtract /** Cannot extract information */,
+   cpdf_noAssemble /** Cannot assemble into a bigger document */,
+   cpdf_noHqPrint /** Cannot print high quality */};
 
 /* Encryption methods. Suffixes 'false' and 'true' indicates lack of or
  * presence of encryption for XML metadata streams */
 enum cpdf_encryptionMethod
-  {cpdf_pdf40bit,
-   cpdf_pdf128bit,
-   cpdf_aes128bitfalse,
-   cpdf_aes128bittrue,
-   cpdf_aes256bitfalse, /* Deprecated. Do not use for new files */
-   cpdf_aes256bittrue,  /* Deprecated. Do not use for new files */
-   cpdf_aes256bitisofalse,
-   cpdf_aes256bitisotrue};
+  {cpdf_pdf40bit /** 40 bit RC4 encryption */, 
+   cpdf_pdf128bit /** 128 bit RC4 encryption */,
+   cpdf_aes128bitfalse /** 128 bit AES encryption, do not encrypt metadata. */,
+   cpdf_aes128bittrue /** 128 bit AES encryption, encrypt metadat */,
+   cpdf_aes256bitfalse, /** Deprecated. Do not use for new files */
+   cpdf_aes256bittrue,  /** Deprecated. Do not use for new files */
+   cpdf_aes256bitisofalse /** 256 bit AES encryption, do not encrypt metadata. */,
+   cpdf_aes256bitisotrue /** 256 bit AES encryption, encrypt metadata */};
 
 /* Write a file with encryption:
   cpdf_toFileEncrypted(
@@ -304,19 +315,19 @@ void cpdf_scaleToFitPaper(int, int, enum cpdf_papersize);
 
 /* Positions on the page. Used for scaling about a point, and adding text. */
 enum cpdf_anchor
-  {cpdf_posCentre, /* Absolute centre */ 
-   cpdf_posLeft, /* Absolute left */
-   cpdf_posRight, /* Absolute right */
-   cpdf_top, /* Top top centre of the page */
-   cpdf_topLeft, /* The top left of the page */
-   cpdf_topRight, /* The top right of the page */
-   cpdf_left, /* The left hand side of the page, halfway down */
-   cpdf_bottomLeft, /* The bottom left of the page */
-   cpdf_bottom, /* The bottom middle of the page */
-   cpdf_bottomRight, /* The bottom right of the page */
-   cpdf_right, /* The right hand side of the page, halfway down */
-   cpdf_diagonal, /* Diagonal, bottom left to top right */
-   cpdf_reverseDiagonal}; /* Diagonal, top left to bottom right */
+  {cpdf_posCentre /** Absolute centre */, 
+   cpdf_posLeft /** Absolute left */,
+   cpdf_posRight /** Absolute right */,
+   cpdf_top /** Top top centre of the page */,
+   cpdf_topLeft /** The top left of the page */,
+   cpdf_topRight /** The top right of the page */,
+   cpdf_left /** The left hand side of the page, halfway down */,
+   cpdf_bottomLeft /** The bottom left of the page */,
+   cpdf_bottom /** The bottom middle of the page */,
+   cpdf_bottomRight /** The bottom right of the page */,
+   cpdf_right /** The right hand side of the page, halfway down */,
+   cpdf_diagonal /** Diagonal, bottom left to top right */,
+   cpdf_reverseDiagonal /** Diagonal, top left to bottom right */ };
 
 /* A position is an anchor (above) and zero or one or two parameters
  *  (cpdf_coord1, cpdf_coord2).
@@ -335,9 +346,9 @@ enum cpdf_anchor
  * cpdf_reverseDiagonal: Zero paremeters
 */
 struct cpdf_position {
-  int cpdf_anchor;
-  double cpdf_coord1;
-  double cpdf_coord2;
+  int cpdf_anchor /** Position anchor */ ;
+  double cpdf_coord1 /** Parameter one */;
+  double cpdf_coord2 /** Parameter two */;
 };
 
 /* cpdf_scaleContents(pdf, range, position, scale) scales the contents of the
@@ -484,48 +495,48 @@ int cpdf_combinePages(int, int);
 
 */
 
-/* The standard fonts */
+/** The standard fonts */
 enum cpdf_font
- {cpdf_timesRoman,
-  cpdf_timesBold,
-  cpdf_timesItalic,
-  cpdf_timesBoldItalic,
-  cpdf_helvetica,
-  cpdf_helveticaBold,
-  cpdf_helveticaOblique,
-  cpdf_helveticaBoldOblique,
-  cpdf_courier,
-  cpdf_courierBold,
-  cpdf_courierOblique,
-  cpdf_courierBoldOblique};
+ {cpdf_timesRoman /** Times Roman */,
+  cpdf_timesBold /** Times Bold */,
+  cpdf_timesItalic /** Times Italic */,
+  cpdf_timesBoldItalic /** Times Bold Italic */,
+  cpdf_helvetica /** Helvetica */,
+  cpdf_helveticaBold /** Helvetica Bold */,
+  cpdf_helveticaOblique /** Helvetica Oblique */,
+  cpdf_helveticaBoldOblique /** Helvetica Bold Oblique */,
+  cpdf_courier /** Courier */,
+  cpdf_courierBold /** Courier Bold */,
+  cpdf_courierOblique /** Courier Oblique */,
+  cpdf_courierBoldOblique /** Courier Bold Oblique */};
 
-/* Justifications for multi line text */
+/** Justifications for multi line text */
 enum cpdf_justification
- {cpdf_leftJustify,
-  cpdf_CentreJustify,
-  cpdf_RightJustify};
+ {cpdf_leftJustify /** Left justify */,
+  cpdf_CentreJustify /** Centre justify */,
+  cpdf_RightJustify /** Right justify */};
 
-/* Add text */
+/** Add text */
 void cpdf_addText
-  (int, /* If true, don't actually add text but collect metrics. */
-   int, /* Document */
-   int, /* Page Range */
-   char*, /* The text to add */
-   struct cpdf_position, /* Position to add text at */
-   double, /* Linespacing, 1.0 = normal */
-   int, /* Starting Bates number */
-   enum cpdf_font, /* Font */
-   double, /* Font size in points */
-   double, /* Red component of colour, 0.0 - 1.0 */
-   double, /* Green component of colour, 0.0 - 1.0 */
-   double, /* Blue component of colour, 0.0 - 1.0 */
-   int, /* If true, text is added underneath rather than on top */
-   int, /* If true, position is relative to crop box not media box */
-   int, /* If true, text is outline rather than filled */
-   double, /* Opacity, 1.0 = opaque, 0.0 = wholly transparent */
-   enum cpdf_justification, /* Justification */
-   int, /* If true, position is relative to midline of text, not baseline */
-   char* /* filename that this document was read from (optional) */
+  (int /** If true, don't actually add text but collect metrics. */,
+   int /** Document */,
+   int /** Page Range */,
+   char* /** The text to add */,
+   struct cpdf_position /** Position to add text at */,
+   double /** Linespacing, 1.0 = normal */,
+   int /** Starting Bates number */,
+   enum cpdf_font /** Font */,
+   double /** Font size in points */,
+   double /** Red component of colour, 0.0 - 1.0 */,
+   double /** Green component of colour, 0.0 - 1.0 */,
+   double /** Blue component of colour, 0.0 - 1.0 */,
+   int /** If true, text is added underneath rather than on top */,
+   int /** If true, position is relative to crop box not media box */,
+   int /** If true, text is outline rather than filled */,
+   double /** Opacity, 1.0 = opaque, 0.0 = wholly transparent */,
+   enum cpdf_justification /** Justification */,
+   int /** If true, position is relative to midline of text, not baseline */,
+   char* /** filename that this document was read from (optional) */
   );
 
 /* To return metrics about the text which would be added. Call cpdf_addText
