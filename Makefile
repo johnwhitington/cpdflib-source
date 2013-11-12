@@ -1,4 +1,5 @@
-CAMLBASE = /Users/john/.opam/4.01.0/lib/
+#CAML_LD_LIBRARY_PATH requires OPAM. Otherwise, hard code it...
+CAMLBASE = $(CAML_LD_LIBRARY_PATH)/../
 
 mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ocamlfind ocamlc -package cpdf cpdflib.mli;
