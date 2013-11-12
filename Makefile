@@ -6,14 +6,14 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ocamlfind ocamlc cpdflibwrapper.c;
 	ocamlfind ocamlopt -I $(CAMLBASE)cpdf -I $(CAMLBASE)camlpdf \
           -output-obj -o cpdflib.o \
-          unix.cmxa camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
+          camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
 	cp $(CAMLBASE)ocaml/libasmrun.a libcpdf.a;
-	cp $(CAMLBASE)ocaml/libunix.a .;
 	ar -x $(CAMLBASE)camlpdf/libcamlpdf_stubs.a;
+	ar -x $(CAMLBASE)cpdf/libcpdf_stubs.a;
 	ar r libcpdf.a *.o 
 
 test:   libcpdf.a cpdflibtest.c
-	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf -lunix
+	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf
 
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a cpdflibtest *.aux *.idx \
