@@ -1,9 +1,5 @@
 /**
 
-\file cpdflibwrapper.h
-
-\brief
-
 A C wrapper to cpdf PDF tools library. Free for non-commercial use. See LICENSE
 for details. To purchase a license, please visit http://www.coherentpdf.com/
 
@@ -12,14 +8,12 @@ for details. To purchase a license, please visit http://www.coherentpdf.com/
 /** CHAPTER 0. Preliminaries */
 
 /** The function cpdf_startup must be called with argv before using the library.
- \param argv the standard argument vector
 */
 void cpdf_startup (char **);
 
 /** Set demo mode. Upon library startup is false. If set, files written will
  * have the text DEMO stamped over each page. This stamping will also slow down
  * the library significantly.
- \param isdemo If set, in demo mode. 
 */
 void cpdf_setDemo(int);
 

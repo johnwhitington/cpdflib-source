@@ -13,12 +13,12 @@
 
 \begin{flushright}
 
-{\sffamily \bfseries \Huge Coherent PDF Library}
+{\sffamily \bfseries \Huge Coherent PDF Library (libcpdf)}
 
 \vspace{12mm}
 
 {\Huge Developer's Manual}\\\vspace{2mm}
-Version 1.7 (August 2013)
+Version 1.8 (December 2013)
 
 \vspace{25mm}
 
@@ -41,8 +41,7 @@ Version 1.7 (August 2013)
 
 \smallgap 
 \noindent Adobe, Acrobat, Adobe PDF, Adobe Reader and PostScript are
-registered trademarks of Adobe Systems Incorporated. Windows, Powerpoint and
-Excel are registered trademarks of Microsoft Corporation.
+registered trademarks of Adobe Systems Incorporated. Windows is a registered trademarks of Microsoft Corporation.
 
 % Letter
 \cleardoublepage
@@ -52,14 +51,15 @@ Excel are registered trademarks of Microsoft Corporation.
 \mainmatter
 \chapterstyle{hangnum}
 \pagestyle{ruled}
-\chapter{Installation}
-The Coherent PDF Library is provided either in binary form (three archive files \texttt{libcpdf.a}, \texttt{libbigarray.a}, \texttt{libunix.a} and the library header \texttt{cpdflibwrapper.h}), or as source. Instructions for building from source are included in the distribution.
 
-\section{Installation}
-Place \texttt{libcpdf.a}, \texttt{libbigarray.a}, and \texttt{libunix.a} somewhere suitable. Instruct your C linker to link with them. Place \texttt{cpdflibwrapper.h} somewhere suitable and instuct your C compiler to search for headers there.
+\chapter*{Notes}
 
-\vspace{3mm}
-\noindent The library is now ready for use.
+The chapters are numbered to be the same as those in the manual for the Coherent PDF Command Line Tools (cpdfmanual.pdf).
+
+\chapter*{Installation}
+The Coherent PDF Library is provided either in compiled form (the archive file \texttt{libcpdf.a} and the library header \texttt{cpdflibwrapper.h}), or as source code. Instructions for building from source are included in the distribution.
+
+Place \texttt{libcpdf.a} somewhere suitable. Instruct your C linker to link with it. Place \texttt{cpdflibwrapper.h} somewhere suitable and instuct your C compiler to search for headers there. \noindent The library is now ready for use.
 
 \chapter{Basic Usage}
 \begin{framed}
@@ -1853,7 +1853,7 @@ accuracy dates. For example:
    \noindent\verb!D:201101031854-08'00'! (3rd March 2011, 6:54PM, US Pacific Standard Time)
    
 \end{framed}
-\chapter{Example Program in C\#}
+\chapter{Example Program in C}
 This program loads a file from disk, adds page numbers, and then writes the file encrypted to disk.
 \begin{small}
 \begin{verbatim}
@@ -1896,39 +1896,6 @@ namespace ConsoleApplication1 {
         }
     }
 }
-\end{verbatim}
-\end{small}
-\chapter{Example Program in VB.NET}
-This program loads a file from disk, adds page numbers, and then writes the file encrypted to disk.
-\begin{small}
-\begin{verbatim}
-Module Module1
-
-    Sub Main()
-        'Load the (unencrypted) input file
-        Dim pdf As Pdf.pdfdoc = Cpdflib.FromFile("C:\\input.pdf")
-
-        'Resolve any rotation of pages
-        Cpdflib.Upright(pdf, Cpdflib.All(pdf))
-
-        'Add page numbers
-        Cpdflib.AddText _
-          (pdf, Cpdflib.All(pdf), "Page %Page of %EndPage", _
-          Cpdf.position.NewTop(20.0), 1.0, 0, _
-          Pdftext.standard_font.TimesBold, _
-          12.0, Cpdflib.Black, False, False, True)
-
-        'Write to file, encrypted with AES encryption
-        Dim permissions As Pdfcrypt.permission() = _
-          {Pdfcrypt.permission.NoEdit, Pdfcrypt.permission.NoAssemble}
-        Cpdflib.ToFileEncrypted _
-          (pdf, _
-           Pdfwrite.encryption_method.NewAES128bit(False), _
-           permissions, "fred", "charles", _
-           False, False, "C:\\output.pdf")
-    End Sub
-
-End Module
 \end{verbatim}
 \end{small}
 
