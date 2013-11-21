@@ -1,4 +1,3 @@
-
 #include <stdbool.h>
 #include "cpdflibwrapper.h"
 
@@ -14,7 +13,7 @@ int main (int argc, char ** argv)
   int mergepdf = cpdf_fromFile("hello.pdf", "");
 
   /* Check the error state */
-  if lastError() return 1;
+  if (cpdf_lastError) return 1;
 
   /* The array of PDFs to merge */
   int pdfs[] = {mergepdf, mergepdf, mergepdf};
@@ -26,16 +25,16 @@ int main (int argc, char ** argv)
   int merged = cpdf_mergeSimple(pdfs, 3);
   
   /* Check the error state */
-  if lastError() return 1;
+  if (cpdf_lastError) return 1;
 
   /* Clear the error state */
-  clearError()
+  cpdf_clearError();
 
   /* Write output */
   cpdf_toFile(merged, "merged.pdf", false, false);
 
   /* Check the error state */
-  if lastError() return 1;
+  if (cpdf_lastError) return 1;
 
   return 0;
 }

@@ -12,6 +12,7 @@ language=C,
 basicstyle=\small\ttfamily,
 %numbers=left,
 %numberstyle=\tiny,
+linewidth=15cm,
 frame=tb,
 columns=fullflexible,
 showstringspaces=false
@@ -19,6 +20,7 @@ showstringspaces=false
 
 \makeindex
 \begin{document}
+
 \frontmatter
 \thispagestyle{empty}
 
@@ -63,15 +65,16 @@ registered trademarks of Adobe Systems Incorporated. Windows is a registered tra
 \chapterstyle{hangnum}
 \pagestyle{ruled}
 
-\chapter*{Notes}
+\chapter*{Note}
 
-The chapters are numbered to be the same as those in the manual for the Coherent PDF Command Line Tools (cpdfmanual.pdf).
+The chapters are numbered to be the same as those in the manual for the Coherent PDF Command Line Tools (cpdfmanual.pdf). However, some of the content has moved where circumstances dictate -- for example, encryption is wholly described in Chapter 1 rather than Chapter 4.
 
 \chapter*{Installation}
 The Coherent PDF Library is provided either in compiled form (the archive file \texttt{libcpdf.a} and the library header \texttt{cpdflibwrapper.h}), or as source code. Instructions for building from source are included in the distribution.
 
 Place \texttt{libcpdf.a} somewhere suitable. Instruct your C linker to link with it. Place \texttt{cpdflibwrapper.h} somewhere suitable and instuct your C compiler to search for headers there. \noindent The library is now ready for use.
 
+\setcounter{chapter}{-1}
 \chapter{Preliminaries}
 
 \begin{small}
@@ -475,12 +478,7 @@ void cpdf_removeBleed(int, int);
 \end{small}
 
 \chapter{Encryption}
-Covered in Chapter 1.
-\begin{small}
-\begin{lstlisting}
-
-\end{lstlisting}
-\end{small}
+\textit{Covered in Chapter 1.}
 
 \chapter{Compression}
 \begin{small}
@@ -526,12 +524,7 @@ void cpdf_endGetBookmarkInfo(void);
 \end{small}
 
 \chapter{Presentations}
-Not supported by libcpdf.
-\begin{small}
-\begin{lstlisting}
-
-\end{lstlisting}
-\end{small}
+\textit{Not supported by libcpdf. Use the command line tools instead.}
 
 \chapter{Logos, Watermarks and Stamps}
 \begin{small}
@@ -664,7 +657,7 @@ void cpdf_padAfter(int, int);
 \end{small}
 
 \chapter{Annotations}
-Not in libcpdf.
+\textit{Not supported in libcpdf. Use the command line tools instead.}
 
 \chapter{Document Information and Metadata}
 \begin{small}
@@ -912,11 +905,9 @@ void cpdf_addPageLabels(int, enum cpdf_pageLabelStyle, char*, int, int);
 \end{lstlisting}
 \end{small}
 
-\chapter{Special functionality 1. -- Encryption and Permission status}
+\chapter{Special functionality 1 -- Encryption and Permission status}
 \begin{small}
 \begin{lstlisting}
-/* Special functionality 1. -- Encryption and Permission status */
-
 /* Internal status of a pdf loaded by the library. This is data kept separate
  * from the actual PDF. */
 enum cpdf_pdfStatus
@@ -940,7 +931,7 @@ char* cpdf_lookupPdfUserPassword(int);
 \end{lstlisting}
 \end{small}
 
-\chapter{Special functionality 2. -- Undo}
+\chapter{Special functionality 2 -- Undo}
 
 \begin{small}
 \begin{lstlisting}
@@ -1003,14 +994,54 @@ accuracy dates. For example:
    
 \end{framed}
 \chapter{Example Program in C}
-This program loads a file from disk, adds page numbers, and then writes the file encrypted to disk.
+This program loads a file from disk and writes out a document with the original included three times. Note the use of \texttt{cpdf\_startup}, \texttt{cpdf\_lastError} and \texttt{cpdf\_clearError}.
+
 \begin{small}
 \begin{verbatim}
+#include <stdbool.h>
+#include "cpdflibwrapper.h"
 
+int main (int argc, char ** argv)
+{
+  /* Initialist cpdf. */
+  cpdf_startup(argv);
+
+  /* Clear the error state */
+  cpdf_clearError();
+
+  /* We will take the input hello.pdf and repeat it three times */
+  int mergepdf = cpdf_fromFile("hello.pdf", "");
+
+  /* Check the error state */
+  if (cpdf_lastError) return 1;
+
+  /* The array of PDFs to merge */
+  int pdfs[] = {mergepdf, mergepdf, mergepdf};
+
+  /* Clear the error state */
+  cpdf_clearError();
+
+  /* Merge them */
+  int merged = cpdf_mergeSimple(pdfs, 3);
+  
+  /* Check the error state */
+  if (cpdf_lastError) return 1;
+
+  /* Clear the error state */
+  cpdf_clearError();
+
+  /* Write output */
+  cpdf_toFile(merged, "merged.pdf", false, false);
+
+  /* Check the error state */
+  if (cpdf_lastError) return 1;
+
+  return 0;
+}
 \end{verbatim}
 \end{small}
 
 \backmatter
-\printindex
+%\printindex
 \end{document}
 

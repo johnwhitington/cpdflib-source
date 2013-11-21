@@ -16,7 +16,10 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 test:   libcpdf.a cpdflibtest.c
 	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf
 
+simpletest:   libcpdf.a simpletest.c
+	cc simpletest.c -o simpletest -L. -lcpdf
+
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a cpdflibtest *.aux *.idx \
-*.log *.out *.toc; rm -r testoutputs
+*.log *.out *.toc simpletest merged.pdf; rm -r testoutputs
 
