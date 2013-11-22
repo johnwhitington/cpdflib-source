@@ -7,17 +7,18 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ocamlfind ocamlc cpdflibwrapper.c;
 	ocamlfind ocamlopt -I $(CAMLBASE)cpdf -I $(CAMLBASE)camlpdf \
           -output-obj -o cpdflib.o \
-          camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
+          unix.cmxa bigarray.cmxa camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
 	cp $(CAMLBASE)ocaml/libasmrun.a libcpdf.a;
+	cp $(CAMLBASE)ocaml/libunix.a .;
+	cp $(CAMLBASE)ocaml/libbigarray.a .;
 	ar -x $(CAMLBASE)camlpdf/libcamlpdf_stubs.a;
-	ar -x $(CAMLBASE)cpdf/libcpdf_stubs.a;
 	ar r libcpdf.a *.o 
 
 test:   libcpdf.a cpdflibtest.c
-	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf
+	cc cpdflibtest.c -o cpdflibtest -L. -lcpdf -lbigarray -lunix
 
 simpletest:   libcpdf.a simpletest.c
-	cc simpletest.c -o simpletest -L. -lcpdf
+	cc simpletest.c -o simpletest -L. -lcpdf -lbigarray -lunix
 
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a cpdflibtest *.aux *.idx \
