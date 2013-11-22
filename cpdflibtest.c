@@ -6,8 +6,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-
-
 int main (int argc, char ** argv)
 {
   mkdir("testoutputs", 0777);
@@ -200,7 +198,8 @@ int main (int argc, char ** argv)
   printf("getBookmarkLevel()\n");
   printf("getBookmarkPage()\n");
   printf("getBookmarkText()\n");
-  for (int x = 0; x < num_bookmarks; x++)
+  int x = 0;
+  for (x = 0; x < num_bookmarks; x++)
   {
     printf("Bookmark at level %i points to page %i and has text %s\n",
       cpdf_getBookmarkLevel(x),
@@ -246,9 +245,10 @@ int main (int argc, char ** argv)
   int rl = cpdf_rangeLength(r20);
   printf("range has length %i\n", rl);
   printf("rangeGet()\n");
-  for (int x = 0; x < rl; x++)
+  int x2;
+  for (x2 = 0; x2 < rl; x2++)
   {
-    printf("at position %i the value is %i\n", x, cpdf_rangeGet(r20, x));
+    printf("at position %i the value is %i\n", x2, cpdf_rangeGet(r20, x2));
   };
 
   printf("Delete the pdf\n");
@@ -331,13 +331,14 @@ int main (int argc, char ** argv)
   printf("addTextReturnY()\n");
   printf("addTextReturnRotation()\n");
   printf("addTextReturnBaselineAdjustment()\n");
-  for (int x = 1; x <= bits; x++)
+  int x3;
+  for (x3 = 1; x3 <= bits; x3++)
   {
     printf("Text is %s, x is %f, y is %f, rotation = %f, baseline = %f\n",
-      cpdf_addTextReturnText(x),
-      cpdf_addTextReturnX(x),
-      cpdf_addTextReturnY(x),
-      cpdf_addTextReturnRotation(x),
+      cpdf_addTextReturnText(x3),
+      cpdf_addTextReturnX(x3),
+      cpdf_addTextReturnY(x3),
+      cpdf_addTextReturnRotation(x3),
       cpdf_addTextReturnBaselineAdjustment());
   };
 
@@ -389,13 +390,14 @@ int main (int argc, char ** argv)
   printf("getFontName()\n");
   printf("getFontType()\n");
   printf("getFontEncoding()\n");
-  for (int x = 0; x < numfonts; x++)
+  int x4;
+  for (x4 = 0; x4 < numfonts; x4++)
   {
     printf("Page %i, font %s has type %s and encoding %s\n",
-      cpdf_getFontPage(x),
-      cpdf_getFontName(x),
-      cpdf_getFontType(x),
-      cpdf_getFontEncoding(x));
+      cpdf_getFontPage(x4),
+      cpdf_getFontName(x4),
+      cpdf_getFontType(x4),
+      cpdf_getFontEncoding(x4));
   };
   printf("endGetFontInfo()");
   cpdf_endGetFontInfo();
@@ -543,9 +545,10 @@ int main (int argc, char ** argv)
   int numatt = cpdf_numberGetAttachments();
   printf("There are %i attachements to get\n", numatt);
   printf("getAttachmentName()\n");
-  for (int x = 0; x < numatt; x++)
+  int x5;
+  for (x5 = 0; x5 < numatt; x5++)
   {
-    printf("Attachment %i is named %s\n", x, cpdf_getAttachmentName(x));
+    printf("Attachment %i is named %s\n", x5, cpdf_getAttachmentName(x5));
   };
   printf("endGetAttachments()\n");
   cpdf_endGetAttachments();
