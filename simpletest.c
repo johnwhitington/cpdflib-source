@@ -1,3 +1,4 @@
+/* Very simple test. Requires a file "hello.pdf" in the CWD */
 #include <stdbool.h>
 #include "cpdflibwrapper.h"
 
