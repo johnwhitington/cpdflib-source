@@ -22,5 +22,5 @@ simpletest:   libcpdf.a simpletest.c
 
 clean:
 	rm -f __.SYMDEF\ SORTED *.o *.cmx *.cmi *.a cpdflibtest *.aux *.idx \
-*.log *.out *.toc simpletest merged.pdf; rm -r testoutputs
+*.log *.out *.toc simpletest merged.pdf; rm -rf testoutputs
 
