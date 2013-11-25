@@ -5,8 +5,8 @@ mklib: cpdflib.mli cpdflib.ml cpdflibwrapper.c
 	ocamlfind ocamlc -package cpdf cpdflib.mli;
 	ocamlfind ocamlopt -package cpdf -c cpdflib.ml;
 	ocamlfind ocamlc cpdflibwrapper.c;
-	ocamlfind ocamlopt -I $(CAMLBASE)cpdf -I $(CAMLBASE)camlpdf \
-          -output-obj -o cpdflib.o \
+	ocamlfind ocamlopt -verbose -I $(CAMLBASE)cpdf -I $(CAMLBASE)camlpdf \
+          -output-obj -o mainlib.o \
           unix.cmxa bigarray.cmxa camlpdf.cmxa cpdf.cmxa cpdflib.cmx;
 	cp $(CAMLBASE)ocaml/libasmrun.a libcpdf.a;
 	cp $(CAMLBASE)ocaml/libunix.a .;
