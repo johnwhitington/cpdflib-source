@@ -1,5 +1,7 @@
 /* cpdflibtest.c */
 /* Uses every function in cpdflibwrapper.h */
+/* TODO: Find nicer example files, such that each effect is visible and
+ * suitable */
 #include <stdio.h>
 #include <stdbool.h>
 #include "cpdflibwrapper.h"

@@ -4,7 +4,7 @@
 
 int main (int argc, char ** argv)
 {
-  /* Initialist cpdf. */
+  /* Initialise cpdf */
   cpdf_startup(argv);
 
   /* Clear the error state */
