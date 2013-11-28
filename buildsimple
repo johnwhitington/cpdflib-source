@@ -1,6 +1,6 @@
 #!/bin/bash
 cfiles=(cpdflibwrapper)
-finalcfile=cpdflibtest
+finalcfile=simpletest
 libname=cpdf
 mlfiles=(cpdflib)
 mlifiles=(cpdflib)
