@@ -10,7 +10,6 @@
 
 int main (int argc, char ** argv)
 {
-  mkdir("testoutputs", 0777);
   /* 0. Initialization */
   printf("***** 0. Initialisation\n\n");
 
