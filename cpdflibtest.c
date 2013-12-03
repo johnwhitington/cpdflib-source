@@ -599,7 +599,6 @@ int main (int argc, char ** argv)
   printf("replacePdf()\n");
   cpdf_replacePdf(pl, toreplace);
 
-  cpdf_deletePdf(toreplace); //FIXME - replacePdf not doing the right thing here. Also, why is it here?
   cpdf_deletePdf(pl);
   cpdf_deleteRange(pl_all);
 

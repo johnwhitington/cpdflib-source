@@ -340,7 +340,10 @@ let deletePdf i =
 (* Replace a PDF under the same pdf number *)
 let replacePdf x y =
   if !dbg then flprint "Cpdflib.replacePdf\n";
-  try replace_pdf x (lookup_pdf y) with e -> handle_error "replacePdf" e; err_unit
+  try
+    replace_pdf x (lookup_pdf y);
+    delete_pdf y
+  with e -> handle_error "replacePdf" e; err_unit
 
 let flatten_encryptionKind = function
   | None | Some Pdfwrite.AlreadyEncrypted -> 0
