@@ -232,13 +232,13 @@ int main (int argc, char ** argv)
   printf("removeDuplicates()\n");
   int r8 = cpdf_removeDuplicates(r7);
   printf("isInRange()\n");
-  int isinrange = cpdf_isInRange(r8, 4);
+  cpdf_isInRange(r8, 4);
   printf("all()\n");
   int allrange = cpdf_all(book);
   printf("rangeLength()\n");
-  int l = cpdf_rangeLength(r3);
+  cpdf_rangeLength(r3);
   printf("rangeGet()\n");
-  int l1 = cpdf_rangeGet(r3, 1);
+  cpdf_rangeGet(r3, 1);
 
   printf("rangeAdd()\n");
   int r20 = cpdf_rangeAdd(r3, 15);
@@ -523,7 +523,7 @@ int main (int argc, char ** argv)
   cpdf_toFile(fonts, "testoutputs/metadata2.pdf", false, false);
   int metadata_length;
   printf("getMetadata()\n");
-  void* metadata = cpdf_getMetadata(fonts, &metadata_length);
+  cpdf_getMetadata(fonts, &metadata_length);
   printf("removeMetadata()\n");
   cpdf_removeMetadata(fonts);
 

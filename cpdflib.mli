@@ -262,3 +262,6 @@ val copyId : pdf -> int -> unit
 
 val addPageLabels : pdf -> int -> string -> int -> int -> unit
 
+(* Squeeze. Takes in filename, out filename, returns percentage it managed. *)
+val squeeze : string -> string -> float
+

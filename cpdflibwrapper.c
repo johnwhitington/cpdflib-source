@@ -2295,3 +2295,16 @@ void cpdf_abortUpdate(int i)
   updateLastError();
   CAMLreturn0;
 }
+
+double cpdf_squeeze(char* infile, char* outfile)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, strinfile, stroutfile, out);
+  fn = *caml_named_value("squeeze");
+  strinfile = caml_copy_string(infile);
+  stroutfile = caml_copy_string(outfile);
+  out = caml_callback2(fn, strinfile, stroutfile);
+  updateLastError ();
+  CAMLreturnT(double, Double_val(out));
+}
+
