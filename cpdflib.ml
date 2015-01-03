@@ -441,7 +441,8 @@ let copy_pdf from =
    Pdf.minor = from.Pdf.minor;
    Pdf.root = from.Pdf.root;
    Pdf.objects = from.Pdf.objects;
-   Pdf.trailerdict = from.Pdf.trailerdict}
+   Pdf.trailerdict = from.Pdf.trailerdict;
+   Pdf.saved_encryption = from.Pdf.saved_encryption}
 
 let deep_copy_pdf = Pdf.deep_copy
 
@@ -703,11 +704,11 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
     e -> handle_error "toFileEncrypted" e; err_unit
 
 let toFileRecrypting original decrypted_and_modified userpw filename =
-  if !dbg then flprint "Cpdflib.toFileRecrypting\n";
-  try
+  if !dbg then flprint "Cpdflib.toFileRecrypting\n"(*;*)
+  (*try
     Pdfwrite.pdf_to_file_recrypting (lookup_pdf original) (lookup_pdf decrypted_and_modified) userpw filename
   with
-    e -> handle_error "toFileRecrypting" e; err_unit
+    e -> handle_error "toFileRecrypting" e; err_unit*)
 
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
@@ -1053,18 +1054,18 @@ let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
 let stampOn pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampOn\n";
+  if !dbg then flprint "Cpdflib.stampOn\n"(*;
   try
     update_pdf (Cpdf.stamp false false true (Array.to_list (lookup_range range)) (lookup_pdf pdf) (lookup_pdf pdf2)) (lookup_pdf pdf2)
   with
-    e -> handle_error "stampOn" e; err_unit
+    e -> handle_error "stampOn" e; err_unit*)
 
 let stampUnder pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampUnder\n";
+  if !dbg then flprint "Cpdflib.stampUnder\n"(*;
   try
     update_pdf (Cpdf.stamp false false false (Array.to_list (lookup_range range)) (lookup_pdf pdf) (lookup_pdf pdf2)) (lookup_pdf pdf2)
   with
-    e -> handle_error "stampUnder" e; err_unit
+    e -> handle_error "stampUnder" e; err_unit*)
 
 let combinePages pdf pdf2 =
   if !dbg then flprint "Cpdflib.combinePages\n";
@@ -1544,9 +1545,9 @@ let setMetadataFromByteArray pdf bytes =
     e -> handle_error "setMetadataFromByteArray" e; err_unit
 
 let getMetadata pdf =
-  if !dbg then flprint "Cpdflib.getMetadata\n";
+  if !dbg then flprint "Cpdflib.getMetadata\n"; (*;
   try Pdfio.raw_of_bytes (Cpdf.get_metadata (lookup_pdf pdf)) with
-    e -> handle_error "getMetadata" e; err_data
+    e -> handle_error "getMetadata" e;*) err_data
 
 let removeMetadata pdf =
   if !dbg then flprint "Cpdflib.removeMetadata\n";
@@ -1831,7 +1832,7 @@ let _ = Callback.register "thinLines" thinLines
 let _ = Callback.register "copyId" copyId
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
-let addPageLabels pdf style prefix offset range =
+let addPageLabels pdf style prefix offset range =(*
   if !dbg then flprint "Cpdflib.addPageLabels\n";
   try
     let style =
@@ -1847,7 +1848,7 @@ let addPageLabels pdf style prefix offset range =
     in
       Cpdf.add_page_labels (lookup_pdf pdf) style prefix offset (Array.to_list (lookup_range range))
   with
-    e -> handle_error "addPageLabels" e; err_unit
+    e -> handle_error "addPageLabels" e;*) err_unit
 
 let _ = Callback.register "addPageLabels" addPageLabels
 
