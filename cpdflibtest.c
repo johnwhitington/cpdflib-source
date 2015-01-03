@@ -644,6 +644,10 @@ int main (int argc, char ** argv)
   
   cpdf_deletePdf(enctest);
 
+  double perc = cpdf_squeeze("testinputs/london.pdf", "testoutputs/squeezed.pdf");
+
+  printf("Squeezed to %f\n", perc);
+
   cpdf_onExit();
 
   printf("*****Tests finished\n");
