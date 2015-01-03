@@ -442,7 +442,8 @@ let copy_pdf from =
    Pdf.root = from.Pdf.root;
    Pdf.objects = from.Pdf.objects;
    Pdf.trailerdict = from.Pdf.trailerdict;
-   Pdf.saved_encryption = from.Pdf.saved_encryption}
+   Pdf.saved_encryption = from.Pdf.saved_encryption;
+   Pdf.was_linearized = from.Pdf.was_linearized}
 
 let deep_copy_pdf = Pdf.deep_copy
 
@@ -733,7 +734,6 @@ let mergeSimple (pdfarr : pdfdoc array) pdfnums =
   | _ ->
       let pdfs = Array.to_list pdfarr in
         Pdfmerge.merge_pdfs
-          ~rotations:(many Pdfmerge.DNR (length pdfs))
           true false (map string_of_int (ilist 1 (length pdfs))) pdfs
           (map list_all (Array.to_list pdfnums))
 
@@ -750,7 +750,6 @@ let merge pdfarr retain_numbering remove_duplicate_fonts rawpdfs =
   | _ ->
       let pdfs = Array.to_list pdfarr in
         Pdfmerge.merge_pdfs
-          ~rotations:(many Pdfmerge.DNR (length pdfs))
           retain_numbering remove_duplicate_fonts (map string_of_int (ilist 1 (length pdfs)))
           pdfs (map list_all rawpdfs) 
 
@@ -768,7 +767,7 @@ let mergeSameRange pdfarr retain_numbering remove_duplicate_fonts (names : strin
     then raise (Failure "merge_same: incorrect array lengths");
   let pdfs = Array.to_list pdfarr
   and names = Array.to_list names in
-    Pdfmerge.merge_pdfs ~rotations:(many Pdfmerge.DNR (length pdfs)) retain_numbering remove_duplicate_fonts names pdfs ranges 
+    Pdfmerge.merge_pdfs retain_numbering remove_duplicate_fonts names pdfs ranges 
 
 let mergeSame pdfs retain_numbering remove_duplicate_fonts ranges =
   if !dbg then flprint "Cpdflib.mergeSame\n";
