@@ -1862,7 +1862,7 @@ let _ = Callback.register "onexit" onexit
 
 let squeeze file_in file_out =
   Cpdfcommand.go_withargv
-   [|"cpdf"; file_in; "-squeeze"; "-o"; file_out|];
+   [|"cpdf"; file_in; "-squeeze"; "-recrypt"; "-o"; file_out|];
   27.4
 
 let _ = Callback.register "squeeze" squeeze
