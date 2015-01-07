@@ -854,5 +854,5 @@ int cpdf_undo(int);
 int cpdf_redo(int);
 
 /* Squeeze */
-double cpdf_squeeze(char*, char*);
+double cpdf_squeeze(char*, char*, char*);
 

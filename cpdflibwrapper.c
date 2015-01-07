@@ -2296,14 +2296,15 @@ void cpdf_abortUpdate(int i)
   CAMLreturn0;
 }
 
-double cpdf_squeeze(char* infile, char* outfile)
+double cpdf_squeeze(char* logfile, char* infile, char* outfile)
 {
   CAMLparam0 ();
-  CAMLlocal4 (fn, strinfile, stroutfile, out);
+  CAMLlocal5 (fn, strlogfile, strinfile, stroutfile, out);
   fn = *caml_named_value("squeeze");
   strinfile = caml_copy_string(infile);
   stroutfile = caml_copy_string(outfile);
-  out = caml_callback2(fn, strinfile, stroutfile);
+  strlogfile = caml_copy_string(logfile);
+  out = caml_callback3(fn, strlogfile, strinfile, stroutfile);
   updateLastError ();
   CAMLreturnT(double, Double_val(out));
 }
