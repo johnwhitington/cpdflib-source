@@ -1860,11 +1860,23 @@ let onexit () =
 
 let _ = Callback.register "onexit" onexit
 
-let squeeze log_file file_in file_out =
-  Cpdfcommand.go_withargv
-    [|"cpdf"; file_in; "-stay-on-error"; "-squeeze-log-to"; log_file;
-      "-squeeze"; "-recrypt"; "-o"; file_out|];
-  27.4
+let squeeze userpw log_file file_in file_out =
+  try
+    Cpdfcommand.go_withargv
+      [|"cpdf";
+        file_in;
+        "user=" ^ userpw;
+        "-stay-on-error";
+        "-squeeze-log-to"; log_file;
+        "-squeeze";
+        "-recrypt";
+        "-o"; file_out|];
+    flprint "Cpdflib.squeeze. go_withargv finished; return 0\n";
+    0
+  with
+    Cpdfcommand.StayOnError ->
+      flprint "Cpdflib.squeeze. StayOnError caught: return 1\n";
+      1
 
 let _ = Callback.register "squeeze" squeeze
 
