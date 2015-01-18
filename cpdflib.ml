@@ -1871,12 +1871,9 @@ let squeeze userpw log_file file_in file_out =
         "-squeeze";
         "-recrypt";
         "-o"; file_out|];
-    flprint "Cpdflib.squeeze. go_withargv finished; return 0\n";
     0
   with
-    Cpdfcommand.StayOnError ->
-      flprint "Cpdflib.squeeze. StayOnError caught: return 1\n";
-      1
+    Cpdfcommand.StayOnError -> 1
 
 let _ = Callback.register "squeeze" squeeze
 
