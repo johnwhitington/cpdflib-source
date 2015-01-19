@@ -856,3 +856,5 @@ int cpdf_redo(int);
 /* Squeeze */
 int cpdf_squeeze(char*, char*, char*, char*);
 
+int is_linearized(char*);
+

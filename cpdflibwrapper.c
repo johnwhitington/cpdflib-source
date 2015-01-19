@@ -2311,3 +2311,13 @@ int cpdf_squeeze(char* userpw, char* logfile, char* infile, char* outfile)
   CAMLreturnT(int, Int_val(out));
 }
 
+int is_linearized(char* filename)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (filename_v, fn, out_v);
+  filename_v = caml_copy_string(filename);
+  fn = *caml_named_value("is_linearized");
+  out_v = caml_callback(fn, filename_v);
+  CAMLreturnT(int, Int_val(out_v));
+}
+

@@ -648,6 +648,9 @@ int main (int argc, char ** argv)
 
   printf("Squeezed to %f\n", perc);
 
+  int lin = is_linearized("testinputs/london.pdf");
+
+  printf("linearized: %i\n", lin);
   cpdf_onExit();
 
   printf("*****Tests finished\n");

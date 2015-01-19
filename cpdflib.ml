@@ -1877,3 +1877,11 @@ let squeeze userpw log_file file_in file_out =
 
 let _ = Callback.register "squeeze" squeeze
 
+let is_linearized filename =
+  let ch = open_in_bin filename in
+    let r = Pdfread.is_linearized (Pdfio.input_of_channel ch) in
+      close_in ch;
+      r
+
+let _ = Callback.register "is_linearized" is_linearized
+
