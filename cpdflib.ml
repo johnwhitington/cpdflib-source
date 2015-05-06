@@ -1141,8 +1141,9 @@ let addText_inner
     let newpdf =
       (Cpdf.addtexts
          metrics
-         1.0 outline false fontname (Some font) bates color position linespacing fontsize
-         underneath text (Array.to_list range) Cpdf.Horizontal cropbox opacity justification midline filename pdf)
+         1.0 outline false fontname (Some font) false (* embed font FIXME *)bates color position linespacing fontsize
+         underneath text (Array.to_list range) Cpdf.Horizontal cropbox opacity
+         justification midline false (* topline. FIXME *) filename pdf)
     in
       if not metrics then
         begin
