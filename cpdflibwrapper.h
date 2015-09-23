@@ -23,8 +23,8 @@ void cpdf_setDemo(int);
  * gives details. If cpdf_lastError is zero, there was no error on the most
  * recent cpdf call.
 */
-int cpdf_lastError;
-char* cpdf_lastErrorString;
+extern int cpdf_lastError;
+extern char* cpdf_lastErrorString;
 
 /** Clear the current error state. */
 void cpdf_clearError (void);
