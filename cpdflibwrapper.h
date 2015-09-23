@@ -96,11 +96,11 @@ double cpdf_inOfPt (double);
 /* Parse a page specification with reference to a given PDF (the PDF is
  * supplied so that page ranges which reference pages which do not exist are
  * rejected). */
-int cpdf_parsePagespec(int, char*);
+int cpdf_parsePagespec(int, const char[]);
 
 /* Validates a page specification so far as is possible in the absence of the
  * actual document */
-int cpdf_validatePagespec(char *);
+int cpdf_validatePagespec(const char[]);
 
 /* Build a page specification from a page range. For example, the range
  * containing 1,2,3,6,7,8 in a document of 8 pages might yield "1-3,6-end" */
@@ -152,14 +152,14 @@ int cpdf_isInRange(int, int);
 /* Load a PDF file from a given file. Also supply a user password (possibly
  * blank) in case the file is encypted. It won't be decrypted, but sometimes
  * the password is needed just to load the file. */
-int cpdf_fromFile(char*, char*);
+int cpdf_fromFile(const char[], const char[]);
 
 /* Load a PDF from a file, doing only minimal parsing. The objects will be read
  * and parsed when they are actually needed. Use this when the whole file won't
  * be required. Also supply a user password (possibly blank) in case the file
  * is encypted. It won't be decrypted, but sometimes the password is needed
  * just to load the file. */
-int cpdf_fromFileLazy(char*, char*);
+int cpdf_fromFileLazy(const char[], const char[]);
 
 /* Create a blank document with pages of the given width (in points), height
  * (in points), and number of pages. */
@@ -193,12 +193,12 @@ int cpdf_pages(int);
 /* Return the number of pages in a given PDF, with given user encryption
  * password.  cpdf_pagesFast(password, filename) tries to do this as fast as
  * possible, without loading the whole file. */
-int cpdf_pagesFast(char*, char*);
+int cpdf_pagesFast(const char[], const char[]);
 
 /* cpdf_toFile (pdf, filename, linearize, make_id) writes the file to a given
  * filename. If linearize is true, it will be linearized. If make_id is true,
  * it will be given a new ID. */
-void cpdf_toFile(int, char*, int, int);
+void cpdf_toFile(int, const char[], int, int);
 
 /* The range containing all the pages in a given document */
 int cpdf_all(int);
@@ -208,11 +208,11 @@ int cpdf_isEncrypted(int);
 
 /* Attempt to decrypt a PDF using the given user password. The error code is
  * non-zero if the decryption fails. */
-void cpdf_decryptPdf(int, char*);
+void cpdf_decryptPdf(int, const char[]);
 
 /* Attempt to decrypt a PDF using the given owner password. The error code is
  * non-zero if the decryption fails. */
-void cpdf_decryptPdfOwner(int, char*);
+void cpdf_decryptPdfOwner(int, const char[]);
 
 /* File permissions. These are inverted, in the sense that the presence of one
  * of them indicates a restriction. */
@@ -250,7 +250,7 @@ enum cpdf_encryptionMethod
     makeid,                If true, make a new ID
     filename)              Filename
 */
-void cpdf_toFileEncrypted(int, int, int*, int, char*, char*, int, int, char*);
+void cpdf_toFileEncrypted(int, int, int*, int, const char[], const char[], int, int, const char[]);
 
 /* Write a modified file, re-encrypting it.
 
@@ -262,7 +262,7 @@ filename is the name of the file to write.
 
 The PDF 'modified' is no longer usable and can be deleted.
 */
-void cpdf_toFileRecrypting(int, int, char*, char*);
+void cpdf_toFileRecrypting(int, int, const char[], const char[]);
 
 /* Return true if the given permission (restriction) is present. */
 int cpdf_hasPermission(int, enum cpdf_permission);
@@ -515,7 +515,7 @@ void cpdf_addText
   (int /** If true, don't actually add text but collect metrics. */,
    int /** Document */,
    int /** Page Range */,
-   char* /** The text to add */,
+   const char[] /** The text to add */,
    struct cpdf_position /** Position to add text at */,
    double /** Linespacing, 1.0 = normal */,
    int /** Starting Bates number */,
@@ -530,7 +530,7 @@ void cpdf_addText
    double /** Opacity, 1.0 = opaque, 0.0 = wholly transparent */,
    enum cpdf_justification /** Justification */,
    int /** If true, position is relative to midline of text, not baseline */,
-   char* /** filename that this document was read from (optional) */
+   const char[] /** filename that this document was read from (optional) */
   );
 
 /* To return metrics about the text which would be added. Call cpdf_addText
@@ -551,7 +551,7 @@ void cpdf_removeText(int, int);
 
 /* Return the width of a given string in the given font in thousandths of a
  * point. */
-int cpdf_textWidth (enum cpdf_font, char*);
+int cpdf_textWidth (enum cpdf_font, const char[]);
 
 
 /* CHAPTER 9. Multipage facilities */
@@ -589,7 +589,7 @@ void cpdf_endGetFontInfo(void);
 
 /* Find out if a document is linearized as quickly as possible without loading
  * it. */
-int cpdf_isLinearized(char*);
+int cpdf_isLinearized(const char[]);
 
 /* Return the minor version number of a document. */
 int cpdf_getVersion(int);
@@ -622,28 +622,28 @@ char* cpdf_getModificationDate(int);
 void cpdf_setVersion(int, int);
 
 /* Set the title of a document from a UTF8 encoded string */
-void cpdf_setTitle(int, char*);
+void cpdf_setTitle(int, const char[]);
 
 /* Set the author of a document from a UTF8 encoded string */
-void cpdf_setAuthor(int, char*);
+void cpdf_setAuthor(int, const char[]);
 
 /* Set the subject of a document from a UTF8 encoded string */
-void cpdf_setSubject(int, char*);
+void cpdf_setSubject(int, const char[]);
 
 /* Set the keywords of a document from a UTF8 encoded string */
-void cpdf_setKeywords(int, char*);
+void cpdf_setKeywords(int, const char[]);
 
 /* Set the creator of a document from a UTF8 encoded string */
-void cpdf_setCreator(int, char*);
+void cpdf_setCreator(int, const char[]);
 
 /* Set the producer of a document from a UTF8 encoded string */
-void cpdf_setProducer(int, char*);
+void cpdf_setProducer(int, const char[]);
 
 /* Set the creation date of a document from a UTF8 encoded string */
-void cpdf_setCreationDate(int, char*);
+void cpdf_setCreationDate(int, const char[]);
 
 /* Set the modification date of a document from a UTF8 encoded string */
-void cpdf_setModificationDate(int, char*);
+void cpdf_setModificationDate(int, const char[]);
 
 /* Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
  * h_offset is the offset from UT in hours (-23 to 23); h_offset is the offset
@@ -651,7 +651,7 @@ void cpdf_setModificationDate(int, char*);
 
 /* cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
  * hour_offset, minute_offset) returns the components from a PDF date string. */
-void cpdf_getDateComponents(char*, int*, int*, int*, int*, int*, int*, int*, int*);
+void cpdf_getDateComponents(const char[], int*, int*, int*, int*, int*, int*, int*, int*);
 
 /* cpdf_dateStringOfComponents(year, month, day, hour, minute, second,
  * hour_offset, minute_offset) builds a PDF date string from individual
@@ -660,7 +660,7 @@ char* cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
 
 /* cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
  * given box. E.g "/CropBox" */
-int cpdf_hasBox(int, int, char*);
+int cpdf_hasBox(int, int, const char[]);
 
 /* Get a box given the document, page range, min x, max x, min y, max y in
  * points. Only suceeds if such a box exists, as checked by cpdf_hasBox */
@@ -726,7 +726,7 @@ void cpdf_centerWindow(int, int);
 void cpdf_displayDocTitle(int, int);
 
 /* Set the XML metadata of a document, given a file name */
-void cpdf_setMetadataFromFile(int, char*);
+void cpdf_setMetadataFromFile(int, const char[]);
 
 /* Set the XML metadata from a byte array. cpdf_setMetadataFromByteArray(pdf,
  * data, length) uses length characters from data. */
@@ -744,11 +744,11 @@ void cpdf_removeMetadata(int);
 
 /* Attach a file, given its file name, and the pdf. It is attached at document
  * level. */
-void cpdf_attachFile(char*, int);
+void cpdf_attachFile(const char[], int);
 
 /* Attach a file, given its file name, pdf, and the page number to which it
  * should be attached. */
-void cpdf_attachFileToPage(char*, int, int);
+void cpdf_attachFileToPage(const char[], int, int);
 
 /* Remove all page- and document-level attachments from a document */
 void cpdf_removeAttachedFiles(int);
@@ -803,7 +803,7 @@ The prefix is prefix text for each label. The range is the page range the
 labels apply to. Offset can be used to shift the numbering up or down.
 
 */
-void cpdf_addPageLabels(int, enum cpdf_pageLabelStyle, char*, int, int);
+void cpdf_addPageLabels(int, enum cpdf_pageLabelStyle, const char[], int, int);
 
 
 /* Special functionality 1. -- Encryption and Permission status */
@@ -854,7 +854,7 @@ int cpdf_undo(int);
 int cpdf_redo(int);
 
 /* Squeeze */
-int cpdf_squeeze(char*, char*, char*, char*);
+int cpdf_squeeze(const char[], const char[], const char[], const char[]);
 
-int is_linearized(char*);
+int is_linearized(const char[]);
 
