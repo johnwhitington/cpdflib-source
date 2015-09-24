@@ -383,6 +383,18 @@ int cpdf_fromFile(char* filename, char* userpw)
   CAMLreturnT(int, Int_val(result_v));
 }
 
+int cpdf_fromMemory(void* data, int len, char* userpw)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (pdf_v, bytestream, fn, userpw_v);
+  bytestream = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromMemory");
+  userpw_v = caml_copy_string(userpw);
+  pdf_v = caml_callback2(fn, userpw_v, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
 int cpdf_fromFileLazy(char* filename, char* userpw)
 {
   CAMLparam0 ();
@@ -393,6 +405,18 @@ int cpdf_fromFileLazy(char* filename, char* userpw)
   result_v = caml_callback2(fromfile_v, filename_v, userpw_v);
   updateLastError();
   CAMLreturnT(int, Int_val(result_v));
+}
+
+int cpdf_fromMemoryLazy(void* data, int len, char* userpw)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (pdf_v, bytestream, fn, userpw_v);
+  bytestream = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromMemoryLazy");
+  userpw_v = caml_copy_string(userpw);
+  pdf_v = caml_callback2(fn, userpw_v, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
 }
 
 int cpdf_blankDocument(double width, double height, int pages)
@@ -474,6 +498,30 @@ void cpdf_toFile(int pdf, char* filename, int linearize, int make_id)
   unit = caml_callbackN(fn, 4, args);
   updateLastError();
   CAMLreturn0;
+}
+
+void* cpdf_toFileMemory(int pdf, int linearize, int make_id, int *retlen)
+{
+  CAMLparam0 ();
+  CAMLlocal5 (fn, bytestream, pdf_v, linearize_v, make_id_v);
+  fn = *caml_named_value("toFileMemory");
+  pdf_v = Val_int(pdf);
+  linearize_v = Val_bool(linearize);
+  make_id_v = Val_bool(make_id_v);
+  bytestream = caml_callback3(fn, pdf_v, linearize_v, make_id_v);
+  updateLastError();
+  char* memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("toFileMemory: failed");
+  if (size > 0)
+  {
+    int x;
+    char* indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) { memory[x] = indata[x]; };
+  }
+  *retlen = size;
+  CAMLreturnT(void*, memory);
 }
 
 int cpdf_all(int pdf)
@@ -2309,6 +2357,29 @@ int cpdf_squeeze(char* userpw, char* logfile, char* infile, char* outfile)
   out = caml_callbackN(fn, 4, args);
   updateLastError ();
   CAMLreturnT(int, Int_val(out));
+}
+
+void* cpdf_squeezeToMemory(char* userpw, int pdf, int *retlen)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, bytestream, userpw_v, pdf_v);
+  fn = *caml_named_value("squeezeToMemory");
+  pdf_v = Val_int(pdf);
+  userpw_v = caml_copy_string(userpw);
+  bytestream = caml_callback2(fn, userpw_v, pdf_v);
+  updateLastError ();
+  char* memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("squeezeToMemory: failed");
+  if (size > 0)
+  {
+    int x;
+    char* indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) { memory[x] = indata[x]; };
+  }
+  *retlen = size;
+  CAMLreturnT(void*, memory);
 }
 
 int is_linearized(char* filename)

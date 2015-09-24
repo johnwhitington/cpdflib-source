@@ -161,6 +161,14 @@ int cpdf_fromFile(const char[], const char[]);
  * just to load the file. */
 int cpdf_fromFileLazy(const char[], const char[]);
 
+/* Load a file from memory, given a pointer and a length, and the user password.
+ * Just like cpdf_fromFile */
+int cpdf_fromMemory(void*, int, const char[]);
+
+/* Load a file from memory lazily, just like cpdf_fromFileLazy, given a pointer,
+its length, and password */
+int cpdf_fromMemoryLazy(void*, int, const char[]);
+
 /* Create a blank document with pages of the given width (in points), height
  * (in points), and number of pages. */
 int cpdf_blankDocument(double, double, int);
@@ -199,6 +207,10 @@ int cpdf_pagesFast(const char[], const char[]);
  * filename. If linearize is true, it will be linearized. If make_id is true,
  * it will be given a new ID. */
 void cpdf_toFile(int, const char[], int, int);
+
+/* Given a buffer of the correct size, cpdf_toFileMemory (pdf, linearize,
+ * make_id, &length) writes it and returns the buffer size */
+void* cpdf_toFileMemory(int, int, int, int*);
 
 /* The range containing all the pages in a given document */
 int cpdf_all(int);
@@ -750,8 +762,17 @@ void cpdf_attachFile(const char[], int);
  * should be attached. */
 void cpdf_attachFileToPage(const char[], int, int);
 
+/* cpdf_attachFileFromMemory(memory, length, filename, pdf) attaches from
+ * memory, just like cpdf_attachFile */
+void cpdf_attachFileFromMemory(void*, int, const char[], int);
+
+/* cpdf_attachFileToPageFromMemory(memory, length, filename, pdf, page number)
+ * attaches from memory, just like cpdf_attachFileToPage */
+void cpdf_attachFileToPageFromMemory(void*, int, const char[], int, int);
+
 /* Remove all page- and document-level attachments from a document */
 void cpdf_removeAttachedFiles(int);
+
 
 /* List information about attachments. Call cpdf_startGetAttachments first,
  * then cpdf_startGetAttachments to find out how many there are. Then
@@ -856,5 +877,10 @@ int cpdf_redo(int);
 /* Squeeze */
 int cpdf_squeeze(const char[], const char[], const char[], const char[]);
 
+/* Squeeze to memory. cpdf_squeezeToMemory(userpw, pdf, &length) squeezes a pdf to
+ * memory, returning it. */
+void* cpdf_squeezeToMemory(const char[], int, int*);
+
+/* Given a filename, is a PDF linearized? */
 int is_linearized(const char[]);
 

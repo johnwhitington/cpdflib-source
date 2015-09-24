@@ -532,6 +532,19 @@ let toFile pdf filename linearize make_id =
   with
     e -> handle_error "toFile" e; err_unit
 
+(* Write to memory. FIXME make_id does nothing *)
+let toFileMemory pdf linearize make_id =
+  if !dbg then flprint "Cpdflib.toFileMemory\n";
+  try
+    let pdf = lookup_pdf pdf in
+      Pdf.remove_unreferenced pdf;
+      let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
+        Pdfwrite.pdf_to_output linearize None (nobble pdf) o;
+        Pdfio.raw_of_bytes
+          (Pdfio.extract_bytes_from_input_output o bytes)
+  with
+    e -> handle_error "toFileMemory" e; err_data
+
 let blankDocument width height pages =
   if !dbg then flprint "Cpdflib.blankDocument\n";
   try new_pdf (Cpdf.blank_document width height pages) with
@@ -1546,9 +1559,13 @@ let setMetadataFromByteArray pdf bytes =
     e -> handle_error "setMetadataFromByteArray" e; err_unit
 
 let getMetadata pdf =
-  if !dbg then flprint "Cpdflib.getMetadata\n"; (*;
-  try Pdfio.raw_of_bytes (Cpdf.get_metadata (lookup_pdf pdf)) with
-    e -> handle_error "getMetadata" e;*) err_data
+  if !dbg then flprint "Cpdflib.getMetadata\n";
+  try
+    match Cpdf.get_metadata (lookup_pdf pdf) with
+      None -> err_data
+    | Some data -> Pdfio.raw_of_bytes data
+  with
+    e -> handle_error "getMetadata" e; err_data
 
 let removeMetadata pdf =
   if !dbg then flprint "Cpdflib.removeMetadata\n";
@@ -1877,7 +1894,12 @@ let squeeze userpw log_file file_in file_out =
   with
     Cpdfcommand.StayOnError -> 1
 
+let squeezeToMemory userpw pdf =
+  Pdfio.mkbytes 1
+
 let _ = Callback.register "squeeze" squeeze
+let _ = Callback.register "squeezeToMemory" squeezeToMemory
+
 
 let is_linearized filename =
   let ch = open_in_bin filename in
