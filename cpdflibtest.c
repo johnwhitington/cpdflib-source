@@ -34,6 +34,26 @@ int main (int argc, char ** argv)
   printf("toFile()\n");
   cpdf_toFile(pdf, "testoutputs/out.pdf", false, false);
 
+  printf("squeezeInMemory");
+  cpdf_squeezeInMemory(pdf);
+
+  printf("toMemory()\n");
+  int buflen;
+  void* buf = cpdf_toMemory(pdf, false, false, &buflen);
+  printf("Size in memory: %i\n", buflen);
+  FILE *fp;
+  fp = fopen("testoutputs/memoryout.pdf", "w");
+  fwrite(buf, 1, buflen, fp);
+  fclose(fp);
+
+  printf("fromMemory()\n");
+  int frommem = cpdf_fromMemory(buf, buflen, "");
+  cpdf_toFile(frommem, "testoutputs/fromMemory.pdf", false, false); 
+
+  printf("fromMemoryLazy()\n");
+  int frommemlazy = cpdf_fromMemoryLazy(buf, buflen, "");
+  cpdf_toFile(frommemlazy, "testoutputs/fromMemoryLazy.pdf", false, false); 
+
   printf("toFileEncrypted()\n");
   int permissions = {cpdf_noEdit};
   int encmethod = cpdf_pdf40bit;

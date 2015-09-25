@@ -209,8 +209,9 @@ int cpdf_pagesFast(const char[], const char[]);
 void cpdf_toFile(int, const char[], int, int);
 
 /* Given a buffer of the correct size, cpdf_toFileMemory (pdf, linearize,
- * make_id, &length) writes it and returns the buffer size */
-void* cpdf_toFileMemory(int, int, int, int*);
+make_id, &length) writes it and returns the buffer. The buffer length is filled
+in &length. */
+void* cpdf_toMemory(int, int, int, int*);
 
 /* The range containing all the pages in a given document */
 int cpdf_all(int);

@@ -1923,7 +1923,12 @@ let squeeze userpw log_file file_in file_out =
 
 (* Look up the pdf, squeeze it with Cpdf.squeeze *)
 let squeezeInMemory pdf =
-  Cpdf.squeeze ~logto:"nolog" pdf
+  if !dbg then flprint "Cpdflib.squeezeInMemory\n";
+  try
+    Cpdf.squeeze ~logto:"nolog" (lookup_pdf pdf);
+    update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+  with
+    e -> handle_error "squeezeInMemory" e; err_unit
 
 let _ = Callback.register "squeeze" squeeze
 let _ = Callback.register "squeezeInMemory" squeezeInMemory

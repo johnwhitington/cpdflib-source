@@ -390,7 +390,7 @@ int cpdf_fromMemory(void* data, int len, char* userpw)
   bytestream = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("fromMemory");
   userpw_v = caml_copy_string(userpw);
-  pdf_v = caml_callback2(fn, userpw_v, bytestream);
+  pdf_v = caml_callback2(fn, bytestream, userpw_v);
   updateLastError();
   CAMLreturnT(int, Int_val(pdf_v));
 }
@@ -414,7 +414,7 @@ int cpdf_fromMemoryLazy(void* data, int len, char* userpw)
   bytestream = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("fromMemoryLazy");
   userpw_v = caml_copy_string(userpw);
-  pdf_v = caml_callback2(fn, userpw_v, bytestream);
+  pdf_v = caml_callback2(fn, bytestream, userpw_v);
   updateLastError();
   CAMLreturnT(int, Int_val(pdf_v));
 }
@@ -500,7 +500,7 @@ void cpdf_toFile(int pdf, char* filename, int linearize, int make_id)
   CAMLreturn0;
 }
 
-void* cpdf_toFileMemory(int pdf, int linearize, int make_id, int *retlen)
+void* cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, bytestream, pdf_v, linearize_v, make_id_v);
@@ -513,7 +513,7 @@ void* cpdf_toFileMemory(int pdf, int linearize, int make_id, int *retlen)
   char* memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("toFileMemory: failed");
+  if (memory == NULL && size > 0) printf("toMemory: failed");
   if (size > 0)
   {
     int x;
