@@ -513,6 +513,18 @@ let fromFile filename userpw =
   with
     e -> handle_error "fromFile" e; err_int
 
+let fromMemory rawbytes userpw =
+  if !dbg then flprint "Cpdflib.fromMemory\n";
+  try
+    new_pdf
+      (Pdfread.pdf_of_input
+         (Some userpw)
+         None
+         (Pdfio.input_of_bytes
+         (Pdfio.bytes_of_raw rawbytes)))
+  with
+    e -> handle_error "fromMemory" e; err_int
+
 (* Same, but don't attempt to decrypt, and read it lazily. Use only when
 decryption not required at any time. *)
 let fromFileLazy filename userpw =
@@ -521,6 +533,18 @@ let fromFileLazy filename userpw =
     new_pdf (Pdfread.pdf_of_channel_lazy (Some userpw) None (open_in_bin filename))
   with
     e -> handle_error "fromFileLazy" e; err_int
+
+let fromMemoryLazy rawbytes userpw =
+  if !dbg then flprint "Cpdflib.fromMemoryLazy\n";
+  try
+    new_pdf
+      (Pdfread.pdf_of_input_lazy
+         (Some userpw)
+         None
+         (Pdfio.input_of_bytes
+         (Pdfio.bytes_of_raw rawbytes)))
+  with
+    e -> handle_error "fromMemoryLazy" e; err_int
 
 (* Simple full write to a file *)
 let toFile pdf filename linearize make_id =
@@ -726,9 +750,12 @@ let toFileRecrypting original decrypted_and_modified userpw filename =
 
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
+let _ = Callback.register "fromMemory" fromMemory
+let _ = Callback.register "fromMemoryLazy" fromMemoryLazy
 let _ = Callback.register "decryptPdf" decryptPdf
 let _ = Callback.register "decryptPdfOwner" decryptPdfOwner
 let _ = Callback.register "toFile" toFile
+let _ = Callback.register "toFileMemory" toFileMemory
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
 let _ = Callback.register "pages" pages
@@ -1894,12 +1921,12 @@ let squeeze userpw log_file file_in file_out =
   with
     Cpdfcommand.StayOnError -> 1
 
-let squeezeToMemory userpw pdf =
-  Pdfio.mkbytes 1
+(* Look up the pdf, squeeze it with Cpdf.squeeze *)
+let squeezeInMemory pdf =
+  Cpdf.squeeze ~logto:"nolog" pdf
 
 let _ = Callback.register "squeeze" squeeze
-let _ = Callback.register "squeezeToMemory" squeezeToMemory
-
+let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
 let is_linearized filename =
   let ch = open_in_bin filename in

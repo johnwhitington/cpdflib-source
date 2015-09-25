@@ -2359,27 +2359,15 @@ int cpdf_squeeze(char* userpw, char* logfile, char* infile, char* outfile)
   CAMLreturnT(int, Int_val(out));
 }
 
-void* cpdf_squeezeToMemory(char* userpw, int pdf, int *retlen)
+void cpdf_squeezeInMemory(int pdf)
 {
   CAMLparam0 ();
-  CAMLlocal4 (fn, bytestream, userpw_v, pdf_v);
-  fn = *caml_named_value("squeezeToMemory");
+  CAMLlocal3 (fn, pdf_v, unit_v);
+  fn = *caml_named_value("squeezeInMemory");
   pdf_v = Val_int(pdf);
-  userpw_v = caml_copy_string(userpw);
-  bytestream = caml_callback2(fn, userpw_v, pdf_v);
+  unit_v = caml_callback(fn, pdf_v);
   updateLastError ();
-  char* memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
-  memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("squeezeToMemory: failed");
-  if (size > 0)
-  {
-    int x;
-    char* indata = Data_bigarray_val(bytestream);
-    for (x = 0; x < size; x++) { memory[x] = indata[x]; };
-  }
-  *retlen = size;
-  CAMLreturnT(void*, memory);
+  CAMLreturn0;
 }
 
 int is_linearized(char* filename)

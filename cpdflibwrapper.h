@@ -877,9 +877,8 @@ int cpdf_redo(int);
 /* Squeeze */
 int cpdf_squeeze(const char[], const char[], const char[], const char[]);
 
-/* Squeeze to memory. cpdf_squeezeToMemory(userpw, pdf, &length) squeezes a pdf to
- * memory, returning it. */
-void* cpdf_squeezeToMemory(const char[], int, int*);
+/* cpdf_squeezeToMemory(pdf) squeezes a pdf */
+void cpdf_squeezeInMemory(int);
 
 /* Given a filename, is a PDF linearized? */
 int is_linearized(const char[]);
