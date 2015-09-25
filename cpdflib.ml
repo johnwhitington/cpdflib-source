@@ -608,7 +608,7 @@ let pagesFast password filename =
   if !dbg then flprint "Cpdflib.pagesFast\n";
   try
     let channel = open_in_bin filename in
-      let r = Cpdf.endpage_io (Pdfio.input_of_channel channel) (Some password) (Some password) in
+      let r = Cpdf.endpage_io (Pdfio.input_of_channel channel) (Some password) None in
         close_in channel;
         r
   with
