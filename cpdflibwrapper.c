@@ -2059,6 +2059,19 @@ void cpdf_attachFile(char* filename, int pdf)
   CAMLreturn0;
 }
 
+void cpdf_attachFileFromMemory(void* data, int length, char* filename, int pdf)
+{
+  CAMLparam0();
+  CAMLlocal5(unit_v, fn, filename_v, bytestream_v, pdf_v);
+  fn = *caml_named_value("attachFileFromMemory");
+  bytestream_v = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, length);
+  filename_v = caml_copy_string(filename);
+  pdf_v = Val_int(pdf);
+  unit_v = caml_callback3(fn, bytestream_v, filename_v, pdf_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_attachFileToPage(char* filename, int pdf, int pagenumber)
 {
   CAMLparam0 ();
@@ -2068,6 +2081,22 @@ void cpdf_attachFileToPage(char* filename, int pdf, int pagenumber)
   pdf_v = Val_int(pdf);
   pagenumber_v = Val_int(pagenumber);
   unit = caml_callback3(fn, filename_v, pdf_v, pagenumber_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_attachFileToPageFromMemory(void* data, int length, char* filename, int pdf, int page)
+{
+  CAMLparam0();
+  CAMLlocal3(unit_v, fn, filename_v);
+  CAMLlocal3(bytestream_v, pdf_v, page_v);
+  CAMLlocalN(args, 4);
+  fn = *caml_named_value("attachFileToPageFromMemory");
+  args[0] = bytestream_v = alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, length);
+  args[1] = filename_v = caml_copy_string(filename);
+  args[2] = Val_int(pdf);
+  args[3] = Val_int(page);
+  unit_v = caml_callbackN(fn, 4, args);
   updateLastError();
   CAMLreturn0;
 }

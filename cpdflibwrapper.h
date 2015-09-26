@@ -774,7 +774,6 @@ void cpdf_attachFileToPageFromMemory(void*, int, const char[], int, int);
 /* Remove all page- and document-level attachments from a document */
 void cpdf_removeAttachedFiles(int);
 
-
 /* List information about attachments. Call cpdf_startGetAttachments first,
  * then cpdf_startGetAttachments to find out how many there are. Then
  * cpdf_getAttachmentName to return each one 0...(n - 1). Finally, call

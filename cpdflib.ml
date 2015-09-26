@@ -1780,16 +1780,38 @@ let _ = Callback.register "getMetadata" getMetadata
 let attachFile filename pdf =
   if !dbg then flprint "Cpdflib.attachFile\n";
   try
-    update_pdf (Cpdf.attach_file false None (lookup_pdf pdf) filename) (lookup_pdf pdf);
+    update_pdf
+      (Cpdf.attach_file false None (lookup_pdf pdf) filename)
+      (lookup_pdf pdf);
   with
     e -> handle_error "attachFile" e; err_unit
+
+let attachFileFromMemory rawbytes filename pdf =
+  if !dbg then flprint "Cpdflib.attachFileFromMemory\n";
+  try
+    update_pdf
+      (Cpdf.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) filename)
+      (lookup_pdf pdf)
+  with
+    e -> handle_error "attachFileFromMemory" e; err_unit
 
 let attachFileToPage filename pdf pagenumber =
   if !dbg then flprint "Cpdflib.attachFileToPage\n";
   try
-    update_pdf (Cpdf.attach_file false (Some pagenumber) (lookup_pdf pdf) filename) (lookup_pdf pdf)
+    update_pdf
+      (Cpdf.attach_file false (Some pagenumber) (lookup_pdf pdf) filename)
+      (lookup_pdf pdf)
   with
     e -> handle_error "attachFileToPage" e; err_unit
+
+let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
+  if !dbg then flprint "Cpdflib.attachFileToPageFromMemory\n";
+  try
+    update_pdf
+      (Cpdf.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) filename)
+      (lookup_pdf pdf)
+  with
+    e -> handle_error "attachFileToPageFromMemory" e; err_unit
 
 let removeAttachedFiles pdf =
   if !dbg then flprint "Cpdflib.removeAttachedFiles\n";
@@ -1820,6 +1842,8 @@ let getAttachmentName serial =
 
 let _ = Callback.register "attachFile" attachFile
 let _ = Callback.register "attachFileToPage" attachFileToPage
+let _ = Callback.register "attachFileFromMemory" attachFileFromMemory
+let _ = Callback.register "attachFileToPageFromMemory" attachFileToPageFromMemory
 let _ = Callback.register "removeAttachedFiles" removeAttachedFiles
 let _ = Callback.register "startGetAttachments" startGetAttachments
 let _ = Callback.register "endGetAttachments" endGetAttachments
