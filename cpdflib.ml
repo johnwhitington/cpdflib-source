@@ -1824,7 +1824,9 @@ let attachments = ref []
 
 let startGetAttachments pdf =
   if !dbg then flprint "Cpdflib.startGetAttachments\n";
-  try attachments := map fst (Cpdf.list_attached_files (lookup_pdf pdf)) with
+  try
+    attachments := Cpdf.list_attached_files (lookup_pdf pdf)
+  with
     e -> handle_error "startGetAttachments" e; err_unit
 
 let endGetAttachments () =
@@ -1838,7 +1840,10 @@ let numberGetAttachments () =
 
 let getAttachmentName serial =
   if !dbg then flprint "Cpdflib.getAttachmentName\n";
-  try select (serial + 1) !attachments with e -> handle_error "getAttachmentName" e; err_string
+  try
+    (select (serial + 1) !attachments).Cpdf.name
+  with e ->
+    handle_error "getAttachmentName" e; err_string
 
 let _ = Callback.register "attachFile" attachFile
 let _ = Callback.register "attachFileToPage" attachFileToPage

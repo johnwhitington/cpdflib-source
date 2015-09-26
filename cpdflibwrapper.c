@@ -2145,6 +2145,39 @@ char* cpdf_getAttachmentName(int serial)
   CAMLreturnT(char*, String_val(out_v));
 }
 
+int cpdf_getAttachmentPage(int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value("getAttachmentPage");
+  serial_v = Val_int(serial);
+  out_v = caml_callback(fn, serial_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+
+void* cpdf_getAttachmentData(int serial, int *retlen)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, bytestream, pdf_v, serial_v);
+  fn = *caml_named_value("getAttachmentData");
+  serial_v = Val_int(serial);
+  bytestream = caml_callback(fn, serial_v);
+  updateLastError();
+  char* memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("getAttachmentData: failed");
+  if (size > 0)
+  {
+    int x;
+    char* indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) { memory[x] = indata[x]; };
+  }
+  *retlen = size;
+  CAMLreturnT(void*, memory);
+}
+
 void cpdf_endGetAttachments (void)
 {
   CAMLparam0 ();
@@ -2155,7 +2188,6 @@ void cpdf_endGetAttachments (void)
   updateLastError();
   CAMLreturn0;
 }
-
 
 /* CHAPTER 13. Miscellaneous */
 void cpdf_draft(int pdf, int range, int boxes)

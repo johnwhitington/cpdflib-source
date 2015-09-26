@@ -780,7 +780,13 @@ void cpdf_removeAttachedFiles(int);
  * cpdf_endGetAttachments to clean up. */
 void cpdf_startGetAttachments(int);
 int cpdf_numberGetAttachments(void);
+/* Get the name of the attachment */
 char* cpdf_getAttachmentName(int);
+/* Gets the page number. 0 = document level */
+int cpdf_getAttachmentPage(int);
+/* cpdf_getAttachmentData(serial number, &length) returns a pointer to the data, and its
+length */
+void* cpdf_getAttachmentData(int, int*);
 void cpdf_endGetAttachments(void);
 
 
