@@ -570,6 +570,10 @@ int main (int argc, char ** argv)
   for (x5 = 0; x5 < numatt; x5++)
   {
     printf("Attachment %i is named %s\n", x5, cpdf_getAttachmentName(x5));
+    printf("It is on page %i\n", cpdf_getAttachmentPage(x5));
+    int length;
+    void* data = cpdf_getAttachmentData(x5, &length);
+    printf("Contains %i bytes of data\n", length);
   };
   printf("endGetAttachments()\n");
   cpdf_endGetAttachments();

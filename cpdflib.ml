@@ -1845,6 +1845,21 @@ let getAttachmentName serial =
   with e ->
     handle_error "getAttachmentName" e; err_string
 
+let getAttachmentPage serial =
+  if !dbg then flprint "Cpdflib.getAttachmentPage\n";
+  try
+    (select (serial + 1) !attachments).Cpdf.pagenumber
+  with e ->
+    handle_error "getAttachmentPage" e; err_int
+
+let getAttachmentData serial =
+  if !dbg then flprint "Cpdflib.getAttachmentData\n";
+  try
+    Pdfio.raw_of_bytes
+      ((select (serial + 1) !attachments).Cpdf.data ())
+  with e ->
+    handle_error "getAttachmentData" e; err_data
+
 let _ = Callback.register "attachFile" attachFile
 let _ = Callback.register "attachFileToPage" attachFileToPage
 let _ = Callback.register "attachFileFromMemory" attachFileFromMemory
@@ -1854,6 +1869,8 @@ let _ = Callback.register "startGetAttachments" startGetAttachments
 let _ = Callback.register "endGetAttachments" endGetAttachments
 let _ = Callback.register "numberGetAttachments" numberGetAttachments
 let _ = Callback.register "getAttachmentName" getAttachmentName
+let _ = Callback.register "getAttachmentPage" getAttachmentPage
+let _ = Callback.register "getAttachmentData" getAttachmentData
 
 (* CHAPTER 13. Miscellaneous *)
 let draft pdf range boxes =

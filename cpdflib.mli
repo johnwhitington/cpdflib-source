@@ -251,6 +251,8 @@ val startGetAttachments : pdf -> unit
 val endGetAttachments : unit -> unit
 val numberGetAttachments : unit -> int
 val getAttachmentName : int -> string
+val getAttachmentPage : int -> int
+val getAttachmentData : int -> Pdfio.rawbytes 
 
 (* CHAPTER 13. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
