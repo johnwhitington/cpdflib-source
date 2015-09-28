@@ -543,7 +543,8 @@ int main (int argc, char ** argv)
   cpdf_toFile(fonts, "testoutputs/metadata2.pdf", false, false);
   int metadata_length;
   printf("getMetadata()\n");
-  cpdf_getMetadata(fonts, &metadata_length);
+  void* metadata;
+  metadata = cpdf_getMetadata(fonts, &metadata_length);
   printf("removeMetadata()\n");
   cpdf_removeMetadata(fonts);
 
@@ -558,6 +559,10 @@ int main (int argc, char ** argv)
   cpdf_attachFile("cpdflibtest.c", toattachto);
   printf("attachFileToPage()\n");
   cpdf_attachFileToPage("logo.pdf", toattachto, 1);
+  printf("attachFileFromMemory\n");
+  cpdf_attachFileFromMemory(metadata, metadata_length, "metadata.txt", toattachto);
+  printf("attachFileToPageFromMemory\n");
+  cpdf_attachFileToPageFromMemory(metadata, metadata_length, "metadata.txt", toattachto, 1);
   cpdf_toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
 
   printf("startGetAttachments()\n");
