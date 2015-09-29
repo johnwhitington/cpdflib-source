@@ -34,7 +34,7 @@ int main (int argc, char ** argv)
   printf("toFile()\n");
   cpdf_toFile(pdf, "testoutputs/out.pdf", false, false);
 
-  printf("squeezeInMemory");
+  printf("squeezeInMemory\n");
   cpdf_squeezeInMemory(pdf);
 
   printf("toMemory()\n");
@@ -70,9 +70,9 @@ int main (int argc, char ** argv)
   printf("decryptPdf\n");
   cpdf_decryptPdf(pdfenc, "user");
 
-  printf("toFileRecrypting()\n");
+  /*printf("toFileRecrypting()\n");
   int pdfenc2 = cpdf_fromFile("testoutputs/encrypted.pdf", "");
-  cpdf_toFileRecrypting(pdfenc2, pdfenc, "user", "testoutputs/recrypted.pdf");
+  cpdf_toFileRecrypting(pdfenc2, pdfenc, "user", "testoutputs/recrypted.pdf");*/
 
   printf("decryptPdfOwner()\n");
   int pdfenc3 = cpdf_fromFile("testoutputs/encrypted.pdf", "");
@@ -80,7 +80,7 @@ int main (int argc, char ** argv)
 
   cpdf_deletePdf(pdf);
   cpdf_deletePdf(pdfenc);
-  cpdf_deletePdf(pdfenc2);
+  /*cpdf_deletePdf(pdfenc2);*/
   cpdf_deletePdf(pdfenc3);
 
   cpdf_onExit();
@@ -301,7 +301,7 @@ int main (int argc, char ** argv)
 
   printf("String of pagespec is %s\n", cpdf_stringOfPagespec(blanksized, rfrompagespec));
 
-  printf("This is documents has isEncrypted = %i\n", cpdf_isEncrypted(blanksized));
+  printf("This document has isEncrypted = %i\n", cpdf_isEncrypted(blanksized));
 
   cpdf_deletePdf(pdflazy);
   cpdf_deletePdf(blankdoc);
@@ -420,7 +420,7 @@ int main (int argc, char ** argv)
       cpdf_getFontType(x4),
       cpdf_getFontEncoding(x4));
   };
-  printf("endGetFontInfo()");
+  printf("endGetFontInfo()\n");
   cpdf_endGetFontInfo();
 
   printf("isLinarized()\n");
@@ -577,7 +577,7 @@ int main (int argc, char ** argv)
     printf("Attachment %i is named %s\n", x5, cpdf_getAttachmentName(x5));
     printf("It is on page %i\n", cpdf_getAttachmentPage(x5));
     int length;
-    void* data = cpdf_getAttachmentData(x5, &length);
+    cpdf_getAttachmentData(x5, &length);
     printf("Contains %i bytes of data\n", length);
   };
   printf("endGetAttachments()\n");

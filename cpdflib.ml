@@ -741,10 +741,14 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
   with
     e -> handle_error "toFileEncrypted" e; err_unit
 
-let toFileRecrypting original decrypted_and_modified userpw filename =
-  if !dbg then flprint "Cpdflib.toFileRecrypting\n"(*;*)
-  (*try
-    Pdfwrite.pdf_to_file_recrypting (lookup_pdf original) (lookup_pdf decrypted_and_modified) userpw filename
+(*let toFileRecrypting original decrypted_and_modified userpw filename =
+  if !dbg then flprint "Cpdflib.toFileRecrypting\n";
+  try
+    Pdfwrite.pdf_to_file_options
+      ?recrypt:(Some userpw)
+      (lookup_pdf original)
+      (lookup_pdf decrypted_and_modified)
+      filename
   with
     e -> handle_error "toFileRecrypting" e; err_unit*)
 
@@ -763,7 +767,7 @@ let _ = Callback.register "pagesFast" pagesFast
 let _ = Callback.register "all" all
 let _ = Callback.register "isEncrypted" isEncrypted
 let _ = Callback.register "toFileEncrypted" toFileEncrypted
-let _ = Callback.register "toFileRecrypting" toFileRecrypting
+(*let _ = Callback.register "toFileRecrypting" toFileRecrypting*)
 
 (* CHAPTER 2. Merging and Splitting *)
 let list_all pdf = ilist 1 (pages pdf)
@@ -1093,18 +1097,40 @@ let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
 let stampOn pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampOn\n"(*;
+  if !dbg then flprint "Cpdflib.stampOn\n";
   try
-    update_pdf (Cpdf.stamp false false true (Array.to_list (lookup_range range)) (lookup_pdf pdf) (lookup_pdf pdf2)) (lookup_pdf pdf2)
+    update_pdf
+      (Cpdf.stamp
+         (Cpdf.BottomLeft 0.)
+         false
+         false
+         false
+         false
+         true
+         (Array.to_list (lookup_range range))
+         (lookup_pdf pdf)
+         (lookup_pdf pdf2))
+      (lookup_pdf pdf2)
   with
-    e -> handle_error "stampOn" e; err_unit*)
+    e -> handle_error "stampOn" e; err_unit
 
 let stampUnder pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampUnder\n"(*;
+  if !dbg then flprint "Cpdflib.stampUnder\n";
   try
-    update_pdf (Cpdf.stamp false false false (Array.to_list (lookup_range range)) (lookup_pdf pdf) (lookup_pdf pdf2)) (lookup_pdf pdf2)
+    update_pdf
+      (Cpdf.stamp
+         (Cpdf.BottomLeft 0.)
+         false
+         false
+         false
+         false
+         false
+         (Array.to_list (lookup_range range))
+         (lookup_pdf pdf)
+         (lookup_pdf pdf2))
+      (lookup_pdf pdf2)
   with
-    e -> handle_error "stampUnder" e; err_unit*)
+    e -> handle_error "stampUnder" e; err_unit
 
 let combinePages pdf pdf2 =
   if !dbg then flprint "Cpdflib.combinePages\n";
@@ -1923,23 +1949,23 @@ let _ = Callback.register "thinLines" thinLines
 let _ = Callback.register "copyId" copyId
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
-let addPageLabels pdf style prefix offset range =(*
+let addPageLabels pdf style prefix offset range =
   if !dbg then flprint "Cpdflib.addPageLabels\n";
   try
     let style =
       match style with
-      | 0 -> Some Pdfpagelabels.DecimalArabic
-      | 1 -> Some Pdfpagelabels.UppercaseRoman
-      | 2 -> Some Pdfpagelabels.LowercaseRoman
-      | 3 -> Some Pdfpagelabels.UppercaseLetters
-      | 4 -> Some Pdfpagelabels.LowercaseLetters
+      | 0 -> Pdfpagelabels.DecimalArabic
+      | 1 -> Pdfpagelabels.UppercaseRoman
+      | 2 -> Pdfpagelabels.LowercaseRoman
+      | 3 -> Pdfpagelabels.UppercaseLetters
+      | 4 -> Pdfpagelabels.LowercaseLetters
       | _ -> failwith "Unknown page label style"
     and prefix =
       if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)
     in
       Cpdf.add_page_labels (lookup_pdf pdf) style prefix offset (Array.to_list (lookup_range range))
   with
-    e -> handle_error "addPageLabels" e;*) err_unit
+    e -> handle_error "addPageLabels" e; err_unit
 
 let _ = Callback.register "addPageLabels" addPageLabels
 

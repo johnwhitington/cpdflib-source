@@ -275,7 +275,7 @@ filename is the name of the file to write.
 
 The PDF 'modified' is no longer usable and can be deleted.
 */
-void cpdf_toFileRecrypting(int, int, const char[], const char[]);
+/*void cpdf_toFileRecrypting(int, int, const char[], const char[]);*/
 
 /* Return true if the given permission (restriction) is present. */
 int cpdf_hasPermission(int, enum cpdf_permission);

@@ -628,7 +628,7 @@ void cpdf_toFileEncrypted
   CAMLreturn0;
 }
 
-void cpdf_toFileRecrypting(int original, int decrypted_and_modified, char* userpw, char* filename)
+/*void cpdf_toFileRecrypting(int original, int decrypted_and_modified, char* userpw, char* filename)
 {
   CAMLparam0 ();
   CAMLlocal2 (unit, fn);
@@ -641,7 +641,7 @@ void cpdf_toFileRecrypting(int original, int decrypted_and_modified, char* userp
   unit = caml_callbackN(fn, 4, args);
   updateLastError();
   CAMLreturn0;
-}
+}*/
 
 int cpdf_hasPermission(int pdf, enum cpdf_permission tocheck)
 {
