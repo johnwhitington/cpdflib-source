@@ -34,6 +34,12 @@ int main (int argc, char ** argv)
   printf("toFile()\n");
   cpdf_toFile(pdf, "testoutputs/out.pdf", false, false);
 
+  printf("toFileExt()\n");
+  cpdf_toFileExt(pdf, "testoutputs/tofileext.pdf", false, false, true, true, true);
+  cpdf_deletePdf(pdf);
+
+
+  pdf = cpdf_fromFile("testinputs/hello.pdf", "");
   printf("squeezeInMemory\n");
   cpdf_squeezeInMemory(pdf);
 
@@ -58,6 +64,11 @@ int main (int argc, char ** argv)
   int permissions = {cpdf_noEdit};
   int encmethod = cpdf_pdf40bit;
   cpdf_toFileEncrypted(pdf, encmethod, &permissions, 1, "owner", "user", false, false, "testoutputs/encrypted.pdf");
+  
+  cpdf_toFileEncryptedExt(pdf, encmethod, &permissions, 1, "owner", "user", false, false, true, true, true, "testoutputs/encryptedext.pdf");
+  cpdf_deletePdf(pdf);
+
+  pdf = cpdf_fromFile("testinputs/hello.pdf", "");
 
   int pdfenc = cpdf_fromFile("testoutputs/encrypted.pdf", "user");
 
