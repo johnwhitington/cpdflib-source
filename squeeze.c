@@ -10,7 +10,7 @@ int main (int argc, char ** argv)
   /* Clear the error state */
   cpdf_clearError();
 
-  /* We will take the input hello.pdf and repeat it three times */
+  /* Use the cpdflib manual as an example. */
   int pdf = cpdf_fromFile("cpdflibmanual.pdf", "");
 
   /* Check the error state */
