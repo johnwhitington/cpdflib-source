@@ -556,6 +556,19 @@ let toFile pdf filename linearize make_id =
   with
     e -> handle_error "toFile" e; err_unit
 
+let toFileExt
+  pdf filename linearize make_id preserve_objstm generate_objstm compress_objstm
+=
+  if !dbg then flprint "Cpdflib.toFileOptions\n";
+  try
+    let pdf = lookup_pdf pdf in
+      Pdf.remove_unreferenced pdf;
+      Pdfwrite.pdf_to_file_options
+        ~preserve_objstm ~generate_objstm ~compress_objstm
+        linearize None make_id (nobble pdf) filename
+  with
+    e -> handle_error "toFileOptions" e; err_unit
+
 (* Write to memory. FIXME make_id does nothing *)
 let toFileMemory pdf linearize make_id =
   if !dbg then flprint "Cpdflib.toFileMemory\n";
@@ -694,7 +707,9 @@ let decryptPdfOwner i p =
     with
       e -> handle_error "decryptPdfOwner" e; err_unit
 
-let toFileEncrypted
+let toFileEncrypted_inner
+  ?(preserve_objstm = true) ?(generate_objstm = false)
+  ?(compress_objstm = true)
   pdf encryption_method permissions owner_password user_password linearize makeid filename
 =
   if !dbg then flprint "Cpdflib.toFileEncrypted\n";
@@ -737,7 +752,45 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
         perms
     in
       Pdf.remove_unreferenced (lookup_pdf i);
-      toFileEncrypted (lookup_pdf i) mthd perms user owner linearize makeid filename
+      toFileEncrypted_inner
+        (lookup_pdf i) mthd perms user owner linearize makeid filename
+  with
+    e -> handle_error "toFileEncrypted" e; err_unit
+
+let toFileEncryptedExt
+  i mthd perms user owner linearize makeid
+  preserve_objstm generate_objstm compress_objstm filename
+=
+  try
+    let mthd =
+      match mthd with
+      | 0 -> Pdfwrite.PDF40bit
+      | 1 -> Pdfwrite.PDF128bit
+      | 2 -> Pdfwrite.AES128bit false
+      | 3 -> Pdfwrite.AES128bit true
+      | 4 -> Pdfwrite.AES256bit false
+      | 5 -> Pdfwrite.AES256bit true
+      | 6 -> Pdfwrite.AES256bitISO false
+      | 7 -> Pdfwrite.AES256bitISO true
+      | _ -> failwith "bad encryption method"
+    and perms =
+      Array.map
+        (function
+         | 0 -> Pdfcrypt.NoEdit
+         | 1 -> Pdfcrypt.NoPrint
+         | 2 -> Pdfcrypt.NoCopy
+         | 3 -> Pdfcrypt.NoAnnot
+         | 4 -> Pdfcrypt.NoForms
+         | 5 -> Pdfcrypt.NoExtract
+         | 6 -> Pdfcrypt.NoAssemble
+         | 7 -> Pdfcrypt.NoHqPrint
+         | _ -> failwith "unknown permission")
+        perms
+    in
+      Pdf.remove_unreferenced (lookup_pdf i);
+      toFileEncrypted_inner
+        ~preserve_objstm ~generate_objstm ~compress_objstm
+        (lookup_pdf i) mthd perms user owner linearize makeid filename
   with
     e -> handle_error "toFileEncrypted" e; err_unit
 
@@ -759,6 +812,7 @@ let _ = Callback.register "fromMemoryLazy" fromMemoryLazy
 let _ = Callback.register "decryptPdf" decryptPdf
 let _ = Callback.register "decryptPdfOwner" decryptPdfOwner
 let _ = Callback.register "toFile" toFile
+let _ = Callback.register "toFileExt" toFile
 let _ = Callback.register "toFileMemory" toFileMemory
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
@@ -767,6 +821,7 @@ let _ = Callback.register "pagesFast" pagesFast
 let _ = Callback.register "all" all
 let _ = Callback.register "isEncrypted" isEncrypted
 let _ = Callback.register "toFileEncrypted" toFileEncrypted
+let _ = Callback.register "toFileEncryptedExt" toFileEncryptedExt
 (*let _ = Callback.register "toFileRecrypting" toFileRecrypting*)
 
 (* CHAPTER 2. Merging and Splitting *)

@@ -208,6 +208,15 @@ int cpdf_pagesFast(const char[], const char[]);
  * it will be given a new ID. */
 void cpdf_toFile(int, const char[], int, int);
 
+/* cpdf_toFile (pdf, filename, linearize, make_id, preserve_objstm,
+ * generate_objstm, compress_objstm) writes the file to a given
+ * filename. If linearize is true, it will be linearized. If make_id is true,
+ * it will be given a new ID. If preserve_objstm is true, existing object
+ * streams will be preserved. If generate_objstm is true, object streams will
+ * be generated even if not originally present. If compress_objstm is true,
+ * object streams will be compressed (what we usually want). */
+void cpdf_toFileExt(int, const char[], int, int, int, int, int);
+
 /* Given a buffer of the correct size, cpdf_toFileMemory (pdf, linearize,
 make_id, &length) writes it and returns the buffer. The buffer length is filled
 in &length. */
@@ -264,6 +273,24 @@ enum cpdf_encryptionMethod
     filename)              Filename
 */
 void cpdf_toFileEncrypted(int, int, int*, int, const char[], const char[], int, int, const char[]);
+
+/* Write a file with encryption and more options:
+  cpdf_toFileEncryptedExt(
+    pdf,                   Document
+    encryption_method,     Encryption method
+    permissions,           Permissions array
+    permission_length,     Length of permissions array
+    owner_password,        Owner password, blank if none
+    user_passwordi,        User password, blank if none
+    linearize,             If true, linearize
+    makeid,                If true, make a new ID
+    preserve_objstm,       If true, preserve existing object streams
+    generate_objstm,       If true, generate new object streams
+    compress_objstm,       If true, compress object streams
+    filename)              Filename
+*/
+void cpdf_toFileEncryptedExt
+(int, int, int*, int, const char[], const char[], int, int, int, int, int, const char[]);
 
 /* Write a modified file, re-encrypting it.
 
