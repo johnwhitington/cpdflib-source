@@ -1,4 +1,4 @@
-/* Very simple test. Requires a file "hello.pdf" in the CWD */
+/* Squeeze the manual. */
 #include <stdbool.h>
 #include "cpdflibwrapper.h"
 
@@ -11,19 +11,15 @@ int main (int argc, char ** argv)
   cpdf_clearError();
 
   /* We will take the input hello.pdf and repeat it three times */
-  int mergepdf = cpdf_fromFile("hello.pdf", "");
+  int pdf = cpdf_fromFile("cpdflibmanual.pdf", "");
 
   /* Check the error state */
   if (cpdf_lastError) return 1;
 
-  /* The array of PDFs to merge */
-  int pdfs[] = {mergepdf, mergepdf, mergepdf};
-
-  /* Clear the error state */
   cpdf_clearError();
 
-  /* Merge them */
-  int merged = cpdf_mergeSimple(pdfs, 3);
+  /* Squeeze it */
+  cpdf_squeezeInMemory(pdf);
   
   /* Check the error state */
   if (cpdf_lastError) return 1;
@@ -31,8 +27,8 @@ int main (int argc, char ** argv)
   /* Clear the error state */
   cpdf_clearError();
 
-  /* Write output */
-  cpdf_toFile(merged, "merged.pdf", false, false);
+  /* Write output. We make sure to use toFileExt, and make object streams. */
+  cpdf_toFileExt(pdf, "squeezed.pdf", false, false, true, true, true);
 
   /* Check the error state */
   if (cpdf_lastError) return 1;
