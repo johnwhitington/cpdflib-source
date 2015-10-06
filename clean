@@ -3,5 +3,5 @@ rm -f *.a *.o *.cmi *.cmx *.dll cpdflibtest
 rm -f testoutputs/*
 rm -f foo
 rm -f merged.pdf merge
-rm -f squeeze.pdf squeeze
+rm -f squeezed.pdf squeeze
 
