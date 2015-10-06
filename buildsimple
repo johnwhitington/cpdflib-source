@@ -1,12 +1,12 @@
 #!/bin/bash
-cfiles=(cpdflibwrapper)
+cfiles=(../cpdflibwrapper)
 finalcfile=simpletest
 libname=cpdf
-mlfiles=(cpdflib)
-mlifiles=(cpdflib)
+mlfiles=(../cpdflib)
+mlifiles=(../cpdflib)
 mllibs=(unix bigarray)
 ocamlfind=ocamlfind
 ocamlfind_packs=(camlpdf cpdf)
 stubs=(camlpdf)
 
-source generic
+source ../generic
