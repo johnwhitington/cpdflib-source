@@ -1,0 +1,12 @@
+#!/bin/bash
+cfiles=(cpdflibwrapper)
+finalcfile=squeeze
+libname=cpdf
+mlfiles=(cpdflib)
+mlifiles=(cpdflib)
+mllibs=(unix bigarray)
+ocamlfind=ocamlfind
+ocamlfind_packs=(camlpdf cpdf)
+stubs=(camlpdf)
+
+source generic
