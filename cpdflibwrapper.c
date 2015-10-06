@@ -500,6 +500,24 @@ void cpdf_toFile(int pdf, char* filename, int linearize, int make_id)
   CAMLreturn0;
 }
 
+void cpdf_toFileExt(int pdf, char* filename, int linearize, int make_id, int preserve_objstm, int create_objstm, int compress_objstm)
+{
+  CAMLparam0 ();
+  CAMLlocal2(fn, unit);
+  CAMLlocalN(args, 7);
+  fn = *caml_named_value("toFileExt");
+  args[0] = Val_int(pdf);
+  args[1] = caml_copy_string(filename);
+  args[2] = Val_int(linearize);
+  args[3] = Val_int(make_id);
+  args[4] = Val_bool(preserve_objstm);
+  args[5] = Val_bool(create_objstm);
+  args[6] = Val_bool(compress_objstm);
+  unit = caml_callbackN(fn, 7, args);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void* cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen)
 {
   CAMLparam0 ();
@@ -623,6 +641,50 @@ void cpdf_toFileEncrypted
   args[7] = caml_copy_string(filename);
   fn = *caml_named_value("toFileEncrypted");
   unit = caml_callbackN(fn, 8, args);
+  updateLastError();
+  /* Return */
+  CAMLreturn0;
+}
+
+void cpdf_toFileEncryptedExt
+  (int pdf,
+   int e,
+   int* ps,
+   int len,
+   char* owner,
+   char* user,
+   int linearize,
+   int makeid,
+   int preserve_objstm,
+   int generate_objstm,
+   int compress_objstm,
+   char* filename)
+{
+  CAMLparam0 ();
+  CAMLlocal4(unit, fn, temp, permissions);
+  CAMLlocalN (args, 11);
+  /* Build ocaml permission array */
+  permissions = caml_alloc(len, 0);
+  int x;
+  for(x = 0; x < len; x++)
+    {
+      temp = Val_int(ps[x]);
+      Store_field(permissions, x, temp);
+    };
+  /* Do Callback */
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(e);
+  args[2] = permissions;
+  args[3] = caml_copy_string(owner);
+  args[4] = caml_copy_string(user);
+  args[5] = Val_int(linearize);
+  args[6] = Val_int(makeid);
+  args[7] = Val_bool(preserve_objstm);
+  args[8] = Val_bool(generate_objstm);
+  args[9] = Val_bool(compress_objstm);
+  args[10] = caml_copy_string(filename);
+  fn = *caml_named_value("toFileEncryptedExt");
+  unit = caml_callbackN(fn, 11, args);
   updateLastError();
   /* Return */
   CAMLreturn0;
