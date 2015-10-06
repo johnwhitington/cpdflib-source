@@ -2,3 +2,5 @@
 rm -f *.a *.o *.cmi *.cmx *.dll cpdflibtest
 rm -f testoutputs/*
 rm -f foo
+rm -f merged.pdf merge
+
