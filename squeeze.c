@@ -30,6 +30,10 @@ int main (int argc, char ** argv)
   /* Write output. We make sure to use toFileExt, and make object streams. */
   cpdf_toFileExt(pdf, "squeezed.pdf", false, false, true, true, true);
 
+  /* NOTE that the in-memory document 'pdf' is now defunct, following the call
+  to toFileExt, so we must remove it. */
+  cpdf_deletePdf(pdf);
+
   /* Check the error state */
   if (cpdf_lastError) return 1;
 
