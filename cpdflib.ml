@@ -940,14 +940,16 @@ let update_pdf (copyfrom : Pdf.t) (copyto : Pdf.t) =
 let scalePages i range sx sy =
   if !dbg then flprint "Cpdflib.scalePages\n";
   try
-    update_pdf (Cpdf.scale_pdf sx sy (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    let sxsylist = many (sx, sy) (pages i) in
+      update_pdf (Cpdf.scale_pdf sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scalePages" e; err_unit
 
 let scaleToFit i range w h =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
-    update_pdf (Cpdf.scale_to_fit_pdf 1. w h () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    let whlist = many (w, h) (pages i) in
+      update_pdf (Cpdf.scale_to_fit_pdf 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -962,14 +964,16 @@ let scaleToFitPaper i range papersize =
   if !dbg then flprint "Cpdflib.scaleToFitPaper\n";
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
-      update_pdf (Cpdf.scale_to_fit_pdf 1. w h () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    let whlist = many (w, h) (pages i) in
+      update_pdf (Cpdf.scale_to_fit_pdf 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 
 let shiftContents i range dx dy =
   if !dbg then flprint "Cpdflib.shiftContents\n";
   try
-    update_pdf (Cpdf.shift_pdf dx dy (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    let dxdylist = many (dx, dy) (pages i) in
+    update_pdf (Cpdf.shift_pdf dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "shiftContents" e; err_unit
 
@@ -1025,7 +1029,8 @@ let vFlip i range =
 let crop i range x y w h =
   if !dbg then flprint "Cpdflib.crop\n";
   try
-    update_pdf (Cpdf.crop_pdf x y w h (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    let xywhlist = many (x, y, w, h) (pages i) in
+    update_pdf (Cpdf.crop_pdf xywhlist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "crop" e; err_unit
 
@@ -1060,8 +1065,9 @@ let removeBleed i range =
 let setMediabox i range minx maxx miny maxy =
   if !dbg then flprint "Cpdflib.setMediabox\n";
   try
+    let lst = many (minx, miny, maxx -. minx, maxy -. miny) (pages i) in
     update_pdf
-      (Cpdf.set_mediabox minx miny (maxx -. minx) (maxy -. miny) (lookup_pdf i) (Array.to_list (lookup_range range))) 
+      (Cpdf.set_mediabox lst (lookup_pdf i) (Array.to_list (lookup_range range))) 
       (lookup_pdf i)
   with
     e -> handle_error "setMediaBox" e; err_unit
@@ -1156,6 +1162,7 @@ let stampOn pdf pdf2 range =
   try
     update_pdf
       (Cpdf.stamp
+         false
          (Cpdf.BottomLeft 0.)
          false
          false
@@ -1174,6 +1181,7 @@ let stampUnder pdf pdf2 range =
   try
     update_pdf
       (Cpdf.stamp
+         false
          (Cpdf.BottomLeft 0.)
          false
          false
@@ -1262,10 +1270,30 @@ let addText_inner
     let newpdf =
       (Cpdf.addtexts
          metrics
-         1.0 outline false fontname (Some font) false (* embed font FIXME
-         *)bates None color position linespacing fontsize
-         underneath text (Array.to_list range) Cpdf.Horizontal cropbox opacity
-         justification midline false (* topline. FIXME *) filename pdf)
+         1.0
+         outline
+         false
+         fontname
+         (Some font)
+         false
+         bates
+         None
+         color
+         position
+         linespacing
+         fontsize
+         underneath
+         text
+         (Array.to_list range)
+         Cpdf.Horizontal
+         cropbox
+         opacity
+         justification
+         midline
+         false
+         filename
+         None
+         pdf)
     in
       if not metrics then
         begin
@@ -1288,7 +1316,7 @@ let addText
 let textWidth font text =
   if !dbg then flprint "Cpdflib.textwidth\n";
   try
-    Pdfstandard14.textwidth false font text
+    Pdfstandard14.textwidth false Pdftext.StandardEncoding font text
   with
     e -> handle_error "textWidth" e; err_int
 
@@ -1964,21 +1992,21 @@ let draft pdf range boxes =
 let blackText pdf range =
   if !dbg then flprint "Cpdflib.blackText\n";
   try
-    update_pdf (Cpdf.blacktext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacktext (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackText" e; err_unit
 
 let blackLines pdf range =
   if !dbg then flprint "Cpdflib.blackLines\n";
   try
-    update_pdf (Cpdf.blacklines (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacklines (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackLines" e; err_unit
 
 let blackFills pdf range =
   if !dbg then flprint "Cpdflib.blackFills\n";
   try
-    update_pdf (Cpdf.blackfills (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blackfills (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackFills" e; err_unit
 
