@@ -13,8 +13,8 @@ Prerequisites for building:
 
 1. OCaml
 2. Ocamlfind
-3. CamlPDF, at least 1.7.2
-4. CPDF, at least 1.7.2
+3. CamlPDF, at least 2.2
+4. CPDF, at least 2.2
 
 To build, just run ./build. This makes the static library libcpdf.a and, on
 Windows, the dynamic library libcpdf.dll. In addition, it builds the
