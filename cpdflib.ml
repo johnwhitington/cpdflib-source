@@ -949,7 +949,7 @@ let scaleToFit i range w h =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -965,7 +965,7 @@ let scaleToFitPaper i range papersize =
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 
@@ -1331,7 +1331,7 @@ let _ = Callback.register "textWidth" textWidth
 let twoUp pdf =
   if !dbg then flprint "Cpdflib.twoUp\n";
   try
-    update_pdf (Cpdf.twoup (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.twoup false (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUp" e; err_unit
 
@@ -1985,7 +1985,7 @@ let _ = Callback.register "getAttachmentData" getAttachmentData
 let draft pdf range boxes =
   if !dbg then flprint "Cpdflib.draft\n";
   try
-    update_pdf (Cpdf.draft boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "draft" e; err_unit
 
