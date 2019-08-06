@@ -487,12 +487,12 @@ void cpdf_endGetBookmarkInfo(void);
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
-/* cpdf_stampOn(pdf, stamp_pdf, range) stamps stamp_pdf on top of all the pages
+/* cpdf_stampOn(stamp_pdf, pdf, range) stamps stamp_pdf on top of all the pages
  * in the document which are in the range. The stamp is placed with its origin
  * at the origin of the target document. */
 void cpdf_stampOn(int, int, int);
 
-/* cpdf_stampOn(pdf, stamp_pdf, range) stamps stamp_pdf under all the pages in
+/* cpdf_stampOn(stamp_pdf, pdf, range) stamps stamp_pdf under all the pages in
  * the document which are in the range. The stamp is placed with its origin at
  * the origin of the target document. */
 void cpdf_stampUnder(int, int, int);
