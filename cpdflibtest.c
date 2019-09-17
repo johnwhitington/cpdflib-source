@@ -566,7 +566,7 @@ int main (int argc, char ** argv)
   /* Chapter 12. File attachments */
   printf("\n***** 12. File attachments\n\n");
   int toattachto = cpdf_fromFile("testinputs/london.pdf", "");
-  /*printf("attachFile()\n");
+  printf("attachFile()\n");
   cpdf_attachFile("cpdflibtest.c", toattachto);
   printf("attachFileToPage()\n");
   cpdf_attachFileToPage("logo.pdf", toattachto, 1);
@@ -574,7 +574,7 @@ int main (int argc, char ** argv)
   cpdf_attachFileFromMemory(metadata, metadata_length, "metadata.txt", toattachto);
   printf("attachFileToPageFromMemory\n");
   cpdf_attachFileToPageFromMemory(metadata, metadata_length, "metadata.txt", toattachto, 1);
-  cpdf_toFile(toattachto, "testoutputs/withattachment.pdf", false, false);*/
+  cpdf_toFile(toattachto, "testoutputs/withattachment.pdf", false, false);
 
   printf("startGetAttachments()\n");
   cpdf_startGetAttachments(toattachto);
