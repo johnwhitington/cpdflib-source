@@ -1293,6 +1293,7 @@ let addText_inner
          false
          filename
          None
+         "0 0"
          pdf)
     in
       if not metrics then
@@ -2095,4 +2096,13 @@ let is_linearized filename =
       r
 
 let _ = Callback.register "is_linearized" is_linearized
+
+let addContent s before fast pdf range =
+  if !dbg then flprint "Cpdflib.prependContent";
+  try
+    update_pdf (Cpdf.append_page_content s before fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "addContent" e; err_unit
+
+let _ = Callback.register "addContent" addContent
 

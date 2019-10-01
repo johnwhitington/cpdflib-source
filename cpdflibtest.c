@@ -682,7 +682,7 @@ int main (int argc, char ** argv)
   printf("lookupPdfUserPassword()\n");
   printf("pdf user password was %s\n", cpdf_lookupPdfUserPassword(enctest));
   
-  cpdf_deletePdf(enctest);
+  /*cpdf_deletePdf(enctest);
 
   double perc = cpdf_squeeze("", "foo", "testinputs/london.pdf", "testoutputs/squeezed.pdf");
 
@@ -690,7 +690,15 @@ int main (int argc, char ** argv)
 
   int lin = is_linearized("testinputs/london.pdf");
 
-  printf("linearized: %i\n", lin);
+  printf("linearized: %i\n", lin);*/
+
+  printf("addContent()\n");
+ 
+  int london3 = cpdf_fromFile("testinputs/london2.pdf", "");
+  cpdf_addContent("100 100 m 200 200 l 300 200 l 200 100 l h W n", true, false, london3, cpdf_all(london3));
+
+  cpdf_toFile(london3, "testoutputs/clip.pdf", false, false);
+
   cpdf_onExit();
 
   printf("*****Tests finished\n");

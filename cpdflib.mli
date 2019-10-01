@@ -269,4 +269,5 @@ val squeeze : string -> string -> string -> string -> int
 
 val is_linearized : string -> bool
 
+val addContent : string -> bool -> bool -> int -> int -> unit
 
