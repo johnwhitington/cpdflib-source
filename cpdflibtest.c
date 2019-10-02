@@ -699,6 +699,19 @@ int main (int argc, char ** argv)
 
   cpdf_toFile(london3, "testoutputs/clip.pdf", false, false);
 
+  int london4 = cpdf_fromFile("testoutputs/clip.pdf", "");
+  cpdf_shiftContents(london4, cpdf_all(london4), 100, 100);
+  cpdf_rotateContents(london4, cpdf_all(london4), 35.0);
+
+  int combined = cpdf_combinePages(london4, london3);
+
+  cpdf_shiftContents(london4, cpdf_all(london4), 100, 100);
+  cpdf_rotateContents(london4, cpdf_all(london4), 35.0);
+  
+  int combined2 = cpdf_combinePages(london4, combined);
+
+  cpdf_toFile(combined2, "testoutputs/combined.pdf", false, false);
+
   cpdf_onExit();
 
   printf("*****Tests finished\n");
