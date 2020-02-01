@@ -712,6 +712,8 @@ int main (int argc, char ** argv)
 
   cpdf_toFile(combined2, "testoutputs/combined.pdf", false, false);
 
+  cpdf_outputJSON("testoutputs/combined2.json", true, true, combined2); 
+
   cpdf_onExit();
 
   printf("*****Tests finished\n");

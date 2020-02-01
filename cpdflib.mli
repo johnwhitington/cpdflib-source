@@ -271,3 +271,6 @@ val is_linearized : string -> bool
 
 val addContent : string -> bool -> bool -> int -> int -> unit
 
+val outputJSON : string -> bool -> bool -> int -> unit
+
+

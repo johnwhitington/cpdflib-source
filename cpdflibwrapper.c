@@ -2518,3 +2518,17 @@ void cpdf_addContent(char* s, int before, int fast, int range, int pdf)
   CAMLreturn0;
 }
 
+void cpdf_outputJSON(char* filename, int parse_content, int no_stream_data, int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal2(fn,out);
+  CAMLlocalN(args, 4);
+  args[0] = caml_copy_string(filename);
+  args[1] = Val_int(parse_content);
+  args[2] = Val_int(no_stream_data);
+  args[3] = Val_int(pdf);
+  fn = *caml_named_value("outputJSON");
+  out = caml_callbackN(fn, 4, args);
+  CAMLreturn0;
+}
+

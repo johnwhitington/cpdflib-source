@@ -2047,7 +2047,7 @@ let addPageLabels pdf style prefix offset range =
     and prefix =
       if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)
     in
-      Cpdf.add_page_labels (lookup_pdf pdf) style prefix offset (Array.to_list (lookup_range range))
+      Cpdf.add_page_labels (lookup_pdf pdf) false style prefix offset (Array.to_list (lookup_range range))
   with
     e -> handle_error "addPageLabels" e; err_unit
 
@@ -2105,4 +2105,15 @@ let addContent s before fast pdf range =
     e -> handle_error "addContent" e; err_unit
 
 let _ = Callback.register "addContent" addContent
+
+let outputJSON filename parse_content no_stream_data pdf =
+  if !dbg then flprint "Cpdflib.outputJSON";
+  try
+    let handle = open_out_bin filename in
+      CpdfwriteJSON.write handle parse_content no_stream_data (lookup_pdf pdf);
+      close_out handle
+  with
+    e -> handle_error "outputJSON" e; err_unit
+
+let _ = Callback.register "outputJSON" outputJSON
 

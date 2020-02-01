@@ -921,3 +921,5 @@ int is_linearized(const char[]);
 
 void cpdf_addContent(const char[], int, int, int, int);
 
+void cpdf_outputJSON(const char[], int, int, int);
+
