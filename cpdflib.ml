@@ -2123,3 +2123,14 @@ let ocgCoalesce pdf =
     Cpdf.ocg_coalesce (lookup_pdf pdf)
   with
     e -> handle_error "ocgCoalesce" e; err_unit
+
+let _ = Callback.register "ocgCoalesce" ocgCoalesce
+
+let ocgRename pdf f t =
+  if !dbg then flprint "Cpdflib.ocgRename";
+  try
+    Cpdf.ocg_rename f t (lookup_pdf pdf) 
+  with
+    e -> handle_error "ocgRename" e; err_unit
+
+let _ = Callback.register "ocgRename" ocgRename

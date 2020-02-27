@@ -275,3 +275,5 @@ val outputJSON : string -> bool -> bool -> int -> unit
 
 val ocgCoalesce : int -> unit
 
+val ocgRename : int -> string -> string -> unit
+

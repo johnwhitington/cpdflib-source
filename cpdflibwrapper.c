@@ -2543,3 +2543,15 @@ void cpdf_OCGCoalesce(int pdf)
   CAMLreturn0;
 }
 
+void cpdf_OCGRename(int pdf, char* f, char* t)
+{
+  CAMLparam0 ();
+  CAMLlocal5(pdf_v, unit_v, fn, f_v, t_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgRename");
+  f_v = caml_copy_string(f);
+  t_v = caml_copy_string(t);
+  unit_v = caml_callback3(fn, pdf_v, f_v, t_v);
+  CAMLreturn0;
+}
+

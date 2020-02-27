@@ -708,13 +708,14 @@ int main (int argc, char ** argv)
   cpdf_shiftContents(london4, cpdf_all(london4), 100, 100);
   cpdf_rotateContents(london4, cpdf_all(london4), 35.0);
   
+  cpdf_OCGCoalesce(london4);
+  cpdf_OCGRename(london4, "a", "b");
+
   int combined2 = cpdf_combinePages(london4, combined);
 
   cpdf_toFile(combined2, "testoutputs/combined.pdf", false, false);
 
   cpdf_outputJSON("testoutputs/combined2.json", true, true, combined2); 
-
-  cpdf_OCGCoalesce(london4);
 
   cpdf_onExit();
 
