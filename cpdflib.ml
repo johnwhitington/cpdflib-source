@@ -2117,3 +2117,9 @@ let outputJSON filename parse_content no_stream_data pdf =
 
 let _ = Callback.register "outputJSON" outputJSON
 
+let ocgCoalesce pdf =
+  if !dbg then flprint "Cpdflib.ocgCoalesce";
+  try
+    Cpdf.ocg_coalesce (lookup_pdf pdf)
+  with
+    e -> handle_error "ocgCoalesce" e; err_unit

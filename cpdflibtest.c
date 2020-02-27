@@ -714,6 +714,8 @@ int main (int argc, char ** argv)
 
   cpdf_outputJSON("testoutputs/combined2.json", true, true, combined2); 
 
+  cpdf_OCGCoalesce(london4);
+
   cpdf_onExit();
 
   printf("*****Tests finished\n");

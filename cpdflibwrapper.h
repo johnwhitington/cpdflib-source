@@ -923,3 +923,7 @@ void cpdf_addContent(const char[], int, int, int, int);
 
 void cpdf_outputJSON(const char[], int, int, int);
 
+void cpdf_OCGCoalesce(int);
+
+/*void cpdf_OCGRename(int, const char[], const char[]);*/
+

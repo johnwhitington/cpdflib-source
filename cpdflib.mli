@@ -273,4 +273,5 @@ val addContent : string -> bool -> bool -> int -> int -> unit
 
 val outputJSON : string -> bool -> bool -> int -> unit
 
+val ocgCoalesce : int -> unit
 

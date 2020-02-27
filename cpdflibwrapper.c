@@ -2532,3 +2532,14 @@ void cpdf_outputJSON(char* filename, int parse_content, int no_stream_data, int 
   CAMLreturn0;
 }
 
+void cpdf_OCGCoalesce(int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, unit_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgCoalesce");
+  unit_v = caml_callback(fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
