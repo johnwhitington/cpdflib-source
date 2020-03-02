@@ -277,3 +277,5 @@ val ocgCoalesce : int -> unit
 
 val ocgRename : int -> string -> string -> unit
 
+val ocgOrderAll : int -> unit
+

@@ -710,6 +710,7 @@ int main (int argc, char ** argv)
   
   cpdf_OCGCoalesce(london4);
   cpdf_OCGRename(london4, "a", "b");
+  cpdf_OCGOrderAll(london4);
 
   int combined2 = cpdf_combinePages(london4, combined);
 

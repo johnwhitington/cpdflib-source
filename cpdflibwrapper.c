@@ -2555,3 +2555,14 @@ void cpdf_OCGRename(int pdf, char* f, char* t)
   CAMLreturn0;
 }
 
+void cpdf_OCGOrderAll(int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, unit_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgOrderAll");
+  unit_v = caml_callback(fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+

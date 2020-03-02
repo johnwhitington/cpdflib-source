@@ -2134,3 +2134,14 @@ let ocgRename pdf f t =
     e -> handle_error "ocgRename" e; err_unit
 
 let _ = Callback.register "ocgRename" ocgRename
+
+let ocgOrderAll pdf =
+  if !dbg then flprint "Cpdflib.ocgOrderAll";
+  try
+    Cpdf.ocg_order_all (lookup_pdf pdf)
+  with
+    e -> handle_error "ocgOrderAll" e; err_unit
+
+let _ = Callback.register "ocgOrderAll" ocgOrderAll
+
+
