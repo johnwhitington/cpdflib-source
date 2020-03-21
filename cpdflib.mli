@@ -1,6 +1,10 @@
 (* CHAPTER 1. Basics *)
 val setdemo : bool -> unit
 
+val fast : bool ref
+val setFast : unit -> unit
+val setSlow : unit -> unit
+
 type pdf
 
 (* Debug enumeration of PDFs *)

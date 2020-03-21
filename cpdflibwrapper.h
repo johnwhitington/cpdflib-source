@@ -11,6 +11,10 @@ for details. To purchase a license, please visit http://www.coherentpdf.com/
 */
 void cpdf_startup (char **);
 
+void cpdf_setFast ();
+
+void cpdf_setSlow ();
+
 /** Set demo mode. Upon library startup is false. If set, files written will
  * have the text DEMO stamped over each page. This stamping will also slow down
  * the library significantly.

@@ -3,6 +3,14 @@ open Pdfutil
 
 let dbg = ref false
 
+let fast = ref false
+
+let setFast () = fast := true
+let setSlow () = fast := false
+
+let _ = Callback.register "setFast" setFast
+let _ = Callback.register "setSlow" setSlow
+
 (* Demo Handling *)
 let demo = ref false 
 
@@ -1177,6 +1185,7 @@ let stampOn pdf pdf2 range =
     e -> handle_error "stampOn" e; err_unit
 
 let stampUnder pdf pdf2 range =
+  Printf.printf "stampUnder: fast is %b\n" !fast;
   if !dbg then flprint "Cpdflib.stampUnder\n";
   try
     update_pdf
@@ -1185,7 +1194,7 @@ let stampUnder pdf pdf2 range =
          (Cpdf.BottomLeft 0.)
          false
          false
-         false
+         !fast
          false
          false
          (Array.to_list (lookup_range range))

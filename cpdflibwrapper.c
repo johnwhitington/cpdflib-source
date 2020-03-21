@@ -6,6 +6,24 @@
 
 /* CHAPTER 0. Preliminaries */
 
+void cpdf_setFast()
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("setFast");
+  unit_v = caml_callback(fn_v, Val_unit);
+  CAMLreturn0;
+}
+
+void cpdf_setSlow()
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("setSlow");
+  unit_v = caml_callback(fn_v, Val_unit);
+  CAMLreturn0;
+}
+
 void cpdf_startup(char ** argv)
 {
   caml_startup(argv);
@@ -1154,6 +1172,7 @@ void cpdf_stampOn(int pdf, int pdf2, int range)
   updateLastError();
   CAMLreturn0;
 }
+
 void cpdf_stampUnder(int pdf, int pdf2, int range)
 {
   CAMLparam0 ();
