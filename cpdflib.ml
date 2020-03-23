@@ -949,7 +949,7 @@ let scalePages i range sx sy =
   if !dbg then flprint "Cpdflib.scalePages\n";
   try
     let sxsylist = many (sx, sy) (pages i) in
-      update_pdf (Cpdf.scale_pdf sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_pdf ~fast:!fast sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scalePages" e; err_unit
 
@@ -957,7 +957,7 @@ let scaleToFit i range w h =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -981,14 +981,14 @@ let shiftContents i range dx dy =
   if !dbg then flprint "Cpdflib.shiftContents\n";
   try
     let dxdylist = many (dx, dy) (pages i) in
-    update_pdf (Cpdf.shift_pdf dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdf.shift_pdf ~fast:!fast dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "shiftContents" e; err_unit
 
 let scaleContents pdf range pos f1 f2 factor =
   if !dbg then flprint "Cpdflib.scaleContents\n";
   try
-    update_pdf (Cpdf.scale_contents (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdf.scale_contents ~fast:!fast (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "scaleContents" e; err_unit
 
@@ -1009,28 +1009,28 @@ let rotateBy i range angle =
 let rotateContents i range angle =
   if !dbg then flprint "Cpdflib.rotateContents\n";
   try
-    update_pdf (Cpdf.rotate_contents angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdf.rotate_contents ~fast:!fast angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotateContents" e; err_unit
 
 let upright i range =
   if !dbg then flprint "Cpdflib.upright\n";
   try
-    update_pdf (Cpdf.upright (Array.to_list (lookup_range range)) (lookup_pdf i)) (lookup_pdf i)
+    update_pdf (Cpdf.upright ~fast:!fast (Array.to_list (lookup_range range)) (lookup_pdf i)) (lookup_pdf i)
   with
     e -> handle_error "upright" e; err_unit
 
 let hFlip i range =
   if !dbg then flprint "Cpdflib.hFlip\n";
   try
-    update_pdf (Cpdf.hflip_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdf.hflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "hFlip" e; err_unit
 
 let vFlip i range =
   if !dbg then flprint "Cpdflib.vFlip\n";
   try
-    update_pdf (Cpdf.vflip_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdf.vflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "vFlip" e; err_unit
 
@@ -1174,7 +1174,7 @@ let stampOn pdf pdf2 range =
          (Cpdf.BottomLeft 0.)
          false
          false
-         false
+         !fast
          false
          true
          (Array.to_list (lookup_range range))
@@ -1185,7 +1185,6 @@ let stampOn pdf pdf2 range =
     e -> handle_error "stampOn" e; err_unit
 
 let stampUnder pdf pdf2 range =
-  Printf.printf "stampUnder: fast is %b\n" !fast;
   if !dbg then flprint "Cpdflib.stampUnder\n";
   try
     update_pdf
@@ -1207,7 +1206,7 @@ let stampUnder pdf pdf2 range =
 let combinePages pdf pdf2 =
   if !dbg then flprint "Cpdflib.combinePages\n";
   try
-    new_pdf (Cpdf.combine_pages false (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
+    new_pdf (Cpdf.combine_pages !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
   with
     e -> handle_error "combinePages" e; err_int
 
@@ -1281,7 +1280,7 @@ let addText_inner
          metrics
          1.0
          outline
-         false
+         !fast
          fontname
          (Some font)
          false
@@ -1341,7 +1340,7 @@ let _ = Callback.register "textWidth" textWidth
 let twoUp pdf =
   if !dbg then flprint "Cpdflib.twoUp\n";
   try
-    update_pdf (Cpdf.twoup false (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.twoup !fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUp" e; err_unit
 
