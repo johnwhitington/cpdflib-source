@@ -714,6 +714,10 @@ int main (int argc, char ** argv)
 
   int combined2 = cpdf_combinePages(london4, combined);
 
+  cpdf_setFast();
+  //test fast
+  cpdf_stampUnder(combined2, combined, cpdf_all(combined));
+
   cpdf_toFile(combined2, "testoutputs/combined.pdf", false, false);
 
   cpdf_outputJSON("testoutputs/combined2.json", true, true, combined2); 
