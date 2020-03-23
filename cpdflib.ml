@@ -2106,10 +2106,10 @@ let is_linearized filename =
 
 let _ = Callback.register "is_linearized" is_linearized
 
-let addContent s before fast pdf range =
+let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
   try
-    update_pdf (Cpdf.append_page_content s before fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "addContent" e; err_unit
 

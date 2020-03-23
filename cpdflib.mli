@@ -273,7 +273,7 @@ val squeeze : string -> string -> string -> string -> int
 
 val is_linearized : string -> bool
 
-val addContent : string -> bool -> bool -> int -> int -> unit
+val addContent : string -> bool -> int -> int -> unit
 
 val outputJSON : string -> bool -> bool -> int -> unit
 

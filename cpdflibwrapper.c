@@ -2522,18 +2522,17 @@ int is_linearized(char* filename)
   CAMLreturnT(int, Int_val(out_v));
 }
 
-void cpdf_addContent(char* s, int before, int fast, int range, int pdf)
+void cpdf_addContent(char* s, int before, int range, int pdf)
 {
   CAMLparam0 ();
   CAMLlocal2(fn,out);
-  CAMLlocalN(args, 5);
+  CAMLlocalN(args, 4);
   args[0] = caml_copy_string(s);
   args[1] = Val_int(before);
-  args[2] = Val_int(fast);
-  args[3] = Val_int(range);
-  args[4] = Val_int(pdf);
+  args[2] = Val_int(range);
+  args[3] = Val_int(pdf);
   fn = *caml_named_value("addContent");
-  out = caml_callbackN(fn, 5, args);
+  out = caml_callbackN(fn, 4, args);
   CAMLreturn0;
 }
 

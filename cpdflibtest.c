@@ -695,7 +695,7 @@ int main (int argc, char ** argv)
   printf("addContent()\n");
  
   int london3 = cpdf_fromFile("testinputs/london2.pdf", "");
-  cpdf_addContent("100 100 m 200 200 l 300 200 l 200 100 l h W n", true, false, london3, cpdf_all(london3));
+  cpdf_addContent("100 100 m 200 200 l 300 200 l 200 100 l h W n", true, london3, cpdf_all(london3));
 
   cpdf_toFile(london3, "testoutputs/clip.pdf", false, false);
 

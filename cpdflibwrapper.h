@@ -923,7 +923,7 @@ void cpdf_squeezeInMemory(int);
 /* Given a filename, is a PDF linearized? */
 int is_linearized(const char[]);
 
-void cpdf_addContent(const char[], int, int, int, int);
+void cpdf_addContent(const char[], int, int, int);
 
 void cpdf_outputJSON(const char[], int, int, int);
 
