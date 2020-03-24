@@ -933,3 +933,5 @@ void cpdf_OCGRename(int, const char[], const char[]);
 
 void cpdf_OCGOrderAll(int);
 
+char* cpdf_stampAsXObject(int, int, int);
+

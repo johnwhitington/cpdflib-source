@@ -283,3 +283,5 @@ val ocgRename : int -> string -> string -> unit
 
 val ocgOrderAll : int -> unit
 
+val stampAsXObject : int -> int -> int -> string
+

@@ -2584,3 +2584,16 @@ void cpdf_OCGOrderAll(int pdf)
   CAMLreturn0;
 }
 
+char* cpdf_stampAsXObject(int pdf, int range, int stamp_pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal5(pdf_v, range_v, stamp_pdf_v, fn, name_v);
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  stamp_pdf_v = Val_int(stamp_pdf);
+  fn = *caml_named_value("stampAsXObject");
+  name_v = caml_callback3(fn, pdf_v, range_v, stamp_pdf_v);
+  updateLastError ();
+  CAMLreturnT(char*, String_val(name_v));
+}
+
