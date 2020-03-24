@@ -724,6 +724,18 @@ int main (int argc, char ** argv)
 
   cpdf_onExit();
 
+  //test stampAsXObject
+  
+  int logo = cpdf_fromFile("logo.pdf", "");
+  int blank = cpdf_fromFile("blank.pdf", "");
+
+  char* name = cpdf_stampAsXObject(blank, cpdf_all(blank), logo);
+
+  cpdf_addContent("q 1 0 0 1 100 100 cm /bCPDFXObj Do Q q 1 0 0 1 200 200 cm /bCPDFXObj Do Q q 1 0 0 1 300 300 cm /bCPDFXObj Do Q", true, blank, cpdf_all(blank));
+
+  cpdf_toFile(blank, "testoutputs/xobject.pdf", false, false);
+  printf("Xobject name is %s\n", name);
   printf("*****Tests finished\n");
   return 0;
 }
+

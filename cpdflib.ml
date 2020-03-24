@@ -2156,7 +2156,7 @@ let stampAsXObject pdf range stamp_pdf =
   if !dbg then flprint "Cpdflib.stampAsXObject";
   try
      let pdf', name = Cpdf.stamp_as_xobject (lookup_pdf pdf) (Array.to_list (lookup_range range)) (lookup_pdf stamp_pdf) in
-     update_pdf (lookup_pdf pdf) pdf';
+     update_pdf pdf' (lookup_pdf pdf);
      name
   with
     e -> handle_error "stampAsXObject" e; err_string
