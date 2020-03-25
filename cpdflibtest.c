@@ -726,12 +726,12 @@ int main (int argc, char ** argv)
 
   //test stampAsXObject
   
-  int logo = cpdf_fromFile("logo.pdf", "");
+  int logo = cpdf_fromFile("testinputs/Test Slow File.pdf", "");
   int blank = cpdf_fromFile("blank.pdf", "");
-
   char* name = cpdf_stampAsXObject(blank, cpdf_all(blank), logo);
-
-  cpdf_addContent("q 1 0 0 1 100 100 cm /bCPDFXObj Do Q q 1 0 0 1 200 200 cm /bCPDFXObj Do Q q 1 0 0 1 300 300 cm /bCPDFXObj Do Q", true, blank, cpdf_all(blank));
+  char content[200];
+  sprintf(content, "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 500 500 cm %s Do Q", name, name, name);
+  cpdf_addContent(content, true, blank, cpdf_all(blank));
 
   cpdf_toFile(blank, "testoutputs/xobject.pdf", false, false);
   printf("Xobject name is %s\n", name);
