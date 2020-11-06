@@ -1,0 +1,2 @@
+#!/bin/bash
+cpdf frontmatter.pdf ../cpdf-source/cpdfmanual.pdf 1-~2 cpdflibmanual-source.pdf ../cpdf-source/cpdfmanual.pdf ~2-end -o cpdflibmanual.pdf
