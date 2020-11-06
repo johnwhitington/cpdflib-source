@@ -5,6 +5,14 @@
 #include <caml/bigarray.h>
 
 /* CHAPTER 0. Preliminaries */
+void cpdf_startup(char ** argv)
+{
+  caml_startup(argv);
+  return;
+}
+
+int cpdf_lastError = 0;
+char* cpdf_lastErrorString = "";
 
 void cpdf_setFast()
 {
@@ -23,15 +31,6 @@ void cpdf_setSlow()
   unit_v = caml_callback(fn_v, Val_unit);
   CAMLreturn0;
 }
-
-void cpdf_startup(char ** argv)
-{
-  caml_startup(argv);
-  return;
-}
-
-int cpdf_lastError = 0;
-char* cpdf_lastErrorString = "";
 
 /* Get the latest error from OCaml and replicate it here in C. Also update the
  * lastErrorString, This function is not exposed in the interface */
