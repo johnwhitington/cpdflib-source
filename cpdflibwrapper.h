@@ -11,6 +11,8 @@ for details. To purchase a license, please visit http://www.coherentpdf.com/
 */
 void cpdf_startup (char **);
 
+char* cpdf_version ();
+
 void cpdf_setFast ();
 
 void cpdf_setSlow ();

@@ -16,6 +16,9 @@ int main (int argc, char ** argv)
   printf("cpdf_startup()\n");
   cpdf_startup(argv);
 
+  char* v = cpdf_version();
+  printf("CPDFLIB Version: %s\n", v);
+
   printf("setdemo()\n");
   cpdf_setDemo(false);
 

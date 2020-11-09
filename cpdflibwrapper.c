@@ -11,6 +11,15 @@ void cpdf_startup(char ** argv)
   return;
 }
 
+char* cpdf_version()
+{
+  CAMLparam0();
+  CAMLlocal1(version);
+  version = *caml_named_value("version");
+  char* str = String_val(version);
+  CAMLreturnT(char*, str);
+}
+
 int cpdf_lastError = 0;
 char* cpdf_lastErrorString = "";
 

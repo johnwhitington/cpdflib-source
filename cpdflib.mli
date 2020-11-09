@@ -5,6 +5,8 @@ val fast : bool ref
 val setFast : unit -> unit
 val setSlow : unit -> unit
 
+val version : string
+
 type pdf
 
 (* Debug enumeration of PDFs *)
