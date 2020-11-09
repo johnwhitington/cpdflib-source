@@ -1281,32 +1281,32 @@ let addText_inner
   and color = color.r, color.g, color.b in
     let newpdf =
       (Cpdf.addtexts
-         metrics
-         1.0
-         outline
-         !fast
-         fontname
-         (Some font)
-         false
-         bates
-         None
-         color
-         position
-         linespacing
-         fontsize
-         underneath
-         text
-         (Array.to_list range)
-         Cpdf.Horizontal
-         cropbox
-         opacity
-         justification
-         midline
-         false
-         filename
-         None
-         "0 0"
-         pdf)
+         metrics (* metrics *)
+         1.0 (* linewidth *)
+         outline (* outline *)
+         !fast (* fast *)
+         fontname (* font name *)
+         (Some font) (* font *)
+         false (* embed fonts *)
+         bates (* bates number *)
+         None (* pad bates *)
+         color (* colour *)
+         position (* position *)
+         linespacing (* line spacing *)
+         fontsize (* font size *)
+         underneath (* underneath *)
+         text (* text *)
+         (Array.to_list range) (* page range *)
+         Cpdf.Horizontal (* orientation *)
+         cropbox (* relative to cropbox *)
+         opacity (* opacity *)
+         justification (* justification *)
+         midline (* relative to midline *)
+         false (* relative to topline *)
+         filename (* file name *)
+         None (* extract text font size *)
+         "0 0" (* shift *)
+         pdf (* pdf *))
     in
       if not metrics then
         begin
