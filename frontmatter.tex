@@ -20,7 +20,43 @@ showstringspaces=false
 
 \makeindex
 \begin{document}
-Front matter.
+\pagestyle{empty}
+
+\frontmatter
+\thispagestyle{empty}
+
+\begin{flushright}
+
+{\sffamily \bfseries \Huge Coherent PDF Library (libcpdf)}
+
+\vspace{12mm}
+
+{\Huge Developer's Manual}\\\vspace{2mm}
+Version 2.2 (January 2017)
+
+\vspace{25mm}
+
+\vfill
+
+\includegraphics{logo.pdf}
+
+\vspace{2mm}
+{\sffamily \bfseries \LARGE Coherent Graphics Ltd}
+
+\end{flushright}
+
+\clearpage
+
+{
+\chapter*{Instructions}
+\noindent This is the manual for the C API to the Coherent PDF Command Line Tools.
+
+
+It consists of the ordinary manual for the command line tools, followed by the C API, structured chapter-by-chapter the same as the chapters of the command line tools manual.
+
+
+The canonical API to the Coherent PDF Command Line tools is the command line. You should experiment with little pieces of your proposed program at the command line first, before trying to write it as a C program: you will find errors much more quickly like this.
+}
 
 \end{document}
 
