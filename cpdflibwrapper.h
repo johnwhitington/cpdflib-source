@@ -582,6 +582,15 @@ void cpdf_addText
    const char[] /** filename that this document was read from (optional) */
   );
 
+/** Add text, with most parameters default */
+void cpdf_addTextSimple
+  (int, /** Document */
+   int, /** Page range */
+   const char[], /** The text to add */
+   struct cpdf_position, /** Position to add text at */
+   enum cpdf_font, /** font */
+   double); /** font size */
+
 /* To return metrics about the text which would be added. Call cpdf_addText
  * first with the first argument set to false, and the other arguments filled
  * in as appropriate. Now, the metrics have been collected. Call

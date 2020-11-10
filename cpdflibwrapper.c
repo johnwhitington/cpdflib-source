@@ -1206,6 +1206,27 @@ int cpdf_combinePages(int pdf, int pdf2)
   CAMLreturnT(int, Int_val(pdfout));
 }
 
+/** The standard fonts */
+enum cpdf_font
+ {cpdf_timesRoman /** Times Roman */,
+  cpdf_timesBold /** Times Bold */,
+  cpdf_timesItalic /** Times Italic */,
+  cpdf_timesBoldItalic /** Times Bold Italic */,
+  cpdf_helvetica /** Helvetica */,
+  cpdf_helveticaBold /** Helvetica Bold */,
+  cpdf_helveticaOblique /** Helvetica Oblique */,
+  cpdf_helveticaBoldOblique /** Helvetica Bold Oblique */,
+  cpdf_courier /** Courier */,
+  cpdf_courierBold /** Courier Bold */,
+  cpdf_courierOblique /** Courier Oblique */,
+  cpdf_courierBoldOblique /** Courier Bold Oblique */};
+
+/** Justifications for multi line text */
+enum cpdf_justification
+ {cpdf_leftJustify /** Left justify */,
+  cpdf_CentreJustify /** Centre justify */,
+  cpdf_RightJustify /** Right justify */};
+
 void cpdf_addText
 (int metrics,
  int pdf,
@@ -1214,7 +1235,7 @@ void cpdf_addText
  struct cpdf_position pos,
  double linespacing,
  int bates,
- int font,
+ enum cpdf_font font,
  double fontsize,
  double r,
  double g,
@@ -1223,7 +1244,7 @@ void cpdf_addText
  int cropbox,
  int outline,
  double opacity,
- int justification,
+ enum cpdf_justification justification,
  int midline,
  char* filename)
 {
@@ -1257,29 +1278,29 @@ void cpdf_addText
   CAMLreturn0;
 }
 
-void cpdf_addTextSimple(int pdf, int range, char* text, struct cpdf_position pos, int font, double fontsize)
+void cpdf_addTextSimple(int pdf, int range, char* text, struct cpdf_position pos, enum cpdf_font font, double fontsize)
 {
   CAMLparam0();
   char s[] = "";
   cpdf_addText
-    (0,
+    (1, /** Do not collect metrics, but add text */
      pdf,
      range,
      text,
      pos,
-     1.0,
-     0,
+     1.0, /** Normal line spacing */
+     0, /** Starting bates number */
      font,
      fontsize,
-     0,
-     0,
-     0,
-     1,
-     1,
-     1,
-     1.0,
-     0,
-     0,
+     0, /** r = 0 */
+     0, /** g = 0 */
+     0, /** b = 0 */
+     1, /** Text not underneath */
+     1, /** Text not relative to crop box */
+     1, /** Text not outlined */
+     1.0, /** Opaque */
+     cpdf_leftJustify,
+     1, /** baseline not midline */
      s);
   CAMLreturn0;
 }
