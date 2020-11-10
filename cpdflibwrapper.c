@@ -16,7 +16,7 @@ char* cpdf_version()
   CAMLparam0();
   CAMLlocal1(version);
   version = *caml_named_value("version");
-  char* str = String_val(version);
+  char* str = (char *) String_val(version);
   CAMLreturnT(char*, str);
 }
 
@@ -54,7 +54,7 @@ void updateLastError (void)
   cpdf_lastError = Int_val(result_v);
   getLastErrorString_v = *caml_named_value("getLastErrorString");
   string_result_v = caml_callback(getLastErrorString_v, unit_v);
-  cpdf_lastErrorString = String_val(string_result_v);
+  cpdf_lastErrorString = (char *) String_val(string_result_v);
   CAMLreturn0;
 }
 
@@ -143,7 +143,7 @@ char* cpdf_enumeratePDFsInfo(int key)
   key_v = Val_int(key);
   out_v = caml_callback(enumeratePDFsInfo, key_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 void cpdf_endEnumeratePDFs(void)
@@ -256,7 +256,7 @@ char* cpdf_stringOfPagespec(int pdf, int range)
   inrange = Val_int(range);
   out = caml_callback2(fn, inpdf, inrange);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 int cpdf_blankRange(void)
@@ -1150,7 +1150,7 @@ char* cpdf_getBookmarkText(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v)); 
+  CAMLreturnT(char*, (char *) String_val(out_v)); 
 }
 
 void cpdf_endGetBookmarkInfo (void)
@@ -1257,6 +1257,33 @@ void cpdf_addText
   CAMLreturn0;
 }
 
+void cpdf_addTextSimple(int pdf, int range, char* text, struct cpdf_position pos, int font, double fontsize)
+{
+  CAMLparam0();
+  char s[] = "";
+  cpdf_addText
+    (0,
+     pdf,
+     range,
+     text,
+     pos,
+     1.0,
+     0,
+     font,
+     fontsize,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     1.0,
+     0,
+     0,
+     s);
+  CAMLreturn0;
+}
+
 int cpdf_addTextHowMany(void)
 {
   CAMLparam0();
@@ -1276,7 +1303,7 @@ char* cpdf_addTextReturnText(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 double cpdf_addTextReturnX(int serial)
@@ -1430,7 +1457,7 @@ char* cpdf_getFontName(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn_v, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 char* cpdf_getFontType(int serial)
@@ -1441,7 +1468,7 @@ char* cpdf_getFontType(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn_v, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 char* cpdf_getFontEncoding(int serial)
@@ -1452,7 +1479,7 @@ char* cpdf_getFontEncoding(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn_v, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 void cpdf_endGetFontInfo (void)
@@ -1496,7 +1523,7 @@ char* cpdf_getTitle(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getAuthor(int pdf)
@@ -1507,7 +1534,7 @@ char* cpdf_getAuthor(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getSubject(int pdf)
@@ -1518,7 +1545,7 @@ char* cpdf_getSubject(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getKeywords(int pdf)
@@ -1529,7 +1556,7 @@ char* cpdf_getKeywords(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getCreator(int pdf)
@@ -1540,7 +1567,7 @@ char* cpdf_getCreator(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getProducer(int pdf)
@@ -1551,7 +1578,7 @@ char* cpdf_getProducer(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getCreationDate(int pdf)
@@ -1562,7 +1589,7 @@ char* cpdf_getCreationDate(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 char* cpdf_getModificationDate(int pdf)
@@ -1573,7 +1600,7 @@ char* cpdf_getModificationDate(int pdf)
   pdf_v = Val_int(pdf);
   out = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out));
+  CAMLreturnT(char*, (char *) String_val(out));
 }
 
 void cpdf_getDateComponents
@@ -1630,7 +1657,7 @@ char* cpdf_dateStringOfComponents(int year, int month, int day, int hour, int mi
   fn = *caml_named_value("dateStringOfComponents");
   string_out = caml_callbackN(fn, 8, args);
   updateLastError();
-  CAMLreturnT(char *, String_val(string_out));
+  CAMLreturnT(char *, (char *) String_val(string_out));
 }
 
 int cpdf_hasBox(int pdf, int pagenumber, char* boxname)
@@ -2231,7 +2258,7 @@ char* cpdf_getAttachmentName(int serial)
   serial_v = Val_int(serial);
   out_v = caml_callback(fn, serial_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v));
+  CAMLreturnT(char*, (char *) String_val(out_v));
 }
 
 int cpdf_getAttachmentPage(int serial)
@@ -2435,7 +2462,7 @@ char* cpdf_lookupPdfUserPassword(int pdf)
   pdf_v = Val_int(pdf);
   out_v = caml_callback(fn, pdf_v);
   updateLastError();
-  CAMLreturnT(char*, String_val(out_v)); 
+  CAMLreturnT(char*, (char *) String_val(out_v)); 
 }
 
 /* Special functionality 2. Undo */
@@ -2602,6 +2629,5 @@ char* cpdf_stampAsXObject(int pdf, int range, int stamp_pdf)
   fn = *caml_named_value("stampAsXObject");
   name_v = caml_callback3(fn, pdf_v, range_v, stamp_pdf_v);
   updateLastError ();
-  CAMLreturnT(char*, String_val(name_v));
+  CAMLreturnT(char*, (char *) String_val(name_v));
 }
-
