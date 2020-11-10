@@ -579,7 +579,10 @@ void cpdf_addText
    double /** Opacity, 1.0 = opaque, 0.0 = wholly transparent */,
    enum cpdf_justification /** Justification */,
    int /** If true, position is relative to midline of text, not baseline */,
-   const char[] /** filename that this document was read from (optional) */
+   int /** If true, position is relative to topline of text, not baseline */,
+   const char[] /** filename that this document was read from (optional) */,
+   double /** line width */,
+   int /** embed fonts */
   );
 
 /** Add text, with most parameters default */

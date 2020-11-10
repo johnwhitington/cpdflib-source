@@ -354,8 +354,30 @@ int main (int argc, char ** argv)
   int textfile_all = cpdf_all(textfile);
   struct cpdf_position textpos = {.cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
   printf("addText()\n");
-  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, "");
-  cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, "");
+  cpdf_addText
+    (true, /* Just get metrics, don't add text */
+     textfile, /* pdf */
+     textfile_all, /* range */
+     "Some Text~~~~~~~~~~!", /* text */
+     textpos, /* position */
+     1.0, /* line spacing */
+     1, /* starting bates number */
+     cpdf_timesRoman, /* font */
+     20, /* font size */
+     0.5, /* r */
+     0.5, /* g */
+     0.5, /* b */
+     false, /* underneath */
+     false, /* relative to crop box */
+     true, /* outline text */
+     0.5, /* opacity */
+     cpdf_leftJustify, /* justification */
+     false, /* midline */
+     false, /* topline */
+     "", /* filename */
+     1.0, /* line width */
+     false); /* embed fonts */
+  //cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, false, "", 1.0, false);
   cpdf_toFile(textfile, "testoutputs/added_text.pdf", false, false);
 
   printf("addTextHowMany()\n");

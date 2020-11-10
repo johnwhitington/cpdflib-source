@@ -1246,11 +1246,15 @@ void cpdf_addText
  double opacity,
  enum cpdf_justification justification,
  int midline,
- char* filename)
+ int topline,
+ char* filename,
+ double linewidth,
+ int embed_fonts
+ )
 {
   CAMLparam0 ();
   CAMLlocal2(fn, unit);
-  CAMLlocalN (args, 21);
+  CAMLlocalN (args, 24);
   fn = *caml_named_value("addText");
   args[0] = Val_int(metrics);
   args[1] = Val_int(pdf);
@@ -1272,8 +1276,11 @@ void cpdf_addText
   args[17] = caml_copy_double(opacity);
   args[18] = Val_int(justification);
   args[19] = Val_int(midline);
-  args[20] = caml_copy_string(filename);
-  unit = caml_callbackN(fn, 21, args);
+  args[20] = Val_int(topline);
+  args[21] = caml_copy_string(filename);
+  args[22] = caml_copy_double(linewidth);
+  args[23] = Val_int(embed_fonts);
+  unit = caml_callbackN(fn, 24, args);
   updateLastError();
   CAMLreturn0;
 }
@@ -1301,7 +1308,11 @@ void cpdf_addTextSimple(int pdf, int range, char* text, struct cpdf_position pos
      1.0, /** Opaque */
      cpdf_leftJustify,
      1, /** baseline not midline */
-     s);
+     1, /** baseline not topline */
+     s, /** file name */
+     0.0, /** line width */
+     1 /** don't embed fonts */
+     );
   CAMLreturn0;
 }
 

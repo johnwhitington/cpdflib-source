@@ -1275,19 +1275,19 @@ let _ = Callback.register "addTextReturnRotation" addTextReturnRotation
 let _ = Callback.register "addTextReturnBaselineAdjustment" addTextReturnBaselineAdjustment
 
 let addText_inner
-  metrics pdf range text position linespacing bates font fontsize color underneath cropbox outline opacity justification midline filename
+  metrics pdf range text position linespacing bates font fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
   let fontname = Pdftext.string_of_standard_font font
   and color = color.r, color.g, color.b in
     let newpdf =
       (Cpdf.addtexts
          metrics (* metrics *)
-         1.0 (* linewidth *)
+         linewidth (* linewidth *)
          outline (* outline *)
          !fast (* fast *)
          fontname (* font name *)
          (Some font) (* font *)
-         false (* embed fonts *)
+         embed_fonts (* embed fonts *)
          bates (* bates number *)
          None (* pad bates *)
          color (* colour *)
@@ -1302,7 +1302,7 @@ let addText_inner
          opacity (* opacity *)
          justification (* justification *)
          midline (* relative to midline *)
-         false (* relative to topline *)
+         topline (* relative to topline *)
          filename (* file name *)
          None (* extract text font size *)
          "0 0" (* shift *)
@@ -1317,12 +1317,12 @@ let addText_inner
 
 let addText
   metrics pdf range text pos f1 f2 linespace bates font size r g b
-  underneath cropbox outline opacity justification midline filename
+  underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
   if !dbg then flprint "Cpdflib.addText\n";
   try
     addText_inner metrics (lookup_pdf pdf) (lookup_range range) text (read_position f1 f2 pos)
-    linespace bates font size (rgb r g b) underneath cropbox outline opacity justification midline filename
+    linespace bates font size (rgb r g b) underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
   with
     e -> handle_error "addText" e; err_unit
 

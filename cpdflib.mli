@@ -185,7 +185,10 @@ val addText :
   float -> (* opacity *)
   Cpdf.justification -> (* justification *) 
   bool -> (* midline *)
+  bool -> (* topline *)
   string -> (* filename *)
+  float -> (* line width *)
+  bool -> (* embed fonts *)
   unit
  
 (* CHAPTER 9. Multipage facilities *)
