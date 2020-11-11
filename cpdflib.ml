@@ -909,19 +909,10 @@ let selectPages pdf range =
   with
     e -> handle_error "selectPages" e; err_int
 
-let splitOnBookmarks pdf level =
-  if !dbg then flprint "Cpdflib.splitOnBookmarks\n";
-  try
-    let pdfs = Array.of_list (Cpdf.split_on_bookmarks (lookup_pdf pdf) level) in
-      Array.map new_pdf pdfs
-  with
-    e -> handle_error "splitOnBookmarks" e; err_array
-
 let _ = Callback.register "mergeSimple" mergeSimple
 let _ = Callback.register "merge" merge
 let _ = Callback.register "mergeSame" mergeSame
 let _ = Callback.register "selectPages" selectPages
-let _ = Callback.register "splitOnBookmarks" splitOnBookmarks
 
 (* CHAPTER 3. Pages *)
 let read_position f1 f2 = function

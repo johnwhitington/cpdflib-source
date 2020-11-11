@@ -98,8 +98,6 @@ val merge : pdf array -> bool -> bool -> pdf
 
 val mergeSame : pdf array -> bool -> bool -> int array -> pdf
 
-val splitOnBookmarks : pdf -> int -> pdf array
-
 val selectPages : pdf -> range -> pdf
 
 (* CHAPTER 3. Pages *)
