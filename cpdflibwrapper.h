@@ -373,12 +373,12 @@ enum cpdf_encryptionMethod cpdf_encryptionKind (int);
 int cpdf_mergeSimple (int *, int);
 
 /*
- * cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts, merge_add_bookmarks, merge_add_bookmarks_use_titles) merges
+ * cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts) merges
  * the PDFs. If retain_numbering is true page labels are not rewritten. If
  * remove_duplicate_fonts is true, duplicate fonts are merged. This is useful
- * when the source documents for merging originate from the same source. If merge_add_bookmarks is true, we add a new level of bookmarks, one for each input file. If merge_add_bookmarks_use_titles is also true, we use the titles of the documents, not the filenames for these new bookmarks.
+ * when the source documents for merging originate from the same source.
  */
-int cpdf_merge (int *, int, int, int, int, int);
+int cpdf_merge (int *, int, int, int);
 
 /*
  * This is the same as cpdf_merge, except that it has an additional argument
@@ -386,7 +386,7 @@ int cpdf_merge (int *, int, int, int, int, int);
  * each PDF. This avoids duplication of information when multiple discrete
  * parts of a source PDF are included.
  */
-int cpdf_mergeSame (int *, int, int, int, int, int, int *);
+int cpdf_mergeSame (int *, int, int, int, int *);
 
 /*
  * cpdf_selectPages(pdf, range) returns a new document which just those pages

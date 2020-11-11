@@ -855,7 +855,7 @@ let mergeSimple pdfs =
   with
     e -> handle_error "mergeSimple" e; err_int
 
-let merge pdfarr retain_numbering remove_duplicate_fonts merge_add_bookmarks merge_add_bookmarks_use_titles rawpdfs =
+let merge pdfarr retain_numbering remove_duplicate_fonts rawpdfs =
   match pdfarr with
   | [||] -> raise (Failure "merge: no pdfs")
   | _ ->
@@ -864,23 +864,23 @@ let merge pdfarr retain_numbering remove_duplicate_fonts merge_add_bookmarks mer
           retain_numbering remove_duplicate_fonts (map string_of_int (ilist 1 (length pdfs)))
           pdfs (map list_all rawpdfs) 
 
-let merge pdfs retain_numbering remove_duplicate_fonts merge_add_bookmarks merge_add_bookmarks_use_titles =
+let merge pdfs retain_numbering remove_duplicate_fonts =
   if !dbg then flprint "Cpdflib.merge\n";
   try
     new_pdf
-      (merge (Array.map lookup_pdf pdfs) retain_numbering remove_duplicate_fonts merge_add_bookmarks merge_add_bookmarks_use_titles (Array.to_list pdfs))
+      (merge (Array.map lookup_pdf pdfs) retain_numbering remove_duplicate_fonts (Array.to_list pdfs))
   with
     e -> handle_error "merge" e; err_int
 
 (* For use when the selection of pages must be done here rather than previously *)
-let mergeSameRange pdfarr retain_numbering remove_duplicate_fonts merge_add_bookmarks merge_add_bookmarks_use_titles (names : string array) (ranges : int list list) =
+let mergeSameRange pdfarr retain_numbering remove_duplicate_fonts (names : string array) (ranges : int list list) =
   if Array.length pdfarr <> Array.length names || Array.length pdfarr <> length ranges || Array.length pdfarr = 0
     then raise (Failure "merge_same: incorrect array lengths");
   let pdfs = Array.to_list pdfarr
   and names = Array.to_list names in
     Pdfmerge.merge_pdfs retain_numbering remove_duplicate_fonts names pdfs ranges 
 
-let mergeSame pdfs retain_numbering remove_duplicate_fonts merge_add_bookmarks merge_add_bookmarks_use_titles ranges =
+let mergeSame pdfs retain_numbering remove_duplicate_fonts ranges =
   if !dbg then flprint "Cpdflib.mergeSame\n";
   (*Printf.printf "mergesame: %i pdfs\n" (Array.length pdfs);
   List.iter2
@@ -897,8 +897,6 @@ let mergeSame pdfs retain_numbering remove_duplicate_fonts merge_add_bookmarks m
          (Array.map lookup_pdf pdfs)
             retain_numbering
             remove_duplicate_fonts
-            merge_add_bookmarks
-            merge_add_bookmarks_use_titles
             (Array.map string_of_int pdfs)
             (map (fun x -> Array.to_list (lookup_range x)) (Array.to_list ranges)))
   with

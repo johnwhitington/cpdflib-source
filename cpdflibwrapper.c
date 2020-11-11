@@ -832,11 +832,11 @@ cpdf_mergeSimple (int *pdfs, int len)
 
 int
 cpdf_merge (int *pdfs, int len, int retain_numbering,
-	    int remove_duplicate_fonts, int merge_add_bookmarks, int merge_add_bookmarks_use_titles)
+	    int remove_duplicate_fonts)
 {
   CAMLparam0 ();
-  CAMLlocal5 (fn, array, temp, len_v, out);
-  CAMLlocalN (args, 5);
+  CAMLlocal5 (fn, array, temp, len_v, retain_numbering_v);
+  CAMLlocal2 (remove_duplicate_fonts_v, out);
   array = caml_alloc (len, 0);
   int x;
   for (x = 0; x < len; x++)
@@ -845,23 +845,22 @@ cpdf_merge (int *pdfs, int len, int retain_numbering,
       Store_field (array, x, temp);
     };
   fn = *caml_named_value ("merge");
-  args[0] = array;
-  args[1] = Val_int (retain_numbering);
-  args[2] = Val_int (remove_duplicate_fonts);
-  args[3] = Val_int (merge_add_bookmarks);
-  args[4] = Val_int (merge_add_bookmarks_use_titles);
-  out = caml_callbackN (fn, 5, args);
+  retain_numbering_v = Val_int (retain_numbering);
+  remove_duplicate_fonts_v = Val_int (remove_duplicate_fonts);
+  out =
+    caml_callback3 (fn, array, retain_numbering_v, remove_duplicate_fonts_v);
   updateLastError ();
   CAMLreturnT (int, Int_val (out));
 }
 
 int
 cpdf_mergeSame (int *pdfs, int len, int retain_numbering,
-		int remove_duplicate_fonts, int merge_add_bookmarks, int merge_add_bookmarks_use_titles, int *ranges)
+		int remove_duplicate_fonts, int *ranges)
 {
   CAMLparam0 ();
-  CAMLlocal5 (array, rangearray, fn, temp, out);
-  CAMLlocalN (args, 6);
+  CAMLlocal3 (array, rangearray, fn);
+  CAMLlocal2 (temp, out);
+  CAMLlocalN (args, 4);
   array = caml_alloc (len, 0);
   rangearray = caml_alloc (len, 0);
   int x;
@@ -879,10 +878,8 @@ cpdf_mergeSame (int *pdfs, int len, int retain_numbering,
   args[0] = array;
   args[1] = Val_int (retain_numbering);
   args[2] = Val_int (remove_duplicate_fonts);
-  args[3] = Val_int (merge_add_bookmarks);
-  args[4] = Val_int (merge_add_bookmarks_use_titles);
-  args[5] = rangearray;
-  out = caml_callbackN (fn, 6, args);
+  args[3] = rangearray;
+  out = caml_callbackN (fn, 4, args);
   updateLastError ();
   CAMLreturnT (int, Int_val (out));
 }

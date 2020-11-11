@@ -94,9 +94,9 @@ val encryptionKind : pdf -> int
 (* CHAPTER 2. Merging and Splitting *)
 val mergeSimple : pdf array -> pdf
 
-val merge : pdf array -> bool -> bool -> bool -> bool -> pdf
+val merge : pdf array -> bool -> bool -> pdf
 
-val mergeSame : pdf array -> bool -> bool -> bool -> bool -> int array -> pdf
+val mergeSame : pdf array -> bool -> bool -> int array -> pdf
 
 val splitOnBookmarks : pdf -> int -> pdf array
 

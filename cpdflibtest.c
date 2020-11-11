@@ -108,7 +108,7 @@ int main (int argc, char ** argv)
   int merged = cpdf_mergeSimple(pdfs, 3);
   cpdf_toFile(merged, "testoutputs/merged.pdf", false, false);
   printf("merge()\n");
-  int merged2 = cpdf_merge(pdfs, 3, false, false, false, false);
+  int merged2 = cpdf_merge(pdfs, 3, false, false);
   cpdf_toFile(merged2, "testoutputs/merged2.pdf", false, false);
 
   int a = cpdf_all(mergepdf);
@@ -116,7 +116,7 @@ int main (int argc, char ** argv)
   int c = cpdf_all(mergepdf);
   int ranges[] = {a, b, c};
   printf("mergeSame()\n");
-  int merged3 = cpdf_mergeSame(pdfs, 3, false, false, false, false, ranges);
+  int merged3 = cpdf_mergeSame(pdfs, 3, false, false, ranges);
   cpdf_toFile(merged3, "testoutputs/merged3.pdf", false, false);
 
   int many = cpdf_fromFile("testinputs/bookmarks.pdf", "");
