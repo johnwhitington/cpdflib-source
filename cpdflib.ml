@@ -1075,6 +1075,9 @@ let setMediabox i range minx maxx miny maxy =
   with
     e -> handle_error "setMediaBox" e; err_unit
 
+let trimMarks i range = ()
+let showBoxes i range = ()
+
 let _ = Callback.register "scalePages" scalePages
 let _ = Callback.register "scaleToFit" scaleToFit
 let _ = Callback.register "scaleToFitPaper" scaleToFitPaper
@@ -1092,6 +1095,8 @@ let _ = Callback.register "removeArt" removeArt
 let _ = Callback.register "removeTrim" removeTrim
 let _ = Callback.register "removeBleed" removeBleed
 let _ = Callback.register "setMediabox" setMediabox
+let _ = Callback.register "trimMarks" trimMarks
+let _ = Callback.register "showBoxes" showBoxes
 
 (* CHAPTER 5. Compression *)
 let compress pdf =

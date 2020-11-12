@@ -1155,6 +1155,32 @@ cpdf_removeBleed (int pdf, int range)
   CAMLreturn0;
 }
 
+void
+cpdf_trimMarks (int pdf, int range)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, range_v);
+  fn = *caml_named_value ("trimMarks");
+  pdf_v = Val_int (pdf);
+  range_v = Val_int (range);
+  unit = caml_callback2 (fn, pdf_v, range_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_showBoxes (int pdf, int range)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, range_v);
+  fn = *caml_named_value ("showBoxes");
+  pdf_v = Val_int (pdf);
+  range_v = Val_int (range);
+  unit = caml_callback2 (fn, pdf_v, range_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 /* CHAPTER 5. Compression */
 void
 cpdf_compress (int pdf)

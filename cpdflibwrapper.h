@@ -515,6 +515,12 @@ void cpdf_removeArt (int, int);
 /* cpdf_removeBleed(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeBleed (int, int);
 
+/* trimMarks(pdf, range) adds trim marks to the given pages, if the trimbox exists */
+void cpdf_trimMarks (int, int);
+
+/* showBoxes(pdf, range) shows the boxes on the given pages, for debug. */
+void cpdf_showBoxes (int, int);
+
 /* CHAPTER 4. Encryption */
 
 /* Covered elsewhere. */
