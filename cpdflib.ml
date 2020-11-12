@@ -1075,8 +1075,23 @@ let setMediabox i range minx maxx miny maxy =
   with
     e -> handle_error "setMediaBox" e; err_unit
 
-let trimMarks i range = ()
-let showBoxes i range = ()
+let trimMarks i range =
+  if !dbg then flprint "Cpdflib.trimMarks\n";
+  try
+    update_pdf
+      (Cpdf.trim_marks (lookup_pdf i) (Array.to_list (lookup_range range)))
+      (lookup_pdf i)
+  with
+    e -> handle_error "trimMarks" e; err_unit
+
+let showBoxes i range =
+  if !dbg then flprint "Cpdflib.showBoxes\n";
+  try
+    update_pdf
+      (Cpdf.show_boxes (lookup_pdf i) (Array.to_list (lookup_range range)))
+      (lookup_pdf i)
+  with
+    e -> handle_error "showBoxes" e; err_unit
 
 let _ = Callback.register "scalePages" scalePages
 let _ = Callback.register "scaleToFit" scaleToFit
