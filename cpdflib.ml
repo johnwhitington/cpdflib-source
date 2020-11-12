@@ -948,11 +948,11 @@ let scalePages i range sx sy =
   with
     e -> handle_error "scalePages" e; err_unit
 
-let scaleToFit i range w h =
+let scaleToFit i range w h scale =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdf.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -963,12 +963,12 @@ let points_of_papersize p =
     let c  = Pdfunits.convert 0. u Pdfunits.PdfPoint in
       c w, c h
 
-let scaleToFitPaper i range papersize =
+let scaleToFitPaper i range papersize scale =
   if !dbg then flprint "Cpdflib.scaleToFitPaper\n";
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) 1. whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 

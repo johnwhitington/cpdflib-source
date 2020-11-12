@@ -103,9 +103,9 @@ val selectPages : pdf -> range -> pdf
 (* CHAPTER 3. Pages *)
 val scalePages : pdf -> range -> float -> float -> unit
 
-val scaleToFit : pdf -> range -> float -> float -> unit
+val scaleToFit : pdf -> range -> float -> float -> float -> unit
 
-val scaleToFitPaper : pdf -> range -> int -> unit
+val scaleToFitPaper : pdf -> range -> int -> float -> unit
 
 (* int, float, float = position *)
 val scaleContents : pdf -> range -> int -> float -> float -> float -> unit

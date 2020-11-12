@@ -916,32 +916,34 @@ cpdf_scalePages (int pdf, int range, double sx, double sy)
 }
 
 void
-cpdf_scaleToFit (int pdf, int range, double w, double h)
+cpdf_scaleToFit (int pdf, int range, double w, double h, double scale)
 {
   CAMLparam0 ();
-  CAMLlocalN (args, 4);
+  CAMLlocalN (args, 5);
   CAMLlocal2 (fn, unit);
   args[0] = Val_int (pdf);
   args[1] = Val_int (range);
   args[2] = caml_copy_double (w);
   args[3] = caml_copy_double (h);
+  args[4] = caml_copy_double (scale);
   fn = *caml_named_value ("scaleToFit");
-  unit = caml_callbackN (fn, 4, args);
+  unit = caml_callbackN (fn, 5, args);
   updateLastError ();
   CAMLreturn0;
 }
 
 void
-cpdf_scaleToFitPaper (int pdf, int range, int papersize)
+cpdf_scaleToFitPaper (int pdf, int range, int papersize, double scale)
 {
   CAMLparam0 ();
-  CAMLlocalN (args, 3);
+  CAMLlocalN (args, 4);
   CAMLlocal2 (unit, fn);
   args[0] = Val_int (pdf);
   args[1] = Val_int (range);
   args[2] = Val_int (papersize);
+  args[3] = caml_copy_double (scale);
   fn = *caml_named_value ("scaleToFitPaper");
-  unit = caml_callbackN (fn, 3, args);
+  unit = caml_callbackN (fn, 4, args);
   updateLastError ();
   CAMLreturn0;
 }

@@ -404,17 +404,17 @@ int cpdf_selectPages (int, int);
 void cpdf_scalePages (int, int, double, double);
 
 /*
- * cpdf_scaleToFit(pdf, range, width height) scales the content to fit new
- * page dimensions (width x height). Other boxed (crop etc. are altered as
+ * cpdf_scaleToFit(pdf, range, width height, scale) scales the content to fit new
+ * page dimensions (width x height) multiplied by scale (typically 1.0). Other boxed (crop etc. are altered as
  * appropriate)
  */
-void cpdf_scaleToFit (int, int, double, double);
+void cpdf_scaleToFit (int, int, double, double, double);
 
 /*
- * cpdf_scaleToFitPaper(pdf, range, papersize) scales the page content to fit
- * the given page size.
+ * cpdf_scaleToFitPaper(pdf, range, papersize, scale) scales the page content to fit
+ * the given page size, possibly multiplied by scale (typically 1.0)
  */
-void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize);
+void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize, double);
 
 /* Positions on the page. Used for scaling about a point, and adding text. */
 enum cpdf_anchor

@@ -152,11 +152,12 @@ int main (int argc, char ** argv)
   printf("scalePages()\n");
   cpdf_scalePages(pages_pdf, pages_all, 2.0, 3.0);
   cpdf_toFile(pages_pdf, "testoutputs/scalePages.pdf", false, false);
+
   printf("scaleToFit()\n");
-  cpdf_scaleToFit(pages_pdf, pages_all, 400.0, 400.0);
+  cpdf_scaleToFit(pages_pdf, pages_all, 400.0, 400.0, 1.0);
   cpdf_toFile(pages_pdf, "testoutputs/scaleToFit.pdf", false, false);
   printf("scaleToFitPaper()\n");
-  cpdf_scaleToFitPaper(pages_pdf, pages_all, cpdf_a4portrait);
+  cpdf_scaleToFitPaper(pages_pdf, pages_all, cpdf_a4portrait, 1.0);
   cpdf_toFile(pages_pdf, "testoutputs/a4.pdf", false, false);
   
   printf("scaleContents()\n");
