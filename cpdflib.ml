@@ -1093,6 +1093,15 @@ let showBoxes i range =
   with
     e -> handle_error "showBoxes" e; err_unit
 
+let hardBox i range box =
+  if !dbg then flprint "Cpdflib.hardBox\n";
+  try
+    update_pdf
+      (Cpdf.hard_box (lookup_pdf i) (Array.to_list (lookup_range range)) box false !fast)
+      (lookup_pdf i)
+  with
+    e -> handle_error "hardBox" e; err_unit
+
 let _ = Callback.register "scalePages" scalePages
 let _ = Callback.register "scaleToFit" scaleToFit
 let _ = Callback.register "scaleToFitPaper" scaleToFitPaper
@@ -1112,6 +1121,7 @@ let _ = Callback.register "removeBleed" removeBleed
 let _ = Callback.register "setMediabox" setMediabox
 let _ = Callback.register "trimMarks" trimMarks
 let _ = Callback.register "showBoxes" showBoxes
+let _ = Callback.register "hardBox" hardBox
 
 (* CHAPTER 5. Compression *)
 let compress pdf =

@@ -198,6 +198,7 @@ int main (int argc, char ** argv)
   cpdf_removeBleed(pages_pdf, pages_all);
   cpdf_trimMarks(pages_pdf, pages_all);
   cpdf_showBoxes(pages_pdf, pages_all);
+  cpdf_hardBox(pages_pdf, pages_all, "/MediaBox");
   cpdf_toFile(pages_pdf, "testoutputs/uncropped.pdf", false, false);
 
   cpdf_deletePdf(pages_pdf);

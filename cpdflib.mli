@@ -135,6 +135,7 @@ val setMediabox : pdf -> range -> float -> float -> float -> float -> unit
 
 val trimMarks : pdf -> range -> unit
 val showBoxes : pdf -> range -> unit
+val hardBox : pdf -> range -> string -> unit
 
 (* CHAPTER 5. Compression *)
 val compress : pdf -> unit
