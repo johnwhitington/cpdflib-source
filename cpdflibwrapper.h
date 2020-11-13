@@ -607,6 +607,9 @@ int cpdf_getBookmarkPage (int, int);
 /* Return the text of bookmark (0...(n - 1)) */
 char *cpdf_getBookmarkText (int);
 
+/* true if the bookmark is open */
+int cpdf_getBookmarkOpenStatus (int);
+
 /* End the bookmark retrieval process, cleaning up. */
 void cpdf_endGetBookmarkInfo (void);
 
@@ -624,6 +627,9 @@ void cpdf_setBookmarkLevel (int, int);
  * the PDF passed to cpdf_startSetBookmarkInfo) and bookmark (0...(n - 1))
  */
 void cpdf_setBookmarkPage (int, int, int);
+
+/* Set the open status of a bookmark */
+void cpdf_setBookmarkOpenStatus (int, int);
 
 /* Set the destination from a bookmark */
 /*void cpdf_setBookmarkDestination (int,

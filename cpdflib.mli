@@ -147,13 +147,14 @@ val numberBookmarks : unit -> int
 val getBookmarkPage : pdf -> int -> int
 val getBookmarkLevel : int -> int
 val getBookmarkText : int -> string
+val getBookmarkOpenStatus : int -> bool
 
 val startSetBookmarkInfo : int -> unit
 val endSetBookmarkInfo : pdf -> unit
-
 val setBookmarkPage : pdf -> int -> int -> unit
 val setBookmarkLevel : int -> int -> unit
 val setBookmarkText : int -> string -> unit
+val setBookmarkOpenStatus : int -> bool -> unit
 
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)

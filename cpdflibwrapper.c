@@ -1258,6 +1258,18 @@ cpdf_getBookmarkPage (int pdf, int serial)
   CAMLreturnT (int, Int_val (out_v));
 }
 
+int
+cpdf_getBookmarkOpenStatus (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getBookmarkOpenStatus");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
 char *
 cpdf_getBookmarkText (int serial)
 {
@@ -1317,6 +1329,19 @@ cpdf_setBookmarkPage (int pdf, int serial, int pagenum)
   pdf_v = Val_int (pdf);
   pagenum_v = Val_int (pagenum);
   out_v = caml_callback2 (fn_v, pdf_v, serial_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setBookmarkOpenStatus (int serial, int open)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (serial_v, fn_v, open_v, out_v);
+  fn_v = *caml_named_value ("setBookmarkOpenStatus");
+  serial_v = Val_int (serial);
+  open_v = Val_int (open);
+  out_v = caml_callback2 (fn_v, serial_v, open_v);
   updateLastError ();
   CAMLreturn0;
 }

@@ -1169,6 +1169,11 @@ let getBookmarkText serial =
   try !bookmarkinfo.(serial).Pdfmarks.text with
     e -> handle_error "getBookmarkText" e; err_string
 
+let getBookmarkOpenStatus serial =
+  if !dbg then flprint "Cpdflib.getBookmarkOpenStatus\n";
+  try !bookmarkinfo.(serial).Pdfmarks.isopen with
+    e -> handle_error "getBookmarkOpenStatus" e; err_bool
+
 type mut_pdfmarks =
   {mutable mut_level : int;
    mutable mut_text : string;
@@ -1201,6 +1206,13 @@ let setBookmarkLevel serial level =
     !setbookmarkinfo.(serial).mut_level <- level
   with
     e -> handle_error "setBookmarkLevel" e; err_unit
+
+let setBookmarkOpenStatus serial isopen =
+  if !dbg then flprint "Cpdflib.setBookmarkOpenStatus\n";
+  try
+    !setbookmarkinfo.(serial).mut_isopen <- isopen
+  with
+    e -> handle_error "setBookmarkOpenStatus" e; err_unit
 
 (* copied from cpdf.ml *)
 let rec fixup_characters prev = function
@@ -1238,11 +1250,13 @@ let _ = Callback.register "numberBookmarks" numberBookmarks
 let _ = Callback.register "getBookmarkPage" getBookmarkPage
 let _ = Callback.register "getBookmarkLevel" getBookmarkLevel
 let _ = Callback.register "getBookmarkText" getBookmarkText
+let _ = Callback.register "getBookmarkOpenStatus" getBookmarkOpenStatus
 let _ = Callback.register "startSetBookmarkInfo" startSetBookmarkInfo
 let _ = Callback.register "endSetBookmarkInfo" endSetBookmarkInfo
 let _ = Callback.register "setBookmarkPage" setBookmarkPage
 let _ = Callback.register "setBookmarkLevel" setBookmarkLevel
 let _ = Callback.register "setBookmarkText" setBookmarkText
+let _ = Callback.register "setBookmarkOpenStatus" setBookmarkOpenStatus
 
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)

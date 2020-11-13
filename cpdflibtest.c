@@ -244,9 +244,10 @@ main (int argc, char **argv)
   int x = 0;
   for (x = 0; x < num_bookmarks; x++)
     {
-      printf ("Bookmark at level %i points to page %i and has text %s\n",
-	      cpdf_getBookmarkLevel (x),
-	      cpdf_getBookmarkPage (book, x), cpdf_getBookmarkText (x));
+      printf
+	("Bookmark at level %i points to page %i and has text %s and open %i\n",
+	 cpdf_getBookmarkLevel (x), cpdf_getBookmarkPage (book, x),
+	 cpdf_getBookmarkText (x), cpdf_getBookmarkOpenStatus (x));
     };
   printf ("endGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo ();
@@ -255,6 +256,7 @@ main (int argc, char **argv)
   cpdf_setBookmarkLevel (1, 2);
   cpdf_setBookmarkText (1, "This is a bookmark!");
   cpdf_setBookmarkPage (book, 1, 3);
+  cpdf_setBookmarkOpenStatus (1, true);
   cpdf_endSetBookmarkInfo (book);
 
   printf ("Make a blank range\n");
