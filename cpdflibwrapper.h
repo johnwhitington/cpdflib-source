@@ -557,51 +557,52 @@ int cpdf_getBookmarkLevel (int);
  */
 int cpdf_getBookmarkPage (int, int);
 
-/* Structure for a Pdfdest.t */
-enum cpdf_targetPageType
-{
-  cpdf_pageObject,
-  cpdf_otherDocPageNumber
-};
+/* Not implemented yet. */
+/* /1* Structure for a Pdfdest.t *1/ */
+/* enum cpdf_targetPageType */
+/* { */
+/*   cpdf_pageObject, */
+/*   cpdf_otherDocPageNumber */
+/* }; */
 
-struct cpdf_targetPage
-{
-  enum cpdf_targetPageType tpt;
-  int tp_content;
-};
+/* struct cpdf_targetPage */
+/* { */
+/*   enum cpdf_targetPageType tpt; */
+/*   int tp_content; */
+/* }; */
 
-enum cpdf_positionDestinationType
-{
-  cpdf_Action,			/* Pdfobject associated with this not accessible */
-  cpdf_NullDestination,
-  cpdf_NamedDestinationElsewhere,
-  cpdf_XYZ,
-  cpdf_Fit,
-  cpdf_FitH,
-  cpdf_FitV,
-  cpdf_FitR,
-  cpdf_FitB,
-  cpdf_FitBH,
-  cpdf_FitBV
-};
+/* enum cpdf_positionDestinationType */
+/* { */
+/*   cpdf_Action,			/1* Pdfobject associated with this not accessible *1/ */
+/*   cpdf_NullDestination, */
+/*   cpdf_NamedDestinationElsewhere, */
+/*   cpdf_XYZ, */
+/*   cpdf_Fit, */
+/*   cpdf_FitH, */
+/*   cpdf_FitV, */
+/*   cpdf_FitR, */
+/*   cpdf_FitB, */
+/*   cpdf_FitBH, */
+/*   cpdf_FitBV */
+/* }; */
 
-struct cpdf_bookmarkDestination
-{
-  struct cpdf_targetPage tp;
-  enum cpdf_positionDestinationType type;
-  double p1;
-  double p2;
-  double p3;
-  double p4;
-  int p1_is_some;
-  int p2_is_some;
-  int p3_is_some;
-  int p4_is_some;
-  char *named_destination_elsewhere_text;
-};
+/* struct cpdf_bookmarkDestination */
+/* { */
+/*   struct cpdf_targetPage tp; */
+/*   enum cpdf_positionDestinationType type; */
+/*   double p1; */
+/*   double p2; */
+/*   double p3; */
+/*   double p4; */
+/*   int p1_is_some; */
+/*   int p2_is_some; */
+/*   int p3_is_some; */
+/*   int p4_is_some; */
+/*   char *named_destination_elsewhere_text; */
+/* }; */
 
 /* Get the destination from a bookmark */
-struct cpdf_bookmarkDestination cpdf_getBookmarkDestination (int);
+/*struct cpdf_bookmarkDestination cpdf_getBookmarkDestination (int);*/
 
 /* Return the text of bookmark (0...(n - 1)) */
 char *cpdf_getBookmarkText (int);
@@ -612,6 +613,33 @@ void cpdf_endGetBookmarkInfo (void);
 
 /* Setting bookmark information */
 
+/* Start the bookmark retrieval process for a given PDF. */
+void cpdf_startSetBookmarkInfo (int);
+
+/*
+ * Set the number of bookmarks for the PDF.
+ */
+void cpdf_numberSetBookmarks (int);
+
+/* Set bookmark level for the given bookmark (0...(n - 1)) */
+void cpdf_setBookmarkLevel (int, int);
+
+/*
+ * Set the bookmark target page for the given PDF (which must be the same as
+ * the PDF passed to cpdf_startSetBookmarkInfo) and bookmark (0...(n - 1))
+ */
+void cpdf_setBookmarkPage (int, int, int);
+
+/* Set the destination from a bookmark */
+/*void cpdf_setBookmarkDestination (int,
+				  struct cpdf_bookmarkDestination
+				  cpdf_getBookmarkDestination);*/
+
+/* Return the text of bookmark (0...(n - 1)) */
+void cpdf_setBookmarkText (int, int, char *);
+
+/* End the bookmark retrieval process, cleaning up. */
+void cpdf_endGetBookmarkInfo (void);
 
 /* CHAPTER 7. Presentations */
 
