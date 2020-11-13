@@ -164,7 +164,8 @@ main (int argc, char **argv)
 
   printf ("scaleContents()\n");
   struct cpdf_position p = {.cpdf_anchor = cpdf_topLeft,.cpdf_coord1 =
-      20,.cpdf_coord2 = 20 };
+      20,.cpdf_coord2 = 20
+  };
   cpdf_scaleContents (pages_pdf, pages_all, p, 2.0);
   cpdf_toFile (pages_pdf, "testoutputs/scaleContents.pdf", false, false);
   printf ("shiftContents()\n");
@@ -250,11 +251,11 @@ main (int argc, char **argv)
   printf ("endGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo ();
 
-  cpdf_startSetBookmarkInfo(book, 1);
-  cpdf_setBookmarkLevel(1, 2);
-  cpdf_setBookmarkText(1, "This is a bookmark!");
-  cpdf_setBookmarkPage(book, 1, 3);
-  cpdf_endSetBookmarkInfo();
+  cpdf_startSetBookmarkInfo (1);
+  cpdf_setBookmarkLevel (1, 2);
+  cpdf_setBookmarkText (1, "This is a bookmark!");
+  cpdf_setBookmarkPage (book, 1, 3);
+  cpdf_endSetBookmarkInfo (book);
 
   printf ("Make a blank range\n");
   printf ("blankrange()\n");
@@ -371,7 +372,8 @@ main (int argc, char **argv)
   int textfile = cpdf_fromFile ("testinputs/hello.pdf", "");
   int textfile_all = cpdf_all (textfile);
   struct cpdf_position textpos = {.cpdf_anchor = cpdf_topLeft,.cpdf_coord1 =
-      20,.cpdf_coord2 = 20 };
+      20,.cpdf_coord2 = 20
+  };
   printf ("addText()\n");
   cpdf_addText (true,		/* Just get metrics, don't add text */
 		textfile,	/* pdf */

@@ -613,8 +613,8 @@ void cpdf_endGetBookmarkInfo (void);
 
 /* Setting bookmark information */
 
-/* Start the bookmark retrieval process for a given PDF. */
-void cpdf_startSetBookmarkInfo (int, int);
+/* Start the bookmark retrieval process for n bookmarks. */
+void cpdf_startSetBookmarkInfo (int);
 
 /* Set bookmark level for the given bookmark (0...(n - 1)) */
 void cpdf_setBookmarkLevel (int, int);
@@ -633,8 +633,8 @@ void cpdf_setBookmarkPage (int, int, int);
 /* Return the text of bookmark (0...(n - 1)) */
 void cpdf_setBookmarkText (int, const char[]);
 
-/* End the bookmark setting process, cleaning up. */
-void cpdf_endSetBookmarkInfo (void);
+/* End the bookmark setting process for a given PDF */
+void cpdf_endSetBookmarkInfo (int);
 
 /* CHAPTER 7. Presentations */
 

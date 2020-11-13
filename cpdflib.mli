@@ -148,8 +148,8 @@ val getBookmarkPage : pdf -> int -> int
 val getBookmarkLevel : int -> int
 val getBookmarkText : int -> string
 
-val startSetBookmarkInfo : pdf -> int -> unit
-val endSetBookmarkInfo : unit -> unit
+val startSetBookmarkInfo : int -> unit
+val endSetBookmarkInfo : pdf -> unit
 
 val setBookmarkPage : pdf -> int -> int -> unit
 val setBookmarkLevel : int -> int -> unit

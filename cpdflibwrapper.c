@@ -1283,14 +1283,13 @@ cpdf_endGetBookmarkInfo (void)
 }
 
 void
-cpdf_startSetBookmarkInfo (int pdf, int n)
+cpdf_startSetBookmarkInfo (int n)
 {
   CAMLparam0 ();
-  CAMLlocal4 (fn_v, pdf_v, n_v, out_v);
+  CAMLlocal3 (fn_v, n_v, out_v);
   fn_v = *caml_named_value ("startSetBookmarkInfo");
-  pdf_v = Val_int (pdf);
   n_v = Val_int (n);
-  out_v = caml_callback2 (fn_v, pdf_v, n_v);
+  out_v = caml_callback (fn_v, n_v);
   updateLastError ();
   CAMLreturn0;
 }
@@ -1336,13 +1335,13 @@ cpdf_setBookmarkText (int serial, char *text)
 }
 
 void
-cpdf_endSetBookmarkInfo (void)
+cpdf_endSetBookmarkInfo (int pdf)
 {
   CAMLparam0 ();
-  CAMLlocal3 (fn_v, unit_v, out_v);
+  CAMLlocal3 (fn_v, pdf_v, out_v);
   fn_v = *caml_named_value ("endSetBookmarkInfo");
-  unit_v = Val_unit;
-  out_v = caml_callback (fn_v, unit_v);
+  pdf_v = Val_int (pdf);
+  out_v = caml_callback (fn_v, pdf_v);
   updateLastError ();
   CAMLreturn0;
 }

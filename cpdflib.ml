@@ -1169,11 +1169,68 @@ let getBookmarkText serial =
   try !bookmarkinfo.(serial).Pdfmarks.text with
     e -> handle_error "getBookmarkText" e; err_string
 
-let startSetBookmarkInfo pdf num_bookmarks = ()
-let endSetBookmarkInfo () = ()
-let setBookmarkPage pdf serial pagenum = ()
-let setBookmarkLevel serial level = ()
-let setBookmarkText serial str = ()
+type mut_pdfmarks =
+  {mutable mut_level : int;
+   mutable mut_text : string;
+   mutable mut_target : Pdfdest.t;
+   mutable mut_isopen : bool}
+                    
+let setbookmarkinfo = ref [||]
+
+let startSetBookmarkInfo num_bookmarks =
+  if !dbg then flprint "Cpdflib.startSetBookmarkInfo\n";
+  setbookmarkinfo :=
+    Array.init
+      num_bookmarks
+      (fun _ -> {mut_level = 0;
+                 mut_text = "";
+                 mut_target = Pdfdest.NullDestination;
+                 mut_isopen = false})
+
+let setBookmarkPage pdf serial pagenum =
+  if !dbg then flprint "Cpdflib.setBookmarkPage\n";
+  try
+    !setbookmarkinfo.(serial).mut_target <-
+      Pdfpage.target_of_pagenumber (lookup_pdf pdf) pagenum 
+  with
+    e -> handle_error "setBookmarkPage" e; err_unit
+
+let setBookmarkLevel serial level =
+  if !dbg then flprint "Cpdflib.setBookmarkLevel\n";
+  try
+    !setbookmarkinfo.(serial).mut_level <- level
+  with
+    e -> handle_error "setBookmarkLevel" e; err_unit
+
+(* copied from cpdf.ml *)
+let rec fixup_characters prev = function
+  | [] -> rev prev
+  | '\\'::'\\'::t -> fixup_characters ('\\'::prev) t
+  | '\\'::'"'::t -> fixup_characters ('"'::prev) t
+  | '\\'::'n'::t -> fixup_characters ('\n'::prev) t
+  | h::t -> fixup_characters (h::prev) t
+
+let setBookmarkText serial str =
+  if !dbg then flprint "Cpdflib.setBookmarkText\n";
+  try
+    !setbookmarkinfo.(serial).mut_text <-
+      Pdftext.pdfdocstring_of_utf8 (implode (fixup_characters [] (explode str)))
+  with
+    e -> handle_error "setBookmarkText" e; err_unit
+
+let endSetBookmarkInfo pdf =
+  if !dbg then flprint "Cpdflib.endSetBookmarkInfo\n";
+  let convert {mut_level; mut_text; mut_target; mut_isopen} =
+    {Pdfmarks.level = mut_level;
+     Pdfmarks.text = mut_text;
+     Pdfmarks.target = mut_target;
+     Pdfmarks.isopen = mut_isopen}
+  in
+    try
+      update_pdf (Pdfmarks.add_bookmarks (map convert (Array.to_list !setbookmarkinfo)) (lookup_pdf pdf)) (lookup_pdf pdf);
+      setbookmarkinfo := [||]
+    with
+      e -> handle_error "endSetBookmarkInfo" e; err_unit
 
 let _ = Callback.register "startGetBookmarkInfo" startGetBookmarkInfo
 let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
