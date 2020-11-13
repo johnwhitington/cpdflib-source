@@ -348,19 +348,6 @@ void cpdf_toFileEncryptedExt
   (int, int, int *, int, const char[], const char[], int, int, int, int, int,
    const char[]);
 
-/*
- * Write a modified file, re-encrypting it.
- * 
- * cpdf_toFileRecrypting(original, decrypted_and_modified, userpw, filename)
- * 
- * original is the original document, as read from file. decrypted_and_modified
- * is the processed file, ready to write. userpw is the user password for the
- * PDF. filename is the name of the file to write.
- * 
- * The PDF 'modified' is no longer usable and can be deleted.
- */
-/* void cpdf_toFileRecrypting(int, int, const char[], const char[]); */
-
 /* Return true if the given permission (restriction) is present. */
 int cpdf_hasPermission (int, enum cpdf_permission);
 

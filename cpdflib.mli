@@ -85,8 +85,6 @@ val decryptPdfOwner : pdf -> string -> unit
 
 val toFileEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> string -> unit
 
-(*val toFileRecrypting : pdf -> pdf -> string -> string -> unit*)
-
 val hasPermission : pdf -> int -> bool
 
 val encryptionKind : pdf -> int

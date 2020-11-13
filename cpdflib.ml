@@ -806,17 +806,6 @@ let toFileEncryptedExt
   with
     e -> handle_error "toFileEncrypted" e; err_unit
 
-(*let toFileRecrypting original decrypted_and_modified userpw filename =
-  if !dbg then flprint "Cpdflib.toFileRecrypting\n";
-  try
-    Pdfwrite.pdf_to_file_options
-      ?recrypt:(Some userpw)
-      (lookup_pdf original)
-      (lookup_pdf decrypted_and_modified)
-      filename
-  with
-    e -> handle_error "toFileRecrypting" e; err_unit*)
-
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
 let _ = Callback.register "fromMemory" fromMemory
@@ -834,7 +823,6 @@ let _ = Callback.register "all" all
 let _ = Callback.register "isEncrypted" isEncrypted
 let _ = Callback.register "toFileEncrypted" toFileEncrypted
 let _ = Callback.register "toFileEncryptedExt" toFileEncryptedExt
-(*let _ = Callback.register "toFileRecrypting" toFileRecrypting*)
 
 (* CHAPTER 2. Merging and Splitting *)
 let list_all pdf = ilist 1 (pages pdf)

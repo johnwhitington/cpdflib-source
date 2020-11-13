@@ -84,10 +84,6 @@ int main (int argc, char ** argv)
   printf("decryptPdf\n");
   cpdf_decryptPdf(pdfenc, "user");
 
-  /*printf("toFileRecrypting()\n");
-  int pdfenc2 = cpdf_fromFile("testoutputs/encrypted.pdf", "");
-  cpdf_toFileRecrypting(pdfenc2, pdfenc, "user", "testoutputs/recrypted.pdf");*/
-
   printf("decryptPdfOwner()\n");
   int pdfenc3 = cpdf_fromFile("testoutputs/encrypted.pdf", "");
   cpdf_decryptPdfOwner(pdfenc3, "owner");

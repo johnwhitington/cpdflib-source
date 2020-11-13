@@ -728,6 +728,7 @@ void cpdf_toFileEncrypted
   CAMLreturn0;
 }
 
+/* FIXME: Extend for recrypting at some point? */
 void cpdf_toFileEncryptedExt
   (int pdf,
    int e,
@@ -769,21 +770,6 @@ void cpdf_toFileEncryptedExt
   /* Return */
   CAMLreturn0;
 }
-
-/*void cpdf_toFileRecrypting(int original, int decrypted_and_modified, char* userpw, char* filename)
-{
-  CAMLparam0 ();
-  CAMLlocal2 (unit, fn);
-  CAMLlocalN (args, 4);
-  fn = *caml_named_value("toFileRecrypting");
-  args[0] = Val_int(original);
-  args[1] = Val_int(decrypted_and_modified);
-  args[2] = caml_copy_string(userpw);
-  args[3] = caml_copy_string(filename);
-  unit = caml_callbackN(fn, 4, args);
-  updateLastError();
-  CAMLreturn0;
-}*/
 
 int
 cpdf_hasPermission (int pdf, enum cpdf_permission tocheck)
