@@ -1170,14 +1170,14 @@ cpdf_showBoxes (int pdf, int range)
 }
 
 void
-cpdf_hardBox (int pdf, int range, char* box)
+cpdf_hardBox (int pdf, int range, char *box)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, fn, pdf_v, range_v, box_v);
   fn = *caml_named_value ("hardBox");
   pdf_v = Val_int (pdf);
   range_v = Val_int (range);
-  box_v = caml_copy_string(box);
+  box_v = caml_copy_string (box);
   unit = caml_callback3 (fn, pdf_v, range_v, box_v);
   updateLastError ();
   CAMLreturn0;
