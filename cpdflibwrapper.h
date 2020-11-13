@@ -633,8 +633,8 @@ void cpdf_setBookmarkPage (int, int, int);
 /* Return the text of bookmark (0...(n - 1)) */
 void cpdf_setBookmarkText (int, const char[]);
 
-/* End the bookmark retrieval process, cleaning up. */
-void cpdf_endGetBookmarkInfo (void);
+/* End the bookmark setting process, cleaning up. */
+void cpdf_endSetBookmarkInfo (void);
 
 /* CHAPTER 7. Presentations */
 

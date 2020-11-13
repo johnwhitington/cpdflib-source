@@ -250,6 +250,12 @@ main (int argc, char **argv)
   printf ("endGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo ();
 
+  cpdf_startSetBookmarkInfo(book, 1);
+  cpdf_setBookmarkLevel(1, 2);
+  cpdf_setBookmarkText(1, "This is a bookmark!");
+  cpdf_setBookmarkPage(book, 1, 3);
+  cpdf_endSetBookmarkInfo();
+
   printf ("Make a blank range\n");
   printf ("blankrange()\n");
   int r = cpdf_blankRange ();
