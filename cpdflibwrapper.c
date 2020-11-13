@@ -1282,6 +1282,71 @@ cpdf_endGetBookmarkInfo (void)
   CAMLreturn0;
 }
 
+void
+cpdf_startSetBookmarkInfo (int pdf, int n)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn_v, pdf_v, n_v, out_v);
+  fn_v = *caml_named_value ("startSetBookmarkInfo");
+  pdf_v = Val_int (pdf);
+  n_v = Val_int (n);
+  out_v = caml_callback2 (fn_v, pdf_v, n_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setBookmarkLevel (int serial, int level)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (serial_v, fn_v, level_v, out_v);
+  fn_v = *caml_named_value ("setBookmarkLevel");
+  serial_v = Val_int (serial);
+  level_v = Val_int (level);
+  out_v = caml_callback2 (fn_v, serial_v, level_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setBookmarkPage (int pdf, int serial, int pagenum)
+{
+  CAMLparam0 ();
+  CAMLlocal5 (serial_v, fn_v, out_v, pagenum_v, pdf_v);
+  fn_v = *caml_named_value ("getBookmarkPage");
+  serial_v = Val_int (serial);
+  pdf_v = Val_int (pdf);
+  pagenum_v = Val_int (pagenum);
+  out_v = caml_callback2 (fn_v, pdf_v, serial_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setBookmarkText (int serial, char *text)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, serial_v, text_v, out_v);
+  fn = *caml_named_value ("getBookmarkText");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  text_v = caml_copy_string (text);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_endSetBookmarkInfo (void)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn_v, unit_v, out_v);
+  fn_v = *caml_named_value ("endSetBookmarkInfo");
+  unit_v = Val_unit;
+  out_v = caml_callback (fn_v, unit_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 /* CHAPTER 7. Presentations */
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */

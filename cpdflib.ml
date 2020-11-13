@@ -1128,7 +1128,7 @@ let _ = Callback.register "decompress" decompress
 (* CHAPTER 6. Bookmarks *)
 let bookmarkinfo = ref [||]
 
-(* Actually get the font info and store in an array. *)
+(* Actually get the bookmark info and store in an array. *)
 let startGetBookmarkInfo pdf =
   if !dbg then flprint "Cpdflib.startGetBookmarkInfo\n";
   try
@@ -1169,12 +1169,23 @@ let getBookmarkText serial =
   try !bookmarkinfo.(serial).Pdfmarks.text with
     e -> handle_error "getBookmarkText" e; err_string
 
+let startSetBookmarkInfo pdf num_bookmarks = ()
+let endSetBookmarkInfo () = ()
+let setBookmarkPage pdf serial pagenum = ()
+let setBookmarkLevel serial level = ()
+let setBookmarkText serial str = ()
+
+let _ = Callback.register "startGetBookmarkInfo" startGetBookmarkInfo
+let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
 let _ = Callback.register "numberBookmarks" numberBookmarks
 let _ = Callback.register "getBookmarkPage" getBookmarkPage
 let _ = Callback.register "getBookmarkLevel" getBookmarkLevel
 let _ = Callback.register "getBookmarkText" getBookmarkText
-let _ = Callback.register "startGetBookmarkInfo" startGetBookmarkInfo
-let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
+let _ = Callback.register "startSetBookmarkInfo" startGetBookmarkInfo
+let _ = Callback.register "endSetBookmarkInfo" endSetBookmarkInfo
+let _ = Callback.register "setBookmarkPage" setBookmarkPage
+let _ = Callback.register "setBookmarkLevel" setBookmarkLevel
+let _ = Callback.register "setBookmarkText" setBookmarkText
 
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)

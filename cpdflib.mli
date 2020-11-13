@@ -141,11 +141,20 @@ val compress : pdf -> unit
 val decompress : pdf -> unit
 
 (* CHAPTER 6. Bookmarks *)
+val startGetBookmarkInfo : pdf -> unit
+val endGetBookmarkInfo : unit -> unit
 val numberBookmarks : unit -> int
 val getBookmarkPage : pdf -> int -> int
 val getBookmarkLevel : int -> int
-val startGetBookmarkInfo : int -> unit
-val endGetBookmarkInfo : unit -> unit
+val getBookmarkText : int -> string
+
+val startSetBookmarkInfo : pdf -> int -> unit
+val endSetBookmarkInfo : unit -> unit
+
+val setBookmarkPage : pdf -> int -> int -> unit
+val setBookmarkLevel : int -> int -> unit
+val setBookmarkText : int -> string -> unit
+
 (* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
 val stampOn : pdf -> pdf -> range -> unit
