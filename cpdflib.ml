@@ -2128,10 +2128,33 @@ let copyId from_pdf to_pdf =
   with
     e -> handle_error "copyId" e; err_unit
 
-let removeAllText pdf range = err_unit
-let removeId pdf = err_unit
-let removeDictEntry pdf key = err_unit
-let removeClipping pdf range = err_unit
+let removeAllText pdf range =
+  if !dbg then flprint "Cpdflib.removeAllText\n";
+  try
+    update_pdf (Cpdf.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "removeAllText" e; err_unit
+
+let removeId pdf =
+  if !dbg then flprint "Cpdflib.removeId\n";
+  try
+    (lookup_pdf pdf).Pdf.trailerdict <- Pdf.remove_dict_entry (lookup_pdf pdf).Pdf.trailerdict "/ID"
+  with
+    e -> handle_error "removeId" e; err_unit
+
+let removeDictEntry pdf key =
+  if !dbg then flprint "Cpdf.removeDictEntry\n";
+  try
+    Cpdf.remove_dict_entry (lookup_pdf pdf) key
+  with
+    e -> handle_error "removeDictEntry" e; err_unit
+
+let removeClipping pdf range =
+  if !dbg then flprint "Cpdf.removeClipping\n";
+  try
+    update_pdf (Cpdf.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+  with
+    e -> handle_error "removeClipping" e; err_unit
 
 let _ = Callback.register "draft" draft
 let _ = Callback.register "blackText" blackText
