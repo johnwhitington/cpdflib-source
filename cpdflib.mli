@@ -273,7 +273,24 @@ val getAttachmentName : int -> string
 val getAttachmentPage : int -> int
 val getAttachmentData : int -> Pdfio.rawbytes 
 
-(* CHAPTER 13. Miscellaneous *)
+(* CHAPTER 13. Images *)
+
+(* start get res data, get it, end get res data *)
+
+(* CHAPTER 14. Fonts. *)
+
+(* begin list fonts, get each bit, end list fonts *)
+
+(* copyfont from frompage to fontname range *)
+
+(* remove fonts *)
+
+(* missing fonts *)
+
+(* embed missing fonts *)
+
+
+(* CHAPTER 15. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
 val blackText : pdf -> range -> unit
 val blackLines : pdf -> range -> unit
