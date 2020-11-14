@@ -2128,12 +2128,21 @@ let copyId from_pdf to_pdf =
   with
     e -> handle_error "copyId" e; err_unit
 
+let removeAllText pdf range = err_unit
+let removeId pdf = err_unit
+let removeDictEntry pdf key = err_unit
+let removeClipping pdf range = err_unit
+
 let _ = Callback.register "draft" draft
 let _ = Callback.register "blackText" blackText
 let _ = Callback.register "blackLines" blackLines
 let _ = Callback.register "blackFills" blackFills
 let _ = Callback.register "thinLines" thinLines
 let _ = Callback.register "copyId" copyId
+let _ = Callback.register "removeAllText" removeAllText
+let _ = Callback.register "removeId" removeId
+let _ = Callback.register "removeDictEntry" removeDictEntry
+let _ = Callback.register "removeClipping" removeClipping
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range =

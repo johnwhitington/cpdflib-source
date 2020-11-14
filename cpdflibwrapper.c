@@ -2732,6 +2732,57 @@ cpdf_copyId (int pdf, int pdf2)
   CAMLreturn0;
 }
 
+void
+cpdf_removeAllText (int pdf, int range)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, range_v);
+  fn = *caml_named_value ("removeAllText");
+  pdf_v = Val_int (pdf);
+  range_v = Val_int (range);
+  unit = caml_callback2 (fn, pdf_v, range_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_removeClipping (int pdf, int range)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, range_v);
+  fn = *caml_named_value ("removeClipping");
+  pdf_v = Val_int (pdf);
+  range_v = Val_int (range);
+  unit = caml_callback2 (fn, pdf_v, range_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_removeId (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out_v);
+  fn = *caml_named_value ("removeId");
+  pdf_v = Val_int (pdf);
+  out_v = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_removeDictEntry (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, inpdf, instr, out);
+  fn = *caml_named_value ("removeDictEntry");
+  inpdf = Val_int (pdf);
+  instr = caml_copy_string (str);
+  out = caml_callback2 (fn, inpdf, instr);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 /* CHAPTER 14. Page labels */
 
 enum cpdf_pageLabelStyle
@@ -2817,67 +2868,6 @@ cpdf_lookupPdfUserPassword (int pdf)
   out_v = caml_callback (fn, pdf_v);
   updateLastError ();
   CAMLreturnT (char *, (char *) String_val (out_v));
-}
-
-/* Special functionality 2. Undo */
-int
-cpdf_undo (int i)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (undo_v, int_v, out_v);
-  undo_v = *caml_named_value ("undo");
-  int_v = Val_int (i);
-  out_v = caml_callback (undo_v, int_v);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out_v));
-}
-
-int
-cpdf_redo (int i)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (redo_v, int_v, out_v);
-  redo_v = *caml_named_value ("redo");
-  int_v = Val_int (i);
-  out_v = caml_callback (redo_v, int_v);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out_v));
-}
-
-void
-cpdf_aboutToUpdate (int i)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (about_to_update_v, int_v, unit_v);
-  about_to_update_v = *caml_named_value ("aboutToUpdate");
-  int_v = Val_int (i);
-  unit_v = caml_callback (about_to_update_v, int_v);
-  updateLastError ();
-  CAMLreturn0;
-}
-
-void
-cpdf_aboutToUpdateDeep (int i)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (about_to_update_v, int_v, unit_v);
-  about_to_update_v = *caml_named_value ("aboutToUpdateDeep");
-  int_v = Val_int (i);
-  unit_v = caml_callback (about_to_update_v, int_v);
-  updateLastError ();
-  CAMLreturn0;
-}
-
-void
-cpdf_abortUpdate (int i)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (abort_update_v, int_v, unit_v);
-  abort_update_v = *caml_named_value ("abortUpdate");
-  int_v = Val_int (i);
-  unit_v = caml_callback (abort_update_v, int_v);
-  updateLastError ();
-  CAMLreturn0;
 }
 
 int

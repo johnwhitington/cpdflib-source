@@ -1,7 +1,5 @@
 /* cpdflibtest.c */
 /* Uses every function in cpdflibwrapper.h */
-/* TODO: Find nicer example files, such that each effect is visible and
- * suitable */
 #include <stdio.h>
 #include <stdbool.h>
 #include "cpdflibwrapper.h"
@@ -669,6 +667,10 @@ main (int argc, char **argv)
   cpdf_blackFills (london, all_london);
   printf ("blackLines()\n");
   cpdf_blackLines (london, all_london);
+  cpdf_removeAllText (london, all_london);
+  cpdf_removeId (london);
+  cpdf_removeDictEntry (london, "/Foo");
+  cpdf_removeClipping (london, all_london);
   cpdf_toFile (london, "testoutputs/black.pdf", false, false);
   int london2 = cpdf_fromFile ("testinputs/london.pdf", "");
   printf ("thinLines()\n");
@@ -697,31 +699,6 @@ main (int argc, char **argv)
   cpdf_deletePdf (pl);
   cpdf_deleteRange (pl_all);
 
-  cpdf_onExit ();
-  /* Special functionality -- Undo */
-  printf ("\n***** Special functionality -- Undo\n\n");
-  int undotest = cpdf_fromFile ("testinputs/london.pdf", "");
-  printf ("aboutToUpdate()\n");
-  cpdf_aboutToUpdate (undotest);
-  int all_undotest = cpdf_all (undotest);
-  cpdf_thinLines (undotest, all_undotest, 8.0);
-  cpdf_toFile (undotest, "testoutputs/undo.pdf", false, false);
-  printf ("undo()\n");
-  cpdf_undo (undotest);
-  cpdf_toFile (undotest, "testoutputs/undone.pdf", false, false);
-  printf ("redo()\n");
-  cpdf_redo (undotest);
-  cpdf_toFile (undotest, "testoutputs/redone.pdf", false, false);
-
-  int undotest2 = cpdf_fromFile ("testinputs/london.pdf", "");
-  printf ("aboutToUpdateDeep()\n");
-  cpdf_aboutToUpdateDeep (undotest2);
-
-  cpdf_deletePdf (undotest);
-  cpdf_deletePdf (undotest2);
-  cpdf_deleteRange (all_undotest);
-
-  cpdf_onExit ();
   /* Special functionality -- Encryption and permission status */
   printf
     ("\n***** Special functionality -- Encryption and permission status\n\n");
@@ -738,16 +715,6 @@ main (int argc, char **argv)
   printf ("pdf encryption status = %i\n", cpdf_lookupPdfEncryption (enctest));
   printf ("lookupPdfUserPassword()\n");
   printf ("pdf user password was %s\n", cpdf_lookupPdfUserPassword (enctest));
-
-  /*cpdf_deletePdf(enctest);
-
-     double perc = cpdf_squeeze("", "foo", "testinputs/london.pdf", "testoutputs/squeezed.pdf");
-
-     printf("Squeezed to %f\n", perc);
-
-     int lin = is_linearized("testinputs/london.pdf");
-
-     printf("linearized: %i\n", lin); */
 
   printf ("addContent()\n");
 
@@ -780,8 +747,6 @@ main (int argc, char **argv)
 
   cpdf_outputJSON ("testoutputs/combined2.json", true, true, combined2);
 
-  cpdf_onExit ();
-
   //test stampAsXObject
 
   int logo = cpdf_fromFile ("testinputs/Test Slow File.pdf", "");
@@ -796,5 +761,7 @@ main (int argc, char **argv)
   cpdf_toFile (blank, "testoutputs/xobject.pdf", false, false);
   printf ("Xobject name is %s\n", name);
   printf ("*****Tests finished\n");
+  cpdf_onExit ();
+
   return 0;
 }

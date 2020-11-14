@@ -1029,45 +1029,24 @@ void cpdf_removeAttachedFiles (int);
  * cpdf_endGetAttachments to clean up.
  */
 void cpdf_startGetAttachments (int);
+
 int cpdf_numberGetAttachments (void);
+
 /* Get the name of the attachment */
 char *cpdf_getAttachmentName (int);
+
 /* Gets the page number. 0 = document level */
 int cpdf_getAttachmentPage (int);
+
 /*
  * cpdf_getAttachmentData(serial number, &length) returns a pointer to the
  * data, and its length
  */
 void *cpdf_getAttachmentData (int, int *);
+
 void cpdf_endGetAttachments (void);
 
 
-/* CHAPTER 13. Miscellaneous */
-
-/*
- * Make a draft document. The first argument is the document, second the
- * range, third is a boolean -- true to replace images with boxes, false to
- * replace them with nothing.
- */
-void cpdf_draft (int, int, int);
-
-/* Blacken all text in the given document and range */
-void cpdf_blackText (int, int);
-
-/* Blacken all lines in the given document and range */
-void cpdf_blackLines (int, int);
-
-/* Blacken all fills in the given document and range */
-void cpdf_blackFills (int, int);
-
-/*
- * Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every
- * line less than min_thickness to min_thickness
- */
-void cpdf_thinLines (int, int, double);
-
-/* Copy the /ID from the first document to the second. */
-void cpdf_copyId (int, int);
 
 
 /* CHAPTER 14. Page labels */
@@ -1123,37 +1102,6 @@ enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
 char *cpdf_lookupPdfUserPassword (int);
 
 
-/* Special functionality 2. -- Undo */
-
-/*
- * Cpdf can hold multiple versions of each PDF, sharing data between them to
- * save memory.
- */
-
-/*
- * Mark a document for update. This copies the document so the change can be
- * undone later
- */
-void cpdf_aboutToUpdate (int);
-
-/* Same, but when a deep copy (no sharing of data) is required. */
-void cpdf_aboutToUpdateDeep (int);
-
-/* Abort such an update due to an error part-way through the update */
-void cpdf_abortUpdate (int);
-
-/*
- * Undo a document. Returns true if managed to undo, false if nothing to undo
- * to.
- */
-int cpdf_undo (int);
-
-/*
- * Redo a document. Returns true if managed to redo, false if nothing to redo
- * to.
- */
-int cpdf_redo (int);
-
 /* Squeeze */
 int cpdf_squeeze (const char[], const char[], const char[], const char[]);
 
@@ -1174,3 +1122,38 @@ void cpdf_OCGRename (int, const char[], const char[]);
 void cpdf_OCGOrderAll (int);
 
 char *cpdf_stampAsXObject (int, int, int);
+
+/* CHAPTER 15. Miscellaneous */
+
+/*
+ * Make a draft document. The first argument is the document, second the
+ * range, third is a boolean -- true to replace images with boxes, false to
+ * replace them with nothing.
+ */
+void cpdf_draft (int, int, int);
+
+/* Blacken all text in the given document and range */
+void cpdf_blackText (int, int);
+
+/* Blacken all lines in the given document and range */
+void cpdf_blackLines (int, int);
+
+/* Blacken all fills in the given document and range */
+void cpdf_blackFills (int, int);
+
+/*
+ * Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every
+ * line less than min_thickness to min_thickness
+ */
+void cpdf_thinLines (int, int, double);
+
+/* Copy the /ID from the first document to the second. */
+void cpdf_copyId (int, int);
+
+void cpdf_removeAllText (int, int);
+
+void cpdf_removeId (int);
+
+void cpdf_removeDictEntry (int, const char[]);
+
+void cpdf_removeClipping (int, int);

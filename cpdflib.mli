@@ -280,6 +280,11 @@ val blackLines : pdf -> range -> unit
 val blackFills : pdf -> range -> unit
 val thinLines : pdf -> range -> float -> unit
 val copyId : pdf -> int -> unit
+val removeAllText : pdf -> range -> unit
+val removeId : pdf -> unit
+val removeDictEntry : pdf -> string -> unit
+val removeClipping : pdf -> range -> unit
+
 
 val addPageLabels : pdf -> int -> string -> int -> int -> unit
 
