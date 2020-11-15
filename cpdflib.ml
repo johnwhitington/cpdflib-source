@@ -1439,6 +1439,13 @@ let twoUp pdf =
   with
     e -> handle_error "twoUp" e; err_unit
 
+let twoUpStack pdf =
+  if !dbg then flprint "Cpdflib.twoUpStack\n";
+  try
+    update_pdf (Cpdf.twoup_stack !fast (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "twoUpStack" e; err_unit
+
 let padBefore pdf range =
   if !dbg then flprint "Cpdflib.padBefore\n";
   try
@@ -1453,9 +1460,41 @@ let padAfter pdf range =
   with
     e -> handle_error "padAfter" e; err_unit
 
+let padEvery pdf n =
+  if !dbg then flprint "Cpdflib.padEvery\n";
+  try
+    let pdf = lookup_pdf pdf in
+    let range =
+      match keep (function m -> m mod n = 0) (ilist 1 (Pdfpage.endpage pdf)) with
+      | [] -> []
+      | l -> if last l = Pdfpage.endpage pdf then all_but_last l else l
+    in
+      update_pdf (Cpdf.padafter range pdf) pdf
+  with
+    e -> handle_error "padEvery" e; err_unit
+
+let padMultiple pdf n =
+  if !dbg then flprint "Cpdflib.padMultiple\n";
+  try
+    update_pdf (Cpdf.padmultiple n (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "padMultiple" e; err_unit
+
+let padMultipleBefore pdf n =
+  if !dbg then flprint "Cpdflib.padMultipleBefore\n";
+  try
+    update_pdf (Cpdf.padmultiple (-n) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "padMultipleBefore" e; err_unit
+
 let _ = Callback.register "twoUp" twoUp
+let _ = Callback.register "twoUpStack" twoUpStack
 let _ = Callback.register "padBefore" padBefore
 let _ = Callback.register "padAfter" padAfter
+let _ = Callback.register "padEvery" padEvery
+let _ = Callback.register "padMultiple" padMultiple
+let _ = Callback.register "padMultipleBefore" padMultipleBefore
+
 
 (* CHAPTER 10. Annotations *)
 (* CHAPTER 11. Document Information and Metadata *)
