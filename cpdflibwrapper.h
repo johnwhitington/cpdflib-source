@@ -782,6 +782,7 @@ int cpdf_textWidth (enum cpdf_font, const char[]);
 
 /* Impose a document two up */
 void cpdf_twoUp (int);
+void cpdf_twoUpStack (int);
 
 /*
  * Pad a document (first argument) before each page in the given range
@@ -794,6 +795,9 @@ void cpdf_padBefore (int, int);
  * argument)
  */
 void cpdf_padAfter (int, int);
+void cpdf_padEvery (int, int);
+void cpdf_padMultiple (int, int);
+void cpdf_padMultipleBefore (int, int);
 
 /* CHAPTER 10. Annotations */
 

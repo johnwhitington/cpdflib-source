@@ -441,6 +441,7 @@ main (int argc, char **argv)
   int twoup = cpdf_fromFile ("testinputs/london.pdf", "");
   printf ("twoUp\n");
   cpdf_twoUp (twoup);
+  cpdf_twoUpStack (twoup);
   cpdf_toFile (twoup, "testoutputs/twoup.pdf", false, false);
 
   int pad = cpdf_fromFile ("testinputs/london.pdf", "");
@@ -449,6 +450,9 @@ main (int argc, char **argv)
   cpdf_padAfter (pad, pad_range);
   printf ("padBefore()\n");
   cpdf_padBefore (pad, pad_range);
+  cpdf_padEvery (pad, 2);
+  cpdf_padMultiple (pad, 34);
+  cpdf_padMultipleBefore (pad, 56);
   cpdf_toFile (pad, "testoutputs/padded.pdf", false, false);
 
   cpdf_deletePdf (twoup);

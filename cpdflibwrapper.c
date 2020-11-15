@@ -1648,6 +1648,18 @@ cpdf_twoUp (int pdf)
 }
 
 void
+cpdf_twoUpStack (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (unit, fn, pdf_v);
+  fn = *caml_named_value ("twoUpStack");
+  pdf_v = Val_int (pdf);
+  unit = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
 cpdf_padBefore (int pdf, int range)
 {
   CAMLparam0 ();
@@ -1669,6 +1681,45 @@ cpdf_padAfter (int pdf, int range)
   pdf_v = Val_int (pdf);
   range_v = Val_int (range);
   unit = caml_callback2 (fn, pdf_v, range_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_padEvery (int pdf, int n)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, pdf_v, n_v, fn);
+  fn = *caml_named_value ("padEvery");
+  pdf_v = Val_int (pdf);
+  n_v = Val_int (n);
+  unit = caml_callback2 (fn, pdf_v, n_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_padMultiple (int pdf, int n)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, pdf_v, n_v, fn);
+  fn = *caml_named_value ("padMultiple");
+  pdf_v = Val_int (pdf);
+  n_v = Val_int (n);
+  unit = caml_callback2 (fn, pdf_v, n_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_padMultipleBefore (int pdf, int n)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, pdf_v, n_v, fn);
+  fn = *caml_named_value ("padMultipleBefore");
+  pdf_v = Val_int (pdf);
+  n_v = Val_int (n);
+  unit = caml_callback2 (fn, pdf_v, n_v);
   updateLastError ();
   CAMLreturn0;
 }

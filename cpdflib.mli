@@ -203,8 +203,12 @@ val addText :
  
 (* CHAPTER 9. Multipage facilities *)
 val twoUp : pdf -> unit
+val twoUpStack : pdf -> unit
 val padBefore : pdf -> range -> unit
 val padAfter : pdf -> range -> unit
+val padEvery : pdf -> int -> unit
+val padMultiple : pdf -> int -> unit
+val padMultipleBefore : pdf -> int -> unit
 
 (* CHAPTER 10. Annotations *)
 (* CHAPTER 11. Document Information and Metadata *)
