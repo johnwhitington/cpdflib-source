@@ -603,7 +603,7 @@ main (int argc, char **argv)
   cpdf_centerWindow (fonts, true);
   printf ("displayDocTitle()\n");
   cpdf_displayDocTitle (fonts, true);
-
+  cpdf_openAtPage(fonts, true, 1);
   printf ("setMetadataFromFile()\n");
   cpdf_setMetadataFromFile (fonts, "cpdflib.ml");
   cpdf_toFile (fonts, "testoutputs/metadata1.pdf", false, false);
@@ -616,6 +616,10 @@ main (int argc, char **argv)
   metadata = cpdf_getMetadata (fonts, &metadata_length);
   printf ("removeMetadata()\n");
   cpdf_removeMetadata (fonts);
+
+  cpdf_createMetadata (fonts);
+
+  cpdf_setMetadataDate (fonts, "now");
 
   cpdf_deletePdf (fonts);
   cpdf_deleteRange (allbox);

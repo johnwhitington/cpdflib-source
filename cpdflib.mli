@@ -264,10 +264,13 @@ val hideWindowUi : pdf -> bool -> unit
 val fitWindow : pdf -> bool -> unit
 val centerWindow : pdf -> bool -> unit
 val displayDocTitle : pdf -> bool -> unit
+val openAtPage : pdf -> bool -> int -> unit
 val setMetadataFromFile : pdf -> string -> unit
 val setMetadataFromByteArray : pdf -> Pdfio.rawbytes -> unit
 val getMetadata : pdf -> Pdfio.rawbytes
 val removeMetadata : pdf -> unit
+val createMetadata : pdf -> unit
+val setMetadataDate : pdf -> string -> unit
 
 (* CHAPTER 12. File Attachments *)
 val attachFile : string -> pdf -> unit

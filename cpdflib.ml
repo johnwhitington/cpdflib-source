@@ -1814,6 +1814,14 @@ let displayDocTitle pdf b =
   with
     e -> handle_error "displayDocTitle" e; err_unit
 
+
+let openAtPage pdf fit pagenum =
+  if !dbg then flprint "Cpdflib.openAtPage\n";
+  try
+    update_pdf (Cpdf.set_open_action (lookup_pdf pdf) fit pagenum) (lookup_pdf pdf)
+  with
+    e -> handle_error "openAtPage" e; err_unit
+
 let setMetadataFromFile pdf filename =
   if !dbg then flprint "Cpdflib.setMetadataFromFile\n";
   try
@@ -1843,6 +1851,20 @@ let removeMetadata pdf =
     update_pdf (Cpdf.remove_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeMetadata" e; err_unit
+
+let createMetadata pdf =
+  if !dbg then flprint "Cpdflib.createMetadata\n";
+  try
+    update_pdf (Cpdf.create_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "createMetadata" e; err_unit
+
+let setMetadataDate pdf date =
+  if !dbg then flprint "Cpdflib.setMetadataDate\n";
+  try
+    update_pdf (Cpdf.set_metadata_date (lookup_pdf pdf) date) (lookup_pdf pdf)
+  with
+    e -> handle_error "setMetadataDate" e; err_unit
 
 let hasBox pdf pagenumber boxname =
   if !dbg then flprint "Cpdflib.hasBox\n";
@@ -2014,8 +2036,11 @@ let _ = Callback.register "hideWindowUi" hideWindowUi
 let _ = Callback.register "fitWindow" fitWindow
 let _ = Callback.register "centerWindow" centerWindow
 let _ = Callback.register "displayDocTitle" displayDocTitle
+let _ = Callback.register "openAtPage" openAtPage
 let _ = Callback.register "setMetadataFromFile" setMetadataFromFile
 let _ = Callback.register "removeMetadata" removeMetadata
+let _ = Callback.register "createMetadata" createMetadata
+let _ = Callback.register "setMetadataDate" setMetadataDate
 let _ = Callback.register "setMetadataFromByteArray" setMetadataFromByteArray
 let _ = Callback.register "getMetadata" getMetadata
 

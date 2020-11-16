@@ -980,6 +980,9 @@ void cpdf_centerWindow (int, int);
 /* cpdf_displayDocTitle(doc, flag) sets the display doc title flag */
 void cpdf_displayDocTitle (int, int);
 
+/* cpdf_openAtPage(pdf, fit, pagenumber) */
+void cpdf_openAtPage (int, int, int);
+
 /* Set the XML metadata of a document, given a file name */
 void cpdf_setMetadataFromFile (int, const char[]);
 
@@ -998,6 +1001,10 @@ void *cpdf_getMetadata (int, int *);
 /* Remove the XML metadata from a document */
 void cpdf_removeMetadata (int);
 
+
+void cpdf_createMetadata (int);
+
+void cpdf_setMetadataDate (int, const char[]);
 
 /* CHAPTER 12. File Attachments */
 

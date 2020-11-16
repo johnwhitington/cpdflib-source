@@ -2496,6 +2496,19 @@ cpdf_displayDocTitle (int pdf, int flag)
   CAMLreturn0;
 }
 
+void cpdf_openAtPage (int pdf, int fit, int pagenumber)
+{
+  CAMLparam0 ();
+  CAMLlocal5 (unit, pdf_v, fit_v, pagenumber_v, fn);
+  fn = *caml_named_value ("openAtPage");
+  pdf_v = Val_int (pdf);
+  fit_v = Val_int (fit);
+  pagenumber_v = Val_int(pagenumber);
+  unit = caml_callback3 (fn, pdf_v, fit_v, pagenumber_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 void
 cpdf_setMetadataFromFile (int pdf, char *filename)
 {
@@ -2558,6 +2571,31 @@ cpdf_removeMetadata (int pdf)
   pdf_v = Val_int (pdf);
   fn = *caml_named_value ("removeMetadata");
   unit = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_createMetadata (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (unit, fn, pdf_v);
+  pdf_v = Val_int (pdf);
+  fn = *caml_named_value ("createMetadata");
+  unit = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setMetadataDate (int pdf, char* date)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, date_v);
+  pdf_v = Val_int (pdf);
+  date_v = caml_copy_string (date);
+  fn = *caml_named_value ("setMetadataDate");
+  unit = caml_callback2 (fn, pdf_v, date_v);
   updateLastError ();
   CAMLreturn0;
 }
