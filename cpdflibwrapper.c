@@ -1401,6 +1401,29 @@ cpdf_stampUnder (int pdf, int pdf2, int range)
   CAMLreturn0;
 }
 
+void
+cpdf_stampExtended (int pdf, int pdf2, int range, int isover,
+		    int scale_stamp_to_fit, struct cpdf_position pos,
+		    int relative_to_cropbox)
+{
+  CAMLparam0 ();
+  CAMLlocal2 (fn, unit);
+  CAMLlocalN (args, 9);
+  fn = *caml_named_value ("stampExtended");
+  args[0] = Val_int (pdf);
+  args[1] = Val_int (pdf2);
+  args[2] = Val_int (range);
+  args[3] = Val_int (isover);
+  args[4] = Val_int (scale_stamp_to_fit);
+  args[5] = caml_copy_double (pos.cpdf_coord1);
+  args[6] = caml_copy_double (pos.cpdf_coord2);
+  args[7] = Val_int (pos.cpdf_anchor);
+  args[8] = Val_int (relative_to_cropbox);
+  unit = caml_callbackN (fn, 9, args);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 int
 cpdf_combinePages (int pdf, int pdf2)
 {

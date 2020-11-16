@@ -361,6 +361,10 @@ main (int argc, char **argv)
   cpdf_stampOn (stamp, stampee, stamp_range);
   printf ("stampUnder()\n");
   cpdf_stampUnder (stamp, stampee, stamp_range);
+  struct cpdf_position pos = {.cpdf_anchor = cpdf_topLeft,.cpdf_coord1 =
+      20,.cpdf_coord2 = 20
+  };
+  cpdf_stampExtended (stamp, stampee, stamp_range, true, true, pos, true);
   cpdf_toFile (stamp, "testoutputs/stamp_after.pdf", false, false);
   cpdf_toFile (stampee, "testoutputs/stampee_after.pdf", false, false);
   int c1 = cpdf_fromFile ("logo.pdf", "");

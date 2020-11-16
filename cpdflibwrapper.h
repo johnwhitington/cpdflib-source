@@ -663,6 +663,8 @@ void cpdf_stampOn (int, int, int);
  */
 void cpdf_stampUnder (int, int, int);
 
+void cpdf_stampExtended (int, int, int, int, int, struct cpdf_position, int);
+
 /*
  * cpdf_combinePages(under, over) combines the PDFs page-by-page, putting
  * each page of 'over' over each page of 'under'
