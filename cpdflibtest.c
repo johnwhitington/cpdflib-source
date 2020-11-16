@@ -603,7 +603,7 @@ main (int argc, char **argv)
   cpdf_centerWindow (fonts, true);
   printf ("displayDocTitle()\n");
   cpdf_displayDocTitle (fonts, true);
-  cpdf_openAtPage(fonts, true, 1);
+  cpdf_openAtPage (fonts, true, 1);
   printf ("setMetadataFromFile()\n");
   cpdf_setMetadataFromFile (fonts, "cpdflib.ml");
   cpdf_toFile (fonts, "testoutputs/metadata1.pdf", false, false);
@@ -701,7 +701,7 @@ main (int argc, char **argv)
   int pl = cpdf_fromFile ("testinputs/london.pdf", "");
   int pl_all = cpdf_all (pl);
   printf ("addPageLabels()\n");
-  cpdf_addPageLabels (pl, cpdf_uppercaseRoman, "PREFIX-", 1, pl_all);
+  cpdf_addPageLabels (pl, cpdf_uppercaseRoman, "PREFIX-", 1, pl_all, false);
   cpdf_toFile (pl, "testoutputs/pagelabels.pdf", false, false);
 
   int toreplace = cpdf_fromFile ("testinputs/london.pdf", "");

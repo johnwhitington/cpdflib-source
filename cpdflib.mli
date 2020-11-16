@@ -313,7 +313,7 @@ val removeDictEntry : pdf -> string -> unit
 val removeClipping : pdf -> range -> unit
 
 
-val addPageLabels : pdf -> int -> string -> int -> int -> unit
+val addPageLabels : pdf -> int -> string -> int -> int -> bool -> unit
 
 (* Squeeze. Takes in filename, out filename, returns 0 = fine, n = error. *)
 val squeeze : string -> string -> string -> string -> int

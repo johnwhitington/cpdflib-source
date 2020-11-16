@@ -2223,7 +2223,7 @@ let _ = Callback.register "removeDictEntry" removeDictEntry
 let _ = Callback.register "removeClipping" removeClipping
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
-let addPageLabels pdf style prefix offset range =
+let addPageLabels pdf style prefix offset range progress =
   if !dbg then flprint "Cpdflib.addPageLabels\n";
   try
     let style =
@@ -2237,7 +2237,7 @@ let addPageLabels pdf style prefix offset range =
     and prefix =
       if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)
     in
-      Cpdf.add_page_labels (lookup_pdf pdf) false style prefix offset (Array.to_list (lookup_range range))
+      Cpdf.add_page_labels (lookup_pdf pdf) progress style prefix offset (Array.to_list (lookup_range range))
   with
     e -> handle_error "addPageLabels" e; err_unit
 

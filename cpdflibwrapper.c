@@ -2496,14 +2496,15 @@ cpdf_displayDocTitle (int pdf, int flag)
   CAMLreturn0;
 }
 
-void cpdf_openAtPage (int pdf, int fit, int pagenumber)
+void
+cpdf_openAtPage (int pdf, int fit, int pagenumber)
 {
   CAMLparam0 ();
   CAMLlocal5 (unit, pdf_v, fit_v, pagenumber_v, fn);
   fn = *caml_named_value ("openAtPage");
   pdf_v = Val_int (pdf);
   fit_v = Val_int (fit);
-  pagenumber_v = Val_int(pagenumber);
+  pagenumber_v = Val_int (pagenumber);
   unit = caml_callback3 (fn, pdf_v, fit_v, pagenumber_v);
   updateLastError ();
   CAMLreturn0;
@@ -2588,7 +2589,7 @@ cpdf_createMetadata (int pdf)
 }
 
 void
-cpdf_setMetadataDate (int pdf, char* date)
+cpdf_setMetadataDate (int pdf, char *date)
 {
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, date_v);
@@ -2905,18 +2906,20 @@ enum cpdf_pageLabelStyle
 
 void cpdf_addPageLabels
   (int pdf,
-   enum cpdf_pageLabelStyle style, char *prefix, int offset, int range)
+   enum cpdf_pageLabelStyle style, char *prefix, int offset, int range,
+   int progress)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
   fn = *caml_named_value ("addPageLabels");
-  CAMLlocalN (args, 5);
+  CAMLlocalN (args, 6);
   args[0] = Val_int (pdf);
   args[1] = Val_int (style);
   args[2] = caml_copy_string (prefix);
   args[3] = Val_int (offset);
   args[4] = Val_int (range);
-  out_v = caml_callbackN (fn, 5, args);
+  args[5] = Val_int (progress);
+  out_v = caml_callbackN (fn, 6, args);
   updateLastError ();
   CAMLreturn0;
 }

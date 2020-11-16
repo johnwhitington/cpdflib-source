@@ -1075,14 +1075,14 @@ enum cpdf_pageLabelStyle
 /*
  * Add a set of page labels.
  * 
- * cpdf_addPageLabels(pdf, style, prefix, offset, range)
+ * cpdf_addPageLabels(pdf, style, prefix, offset, range, progress)
  * 
  * The prefix is prefix text for each label. The range is the page range the
  * labels apply to. Offset can be used to shift the numbering up or down.
  * 
  */
 void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int,
-			 int);
+			 int, int);
 
 
 /* Special functionality 1. -- Encryption and Permission status */
