@@ -246,6 +246,16 @@ val setCreationDate : pdf -> string -> unit
 val setModificationDate : pdf -> string -> unit
 val markTrapped : pdf -> unit
 val markUntrapped : pdf -> unit
+val setTitleXMP : pdf -> string -> unit
+val setAuthorXMP : pdf -> string -> unit
+val setSubjectXMP : pdf -> string -> unit
+val setKeywordsXMP : pdf -> string -> unit
+val setCreatorXMP : pdf -> string -> unit
+val setProducerXMP : pdf -> string -> unit
+val setCreationDateXMP : pdf -> string -> unit
+val setModificationDateXMP : pdf -> string -> unit
+val markTrapped : pdf -> unit
+val markUntrapped : pdf -> unit
 val hasBox : pdf -> int -> string -> bool
 val getMediaBox : pdf -> int -> float * float * float * float
 val getCropBox : pdf -> int -> float * float * float * float

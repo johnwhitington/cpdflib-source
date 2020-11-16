@@ -2259,6 +2259,30 @@ cpdf_markUntrapped (int pdf)
 }
 
 void
+cpdf_markTrappedXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (unit, fn, pdf_v);
+  fn = *caml_named_value ("markTrappedXMP");
+  pdf_v = Val_int (pdf);
+  unit = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_markUntrappedXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (unit, fn, pdf_v);
+  fn = *caml_named_value ("markUntrappedXMP");
+  pdf_v = Val_int (pdf);
+  unit = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
 cpdf_setVersion (int pdf, int version)
 {
   CAMLparam0 ();
@@ -2368,6 +2392,110 @@ cpdf_setModificationDate (int pdf, char *str)
   CAMLparam0 ();
   CAMLlocal4 (unit, fn, pdf_v, str_v);
   fn = *caml_named_value ("setModificationDate");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setTitleXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setTitleXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setAuthorXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setAuthorXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setSubjectXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setSubjectXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setKeywordsXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setKeywordsXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setCreatorXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setCreatorXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setProducerXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setProducerXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setCreationDateXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setCreationDateXMP");
+  pdf_v = Val_int (pdf);
+  str_v = caml_copy_string (str);
+  unit = caml_callback2 (fn, pdf_v, str_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void
+cpdf_setModificationDateXMP (int pdf, char *str)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (unit, fn, pdf_v, str_v);
+  fn = *caml_named_value ("setModificationDateXMP");
   pdf_v = Val_int (pdf);
   str_v = caml_copy_string (str);
   unit = caml_callback2 (fn, pdf_v, str_v);

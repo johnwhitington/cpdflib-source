@@ -1706,6 +1706,84 @@ let markUntrapped pdf =
   with
     e -> handle_error "markUntrapped" e; err_unit
 
+let setTitleXMP pdf title =
+  if !dbg then flprint "Cpdflib.setTitle\n";
+  try
+    let title = Pdftext.pdfdocstring_of_utf8 title in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setTitle" e; err_unit
+
+let setAuthorXMP pdf author =
+  if !dbg then flprint "Cpdflib.setAuthor\n";
+  try
+    let author = Pdftext.pdfdocstring_of_utf8 author in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setAuthor" e; err_unit
+
+let setSubjectXMP pdf subject =
+  if !dbg then flprint "Cpdflib.setSubject\n";
+  try
+    let subject = Pdftext.pdfdocstring_of_utf8 subject in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setSubject" e; err_unit
+
+let setKeywordsXMP pdf keywords =
+  if !dbg then flprint "Cpdflib.setKeywords\n";
+  try
+    let keywords = Pdftext.pdfdocstring_of_utf8 keywords in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setKeywords" e; err_unit
+
+let setCreatorXMP pdf creator =
+  if !dbg then flprint "Cpdflib.setCreator\n";
+  try
+    let creator = Pdftext.pdfdocstring_of_utf8 creator in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "SetCreator" e; err_unit
+
+let setProducerXMP pdf producer =
+  if !dbg then flprint "Cpdflib.setProducer\n";
+  try      
+    let producer = Pdftext.pdfdocstring_of_utf8 producer in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setProducer" e; err_unit
+
+let setCreationDateXMP pdf date =
+  if !dbg then flprint "Cpdflib.setCreationDate\n";
+  try
+    let date = Pdftext.pdfdocstring_of_utf8 date in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/CreationDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setCreationDate" e; err_unit
+
+let setModificationDateXMP pdf date =
+  if !dbg then flprint "Cpdflib.setModificationDate\n";
+  try
+    let date = Pdftext.pdfdocstring_of_utf8 date in
+      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/ModDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setModificationDate" e; err_unit
+
+let markTrappedXMP pdf =
+  if !dbg then flprint "Cpdflib.markTrapped\n";
+  try
+    update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "markTrapped" e; err_unit
+
+let markUntrappedXMP pdf =
+  if !dbg then flprint "Cpdflib.markUntrapped\n";
+  try
+    update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "markUntrapped" e; err_unit
+
 type layout =
   | SinglePage
   | OneColumn
@@ -2018,6 +2096,16 @@ let _ = Callback.register "setCreationDate" setCreationDate
 let _ = Callback.register "setModificationDate" setModificationDate
 let _ = Callback.register "markTrapped" markTrapped
 let _ = Callback.register "markUntrapped" markUntrapped
+let _ = Callback.register "setTitleXMP" setTitleXMP
+let _ = Callback.register "setAuthorXMP" setAuthorXMP
+let _ = Callback.register "setSubjectXMP" setSubjectXMP
+let _ = Callback.register "setKeywordsXMP" setKeywordsXMP
+let _ = Callback.register "setCreatorXMP" setCreatorXMP
+let _ = Callback.register "setProducerXMP" setProducerXMP
+let _ = Callback.register "setCreationDateXMP" setCreationDateXMP
+let _ = Callback.register "setModificationDateXMP" setModificationDateXMP
+let _ = Callback.register "markTrappedXMP" markTrappedXMP
+let _ = Callback.register "markUntrappedXMP" markUntrappedXMP
 let _ = Callback.register "setPageMode" setPageMode
 let _ = Callback.register "setPageLayout" setPageLayout
 let _ = Callback.register "hasBox" hasBox

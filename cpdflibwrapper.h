@@ -883,6 +883,29 @@ void cpdf_setCreationDate (int, const char[]);
 /* Set the modification date of a document from a UTF8 encoded string */
 void cpdf_setModificationDate (int, const char[]);
 
+/* Set the title of a document from a UTF8 encoded string */
+void cpdf_setTitleXMP (int, const char[]);
+
+/* Set the author of a document from a UTF8 encoded string */
+void cpdf_setAuthorXMP (int, const char[]);
+
+/* Set the subject of a document from a UTF8 encoded string */
+void cpdf_setSubjectXMP (int, const char[]);
+
+/* Set the keywords of a document from a UTF8 encoded string */
+void cpdf_setKeywordsXMP (int, const char[]);
+
+/* Set the creator of a document from a UTF8 encoded string */
+void cpdf_setCreatorXMP (int, const char[]);
+
+/* Set the producer of a document from a UTF8 encoded string */
+void cpdf_setProducerXMP (int, const char[]);
+
+/* Set the creation date of a document from a UTF8 encoded string */
+void cpdf_setCreationDateXMP (int, const char[]);
+
+/* Set the modification date of a document from a UTF8 encoded string */
+void cpdf_setModificationDateXMP (int, const char[]);
 /*
  * Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
  * h_offset is the offset from UT in hours (-23 to 23); h_offset is the
@@ -934,6 +957,12 @@ void cpdf_markTrapped (int);
 
 /* Mark a document as untrapped. */
 void cpdf_markUntrapped (int);
+
+/* Mark a document as trapped. */
+void cpdf_markTrappedXMP (int);
+
+/* Mark a document as untrapped. */
+void cpdf_markUntrappedXMP (int);
 
 /* Document Layouts. See ISO standard for details. */
 enum cpdf_layout

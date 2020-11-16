@@ -545,10 +545,27 @@ main (int argc, char **argv)
   cpdf_setModificationDate (fonts, "D:20061108125017Z");
   cpdf_toFile (fonts, "testoutputs/settitleetc.pdf", false, false);
 
-  printf ("setPageLayout()\n");
-  cpdf_setPageLayout (fonts, cpdf_twoColumnLeft);
-  printf ("setPageMode()\n");
-  cpdf_setPageMode (fonts, cpdf_useThumbs);
+  printf ("setTitleXMP()\n");
+  cpdf_setTitleXMP (fonts, "Title");
+  printf ("setAuthorXMP()\n");
+  cpdf_setAuthorXMP (fonts, "Author");
+  printf ("setSubjectXMP()\n");
+  cpdf_setSubjectXMP (fonts, "Subject");
+  printf ("setKeywordsXMP()\n");
+  cpdf_setKeywordsXMP (fonts, "Keywords");
+  printf ("setCreatorXMP()\n");
+  cpdf_setCreatorXMP (fonts, "Creator");
+  printf ("setProducerXMP()\n");
+  cpdf_setProducerXMP (fonts, "Producer");
+  printf ("markTrappedXMP()\n");
+  cpdf_markTrappedXMP (fonts);
+  printf ("markUntrappedXMP()\n");
+  cpdf_markUntrappedXMP (fonts);
+  printf ("setCreationDateXMP()\n");
+  cpdf_setCreationDateXMP (fonts, "D:20061108125017Z");
+  printf ("setModificationDateXMP()\n");
+  cpdf_setModificationDateXMP (fonts, "D:20061108125017Z");
+  cpdf_toFile (fonts, "testoutputs/settitleetc.pdf", false, false);
 
   printf ("hasBox()\n");
   printf ("Has page one a %s box? %i\n", "/CropBox",
