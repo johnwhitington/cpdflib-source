@@ -162,6 +162,9 @@ val stampOn : pdf -> pdf -> range -> unit
 
 val stampUnder : pdf -> pdf -> range -> unit
 
+(* over under isover scale_stamp_to_fit pos pos pos relative-to-cropbox *)
+val stampExtended : pdf -> pdf -> range -> bool -> bool -> float -> float -> int -> bool -> unit 
+
 val combinePages : pdf -> pdf -> pdf
 
 val removeText : pdf -> range -> unit

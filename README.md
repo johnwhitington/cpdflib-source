@@ -13,8 +13,8 @@ Prerequisites for building:
 
 1. OCaml
 2. Ocamlfind
-3. CamlPDF, at least 2.2
-4. CPDF, at least 2.2
+3. CamlPDF, same versino as cpdflib
+4. CPDF, same version as cpdflib
 
 To build, just run ./build. This makes the static library libcpdf.a and, on
 Windows, the dynamic library libcpdf.dll. In addition, it builds the
@@ -24,4 +24,3 @@ every libcpdf function.
 The build script also outputs suitable linker flags.
 
 contact@coherentgraphics.co.uk
-

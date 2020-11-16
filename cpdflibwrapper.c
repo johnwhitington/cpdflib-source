@@ -1371,8 +1371,6 @@ cpdf_endSetBookmarkInfo (int pdf)
   CAMLreturn0;
 }
 
-/* CHAPTER 7. Presentations */
-
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
 void

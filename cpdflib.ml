@@ -919,6 +919,8 @@ let read_position f1 f2 = function
   | 12 -> Cpdf.ReverseDiagonal
   | _ -> failwith "read_position"
 
+let bl0_1, bl0_2, bl0_3 = 0., 0., 7
+
 (* For turning functions which return a new PDF into ones which update the given
 pdf. The PDF which is newly created should be thrown away. *)
 let update_pdf (copyfrom : Pdf.t) (copyto : Pdf.t) =
@@ -1258,45 +1260,33 @@ let _ = Callback.register "setBookmarkLevel" setBookmarkLevel
 let _ = Callback.register "setBookmarkText" setBookmarkText
 let _ = Callback.register "setBookmarkOpenStatus" setBookmarkOpenStatus
 
-(* CHAPTER 7. Presentations *)
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
-let stampOn pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampOn\n";
+let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relative_to_cropbox =
+  if !dbg then flprint "Cpdflib.stampExtended\n";
   try
     update_pdf
       (Cpdf.stamp
-         false
-         (Cpdf.BottomLeft 0.)
+         relative_to_cropbox
+         (read_position pos1 pos2 pos3)
          false
          false
          !fast
-         false
-         true
+         scale_stamp_to_fit
+         isover
          (Array.to_list (lookup_range range))
          (lookup_pdf pdf)
          (lookup_pdf pdf2))
       (lookup_pdf pdf2)
   with
-    e -> handle_error "stampOn" e; err_unit
+    e -> handle_error "stampExtended" e; err_unit
+
+let stampOn pdf pdf2 range =
+  if !dbg then flprint "Cpdflib.stampOn\n";
+  stampExtended pdf pdf2 range true false bl0_1 bl0_2 bl0_3 false
 
 let stampUnder pdf pdf2 range =
   if !dbg then flprint "Cpdflib.stampUnder\n";
-  try
-    update_pdf
-      (Cpdf.stamp
-         false
-         (Cpdf.BottomLeft 0.)
-         false
-         false
-         !fast
-         false
-         false
-         (Array.to_list (lookup_range range))
-         (lookup_pdf pdf)
-         (lookup_pdf pdf2))
-      (lookup_pdf pdf2)
-  with
-    e -> handle_error "stampUnder" e; err_unit
+  stampExtended pdf pdf2 range false false bl0_1 bl0_2 bl0_3 false
 
 let combinePages pdf pdf2 =
   if !dbg then flprint "Cpdflib.combinePages\n";
@@ -1426,6 +1416,7 @@ let textWidth font text =
 
 let _ = Callback.register "stampOn" stampOn
 let _ = Callback.register "stampUnder" stampUnder
+let _ = Callback.register "stampExtended" stampExtended
 let _ = Callback.register "combinePages" combinePages
 let _ = Callback.register "removeText" removeText
 let _ = Callback.register "addText" addText
