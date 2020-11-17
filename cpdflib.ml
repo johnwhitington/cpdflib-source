@@ -2329,7 +2329,31 @@ let addPageLabels pdf style prefix offset range progress =
   with
     e -> handle_error "addPageLabels" e; err_unit
 
+let removePageLabels pdf =
+  if !dbg then flprint "Cpdflib.removePageLabels\n";
+  try
+    Pdfpagelabels.remove (lookup_pdf pdf)
+  with
+    e -> handle_error "removePageLabels\n" e; err_unit
+
+let startGetPageLabels pdf = 0
+let getPageLabelStyle pdf = 0
+let getPageLabelPrefix pdf = ""
+let getPageLabelOffset pdf = 0
+let getPageLabelRange pdf = 0
+let endGetPageLabels pdf = ()
+
+let getPageLabelStringForPage pdf n = ""
+
 let _ = Callback.register "addPageLabels" addPageLabels
+let _ = Callback.register "removePageLabels" removePageLabels
+let _ = Callback.register "startGetPageLabels" startGetPageLabels
+let _ = Callback.register "getPageLabelStyle" getPageLabelStyle
+let _ = Callback.register "getPageLabelPrefix" getPageLabelPrefix
+let _ = Callback.register "getPageLabelOffset" getPageLabelOffset
+let _ = Callback.register "getPageLabelRange" getPageLabelRange
+let _ = Callback.register "endGetPageLabels" endGetPageLabels
+let _ = Callback.register "getPageLabelStringForPage" getPageLabelStringForPage
 
 let onexit () =
   if !dbg then flprint "Cpdflib.onexit\n";

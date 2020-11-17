@@ -719,6 +719,17 @@ main (int argc, char **argv)
   int pl_all = cpdf_all (pl);
   printf ("addPageLabels()\n");
   cpdf_addPageLabels (pl, cpdf_uppercaseRoman, "PREFIX-", 1, pl_all, false);
+
+  int pln = cpdf_startGetPageLabels (pdf);
+  int pl1 = cpdf_getPageLabelStyle (1);
+  char *pl2 = cpdf_getPageLabelPrefix (1);
+  int pl3 = cpdf_getPageLabelOffset (1);
+  int pl4 = cpdf_getPageLabelRange (1);
+  cpdf_endGetPageLabels ();
+
+  char *pllabel = cpdf_getPageLabelStringForPage (pdf, 1);
+
+  cpdf_removePageLabels (pl);
   cpdf_toFile (pl, "testoutputs/pagelabels.pdf", false, false);
 
   int toreplace = cpdf_fromFile ("testinputs/london.pdf", "");

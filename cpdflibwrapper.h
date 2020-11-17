@@ -1114,6 +1114,17 @@ void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int,
 			 int, int);
 
 
+void cpdf_removePageLabels (int);
+
+int cpdf_startGetPageLabels (int);
+int cpdf_getPageLabelStyle (int);
+char *cpdf_getPageLabelPrefix (int);
+int cpdf_getPageLabelOffset (int);
+int cpdf_getPageLabelRange (int);
+void cpdf_endGetPageLabels ();
+
+char *cpdf_getPageLabelStringForPage (int, int);
+
 /* Special functionality 1. -- Encryption and Permission status */
 
 /*

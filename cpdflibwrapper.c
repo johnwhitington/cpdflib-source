@@ -3052,6 +3052,102 @@ void cpdf_addPageLabels
   CAMLreturn0;
 }
 
+void
+cpdf_removePageLabels (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, out_v, pdf_v);
+  fn = *caml_named_value ("removePageLabels");
+  pdf_v = Val_int (pdf);
+  out_v = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+int
+cpdf_startGetPageLabels (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, n_v, pdf_v);
+  pdf_v = Val_int (pdf);
+  fn = *caml_named_value ("startGetPageLabels");
+  n_v = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (n_v));
+}
+
+void
+cpdf_endGetPageLabels (void)
+{
+  CAMLparam0 ();
+  CAMLlocal2 (fn, out_v);
+  fn = *caml_named_value ("endGetPageLabels");
+  out_v = caml_callback (fn, Val_unit);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+int
+cpdf_getPageLabelOffset (int n)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, n_v, out_v);
+  n_v = Val_int (n);
+  fn = *caml_named_value ("getPageLabelOffset");
+  out_v = caml_callback (fn, n_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+int
+cpdf_getPageLabelStyle (int n)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, n_v, out_v);
+  n_v = Val_int (n);
+  fn = *caml_named_value ("getPageLabelStyle");
+  out_v = caml_callback (fn, n_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+int
+cpdf_getPageLabelRange (int n)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, n_v, out_v);
+  n_v = Val_int (n);
+  fn = *caml_named_value ("getPageLabelRange");
+  out_v = caml_callback (fn, n_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+char *
+cpdf_getPageLabelPrefix (int n)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, n_v, out_v);
+  n_v = Val_int (n);
+  fn = *caml_named_value ("getPageLabelPrefix");
+  out_v = caml_callback (fn, n_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out_v));
+}
+
+char *
+cpdf_getPageLabelStringForPage (int pdf, int n)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, pdf_v, n_v, out_v);
+  pdf_v = Val_int (pdf);
+  n_v = Val_int (n);
+  fn = *caml_named_value ("getPageLabelStringForPage");
+  out_v = caml_callback2 (fn, pdf_v, n_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out_v));
+}
+
 /* Special functionality 1. Encryption and Permission status */
 
 enum cpdf_pdfStatus

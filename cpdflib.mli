@@ -324,6 +324,16 @@ val removeClipping : pdf -> range -> unit
 
 
 val addPageLabels : pdf -> int -> string -> int -> int -> bool -> unit
+val removePageLabels : pdf -> unit
+
+val startGetPageLabels : pdf -> int
+val getPageLabelStyle : int -> int
+val getPageLabelPrefix : int -> string
+val getPageLabelOffset : int -> int
+val getPageLabelRange : int -> int
+val endGetPageLabels : unit -> unit
+
+val getPageLabelStringForPage : pdf -> int -> string
 
 (* Squeeze. Takes in filename, out filename, returns 0 = fine, n = error. *)
 val squeeze : string -> string -> string -> string -> int
