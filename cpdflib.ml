@@ -2336,12 +2336,57 @@ let removePageLabels pdf =
   with
     e -> handle_error "removePageLabels\n" e; err_unit
 
-let startGetPageLabels pdf = 0
-let getPageLabelStyle pdf = 0
-let getPageLabelPrefix pdf = ""
-let getPageLabelOffset pdf = 0
-let getPageLabelRange pdf = 0
-let endGetPageLabels pdf = ()
+let labels = ref [||]
+
+let startGetPageLabels pdf =
+  if !dbg then flprint "Cpdflib.startGetPageLabels\n";
+  try
+    labels := Array.of_list (Pdfpagelabels.read (lookup_pdf pdf));
+    Array.length !labels
+  with
+    e -> handle_error "getPageLabelRange\n" e; err_int
+
+let int_of_labelstyle = function
+  | Pdfpagelabels.DecimalArabic -> 0
+  | Pdfpagelabels.UppercaseRoman -> 1
+  | Pdfpagelabels.LowercaseRoman -> 2
+  | Pdfpagelabels.UppercaseLetters -> 3
+  | Pdfpagelabels.LowercaseLetters -> 4
+  | Pdfpagelabels.NoLabelPrefixOnly -> 5
+
+let getPageLabelStyle n =
+  if !dbg then flprint "Cpdflib.getPageLabelStyle\n";
+  try
+    int_of_labelstyle (!labels.(n).Pdfpagelabels.labelstyle)
+  with
+    e -> handle_error "getPageLabelStyle\n" e; err_int
+
+let getPageLabelPrefix n =
+  if !dbg then flprint "Cpdflib.getPageLabelPrefix\n";
+  try
+    match !labels.(n).Pdfpagelabels.labelprefix with
+    | None -> ""
+    | Some x -> x
+  with
+    e -> handle_error "getPageLabelPrefix\n" e; err_string
+
+let getPageLabelOffset n =
+  if !dbg then flprint "Cpdflib.getPageLabelOffset\n";
+  try
+    !labels.(n).Pdfpagelabels.startpage
+  with
+    e -> handle_error "getPageLabelOffset\n" e; err_int
+
+let getPageLabelRange n =
+  if !dbg then flprint "Cpdflib.getPageLabelRange\n";
+  try
+    !labels.(n).Pdfpagelabels.startvalue
+  with
+    e -> handle_error "getPageLabelRange\n" e; err_int
+
+let endGetPageLabels () =
+  if !dbg then flprint "Cpdflib.endGetPageLabels\n";
+  labels := [||]
 
 let getPageLabelStringForPage pdf n = ""
 
