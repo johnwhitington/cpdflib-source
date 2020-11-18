@@ -567,6 +567,8 @@ main (int argc, char **argv)
   cpdf_setModificationDateXMP (fonts, "D:20061108125017Z");
   cpdf_toFile (fonts, "testoutputs/settitleetc.pdf", false, false);
 
+  int rotation = cpdf_getPageRotation(fonts, 1);
+
   printf ("hasBox()\n");
   printf ("Has page one a %s box? %i\n", "/CropBox",
 	  cpdf_hasBox (fonts, 1, "/CropBox"));

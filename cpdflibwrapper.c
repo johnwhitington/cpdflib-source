@@ -2024,6 +2024,19 @@ cpdf_hasBox (int pdf, int pagenumber, char *boxname)
   CAMLreturnT (int, Int_val (out_v));
 }
 
+int
+cpdf_getPageRotation (int pdf, int pagenumber)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, pdf_v, pagenumber_v, out_v);
+  fn = *caml_named_value ("getPageRotation");
+  pdf_v = Val_int (pdf);
+  pagenumber_v = Val_int (pagenumber);
+  out_v = caml_callback2 (fn, pdf_v, pagenumber_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val (out_v));
+}
+
 void
 cpdf_getMediaBox (int pdf, int pagenumber, double *minx, double *maxx,
 		  double *miny, double *maxy)

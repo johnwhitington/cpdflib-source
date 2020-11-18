@@ -257,6 +257,7 @@ val setModificationDateXMP : pdf -> string -> unit
 val markTrapped : pdf -> unit
 val markUntrapped : pdf -> unit
 val hasBox : pdf -> int -> string -> bool
+val getPageRotation : pdf -> int -> int
 val getMediaBox : pdf -> int -> float * float * float * float
 val getCropBox : pdf -> int -> float * float * float * float
 val getArtBox : pdf -> int -> float * float * float * float

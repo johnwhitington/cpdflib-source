@@ -932,6 +932,8 @@ char *cpdf_dateStringOfComponents (int, int, int, int, int, int, int, int);
  */
 int cpdf_hasBox (int, int, const char[]);
 
+int cpdf_getPageRotation (int, int);
+
 /*
  * Get a box given the document, page range, min x, max x, min y, max y in
  * points. Only suceeds if such a box exists, as checked by cpdf_hasBox

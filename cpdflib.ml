@@ -1949,6 +1949,14 @@ let hasBox pdf pagenumber boxname =
   try Cpdf.hasbox (lookup_pdf pdf) pagenumber boxname with
     e -> handle_error "hasBox" e; err_bool
 
+let getPageRotation pdf pagenumber =
+  if !dbg then flprint "Cpdflib.getPageRotation\n";
+  try 
+    let pages = Pdfpage.pages_of_pagetree (lookup_pdf pdf) in
+      Pdfpage.int_of_rotation (List.nth pages pagenumber).Pdfpage.rotate
+  with
+    e -> handle_error "getPageRotation" e; err_int
+
 type box =
   {minx : float;
    maxx : float;
@@ -2109,6 +2117,7 @@ let _ = Callback.register "markUntrappedXMP" markUntrappedXMP
 let _ = Callback.register "setPageMode" setPageMode
 let _ = Callback.register "setPageLayout" setPageLayout
 let _ = Callback.register "hasBox" hasBox
+let _ = Callback.register "getPageRotation" getPageRotation
 let _ = Callback.register "getMediaBox" getMediaBox
 let _ = Callback.register "getCropBox" getCropBox
 let _ = Callback.register "getArtBox" getArtBox
