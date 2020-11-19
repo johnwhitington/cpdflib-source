@@ -1541,6 +1541,13 @@ let _ = Callback.register "getFontEncoding" getFontEncoding
 let _ = Callback.register "startGetFontInfo" startGetFontInfo
 let _ = Callback.register "endGetFontInfo" endGetFontInfo
 
+let removeFonts pdf = ()
+let copyFont pdf_from pdf_to range page name = ()
+
+let _ = Callback.register "removeFonts" removeFonts
+let _ = Callback.register "copyFont" copyFont
+
+
 let getVersion pdf =
   if !dbg then flprint "Cpdflib.getVersion\n";
   try (lookup_pdf pdf).Pdf.minor with e -> handle_error "getVersion" e; err_int

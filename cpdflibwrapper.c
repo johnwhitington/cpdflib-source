@@ -1833,6 +1833,33 @@ cpdf_endGetFontInfo (void)
   CAMLreturn0;
 }
 
+void cpdf_removeFonts(int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn_v, pdf_v, out_v);
+  fn_v = *caml_named_value("removeFonts");
+  pdf_v = Val_int(pdf);
+  out_v = caml_callback (fn_v, pdf_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber, char* fontname)
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("copyFont");
+  CAMLlocalN (args, 5);
+  args[0] = Val_int(from_pdf);
+  args[1] = Val_int(to_pdf);
+  args[2] = Val_int(range);
+  args[3] = Val_int(pagenumber);
+  args[4] = caml_copy_string(fontname);
+  out_v = caml_callbackN(fn_v, 5, args);
+  updateLastError ();
+  CAMLreturn0;
+}
+
 int
 cpdf_isLinearized (char *filename)
 {

@@ -823,6 +823,9 @@ char *cpdf_getFontType (int);
 char *cpdf_getFontEncoding (int);
 void cpdf_endGetFontInfo (void);
 
+void cpdf_removeFonts(int);
+void cpdf_copyFont(int, int, int, int, const char[]);
+
 /*
  * Find out if a document is linearized as quickly as possible without
  * loading it.

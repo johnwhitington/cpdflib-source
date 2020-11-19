@@ -467,6 +467,7 @@ main (int argc, char **argv)
   /* Chapter 11. Document Information and Metadata */
   printf ("\n***** 11. Document Information and Metadata\n\n");
   int fonts = cpdf_fromFile ("testinputs/london.pdf", "");
+  int fonts2 = cpdf_fromFile ("testinputs/london.pdf", "");
   printf ("startGetFontInfo()\n");
   cpdf_startGetFontInfo (fonts);
   printf ("numberFonts()\n");
@@ -485,6 +486,9 @@ main (int argc, char **argv)
     };
   printf ("endGetFontInfo()\n");
   cpdf_endGetFontInfo ();
+  cpdf_removeFonts(fonts);
+  int fontrange = cpdf_all(fonts); 
+  cpdf_copyFont(fonts, fonts2, fontrange, 1, "/F0");
 
   printf ("isLinarized()\n");
   printf ("isLinearized = %i\n", cpdf_isLinearized ("testinputs/london.pdf"));

@@ -223,6 +223,9 @@ val getFontEncoding : int -> string
 val startGetFontInfo : int -> unit
 val endGetFontInfo : unit -> unit
 
+val removeFonts : int -> unit
+val copyFont : pdf -> pdf -> range -> int -> string -> unit
+
 val isLinearized : string -> bool
 val getVersion : pdf -> int
 val getTitle : pdf -> string
