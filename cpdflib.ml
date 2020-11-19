@@ -1618,49 +1618,49 @@ let getTitleXMP pdf =
 let getAuthorXMP pdf =
   if !dbg then flprint "Cpdflib.getAuthorXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Author"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/Author"
   with
     e -> handle_error "getAuthorXMP" e; err_string
 
 let getSubjectXMP pdf =
   if !dbg then flprint "Cpdflib.getSubjectXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Subject"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/Subject"
   with
     e -> handle_error "getSubjectXMP" e; err_string
 
 let getKeywordsXMP pdf =
   if !dbg then flprint "Cpdflib.getKeywordsXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Keywords"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/Keywords"
   with
     e -> handle_error "getKeywordsXMP" e; err_string
 
 let getCreatorXMP pdf =
   if !dbg then flprint "Cpdflib.getCreatorXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Creator"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/Creator"
   with
     e -> handle_error "getCreatorXMP" e; err_string
 
 let getProducerXMP pdf =
   if !dbg then flprint "Cpdflib.getProducerXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Producer"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/Producer"
   with
     e -> handle_error "getProducerXMP" e; err_string
 
 let getCreationDateXMP pdf =
   if !dbg then flprint "Cpdflib.getCreationDateXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/CreationDate"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/CreationDate"
   with
     e -> handle_error "getCreationDateXMP" e; err_string
 
 let getModificationDateXMP pdf =
   if !dbg then flprint "Cpdflib.getModificationDateXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/ModDate"
+    Cpdf.get_xmp_info (lookup_pdf pdf) "/ModDate"
   with
     e -> handle_error "getModificationDateXMP" e; err_string
 
