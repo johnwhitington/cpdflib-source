@@ -1833,29 +1833,32 @@ cpdf_endGetFontInfo (void)
   CAMLreturn0;
 }
 
-void cpdf_removeFonts(int pdf)
+void
+cpdf_removeFonts (int pdf)
 {
   CAMLparam0 ();
   CAMLlocal3 (fn_v, pdf_v, out_v);
-  fn_v = *caml_named_value("removeFonts");
-  pdf_v = Val_int(pdf);
+  fn_v = *caml_named_value ("removeFonts");
+  pdf_v = Val_int (pdf);
   out_v = caml_callback (fn_v, pdf_v);
   updateLastError ();
   CAMLreturn0;
 }
 
-void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber, char* fontname)
+void
+cpdf_copyFont (int from_pdf, int to_pdf, int range, int pagenumber,
+	       char *fontname)
 {
-  CAMLparam0();
-  CAMLlocal2(fn_v, out_v);
-  fn_v = *caml_named_value("copyFont");
+  CAMLparam0 ();
+  CAMLlocal2 (fn_v, out_v);
+  fn_v = *caml_named_value ("copyFont");
   CAMLlocalN (args, 5);
-  args[0] = Val_int(from_pdf);
-  args[1] = Val_int(to_pdf);
-  args[2] = Val_int(range);
-  args[3] = Val_int(pagenumber);
-  args[4] = caml_copy_string(fontname);
-  out_v = caml_callbackN(fn_v, 5, args);
+  args[0] = Val_int (from_pdf);
+  args[1] = Val_int (to_pdf);
+  args[2] = Val_int (range);
+  args[3] = Val_int (pagenumber);
+  args[4] = caml_copy_string (fontname);
+  out_v = caml_callbackN (fn_v, 5, args);
   updateLastError ();
   CAMLreturn0;
 }
@@ -1974,6 +1977,102 @@ cpdf_getModificationDate (int pdf)
   CAMLparam0 ();
   CAMLlocal3 (fn, pdf_v, out);
   fn = *caml_named_value ("getModificationDate");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getTitleXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getTitleXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getAuthorXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getAuthorXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getSubjectXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getSubjectXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getKeywordsXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getKeywordsXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getCreatorXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getCreatorXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getProducerXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getProducerXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getCreationDateXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getCreationDateXMP");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out));
+}
+
+char *
+cpdf_getModificationDateXMP (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getModificationDateXMP");
   pdf_v = Val_int (pdf);
   out = caml_callback (fn, pdf_v);
   updateLastError ();

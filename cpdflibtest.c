@@ -486,9 +486,9 @@ main (int argc, char **argv)
     };
   printf ("endGetFontInfo()\n");
   cpdf_endGetFontInfo ();
-  cpdf_removeFonts(fonts);
-  int fontrange = cpdf_all(fonts); 
-  cpdf_copyFont(fonts, fonts2, fontrange, 1, "/F0");
+  cpdf_removeFonts (fonts);
+  int fontrange = cpdf_all (fonts);
+  cpdf_copyFont (fonts, fonts2, fontrange, 1, "/F0");
 
   printf ("isLinarized()\n");
   printf ("isLinearized = %i\n", cpdf_isLinearized ("testinputs/london.pdf"));
@@ -512,6 +512,25 @@ main (int argc, char **argv)
 
   printf ("getModificationDate()\n");
   printf ("Modification date is %s\n", cpdf_getModificationDate (fonts));
+  printf ("getTitleXMP()\n");
+  printf ("pdf title is %s\n", cpdf_getTitleXMP (fonts));
+  printf ("getAuthorXMP()\n");
+  printf ("pdf author is %s\n", cpdf_getAuthorXMP (fonts));
+  printf ("getSubjectXMP()\n");
+  printf ("pdf subject is %s\n", cpdf_getSubjectXMP (fonts));
+  printf ("getKeywordsXMP()\n");
+  printf ("pdf keywords is %s\n", cpdf_getKeywordsXMP (fonts));
+  printf ("getCreatorXMP()\n");
+  printf ("pdf creator is %s\n", cpdf_getCreatorXMP (fonts));
+  printf ("getProducerXMP()\n");
+  printf ("pdf producer is %s\n", cpdf_getProducerXMP (fonts));
+
+  printf ("getCreationDateXMP()\n");
+  printf ("Creation date is %s\n", cpdf_getCreationDateXMP (fonts));
+
+  printf ("getModificationDateXMP()\n");
+  printf ("Modification date is %s\n", cpdf_getModificationDateXMP (fonts));
+
 
   printf ("dateStringOfComponents()\n");
   printf ("Make a date string from components: %s\n",

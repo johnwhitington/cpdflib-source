@@ -823,8 +823,8 @@ char *cpdf_getFontType (int);
 char *cpdf_getFontEncoding (int);
 void cpdf_endGetFontInfo (void);
 
-void cpdf_removeFonts(int);
-void cpdf_copyFont(int, int, int, int, const char[]);
+void cpdf_removeFonts (int);
+void cpdf_copyFont (int, int, int, int, const char[]);
 
 /*
  * Find out if a document is linearized as quickly as possible without
@@ -858,6 +858,30 @@ char *cpdf_getCreationDate (int);
 
 /* Return the modification date of a document. */
 char *cpdf_getModificationDate (int);
+
+/* Return the title of a document. */
+char *cpdf_getTitleXMP (int);
+
+/* Return the author of a document. */
+char *cpdf_getAuthorXMP (int);
+
+/* Return the subject of a document. */
+char *cpdf_getSubjectXMP (int);
+
+/* Return the keywords of a document. */
+char *cpdf_getKeywordsXMP (int);
+
+/* Return the creator of a document. */
+char *cpdf_getCreatorXMP (int);
+
+/* Return the producer of a document. */
+char *cpdf_getProducerXMP (int);
+
+/* Return the creation date of a document. */
+char *cpdf_getCreationDateXMP (int);
+
+/* Return the modification date of a document. */
+char *cpdf_getModificationDateXMP (int);
 
 /* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
 void cpdf_setVersion (int, int);

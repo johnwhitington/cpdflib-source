@@ -228,6 +228,7 @@ val copyFont : pdf -> pdf -> range -> int -> string -> unit
 
 val isLinearized : string -> bool
 val getVersion : pdf -> int
+
 val getTitle : pdf -> string
 val getAuthor : pdf -> string
 val getSubject : pdf -> string
@@ -235,9 +236,20 @@ val getKeywords : pdf -> string
 val getCreator : pdf -> string
 val getProducer : pdf -> string
 val getCreationDate : pdf -> string
+val getModificationDate : pdf -> string
+
+val getTitleXMP : pdf -> string
+val getAuthorXMP : pdf -> string
+val getSubjectXMP : pdf -> string
+val getKeywordsXMP : pdf -> string
+val getCreatorXMP : pdf -> string
+val getProducerXMP : pdf -> string
+val getCreationDateXMP : pdf -> string
+val getModificationDateXMP : pdf -> string
+
 val getDateComponents : string -> Pdfdate.t
 val dateStringOfComponents : int -> int -> int -> int -> int -> int -> int -> int -> string
-val getModificationDate : pdf -> string
+
 val setVersion : pdf -> int -> unit
 val setTitle : pdf -> string -> unit
 val setAuthor : pdf -> string -> unit
