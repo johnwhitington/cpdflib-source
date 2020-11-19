@@ -2033,8 +2033,8 @@ cpdf_getPageRotation (int pdf, int pagenumber)
   pdf_v = Val_int (pdf);
   pagenumber_v = Val_int (pagenumber);
   out_v = caml_callback2 (fn, pdf_v, pagenumber_v);
-  updateLastError();
-  CAMLreturnT(int, Int_val (out_v));
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
 }
 
 void
@@ -2903,7 +2903,106 @@ cpdf_endGetAttachments (void)
   CAMLreturn0;
 }
 
-/* CHAPTER 13. Miscellaneous */
+/* CHAPTER 13. Images */
+
+int
+cpdf_startGetImageResolution (int pdf, int res)
+{
+  CAMLparam0 ();
+  CAMLlocal4 (fn, pdf_v, out_v, res_v);
+  fn = *caml_named_value ("startGetImageResolution");
+  pdf_v = Val_int (pdf);
+  res_v = Val_int (res);
+  out_v = caml_callback2 (fn, pdf_v, res_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+int
+cpdf_getImageResolutionPageNumber (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionPageNumber");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+char *
+cpdf_getImageResolutionImageName (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionImageName");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (char *, (char *) String_val (out_v));
+}
+
+int
+cpdf_getImageResolutionXPixels (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionXPixels");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+int
+cpdf_getImageResolutionYPixels (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionYPixels");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out_v));
+}
+
+double
+cpdf_getImageResolutionXRes (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionXRes");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Double_val (out_v));
+}
+
+double
+cpdf_getImageResolutionYRes (int serial)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, serial_v, out_v);
+  fn = *caml_named_value ("getImageResolutionYRes");
+  serial_v = Val_int (serial);
+  out_v = caml_callback (fn, serial_v);
+  updateLastError ();
+  CAMLreturnT (int, Double_val (out_v));
+}
+
+void
+cpdf_endGetImageResolution (void)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, unit_v, out_v);
+  fn = *caml_named_value ("endGetImageResolution");
+  unit_v = Val_unit;
+  out_v = caml_callback (fn, unit_v);
+  updateLastError ();
+  CAMLreturn0;
+}
+
+/* CHAPTER 15. Miscellaneous */
 void
 cpdf_draft (int pdf, int range, int boxes)
 {

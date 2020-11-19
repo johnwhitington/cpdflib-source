@@ -567,7 +567,7 @@ main (int argc, char **argv)
   cpdf_setModificationDateXMP (fonts, "D:20061108125017Z");
   cpdf_toFile (fonts, "testoutputs/settitleetc.pdf", false, false);
 
-  int rotation = cpdf_getPageRotation(fonts, 1);
+  int rotation = cpdf_getPageRotation (fonts, 1);
 
   printf ("hasBox()\n");
   printf ("Has page one a %s box? %i\n", "/CropBox",
@@ -709,6 +709,16 @@ main (int argc, char **argv)
   printf ("copyId()\n");
   cpdf_copyId (london, london2);
   cpdf_toFile (london2, "testoutputs/thinlines.pdf", false, false);
+
+
+  int numres = cpdf_startGetImageResolution (london, 100);
+  int numres1 = cpdf_getImageResolutionPageNumber (1);
+  char *numres2 = cpdf_getImageResolutionImageName (1);
+  int numres3 = cpdf_getImageResolutionXPixels (1);
+  int numres4 = cpdf_getImageResolutionYPixels (1);
+  double numres5 = cpdf_getImageResolutionXRes (1);
+  double numres6 = cpdf_getImageResolutionYRes (1);
+  cpdf_endGetImageResolution ();
 
   cpdf_deletePdf (london);
   cpdf_deletePdf (london2);

@@ -2237,7 +2237,28 @@ let _ = Callback.register "getAttachmentName" getAttachmentName
 let _ = Callback.register "getAttachmentPage" getAttachmentPage
 let _ = Callback.register "getAttachmentData" getAttachmentData
 
-(* CHAPTER 13. Miscellaneous *)
+(* CHAPTER 13. Images *)
+let startGetImageResolution pdf res = 0
+let endGetImageResolution () = ()
+let getImageResolutionPageNumber serial = 0
+let getImageResolutionImageName serial = "/Im0"
+let getImageResolutionXPixels serial = 0
+let getImageResolutionYPixels serial = 0
+let getImageResolutionXRes serial = 0.
+let getImageResolutionYRes serial = 0.
+
+
+let _ = Callback.register "startGetImageResolution" startGetImageResolution
+let _ = Callback.register "endGetImageResolution" endGetImageResolution
+let _ = Callback.register "getImageResolutionPageNumber" getImageResolutionPageNumber
+let _ = Callback.register "getImageResolutionImageName" getImageResolutionImageName
+let _ = Callback.register "getImageResolutionXPixels" getImageResolutionXPixels
+let _ = Callback.register "getImageResolutionYPixels" getImageResolutionYPixels
+let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
+let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
+
+
+(* CHAPTER 15. Miscellaneous *)
 let draft pdf range boxes =
   if !dbg then flprint "Cpdflib.draft\n";
   try

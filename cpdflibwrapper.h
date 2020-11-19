@@ -1090,7 +1090,15 @@ void *cpdf_getAttachmentData (int, int *);
 
 void cpdf_endGetAttachments (void);
 
-
+/* CHAPTER 13. Images. */
+int cpdf_startGetImageResolution (int, int);
+int cpdf_getImageResolutionPageNumber (int);
+char *cpdf_getImageResolutionImageName (int);
+int cpdf_getImageResolutionXPixels (int);
+int cpdf_getImageResolutionYPixels (int);
+double cpdf_getImageResolutionXRes (int);
+double cpdf_getImageResolutionYRes (int);
+void cpdf_endGetImageResolution (void);
 
 
 /* CHAPTER 14. Page labels */
