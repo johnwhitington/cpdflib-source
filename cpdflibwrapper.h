@@ -883,8 +883,6 @@ char *cpdf_getCreationDateXMP (int);
 /* Return the modification date of a document. */
 char *cpdf_getModificationDateXMP (int);
 
-/* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
-void cpdf_setVersion (int, int);
 
 /* Set the title of a document from a UTF8 encoded string */
 void cpdf_setTitle (int, const char[]);
@@ -1162,7 +1160,49 @@ void cpdf_endGetPageLabels ();
 
 char *cpdf_getPageLabelStringForPage (int, int);
 
-/* Special functionality 1. -- Encryption and Permission status */
+
+
+/* CHAPTER 15. Miscellaneous */
+
+/*
+ * Make a draft document. The first argument is the document, second the
+ * range, third is a boolean -- true to replace images with boxes, false to
+ * replace them with nothing.
+ */
+void cpdf_draft (int, int, int);
+
+/* cpdf_removeAllText(pdf, ranges) removes all text from the given pages in a given document. */ 
+void cpdf_removeAllText (int, int);
+
+/* Blacken all text in the given document and range */
+void cpdf_blackText (int, int);
+
+/* Blacken all lines in the given document and range */
+void cpdf_blackLines (int, int);
+
+/* Blacken all fills in the given document and range */
+void cpdf_blackFills (int, int);
+
+/*
+ * Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every
+ * line less than min_thickness to min_thickness
+ */
+void cpdf_thinLines (int, int, double);
+
+/* Copy the /ID from the first document to the second. */
+void cpdf_copyId (int, int);
+
+void cpdf_removeId (int);
+
+/* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
+void cpdf_setVersion (int, int);
+
+void cpdf_removeDictEntry (int, const char[]);
+
+void cpdf_removeClipping (int, int);
+
+/* UNCATALOGUED AS YET */
+/* Encryption and Permission status */
 
 /*
  * Internal status of a pdf loaded by the library. This is data kept separate
@@ -1191,7 +1231,6 @@ enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
  */
 char *cpdf_lookupPdfUserPassword (int);
 
-
 /* Squeeze */
 int cpdf_squeeze (const char[], const char[], const char[], const char[]);
 
@@ -1212,38 +1251,3 @@ void cpdf_OCGRename (int, const char[], const char[]);
 void cpdf_OCGOrderAll (int);
 
 char *cpdf_stampAsXObject (int, int, int);
-
-/* CHAPTER 15. Miscellaneous */
-
-/*
- * Make a draft document. The first argument is the document, second the
- * range, third is a boolean -- true to replace images with boxes, false to
- * replace them with nothing.
- */
-void cpdf_draft (int, int, int);
-
-/* Blacken all text in the given document and range */
-void cpdf_blackText (int, int);
-
-/* Blacken all lines in the given document and range */
-void cpdf_blackLines (int, int);
-
-/* Blacken all fills in the given document and range */
-void cpdf_blackFills (int, int);
-
-/*
- * Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every
- * line less than min_thickness to min_thickness
- */
-void cpdf_thinLines (int, int, double);
-
-/* Copy the /ID from the first document to the second. */
-void cpdf_copyId (int, int);
-
-void cpdf_removeAllText (int, int);
-
-void cpdf_removeId (int);
-
-void cpdf_removeDictEntry (int, const char[]);
-
-void cpdf_removeClipping (int, int);
