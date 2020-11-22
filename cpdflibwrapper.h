@@ -356,30 +356,27 @@ enum cpdf_encryptionMethod cpdf_encryptionKind (int);
 
 /* CHAPTER 2. Merging and Splitting */
 
-/* Given an array of PDFs, and its length, merge the files into a new one */
+/* cpdf_mergeSimple(pdfs, length) given an array of PDFs, and its length,
+ * merges the files into a new one, which is returned. */
 int cpdf_mergeSimple (int *, int);
 
-/*
- * cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts) merges
+/* cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts) merges
  * the PDFs. If retain_numbering is true page labels are not rewritten. If
  * remove_duplicate_fonts is true, duplicate fonts are merged. This is useful
- * when the source documents for merging originate from the same source.
- */
+ * when the source documents for merging originate from the same source. */
 int cpdf_merge (int *, int, int, int);
 
-/*
- * This is the same as cpdf_merge, except that it has an additional argument
+/* cpdf_mergeSame(pdfs, len, retain_numbering, remove_duplicate_fonts, ranges)
+ * is the same as cpdf_merge, except that it has an additional argument
  * - an array of page ranges. This is used to select the pages to pick from
  * each PDF. This avoids duplication of information when multiple discrete
- * parts of a source PDF are included.
- */
+ * parts of a source PDF are included. */
 int cpdf_mergeSame (int *, int, int, int, int *);
 
-/*
- * cpdf_selectPages(pdf, range) returns a new document which just those pages
- * in the page range.
- */
+/* cpdf_selectPages(pdf, range) returns a new document which just those pages
+ * in the page range. */
 int cpdf_selectPages (int, int);
+
 
 /* CHAPTER 3. Pages */
 
@@ -513,28 +510,17 @@ void cpdf_hardBox (int, int, const char[]);
 
 /* CHAPTER 4. Encryption */
 
-/* Covered elsewhere. */
+/* Encryption covered under Chapter 1 in cpdflib. */
 
 
 /* CHAPTER 5. Compression */
 
-/*
- * These functions can be used to compress and decompress all the streams in
- * a PDF file, for example for manual inspection. A PDF's streams are
- * typically compressed. Do not expect compression to reduce the size of an
- * already-compressed PDF.
- */
-
-/*
- * Compress any uncompressed streams in the given PDF using the Flate
- * algorithm.
- */
+/* cpdf_compress(pdf) compresses any uncompressed streams in the given PDF
+ * using the Flate algorithm. */
 void cpdf_compress (int);
 
-/*
- * Uncompress any streams in the given PDF, so long as the compression method
- * is supported.
- */
+/* cpdf_uncompress(pdf) uncompresses any streams in the given PDF, so long as
+ * the compression method is supported. */
 void cpdf_decompress (int);
 
 
@@ -782,23 +768,27 @@ int cpdf_textWidth (enum cpdf_font, const char[]);
 
 /* CHAPTER 9. Multipage facilities */
 
-/* Impose a document two up */
+/* Impose a document two up. cpdf_twoUp does so by retaining the existing page
+ * size, scaling pages down. cpdf_twoUpStack does so by doubling the page size,
+ * to fit two pages on one. */
 void cpdf_twoUp (int);
 void cpdf_twoUpStack (int);
 
-/*
- * Pad a document (first argument) before each page in the given range
- * (second argument)
- */
+/* cpdf_padBefore(pdf, range) adds a blank page before each page in the given range */
 void cpdf_padBefore (int, int);
 
-/*
- * Pad a document (first argument) after each page in the given range (second
- * argument)
- */
+/* cpdf_padBefore(pdf, range) adds a blank page before each page in the given range */
 void cpdf_padAfter (int, int);
+
+/* cpdf_pageEvery(pdf, n) adds a blank page after every n pages */
 void cpdf_padEvery (int, int);
+
+/* cpdf_padMultiple(pdf, n) adds pages at the end to pad the file to a multiple
+ * of n pages in length. */
 void cpdf_padMultiple (int, int);
+
+/* cpdf_padMultiple(pdf, n) adds pages at the beginning to pad the file to a
+ * multiple of n pages in length. */
 void cpdf_padMultipleBefore (int, int);
 
 /* CHAPTER 10. Annotations */
@@ -808,23 +798,6 @@ void cpdf_padMultipleBefore (int, int);
 
 /* CHAPTER 11. Document Information and Metadata */
 
-/*
- * Retrieving font information. First, call cpdf_startGetFontInfo(pdf). Now
- * call cpdf_numberFonts to return the number of fonts. For each font, call
- * one or more of cpdf_getFontPage, cpdf_getFontName, cpdf_getFontType, and
- * cpdf_getFontEncoding to return information. Finally, call
- * cpdf_endGetFontInfo to clean up.
- */
-void cpdf_startGetFontInfo (int);
-int cpdf_numberFonts (void);
-int cpdf_getFontPage (int);
-char *cpdf_getFontName (int);
-char *cpdf_getFontType (int);
-char *cpdf_getFontEncoding (int);
-void cpdf_endGetFontInfo (void);
-
-void cpdf_removeFonts (int);
-void cpdf_copyFont (int, int, int, int, const char[]);
 
 /*
  * Find out if a document is linearized as quickly as possible without
@@ -1062,71 +1035,6 @@ void cpdf_createMetadata (int);
 
 void cpdf_setMetadataDate (int, const char[]);
 
-/* CHAPTER 12. File Attachments */
-
-/*
- * Attach a file, given its file name, and the pdf. It is attached at
- * document level.
- */
-void cpdf_attachFile (const char[], int);
-
-/*
- * Attach a file, given its file name, pdf, and the page number to which it
- * should be attached.
- */
-void cpdf_attachFileToPage (const char[], int, int);
-
-/*
- * cpdf_attachFileFromMemory(memory, length, filename, pdf) attaches from
- * memory, just like cpdf_attachFile
- */
-void cpdf_attachFileFromMemory (void *, int, const char[], int);
-
-/*
- * cpdf_attachFileToPageFromMemory(memory, length, filename, pdf, page
- * number) attaches from memory, just like cpdf_attachFileToPage
- */
-void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int);
-
-/* Remove all page- and document-level attachments from a document */
-void cpdf_removeAttachedFiles (int);
-
-/*
- * List information about attachments. Call cpdf_startGetAttachments first,
- * then cpdf_startGetAttachments to find out how many there are. Then
- * cpdf_getAttachmentName to return each one 0...(n - 1). Finally, call
- * cpdf_endGetAttachments to clean up.
- */
-void cpdf_startGetAttachments (int);
-
-int cpdf_numberGetAttachments (void);
-
-/* Get the name of the attachment */
-char *cpdf_getAttachmentName (int);
-
-/* Gets the page number. 0 = document level */
-int cpdf_getAttachmentPage (int);
-
-/*
- * cpdf_getAttachmentData(serial number, &length) returns a pointer to the
- * data, and its length
- */
-void *cpdf_getAttachmentData (int, int *);
-
-void cpdf_endGetAttachments (void);
-
-/* CHAPTER 13. Images. */
-int cpdf_startGetImageResolution (int, int);
-int cpdf_getImageResolutionPageNumber (int);
-char *cpdf_getImageResolutionImageName (int);
-int cpdf_getImageResolutionXPixels (int);
-int cpdf_getImageResolutionYPixels (int);
-double cpdf_getImageResolutionXRes (int);
-double cpdf_getImageResolutionYRes (int);
-void cpdf_endGetImageResolution (void);
-
-
-/* CHAPTER 14. Page labels */
 enum cpdf_pageLabelStyle
 {
   cpdf_decimalArabic,		/* 1,2,3... */
@@ -1160,45 +1068,144 @@ void cpdf_endGetPageLabels ();
 
 char *cpdf_getPageLabelStringForPage (int, int);
 
+/* CHAPTER 12. File Attachments */
 
+/*
+ * cpdf_attachFile(filename, pdf) attaches a file to the pdf. It is attached at
+ * document level.
+ */
+void cpdf_attachFile (const char[], int);
+
+/*
+ * cpdf_attachFileToPage(filename, pdf, pagenumber) attaches a file, given its
+ * file name, pdf, and the page number to which it should be attached.
+ */
+void cpdf_attachFileToPage (const char[], int, int);
+
+/*
+ * cpdf_attachFileFromMemory(memory, length, filename, pdf) attaches from
+ * memory, just like cpdf_attachFile.
+ */
+void cpdf_attachFileFromMemory (void *, int, const char[], int);
+
+/*
+ * cpdf_attachFileToPageFromMemory(memory, length, filename, pdf, pagenumber)
+ * attaches from memory, just like cpdf_attachFileToPage.
+ */
+void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int);
+
+/* Remove all page- and document-level attachments from a document */
+void cpdf_removeAttachedFiles (int);
+
+/*
+ * List information about attachments. Call cpdf_startGetAttachments(pdf) first,
+ * then cpdf_numberGetAttachments to find out how many there are. Then
+ * cpdf_getAttachmentName to return each one 0...(n - 1). Finally, call
+ * cpdf_endGetAttachments to clean up.
+ */
+void cpdf_startGetAttachments (int);
+
+/* Get the number of attachments. */
+int cpdf_numberGetAttachments (void);
+
+/* Get the name of the attachment. */
+char *cpdf_getAttachmentName (int);
+
+/* Gets the page number. 0 = document level */
+int cpdf_getAttachmentPage (int);
+
+/*
+ * cpdf_getAttachmentData(serial number, &length) returns a pointer to the
+ * data, and its length
+ */
+void *cpdf_getAttachmentData (int, int *);
+
+/* Clean up. */
+void cpdf_endGetAttachments (void);
+
+/* CHAPTER 13. Images. */
+
+/* Get image data, including resolution at all points of use. Call
+ * cpdf_startGetImageResolution(pdf, min_required_resolution) will begin the
+ * process of obtaining data on all image uses below min_required_resolution,
+ * returning the total number. So, to return all image uses, specify a very
+ * high min_required_resolution. Then, call the other functions giving a serial
+ * number 1..<total number>, to retrieve the data. Finally, call
+ * cpdf_endGetImageResolution to clean up.
+ */
+int cpdf_startGetImageResolution (int, int);
+int cpdf_getImageResolutionPageNumber (int);
+char *cpdf_getImageResolutionImageName (int);
+int cpdf_getImageResolutionXPixels (int);
+int cpdf_getImageResolutionYPixels (int);
+double cpdf_getImageResolutionXRes (int);
+double cpdf_getImageResolutionYRes (int);
+void cpdf_endGetImageResolution (void);
+
+
+/* CHAPTER 14. Fonts. */
+
+/*
+ * Retrieving font information. First, call cpdf_startGetFontInfo(pdf). Now
+ * call cpdf_numberFonts to return the number of fonts. For each font, call one
+ * or more of cpdf_getFontPage, cpdf_getFontName, cpdf_getFontType, and
+ * cpdf_getFontEncoding giving a serial number 1..<number of fonts> to return
+ * information. Finally, call cpdf_endGetFontInfo to clean up.
+ */
+void cpdf_startGetFontInfo (int);
+int cpdf_numberFonts (void);
+int cpdf_getFontPage (int);
+char *cpdf_getFontName (int);
+char *cpdf_getFontType (int);
+char *cpdf_getFontEncoding (int);
+void cpdf_endGetFontInfo (void);
+
+/* cpdf_removeFonts(pdf) removes all font data from a file. */
+void cpdf_removeFonts (int);
+
+/* cpdf_copyFont(from, to, range, pagenumber, fontname) copies the given font
+ * from the given page in the 'from' PDF to every page in the 'to' PDF. The new
+ * font is stored under it's font name. */
+void cpdf_copyFont (int, int, int, int, const char[]);
 
 /* CHAPTER 15. Miscellaneous */
 
-/*
- * Make a draft document. The first argument is the document, second the
- * range, third is a boolean -- true to replace images with boxes, false to
- * replace them with nothing.
- */
+/* cpdf_draft(pdf, range, boxes) removes images on the given pages, replacing
+ * them with crossed boxes if 'boxes' is true */
 void cpdf_draft (int, int, int);
 
-/* cpdf_removeAllText(pdf, ranges) removes all text from the given pages in a given document. */ 
+/* cpdf_removeAllText(pdf, range) removes all text from the given pages in a
+ * given document. */
 void cpdf_removeAllText (int, int);
 
-/* Blacken all text in the given document and range */
+/* cpdf_blackText(pdf, range) blackens all text on the given pages. */
 void cpdf_blackText (int, int);
 
-/* Blacken all lines in the given document and range */
+/* cpdf_blackLines(pdf, range) blackens all lines on the given pages. */
 void cpdf_blackLines (int, int);
 
-/* Blacken all fills in the given document and range */
+/* cpdf_blackFills(pdf, range) blackens all fills on the given pages. */
 void cpdf_blackFills (int, int);
 
-/*
- * Thicken lines. cpdf_thinLines(pdf, range, min_thickness) thickens every
- * line less than min_thickness to min_thickness
- */
+/* cpdf_thinLines(pdf, range, min_thickness) thickens every line less than
+ * min_thickness to min_thickness. Thickness given in points. */
 void cpdf_thinLines (int, int, double);
 
-/* Copy the /ID from the first document to the second. */
+/* cpdf_copyId(from, to) copies the /ID from one document to another. */
 void cpdf_copyId (int, int);
 
+/* cpdf_removeId(pdf) removes a document's /ID */
 void cpdf_removeId (int);
 
 /* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
 void cpdf_setVersion (int, int);
 
+/* cpdf_removeDictEntry(pdf, key) removes any dictionary entry with the given
+ * key anywhere in the document */
 void cpdf_removeDictEntry (int, const char[]);
 
+/* cpdf_removeClipping(pdf, range) removes all clipping from pages in the given
+ * range */
 void cpdf_removeClipping (int, int);
 
 /* UNCATALOGUED AS YET */
