@@ -846,69 +846,57 @@ void cpdf_setCreationDateXMP (int, const char[]);
 /* cpdf_setModificationDateXMP(pdf) set the XMP modification date of a document. */
 void cpdf_setModificationDateXMP (int, const char[]);
 
-/* FIXME Continue Chap 11 fixes beyond this point... */
+/* Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
+ * hour_offset is the offset from UT in hours (-23 to 23); minute_offset is the
+ * offset from UT in minutes (-59 to 59). */
 
-/*
- * Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
- * h_offset is the offset from UT in hours (-23 to 23); h_offset is the
- * offset from UT in minutes (-59 to 59).
- */
-
-/*
- * cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
- * hour_offset, minute_offset) returns the components from a PDF date string.
- */
+/* cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
+ * hour_offset, minute_offset) returns the components from a PDF date string. */
 void cpdf_getDateComponents (const char[], int *, int *, int *, int *, int *,
 			     int *, int *, int *);
 
-/*
- * cpdf_dateStringOfComponents(year, month, day, hour, minute, second,
+/* cpdf_dateStringOfComponents(year, month, day, hour, minute, second,
  * hour_offset, minute_offset) builds a PDF date string from individual
- * components.
- */
+ * components. */
 char *cpdf_dateStringOfComponents (int, int, int, int, int, int, int, int);
 
-/*
- * cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
- * given box. E.g "/CropBox"
- */
-int cpdf_hasBox (int, int, const char[]);
-
+/* cpdf_getPageRotation(pdf, pagenumber) gets the viewing rotation for a given
+ * page. */
 int cpdf_getPageRotation (int, int);
 
-/*
- * Get a box given the document, page range, min x, max x, min y, max y in
- * points. Only suceeds if such a box exists, as checked by cpdf_hasBox
- */
+/* cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
+ * given box. E.g "/CropBox" */
+int cpdf_hasBox (int, int, const char[]);
+
+/* These functions get a box given the document, page range, min x, max x, min y, max y in
+ * points. Only suceeds if such a box exists, as checked by cpdf_hasBox */
 void cpdf_getMediaBox (int, int, double *, double *, double *, double *);
 void cpdf_getCropBox (int, int, double *, double *, double *, double *);
 void cpdf_getTrimBox (int, int, double *, double *, double *, double *);
 void cpdf_getArtBox (int, int, double *, double *, double *, double *);
 void cpdf_getBleedBox (int, int, double *, double *, double *, double *);
 
-/*
- * Set a box given the document, page range, min x, max x, min y, max y in
- * points.
- */
+/* These functions set a box given the document, page range, min x, max x, min
+ * y, max y in points. */
 void cpdf_setMediabox (int, int, double, double, double, double);
 void cpdf_setCropBox (int, int, double, double, double, double);
 void cpdf_setTrimBox (int, int, double, double, double, double);
 void cpdf_setArtBox (int, int, double, double, double, double);
 void cpdf_setBleedBox (int, int, double, double, double, double);
 
-/* Mark a document as trapped. */
+/* cpdf_markTrapped(pdf) marks a document as trapped. */
 void cpdf_markTrapped (int);
 
-/* Mark a document as untrapped. */
+/* cpdf_markUntrapped(pdf) marks a document as untrapped. */
 void cpdf_markUntrapped (int);
 
-/* Mark a document as trapped. */
+/* cpdf_markTrappedXMP(pdf) marks a document as trapped in XMP metadata. */
 void cpdf_markTrappedXMP (int);
 
-/* Mark a document as untrapped. */
+/* cpdf_markUntrappedXMP(pdf) marks a document as untrapped in XMP metadata. */
 void cpdf_markUntrappedXMP (int);
 
-/* Document Layouts. See ISO standard for details. */
+/* Document Layouts. */
 enum cpdf_layout
 {
   cpdf_singlePage,
@@ -919,10 +907,10 @@ enum cpdf_layout
   cpdf_twoPageRight
 };
 
-/* Set the page layout for a document */
+/* cpdf_setPageLayout(pdf, layout) sets the page layout for a document. */
 void cpdf_setPageLayout (int, enum cpdf_layout);
 
-/* Document page modes. See ISO standard for details. */
+/* Document page modes. */
 enum cpdf_pageMode
 {
   cpdf_useNone,
@@ -932,50 +920,49 @@ enum cpdf_pageMode
   cpdf_useAttachments
 };
 
-/* Set the page mode for a document */
+/* cpdf_setPageMode(pdf, mode) sets the page mode for a document. */
 void cpdf_setPageMode (int, enum cpdf_pageMode);
 
-/* cpdf_hideToolbar(doc, flag) sets the hide toolbar flag */
+/* cpdf_hideToolbar(pdf, flag) sets the hide toolbar flag */
 void cpdf_hideToolbar (int, int);
 
-/* cpdf_hideMenubar(doc, flag) sets the hide menu bar flag */
+/* cpdf_hideMenubar(pdf, flag) sets the hide menu bar flag */
 void cpdf_hideMenubar (int, int);
 
-/* cpdf_hideWindowUi(doc, flag) sets the hide window UI flag */
+/* cpdf_hideWindowUi(pdf, flag) sets the hide window UI flag */
 void cpdf_hideWindowUi (int, int);
 
-/* cpdf_fitWindow(doc, flag) sets the fit window flag */
+/* cpdf_fitWindow(pdf, flag) sets the fit window flag */
 void cpdf_fitWindow (int, int);
 
-/* cpdf_centerWindow(doc, flag) sets the center window flag */
+/* cpdf_centerWindow(pdf, flag) sets the center window flag */
 void cpdf_centerWindow (int, int);
 
-/* cpdf_displayDocTitle(doc, flag) sets the display doc title flag */
+/* cpdf_displayDocTitle(pdf, flag) sets the display doc title flag */
 void cpdf_displayDocTitle (int, int);
 
 /* cpdf_openAtPage(pdf, fit, pagenumber) */
 void cpdf_openAtPage (int, int, int);
 
-/* Set the XML metadata of a document, given a file name */
+/* cpdf_setMetadataFromFile(pdf, filename) set the XMP metadata of a document,
+ * given a file name. */
 void cpdf_setMetadataFromFile (int, const char[]);
 
-/*
- * Set the XML metadata from a byte array. cpdf_setMetadataFromByteArray(pdf,
- * data, length) uses length characters from data.
- */
+/* cpdf_setMetadataFromByteArray(pdf, data, length) set the XMP metadata from
+ * an array of bytes. */
 void cpdf_setMetadataFromByteArray (int, void *, int);
 
-/*
- * Return the XML metadata. cpdf_getMetadata(pdf, &length) returns the
- * metadata and fills in length.
- */
+/* cpdf_getMetadata(pdf, &length) returns the XMP metadata and fills in length. */
 void *cpdf_getMetadata (int, int *);
 
-/* Remove the XML metadata from a document */
+/* cpdf_removeMetadata(pdf) removes the XMP metadata from a document */
 void cpdf_removeMetadata (int);
 
-
+/* cpdf_createMetadata(pdf) builds fresh metadata as best it can from existing
+ * metadata in the document. */
 void cpdf_createMetadata (int);
+
+/* FIXME continue chap 11 docs from this point... */
 
 void cpdf_setMetadataDate (int, const char[]);
 
