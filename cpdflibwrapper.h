@@ -962,42 +962,46 @@ void cpdf_removeMetadata (int);
  * metadata in the document. */
 void cpdf_createMetadata (int);
 
-/* FIXME continue chap 11 docs from this point... */
-
+/* cpdf_setMetadataDate(pdf, date) sets the metadata date for a PDF. The date
+ * is given in PDF date format -- cpdf will convert it to XMP format. The date
+ * 'now' means now. */
 void cpdf_setMetadataDate (int, const char[]);
 
+/* Styles of page label */
 enum cpdf_pageLabelStyle
 {
   cpdf_decimalArabic,		/* 1,2,3... */
   cpdf_uppercaseRoman,		/* I, II, III... */
   cpdf_lowercaseRoman,		/* i, ii, iii... */
   cpdf_uppercaseLetters,	/* A, B, C... */
-  cpdf_lowercaseLetters
-};				/* a, b, c... */
+  cpdf_lowercaseLetters         /* a, b, c... */
+};
 
-/*
- * Add a set of page labels.
+/* Add a page labels.
  * 
  * cpdf_addPageLabels(pdf, style, prefix, offset, range, progress)
  * 
  * The prefix is prefix text for each label. The range is the page range the
- * labels apply to. Offset can be used to shift the numbering up or down.
- * 
- */
-void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int,
-			 int, int);
+ * labels apply to. Offset can be used to shift the numbering up or down. */
+void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int, int, int);
 
-
+/* cpdf_removePageLabels(pdf) removes the page labels from the document. */
 void cpdf_removePageLabels (int);
 
+/* cpdf_getPageLabelStringForPage(pdf, page number) calculates the full label
+ * string for a given page, and returns it */
+char *cpdf_getPageLabelStringForPage (int, int);
+
+/* Get page label data. Call cpdf_startGetPageLabels to find out how many there
+ * are, then use these serial numbers to get the style, prefix, offset and
+ * range. Call cpdf_endGetPageLabels to clean up. */
 int cpdf_startGetPageLabels (int);
-int cpdf_getPageLabelStyle (int);
+enum cpdf_pageLabelStyle cpdf_getPageLabelStyle (int);
 char *cpdf_getPageLabelPrefix (int);
 int cpdf_getPageLabelOffset (int);
 int cpdf_getPageLabelRange (int);
 void cpdf_endGetPageLabels ();
 
-char *cpdf_getPageLabelStringForPage (int, int);
 
 /* CHAPTER 12. File Attachments */
 
