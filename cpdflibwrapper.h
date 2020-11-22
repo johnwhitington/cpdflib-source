@@ -7,37 +7,97 @@ for details. To purchase a license, please visit http://www.coherentpdf.com/
 
 /** CHAPTER 0. Preliminaries */
 
-/** The function cpdf_startup must be called with argv before using the library.
-*/
+/** The function cpdf_startup(argv) must be called before using the library.  */
 void cpdf_startup (char **);
 
+/** Return the version of the cpdflib library as a string */
 char *cpdf_version ();
 
+/** Some operations have a fast mode. The default is 'slow' mode, which works
+ * even on old-fashioned files. For more details, see section 1.13 of the CPDF
+ * manual. These functions set the mode globally. */
 void cpdf_setFast ();
-
 void cpdf_setSlow ();
 
-/** Set demo mode. Upon library startup is false. If set, files written will
- * have the text DEMO stamped over each page. This stamping will also slow down
- * the library significantly.
-*/
+/** Undocumented. */
 void cpdf_setDemo (int);
 
-/** Errors. lastError and lastErrorString hold information about the last error
- * to have occurred. They should be consulted after each call. If
+/** Errors. cpdf_lastError and cpdf_lastErrorString hold information about the
+ * last error to have occurred. They should be consulted after each call. If
  * cpdf_lastError is non-zero, there was an error, and cpdf_lastErrorString
  * gives details. If cpdf_lastError is zero, there was no error on the most
- * recent cpdf call.
-*/
+ * recent cpdf call. */
 extern int cpdf_lastError;
 extern char *cpdf_lastErrorString;
 
-/** Clear the current error state. */
+/** cpdf_clearError clears the current error state. */
 void cpdf_clearError (void);
 
-/** A debug function which prints some information about resource usage. This
- * can be used to detect if PDFs or ranges are being deallocated properly. */
+/** cpdf_onExit is a debug function which prints some information about
+ * resource usage. This can be used to detect if PDFs or ranges are being
+ * deallocated properly. */
 void cpdf_onExit (void);
+
+
+/* CHAPTER 1. Basics */
+
+/*
+ * Load a PDF file from a given file. Also supply a user password (possibly
+ * blank) in case the file is encypted. It won't be decrypted, but sometimes
+ * the password is needed just to load the file.
+ */
+int cpdf_fromFile (const char[], const char[]);
+
+/*
+ * Load a PDF from a file, doing only minimal parsing. The objects will be
+ * read and parsed when they are actually needed. Use this when the whole
+ * file won't be required. Also supply a user password (possibly blank) in
+ * case the file is encypted. It won't be decrypted, but sometimes the
+ * password is needed just to load the file.
+ */
+int cpdf_fromFileLazy (const char[], const char[]);
+
+/*
+ * Load a file from memory, given a pointer and a length, and the user
+ * password. Just like cpdf_fromFile
+ */
+int cpdf_fromMemory (void *, int, const char[]);
+
+/*
+ * Load a file from memory lazily, just like cpdf_fromFileLazy, given a
+ * pointer, its length, and password
+ */
+int cpdf_fromMemoryLazy (void *, int, const char[]);
+
+/*
+ * Create a blank document with pages of the given width (in points), height
+ * (in points), and number of pages.
+ */
+int cpdf_blankDocument (double, double, int);
+
+/* Standard page sizes. */
+enum cpdf_papersize
+{
+  cpdf_a0portrait /** A0 portrait */ ,
+  cpdf_a1portrait /** A1 portrait */ ,
+  cpdf_a2portrait /** A2 portrait */ ,
+  cpdf_a3portrait /** A3 portrait */ ,
+  cpdf_a4portrait /** A4 portrait */ ,
+  cpdf_a5portrait /** A5 portrait */ ,
+  cpdf_a0landscape /** A0 landscape */ ,
+  cpdf_a1landscape /** A1 landscape */ ,
+  cpdf_a2landscape /** A2 landscape */ ,
+  cpdf_a3landscape /** A3 landscape */ ,
+  cpdf_a4landscape /** A4 landscape */ ,
+  cpdf_a5landscape /** A5 landscape */ ,
+  cpdf_usletterportrait /** US Letter portrait */ ,
+  cpdf_usletterlandscape /** US Letter landscape */ ,
+  cpdf_uslegalportrait /** US Legal portrait */ ,
+  cpdf_uslegallandscape		/** US Legal landscape */
+};
+
+/* Make a blank document given a page size and number of pages. */
+int cpdf_blankDocumentPaper (enum cpdf_papersize, int);
 
 /** Remove a PDF from memory, given its number. */
 void cpdf_deletePdf (int);
@@ -54,9 +114,6 @@ int cpdf_startEnumeratePDFs (void);
 int cpdf_enumeratePDFsKey (int);
 char *cpdf_enumeratePDFsInfo (int);
 void cpdf_endEnumeratePDFs (void);
-
-
-/* CHAPTER 1. Basics */
 
 /* Convert a figure in centimetres to points (72 points to 1 inch) */
 double cpdf_ptOfCm (double);
@@ -175,63 +232,6 @@ int cpdf_rangeAdd (int, int);
  */
 int cpdf_isInRange (int, int);
 
-/*
- * Load a PDF file from a given file. Also supply a user password (possibly
- * blank) in case the file is encypted. It won't be decrypted, but sometimes
- * the password is needed just to load the file.
- */
-int cpdf_fromFile (const char[], const char[]);
-
-/*
- * Load a PDF from a file, doing only minimal parsing. The objects will be
- * read and parsed when they are actually needed. Use this when the whole
- * file won't be required. Also supply a user password (possibly blank) in
- * case the file is encypted. It won't be decrypted, but sometimes the
- * password is needed just to load the file.
- */
-int cpdf_fromFileLazy (const char[], const char[]);
-
-/*
- * Load a file from memory, given a pointer and a length, and the user
- * password. Just like cpdf_fromFile
- */
-int cpdf_fromMemory (void *, int, const char[]);
-
-/*
- * Load a file from memory lazily, just like cpdf_fromFileLazy, given a
- * pointer, its length, and password
- */
-int cpdf_fromMemoryLazy (void *, int, const char[]);
-
-/*
- * Create a blank document with pages of the given width (in points), height
- * (in points), and number of pages.
- */
-int cpdf_blankDocument (double, double, int);
-
-/* Standard page sizes. */
-enum cpdf_papersize
-{
-  cpdf_a0portrait /** A0 portrait */ ,
-  cpdf_a1portrait /** A1 portrait */ ,
-  cpdf_a2portrait /** A2 portrait */ ,
-  cpdf_a3portrait /** A3 portrait */ ,
-  cpdf_a4portrait /** A4 portrait */ ,
-  cpdf_a5portrait /** A5 portrait */ ,
-  cpdf_a0landscape /** A0 landscape */ ,
-  cpdf_a1landscape /** A1 landscape */ ,
-  cpdf_a2landscape /** A2 landscape */ ,
-  cpdf_a3landscape /** A3 landscape */ ,
-  cpdf_a4landscape /** A4 landscape */ ,
-  cpdf_a5landscape /** A5 landscape */ ,
-  cpdf_usletterportrait /** US Letter portrait */ ,
-  cpdf_usletterlandscape /** US Letter landscape */ ,
-  cpdf_uslegalportrait /** US Legal portrait */ ,
-  cpdf_uslegallandscape		/** US Legal landscape */
-};
-
-/* Make a blank document given a page size and number of pages. */
-int cpdf_blankDocumentPaper (enum cpdf_papersize, int);
 
 /* Return the number of pages in a PDF. */
 int cpdf_pages (int);
@@ -354,13 +354,14 @@ int cpdf_hasPermission (int, enum cpdf_permission);
 /* Return the encryption method currently in use on a file. */
 enum cpdf_encryptionMethod cpdf_encryptionKind (int);
 
+
 /* CHAPTER 2. Merging and Splitting */
 
 /* cpdf_mergeSimple(pdfs, length) given an array of PDFs, and its length,
  * merges the files into a new one, which is returned. */
 int cpdf_mergeSimple (int *, int);
 
-/* cpdf_merge (pdfs, len, retain_numbering, remove_duplicate_fonts) merges
+/* cpdf_merge(pdfs, len, retain_numbering, remove_duplicate_fonts) merges
  * the PDFs. If retain_numbering is true page labels are not rewritten. If
  * remove_duplicate_fonts is true, duplicate fonts are merged. This is useful
  * when the source documents for merging originate from the same source. */
@@ -380,99 +381,85 @@ int cpdf_selectPages (int, int);
 
 /* CHAPTER 3. Pages */
 
-/*
- * cpdf_scalePages(pdf, range, x scale, y scale) scales the page dimensions
+/* cpdf_scalePages(pdf, range, x scale, y scale) scales the page dimensions
  * and content by the given scale, about (0, 0). Other boxes (crop etc. are
- * altered as appropriate)
- */
+ * altered as appropriate) */
 void cpdf_scalePages (int, int, double, double);
 
-/*
- * cpdf_scaleToFit(pdf, range, width height, scale) scales the content to fit new
- * page dimensions (width x height) multiplied by scale (typically 1.0). Other boxed (crop etc. are altered as
- * appropriate)
- */
+/* cpdf_scaleToFit(pdf, range, width height, scale) scales the content to fit
+ * new page dimensions (width x height) multiplied by scale (typically 1.0).
+ * Other boxed (crop etc. are altered as appropriate) */
 void cpdf_scaleToFit (int, int, double, double, double);
 
-/*
- * cpdf_scaleToFitPaper(pdf, range, papersize, scale) scales the page content to fit
- * the given page size, possibly multiplied by scale (typically 1.0)
- */
+/* cpdf_scaleToFitPaper(pdf, range, papersize, scale) scales the page content
+ * to fit the given page size, possibly multiplied by scale (typically 1.0) */
 void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize, double);
 
 /* Positions on the page. Used for scaling about a point, and adding text. */
 enum cpdf_anchor
 {
-  cpdf_posCentre /** Absolute centre */ ,
-  cpdf_posLeft /** Absolute left */ ,
-  cpdf_posRight /** Absolute right */ ,
-  cpdf_top /** Top top centre of the page */ ,
-  cpdf_topLeft /** The top left of the page */ ,
-  cpdf_topRight /** The top right of the page */ ,
-  cpdf_left /** The left hand side of the page, halfway down */ ,
-  cpdf_bottomLeft /** The bottom left of the page */ ,
-  cpdf_bottom /** The bottom middle of the page */ ,
-  cpdf_bottomRight /** The bottom right of the page */ ,
-  cpdf_right /** The right hand side of the page, halfway down */ ,
-  cpdf_diagonal /** Diagonal, bottom left to top right */ ,
-  cpdf_reverseDiagonal		/** Diagonal, top left to bottom right */
+  cpdf_posCentre,	/** Absolute centre */
+  cpdf_posLeft,		/** Absolute left */
+  cpdf_posRight,	/** Absolute right */
+  cpdf_top,		/** Top top centre of the page */
+  cpdf_topLeft,		/** The top left of the page */
+  cpdf_topRight,	/** The top right of the page */
+  cpdf_left,		/** The left hand side of the page, halfway down */
+  cpdf_bottomLeft,	/** The bottom left of the page */
+  cpdf_bottom,		/** The bottom middle of the page */
+  cpdf_bottomRight,	/** The bottom right of the page */
+  cpdf_right,		/** The right hand side of the page, halfway down */
+  cpdf_diagonal,	/** Diagonal, bottom left to top right */
+  cpdf_reverseDiagonal	/** Diagonal, top left to bottom right */
 };
 
-/*
- * A position is an anchor (above) and zero or one or two parameters
- * (cpdf_coord1, cpdf_coord2). cpdf_posCentre: Two parameters, x and y
- * cpdf_posLeft: Two parameters, x and y cpdf_posRight: Two parameters, x and
- * y cpdf_top: One parameter -- distance from top cpdf_topLeft: One parameter
- * -- distance from top left cpdf_topRight: One parameter -- distance from
- * top right cpdf_left: One parameter -- distance from left middle
- * cpdf_bottomLeft: One parameter -- distance from bottom left cpdf_bottom:
- * One parameter -- distance from bottom cpdf_bottomRight: One parameter --
- * distance from bottom right cpdf_right: One parameter -- distance from
- * right cpdf_diagonal: Zero parameters cpdf_reverseDiagonal: Zero paremeters
- */
+/* A cpdf_position is an anchor (above) and zero or one or two parameters
+ * (cpdf_coord1, cpdf_coord2).
+ *
+ * cpdf_posCentre: Two parameters, x and y
+ * cpdf_posLeft: Two parameters, x and y
+ * cpdf_posRight: Two parameters, x and y
+ * cpdf_top: One parameter -- distance from top
+ * cpdf_topLeft: One parameter -- distance from top left
+ * cpdf_topRight: One parameter -- distance from top right
+ * cpdf_left: One parameter -- distance from left middle
+ * cpdf_bottomLeft: One parameter -- distance from bottom left
+ * cpdf_bottom: One parameter -- distance from bottom
+ * cpdf_bottomRight: One parameter -- distance from bottom right
+ * cpdf_right: One parameter -- distance from right
+ * cpdf_diagonal: Zero parameters
+ * cpdf_reverseDiagonal: Zero paremeters */
 struct cpdf_position
 {
-  int cpdf_anchor /** Position anchor */ ;
-  double cpdf_coord1 /** Parameter one */ ;
-  double cpdf_coord2 /** Parameter two */ ;
+  int cpdf_anchor;   /** Position anchor */
+  double cpdf_coord1; /** Parameter one */
+  double cpdf_coord2; /** Parameter two */
 };
 
-/*
- * cpdf_scaleContents(pdf, range, position, scale) scales the contents of the
+/* cpdf_scaleContents(pdf, range, position, scale) scales the contents of the
  * pages in the range about the point given by the cpdf_position, by the
- * scale given.
- */
+ * scale given. */
 void cpdf_scaleContents (int, int, struct cpdf_position, double);
 
-/*
- * cpdf_shiftContents(pdf, range, dx, dy) shifts the content of the pages in
- * the range.
- */
+/* cpdf_shiftContents(pdf, range, dx, dy) shifts the content of the pages in
+ * the range. */
 void cpdf_shiftContents (int, int, double, double);
 
-/*
- * cpdf_rotate(pdf, range, rotation) changes the viewing rotation to an
- * absolute value. Appropriate rotations are 0, 90, 180, 270.
- */
+/* cpdf_rotate(pdf, range, rotation) changes the viewing rotation to an
+ * absolute value. Appropriate rotations are 0, 90, 180, 270. */
 void cpdf_rotate (int, int, int);
 
-/*
- * cpdf_rotateBy(pdf, range, rotation) changes the viewing rotation by a
- * given number of degrees. Appropriate values are 90, 180, 270.
- */
+/* cpdf_rotateBy(pdf, range, rotation) changes the viewing rotation by a
+ * given number of degrees. Appropriate values are 90, 180, 270. */
 void cpdf_rotateBy (int, int, int);
 
-/*
- * cpdf_rotateContents rotates the content about the centre of the page by
- * the given number of degrees, in a clockwise direction.
- */
+/* cpdf_rotateContents(pdf, range, angle) rotates the content about the centre
+ * of the page by the given number of degrees, in a clockwise direction. */
 void cpdf_rotateContents (int, int, double);
 
-/*
- * cpdf_upright(pdf, range) changes the viewing rotation of the pages in the
+/* cpdf_upright(pdf, range) changes the viewing rotation of the pages in the
  * range, counter-rotating the dimensions and content such that there is no
- * visual change.
- */
+ * visual change. */
 void cpdf_upright (int, int);
 
 /* cpdf_hFlip(pdf, range) flips horizontally the pages in the range. */
@@ -481,10 +468,8 @@ void cpdf_hFlip (int, int);
 /* cpdf_vFlip(pdf, range) flips vertically the pages in the range. */
 void cpdf_vFlip (int, int);
 
-/*
- * cpdf_crop(pdf, range, x, y, w, h) crops a page, replacing any existing
- * crop box. The dimensions are in points.
- */
+/* cpdf_crop(pdf, range, x, y, w, h) crops a page, replacing any existing
+ * crop box. The dimensions are in points. */
 void cpdf_crop (int, int, double, double, double, double);
 
 /* cpdf_removeCrop(pdf, range) removes any crop box from pages in the range. */
@@ -499,14 +484,15 @@ void cpdf_removeArt (int, int);
 /* cpdf_removeBleed(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeBleed (int, int);
 
-/* trimMarks(pdf, range) adds trim marks to the given pages, if the trimbox exists */
+/* cpdf_trimMarks(pdf, range) adds trim marks to the given pages, if the trimbox exists. */
 void cpdf_trimMarks (int, int);
 
-/* showBoxes(pdf, range) shows the boxes on the given pages, for debug. */
+/* cpdf_showBoxes(pdf, range) shows the boxes on the given pages, for debug. */
 void cpdf_showBoxes (int, int);
 
-/* Make a given box a 'hard box' */
+/* cpdf_hardBox make a given box a 'hard box' i.e clips it explicitly. */
 void cpdf_hardBox (int, int, const char[]);
+
 
 /* CHAPTER 4. Encryption */
 
@@ -526,107 +512,56 @@ void cpdf_decompress (int);
 
 /* CHAPTER 6. Bookmarks */
 
-/* Start the bookmark retrieval process for a given PDF. */
+/* cpdf_startGetBookmarkInfo(pdf) start the bookmark retrieval process for a
+ * given PDF. */
 void cpdf_startGetBookmarkInfo (int);
 
-/*
- * Get the number of bookmarks for the PDF given to cpdf_startGetBookmarkInfo
- */
+/* cpdf_numberBookmarks gets the number of bookmarks for the PDF given to
+ * cpdf_startGetBookmarkInfo. */
 int cpdf_numberBookmarks (void);
 
-/* Get bookmark level for the given bookmark (0...(n - 1)) */
+/* cpdf_getBookmarkLevel(serial) get bookmark level for the given bookmark
+ * (0...(n - 1)). */
 int cpdf_getBookmarkLevel (int);
 
-/*
- * Get the bookmark target page for the given PDF (which must be the same as
- * the PDF passed to cpdf_startGetBookmarkInfo) and bookmark (0...(n - 1))
- */
+/* cpdf_getBookmarkPage gets the bookmark target page for the given PDF (which
+ * must be the same as the PDF passed to cpdf_startSetBookmarkInfo) and
+ * bookmark (0...(n - 1)). */
 int cpdf_getBookmarkPage (int, int);
 
-/* Not implemented yet. */
-/* /1* Structure for a Pdfdest.t *1/ */
-/* enum cpdf_targetPageType */
-/* { */
-/*   cpdf_pageObject, */
-/*   cpdf_otherDocPageNumber */
-/* }; */
-
-/* struct cpdf_targetPage */
-/* { */
-/*   enum cpdf_targetPageType tpt; */
-/*   int tp_content; */
-/* }; */
-
-/* enum cpdf_positionDestinationType */
-/* { */
-/*   cpdf_Action,			/1* Pdfobject associated with this not accessible *1/ */
-/*   cpdf_NullDestination, */
-/*   cpdf_NamedDestinationElsewhere, */
-/*   cpdf_XYZ, */
-/*   cpdf_Fit, */
-/*   cpdf_FitH, */
-/*   cpdf_FitV, */
-/*   cpdf_FitR, */
-/*   cpdf_FitB, */
-/*   cpdf_FitBH, */
-/*   cpdf_FitBV */
-/* }; */
-
-/* struct cpdf_bookmarkDestination */
-/* { */
-/*   struct cpdf_targetPage tp; */
-/*   enum cpdf_positionDestinationType type; */
-/*   double p1; */
-/*   double p2; */
-/*   double p3; */
-/*   double p4; */
-/*   int p1_is_some; */
-/*   int p2_is_some; */
-/*   int p3_is_some; */
-/*   int p4_is_some; */
-/*   char *named_destination_elsewhere_text; */
-/* }; */
-
-/* Get the destination from a bookmark */
-/*struct cpdf_bookmarkDestination cpdf_getBookmarkDestination (int);*/
-
-/* Return the text of bookmark (0...(n - 1)) */
+/* cpdf_getBookmarkText returns the text of bookmark (0...(n - 1)). */
 char *cpdf_getBookmarkText (int);
 
-/* true if the bookmark is open */
+/* cpdf_getBookmarkOpenStatus(pdf) is true if the bookmark is open. */
 int cpdf_getBookmarkOpenStatus (int);
 
-/* End the bookmark retrieval process, cleaning up. */
+/* cpdf_endGetBookmarkInfo ends the bookmark retrieval process, cleaning up. */
 void cpdf_endGetBookmarkInfo (void);
 
-
-/* Setting bookmark information */
-
-/* Start the bookmark retrieval process for n bookmarks. */
+/* cpdf_startGetBookmarkInfo(n) start the bookmark setting process for n
+ * bookmarks. */
 void cpdf_startSetBookmarkInfo (int);
 
-/* Set bookmark level for the given bookmark (0...(n - 1)) */
+/* cpdf_setBookmarkLevel(n, level) set bookmark level for the given bookmark
+ * (0...(n - 1)). */
 void cpdf_setBookmarkLevel (int, int);
 
-/*
- * Set the bookmark target page for the given PDF (which must be the same as
- * the PDF passed to cpdf_startSetBookmarkInfo) and bookmark (0...(n - 1))
- */
+/* cpdf_setBookmarkPage(pdf, bookmark, targetpage) sets the bookmark target
+ * page for the given PDF (which must be the same as the PDF to be passed to
+ * cpdf_endSetBookmarkInfo) and bookmark (0...(n - 1)). */
 void cpdf_setBookmarkPage (int, int, int);
 
-/* Set the open status of a bookmark */
+/* cpdf_setBookmarkOpenStatus(n, status) set the open status of a bookmark,
+ * true or false. */
 void cpdf_setBookmarkOpenStatus (int, int);
 
-/* Set the destination from a bookmark */
-/*void cpdf_setBookmarkDestination (int,
-				  struct cpdf_bookmarkDestination
-				  cpdf_getBookmarkDestination);*/
-
-/* Return the text of bookmark (0...(n - 1)) */
+/* cpdf_setBookmarkText(n, text) sets the text of bookmark (0...(n - 1)). */
 void cpdf_setBookmarkText (int, const char[]);
 
-/* End the bookmark setting process for a given PDF */
+/* cpdf_endSetBookmarkInfo(pdf) end the bookmark setting process, writing the
+ * bookmarks to the given PDF. */
 void cpdf_endSetBookmarkInfo (int);
+
 
 /* CHAPTER 7. Presentations */
 
@@ -635,120 +570,127 @@ void cpdf_endSetBookmarkInfo (int);
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
-/*
- * cpdf_stampOn(stamp_pdf, pdf, range) stamps stamp_pdf on top of all the
+/* cpdf_stampOn(stamp_pdf, pdf, range) stamps stamp_pdf on top of all the
  * pages in the document which are in the range. The stamp is placed with its
- * origin at the origin of the target document.
- */
+ * origin at the origin of the target document. */
 void cpdf_stampOn (int, int, int);
 
-/*
- * cpdf_stampOn(stamp_pdf, pdf, range) stamps stamp_pdf under all the pages
- * in the document which are in the range. The stamp is placed with its
- * origin at the origin of the target document.
- */
+/* cpdf_stampUnder(stamp_pdf, pdf, range) stamps stamp_pdf under all the pages
+ * in the document which are in the range. The stamp is placed with its origin
+ * at the origin of the target document. */
 void cpdf_stampUnder (int, int, int);
 
+/* cpdf_stampExtended(pdf, pdf2, range, isover, scale_stamp_to_fit, pos,
+ * relative_to_cropbox) is a stamping function with extra features.
+ *  - isover true, pdf goes over pdf2, isover false, pdf goes under pdf2
+ *  - scale_stamp_to_fit scales the stamp to fit the page
+ *  - pos gives the position to put the stamp
+ *  - relative_to_cropbox: if true, pos is relative to cropbox not mediabox */
 void cpdf_stampExtended (int, int, int, int, int, struct cpdf_position, int);
 
-/*
- * cpdf_combinePages(under, over) combines the PDFs page-by-page, putting
- * each page of 'over' over each page of 'under'
- */
+/* cpdf_combinePages(under, over) combines the PDFs page-by-page, putting
+ * each page of 'over' over each page of 'under' */
 int cpdf_combinePages (int, int);
 
-/*
- * Adding text. Adds UTF8 text to a PDF, if the characters exist in the font.
- */
+/* Adding text. Adds UTF8 text to a PDF, if the characters exist in the font. */
 
-/*
- * Special codes
+/* Special codes
  * 
- * %Page     Page number in arabic notation (1, 2, 3...) %roman    Page number
- * in lower-case roman notation (i, ii, iii...) %Roman    Page number in
- * upper-case roman notation (I, II, III...) %EndPage  Last page of document
- * in arabic notation %Label    The page label of the page %EndLabel The page
- * label of the last page %filename The full file name of the input document
- * %a        Abbreviated weekday name (Sun, Mon etc.) %A        Full weekday
- * name (Sunday, Monday etc.) %b        Abbreviated month name (Jan, Feb
- * etc.) %B        Full month name (January, February etc.) %d        Day of
- * the month (01–31) %e        Day of the month (1–31) %H        Hour in
- * 24-hour clock (00–23) %I        Hour in 12-hour clock (01–12) %j Day
- * of the year (001–366) %m Month of the year (01–12) %M Minute of the
- * hour (00–59) %p ”a.m” or ”p.m” %S        Second of the minute
- * (00–61) %T        Same as %H:%M:%S %u        Weekday (1–7, 1 = Monday)
- * %w        Weekday (0–6, 0 = Monday) %Y        Year (0000–9999) %%
- * The % character.
- * 
- */
+ * %Page     Page number in arabic notation (1, 2, 3...)
+ * %roman    Page number in lower-case roman notation (i, ii, iii...)
+ * %Roman    Page number in upper-case roman notation (I, II, III...)
+ * %EndPage  Last page of document in arabic notation
+ * %Label    The page label of the page
+ * %EndLabel The page label of the last page
+ * %filename The full file name of the input document
+ * %a        Abbreviated weekday name (Sun, Mon etc.)
+ * %A        Full weekday name (Sunday, Monday etc.)
+ * %b        Abbreviated month name (Jan, Feb etc.)
+ * %B        Full month name (January, February etc.)
+ * %d        Day of the month (01–31)
+ * %e        Day of the month (1–31)
+ * %H        Hour in 24-hour clock (00–23)
+ * %I        Hour in 12-hour clock (01–12)
+ * %j        Day of the year (001–366)
+ * %m        Month of the year (01–12)
+ * %M        Minute of the hour (00–59)
+ * %p        "a.m" or "p.m"
+ * %S        Second of the minute (00–61)
+ * %T        Same as %H:%M:%S
+ * %u        Weekday (1–7, 1 = Monday)
+ * %w        Weekday (0–6, 0 = Monday)
+ * %Y        Year (0000–9999)
+ * %%        The % character */
 
 /** The standard fonts */
 enum cpdf_font
 {
-  cpdf_timesRoman /** Times Roman */ ,
-  cpdf_timesBold /** Times Bold */ ,
-  cpdf_timesItalic /** Times Italic */ ,
-  cpdf_timesBoldItalic /** Times Bold Italic */ ,
-  cpdf_helvetica /** Helvetica */ ,
-  cpdf_helveticaBold /** Helvetica Bold */ ,
-  cpdf_helveticaOblique /** Helvetica Oblique */ ,
-  cpdf_helveticaBoldOblique /** Helvetica Bold Oblique */ ,
-  cpdf_courier /** Courier */ ,
-  cpdf_courierBold /** Courier Bold */ ,
-  cpdf_courierOblique /** Courier Oblique */ ,
-  cpdf_courierBoldOblique	/** Courier Bold Oblique */
+  cpdf_timesRoman,		  /** Times Roman */
+  cpdf_timesBold,		  /** Times Bold */
+  cpdf_timesItalic,		  /** Times Italic */
+  cpdf_timesBoldItalic,		  /** Times Bold Italic */
+  cpdf_helvetica,		  /** Helvetica */
+  cpdf_helveticaBold,		  /** Helvetica Bold */
+  cpdf_helveticaOblique,	  /** Helvetica Oblique */
+  cpdf_helveticaBoldOblique,	  /** Helvetica Bold Oblique */
+  cpdf_courier,			  /** Courier */
+  cpdf_courierBold,		  /** Courier Bold */
+  cpdf_courierOblique,		  /** Courier Oblique */
+  cpdf_courierBoldOblique	  /** Courier Bold Oblique */
 };
 
 /** Justifications for multi line text */
 enum cpdf_justification
 {
-  cpdf_leftJustify /** Left justify */ ,
-  cpdf_CentreJustify /** Centre justify */ ,
-  cpdf_RightJustify		/** Right justify */
+  cpdf_leftJustify,	  /** Left justify */
+  cpdf_CentreJustify,	  /** Centre justify */
+  cpdf_RightJustify	  /** Right justify */
 };
 
 /** Add text */
-void cpdf_addText
-  (int /** If true, don't actually add text but collect metrics. */ ,
-   int /** Document */ ,
-   int /** Page Range */ ,
-   const char[] /** The text to add */ ,
-   struct cpdf_position /** Position to add text at */ ,
-   double /** Linespacing, 1.0 = normal */ ,
-   int /** Starting Bates number */ ,
-   enum cpdf_font /** Font */ ,
-   double /** Font size in points */ ,
-   double /** Red component of colour, 0.0 - 1.0 */ ,
-   double /** Green component of colour, 0.0 - 1.0 */ ,
-   double /** Blue component of colour, 0.0 - 1.0 */ ,
-   int /** If true, text is added underneath rather than on top */ ,
-   int /** If true, position is relative to crop box not media box */ ,
-   int /** If true, text is outline rather than filled */ ,
-   double /** Opacity, 1.0 = opaque, 0.0 = wholly transparent */ ,
-   enum cpdf_justification /** Justification */ ,
-   int /** If true, position is relative to midline of text, not baseline */ ,
-   int /** If true, position is relative to topline of text, not baseline */ ,
-   const char[] /** filename that this document was read from (optional) */ ,
-   double /** line width */ ,
-   int					/** embed fonts */
+void cpdf_addText (int,	     /** If true, don't actually add text but collect metrics. */
+		   int,	     /** Document */
+		   int,	     /** Page Range */
+		   const char[],
+			     /** The text to add */
+		   struct cpdf_position,
+			     /** Position to add text at */
+		   double,   /** Linespacing, 1.0 = normal */
+		   int,	     /** Starting Bates number */
+		   enum cpdf_font,
+			     /** Font */
+		   double,   /** Font size in points */
+		   double,   /** Red component of colour, 0.0 - 1.0 */
+		   double,   /** Green component of colour, 0.0 - 1.0 */
+		   double,   /** Blue component of colour, 0.0 - 1.0 */
+		   int,	     /** If true, text is added underneath rather than on top */
+		   int,	     /** If true, position is relative to crop box not media box */
+		   int,	     /** If true, text is outline rather than filled */
+		   double,   /** Opacity, 1.0 = opaque, 0.0 = wholly transparent */
+		   enum cpdf_justification,
+			     /** Justification */
+		   int,	     /** If true, position is relative to midline of text, not baseline */
+		   int,	     /** If true, position is relative to topline of text, not baseline */
+		   const char[],
+			     /** filename that this document was read from (optional) */
+		   double,   /** line width */
+		   int	     /** embed fonts */
   );
 
 /** Add text, with most parameters default */
-void cpdf_addTextSimple (int,	/** Document */
+void cpdf_addTextSimple (int,			/** Document */
 			 int,			/** Page range */
-			 const char[],				/** The text to add */
-			 struct cpdf_position,		/** Position to add text at */
-			 enum cpdf_font,			/** font */
+			 const char[],		/** The text to add */
+			 struct cpdf_position,	/** Position to add text at */
+			 enum cpdf_font,	/** font */
 			 double);		/** font size */
 
-/*
- * To return metrics about the text which would be added. Call cpdf_addText
+/* To return metrics about the text which would be added. Call cpdf_addText
  * first with the first argument set to false, and the other arguments filled
  * in as appropriate. Now, the metrics have been collected. Call
  * cpdf_addTextHowMany to find out how many lines of text there are. Now, for
  * each line (1...n), the functions cpdf_addTextReturn* give the metrics of
- * the text as calculated.
- */
+ * the text as calculated. */
 int cpdf_addTextHowMany (void);
 char *cpdf_addTextReturnText (int);
 double cpdf_addTextReturnX (int);
@@ -756,13 +698,12 @@ double cpdf_addTextReturnY (int);
 double cpdf_addTextReturnRotation (int);
 double cpdf_addTextReturnBaselineAdjustment (void);
 
-/* cpdf_removeText will remove any text added by libcpdf. */
+/* cpdf_removeText(pdf, range) will remove any text added by libcpdf from the
+ * given pages. */
 void cpdf_removeText (int, int);
 
-/*
- * Return the width of a given string in the given font in thousandths of a
- * point.
- */
+/* Return the width of a given string in the given font in thousandths of a
+ * point. */
 int cpdf_textWidth (enum cpdf_font, const char[]);
 
 
@@ -1258,3 +1199,56 @@ void cpdf_OCGRename (int, const char[], const char[]);
 void cpdf_OCGOrderAll (int);
 
 char *cpdf_stampAsXObject (int, int, int);
+
+
+/* Not implemented yet. */
+/* /1* Structure for a Pdfdest.t *1/ */
+/* enum cpdf_targetPageType */
+/* { */
+/*   cpdf_pageObject, */
+/*   cpdf_otherDocPageNumber */
+/* }; */
+
+/* struct cpdf_targetPage */
+/* { */
+/*   enum cpdf_targetPageType tpt; */
+/*   int tp_content; */
+/* }; */
+
+/* enum cpdf_positionDestinationType */
+/* { */
+/*   cpdf_Action,			/1* Pdfobject associated with this not accessible *1/ */
+/*   cpdf_NullDestination, */
+/*   cpdf_NamedDestinationElsewhere, */
+/*   cpdf_XYZ, */
+/*   cpdf_Fit, */
+/*   cpdf_FitH, */
+/*   cpdf_FitV, */
+/*   cpdf_FitR, */
+/*   cpdf_FitB, */
+/*   cpdf_FitBH, */
+/*   cpdf_FitBV */
+/* }; */
+
+/* struct cpdf_bookmarkDestination */
+/* { */
+/*   struct cpdf_targetPage tp; */
+/*   enum cpdf_positionDestinationType type; */
+/*   double p1; */
+/*   double p2; */
+/*   double p3; */
+/*   double p4; */
+/*   int p1_is_some; */
+/*   int p2_is_some; */
+/*   int p3_is_some; */
+/*   int p4_is_some; */
+/*   char *named_destination_elsewhere_text; */
+/* }; */
+
+/* Get the destination from a bookmark */
+/*struct cpdf_bookmarkDestination cpdf_getBookmarkDestination (int);*/
+
+/* Set the destination from a bookmark */
+/*void cpdf_setBookmarkDestination (int,
+				  struct cpdf_bookmarkDestination
+				  cpdf_getBookmarkDestination);*/
