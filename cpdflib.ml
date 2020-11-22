@@ -1486,6 +1486,10 @@ let getVersion pdf =
   if !dbg then flprint "Cpdflib.getVersion\n";
   try (lookup_pdf pdf).Pdf.minor with e -> handle_error "getVersion" e; err_int
 
+let getMajorVersion pdf =
+  if !dbg then flprint "Cpdflib.getMajorVersion\n";
+  try (lookup_pdf pdf).Pdf.major with e -> handle_error "getMajorVersion" e; err_int
+
 let getTitle pdf =
   if !dbg then flprint "Cpdflib.getTitle\n";
   try
@@ -2080,6 +2084,7 @@ let setCropBox pdf range minx maxx miny maxy =
     e -> handle_error "setCropBox" e; err_unit
 
 let _ = Callback.register "getVersion" getVersion
+let _ = Callback.register "getMajorVersion" getMajorVersion
 let _ = Callback.register "getTitle" getTitle
 let _ = Callback.register "getAuthor" getAuthor
 let _ = Callback.register "getSubject" getSubject

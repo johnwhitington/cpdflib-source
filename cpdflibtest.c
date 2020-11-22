@@ -494,6 +494,8 @@ main (int argc, char **argv)
   printf ("isLinearized = %i\n", cpdf_isLinearized ("testinputs/london.pdf"));
   printf ("getVersion()\n");
   printf ("pdf version is %i\n", cpdf_getVersion (fonts));
+  printf ("getMajorVersion()\n");
+  printf ("pdf major version is %i\n", cpdf_getMajorVersion (fonts));
   printf ("getTitle()\n");
   printf ("pdf title is %s\n", cpdf_getTitle (fonts));
   printf ("getAuthor()\n");

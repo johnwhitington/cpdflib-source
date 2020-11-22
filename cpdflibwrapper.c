@@ -1887,6 +1887,18 @@ cpdf_getVersion (int pdf)
   CAMLreturnT (int, Int_val (out));
 }
 
+int
+cpdf_getMajorVersion (int pdf)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (fn, pdf_v, out);
+  fn = *caml_named_value ("getMajorVersion");
+  pdf_v = Val_int (pdf);
+  out = caml_callback (fn, pdf_v);
+  updateLastError ();
+  CAMLreturnT (int, Int_val (out));
+}
+
 char *
 cpdf_getTitle (int pdf)
 {

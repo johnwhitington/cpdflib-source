@@ -740,111 +740,114 @@ void cpdf_padMultipleBefore (int, int);
 /* CHAPTER 11. Document Information and Metadata */
 
 
-/*
- * Find out if a document is linearized as quickly as possible without
- * loading it.
- */
+/* cpdf_isLinearized(filename) finds out if a document is linearized as quickly
+ * as possible without loading it. */
 int cpdf_isLinearized (const char[]);
 
-/* Return the minor version number of a document. */
+/* cpdf_vetVersion(pdf) returns the minor version number of a document. */
 int cpdf_getVersion (int);
 
-/* Return the title of a document. */
+/* cpdf_vetMajorVersion(pdf) returns the minor version number of a document. */
+int cpdf_getMajorVersion (int);
+
+/* cpdf_getTitle(pdf) returns the title of a document. */
 char *cpdf_getTitle (int);
 
-/* Return the author of a document. */
+/* cpdf_getAuthor(pdf) returns the author of a document. */
 char *cpdf_getAuthor (int);
 
-/* Return the subject of a document. */
+/* cpdf_getSubject(pdf) returns the subject of a document. */
 char *cpdf_getSubject (int);
 
-/* Return the keywords of a document. */
+/* cpdf_getKeywords(pdf) returns the keywords of a document. */
 char *cpdf_getKeywords (int);
 
-/* Return the creator of a document. */
+/* cpdf_getCreator(pdf) returns the creator of a document. */
 char *cpdf_getCreator (int);
 
-/* Return the producer of a document. */
+/* cpdf_getProducer(pdf) returns the producer of a document. */
 char *cpdf_getProducer (int);
 
-/* Return the creation date of a document. */
+/* cpdf_getCreationDate(pdf) returns the creation date of a document. */
 char *cpdf_getCreationDate (int);
 
-/* Return the modification date of a document. */
+/* cpdf_getModificationDate(pdf) returns the modification date of a document. */
 char *cpdf_getModificationDate (int);
 
-/* Return the title of a document. */
+/* cpdf_getTitleXMP(pdf) returns the XMP title of a document. */
 char *cpdf_getTitleXMP (int);
 
-/* Return the author of a document. */
+/* cpdf_getAuthorXMP(pdf) returns the XMP author of a document. */
 char *cpdf_getAuthorXMP (int);
 
-/* Return the subject of a document. */
+/* cpdf_getSubjectXMP(pdf) returns the XMP subject of a document. */
 char *cpdf_getSubjectXMP (int);
 
-/* Return the keywords of a document. */
+/* cpdf_getKeywordsXMP(pdf) returns the XMP keywords of a document. */
 char *cpdf_getKeywordsXMP (int);
 
-/* Return the creator of a document. */
+/* cpdf_getCreatorXMP(pdf) returns the XMP creator of a document. */
 char *cpdf_getCreatorXMP (int);
 
-/* Return the producer of a document. */
+/* cpdf_getProducerXMP(pdf) returns the XMP producer of a document. */
 char *cpdf_getProducerXMP (int);
 
-/* Return the creation date of a document. */
+/* cpdf_getCreationDateXMP(pdf) returns the XMP creation date of a document. */
 char *cpdf_getCreationDateXMP (int);
 
-/* Return the modification date of a document. */
+/* cpdf_getModificationDateXMP(pdf) returns the XMP modification date of a document. */
 char *cpdf_getModificationDateXMP (int);
 
-
-/* Set the title of a document from a UTF8 encoded string */
+/* cpdf_setTitle(pdf) sets the title of a document. */
 void cpdf_setTitle (int, const char[]);
 
-/* Set the author of a document from a UTF8 encoded string */
+/* cpdf_setAuthor(pdf) sets the author of a document. */
 void cpdf_setAuthor (int, const char[]);
 
-/* Set the subject of a document from a UTF8 encoded string */
+/* cpdf_setSubject(pdf) sets the subject of a document. */
 void cpdf_setSubject (int, const char[]);
 
-/* Set the keywords of a document from a UTF8 encoded string */
+/* cpdf_setKeywords(pdf) sets the keywords of a document. */
 void cpdf_setKeywords (int, const char[]);
 
-/* Set the creator of a document from a UTF8 encoded string */
+/* cpdf_setCreator(pdf) sets the creator of a document. */
 void cpdf_setCreator (int, const char[]);
 
-/* Set the producer of a document from a UTF8 encoded string */
+/* cpdf_setProducer(pdf) sets the producer of a document. */
 void cpdf_setProducer (int, const char[]);
 
-/* Set the creation date of a document from a UTF8 encoded string */
+/* cpdf_setCreationDate(pdf) sets the creation date of a document. */
 void cpdf_setCreationDate (int, const char[]);
 
-/* Set the modification date of a document from a UTF8 encoded string */
+/* cpdf_setModificationDate(pdf) sets the modifcation date of a document. */
 void cpdf_setModificationDate (int, const char[]);
 
-/* Set the title of a document from a UTF8 encoded string */
+/* cpdf_setTitleXMP(pdf) set the XMP title of a document. */
 void cpdf_setTitleXMP (int, const char[]);
 
-/* Set the author of a document from a UTF8 encoded string */
+/* cpdf_setAuthorXMP(pdf) set the XMP author of a document. */
 void cpdf_setAuthorXMP (int, const char[]);
 
-/* Set the subject of a document from a UTF8 encoded string */
+/* cpdf_setSubjectXMP(pdf) set the XMP subject of a document. */
 void cpdf_setSubjectXMP (int, const char[]);
 
-/* Set the keywords of a document from a UTF8 encoded string */
+/* cpdf_setKeywordsXMP(pdf) set the XMP keywords of a document. */
 void cpdf_setKeywordsXMP (int, const char[]);
 
-/* Set the creator of a document from a UTF8 encoded string */
+/* cpdf_setCreatorXMP(pdf) set the XMP creator of a document. */
 void cpdf_setCreatorXMP (int, const char[]);
 
-/* Set the producer of a document from a UTF8 encoded string */
+/* cpdf_setProducerXMP(pdf) set the XMP producer of a document. */
 void cpdf_setProducerXMP (int, const char[]);
 
-/* Set the creation date of a document from a UTF8 encoded string */
+/* cpdf_setCreationDateXMP(pdf) set the XMP creation date of a document. */
 void cpdf_setCreationDateXMP (int, const char[]);
 
-/* Set the modification date of a document from a UTF8 encoded string */
+/* cpdf_setModificationDateXMP(pdf) set the XMP modification date of a document. */
 void cpdf_setModificationDateXMP (int, const char[]);
+
+/* FIXME Continue Chap 11 fixes beyond this point... */
+
 /*
  * Dates: Month 1-31, day 1-31, hours (0-23), minutes (0-59), seconds (0-59),
  * h_offset is the offset from UT in hours (-23 to 23); h_offset is the
