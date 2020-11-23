@@ -9,7 +9,89 @@
 int
 main (int argc, char **argv)
 {
-  /* 0. Initialization */
+  /* CHAPTER 0. Preliminaries */
+
+/*void cpdf_startup (char **);
+char *cpdf_version ();
+void cpdf_setFast ();
+void cpdf_setSlow ();
+extern int cpdf_lastError;
+extern char *cpdf_lastErrorString;
+void cpdf_clearError (void);
+void cpdf_onExit (void); */
+
+  /* CHAPTER 1. Basics */
+
+/*int cpdf_fromFile (const char[], const char[]);
+int cpdf_fromFileLazy (const char[], const char[]);
+int cpdf_fromMemory (void *, int, const char[]);
+int cpdf_fromMemoryLazy (void *, int, const char[]);
+int cpdf_blankDocument (double, double, int);
+int cpdf_blankDocumentPaper (enum cpdf_papersize, int);
+void cpdf_deletePdf (int);
+void cpdf_replacePdf (int, int);
+int cpdf_startEnumeratePDFs (void);
+int cpdf_enumeratePDFsKey (int);
+char *cpdf_enumeratePDFsInfo (int);
+void cpdf_endEnumeratePDFs (void);
+double cpdf_ptOfCm (double);
+double cpdf_ptOfMm (double);
+double cpdf_ptOfIn (double);
+double cpdf_cmOfPt (double);
+double cpdf_mmOfPt (double);
+double cpdf_inOfPt (double);
+int cpdf_parsePagespec (int, const char[]);
+int cpdf_validatePagespec (const char[]);
+char *cpdf_stringOfPagespec (int, int);
+int cpdf_blankRange (void);
+void cpdf_deleteRange (int);
+int cpdf_range (int, int);
+int cpdf_all (int);
+int cpdf_even (int);
+int cpdf_odd (int);
+int cpdf_rangeUnion (int, int);
+int cpdf_difference (int, int);
+int cpdf_removeDuplicates (int);
+int cpdf_rangeLength (int);
+int cpdf_rangeGet (int, int);
+int cpdf_rangeAdd (int, int);
+int cpdf_isInRange (int, int);
+int cpdf_pages (int);
+int cpdf_pagesFast (const char[], const char[]);
+void cpdf_toFile (int, const char[], int, int);
+void cpdf_toFileExt (int, const char[], int, int, int, int, int);
+void *cpdf_toMemory (int, int, int, int *);
+int cpdf_isEncrypted (int);
+int is_linearized (const char[]);
+void cpdf_decryptPdf (int, const char[]);
+void cpdf_decryptPdfOwner (int, const char[]);
+void cpdf_toFileEncrypted
+  (int, int, int *, int, const char[], const char[], int, int, const char[]);
+void cpdf_toFileEncryptedExt
+  (int, int, int *, int, const char[], const char[], int, int, int, int, int,
+   const char[]);
+int cpdf_hasPermission (int, enum cpdf_permission);
+enum cpdf_encryptionMethod cpdf_encryptionKind (int);
+enum cpdf_pdfStatus cpdf_lookupPdfStatus (int);
+int cpdf_hasPermissionStatus (int, enum cpdf_permission);
+enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
+char *cpdf_lookupPdfUserPassword (int); */
+
+  /* CHAPTER 2. Merging and Splitting */
+  /* CHAPTER 3. Pages */
+  /* CHAPTER 4. Encryption */
+  /* CHAPTER 5. Compression */
+  /* CHAPTER 6. Bookmarks */
+  /* CHAPTER 7. Presentations */
+  /* CHAPTER 8. Logos, Watermarks and Stamps */
+  /* CHAPTER 9. Multipage facilities */
+  /* CHAPTER 10. Annotations */
+  /* CHAPTER 11. Document Information and Metadata */
+  /* CHAPTER 12. File Attachments */
+  /* CHAPTER 13. Images */
+  /* CHAPTER 14. Fonts */
+  /* CHAPTER 15. Miscellaneous */
+  /* CHAPTER 16. Undocumented or Experimental */ 
   printf ("***** 0. Initialisation\n\n");
 
   printf ("cpdf_startup()\n");

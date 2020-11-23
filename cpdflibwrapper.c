@@ -63,17 +63,6 @@ cpdf_setSlow ()
   CAMLreturn0;
 }
 
-void
-cpdf_setDemo (int b)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (setdemo_v, int_v, result_v);
-  setdemo_v = *caml_named_value ("setdemo");
-  int_v = Val_int (b);
-  result_v = caml_callback (setdemo_v, int_v);
-  updateLastError ();
-  CAMLreturn0;
-}
 
 void
 cpdf_clearError (void)
@@ -3575,4 +3564,16 @@ cpdf_stampAsXObject (int pdf, int range, int stamp_pdf)
   name_v = caml_callback3 (fn, pdf_v, range_v, stamp_pdf_v);
   updateLastError ();
   CAMLreturnT (char *, (char *) String_val (name_v));
+}
+
+void
+cpdf_setDemo (int b)
+{
+  CAMLparam0 ();
+  CAMLlocal3 (setdemo_v, int_v, result_v);
+  setdemo_v = *caml_named_value ("setdemo");
+  int_v = Val_int (b);
+  result_v = caml_callback (setdemo_v, int_v);
+  updateLastError ();
+  CAMLreturn0;
 }

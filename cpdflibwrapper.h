@@ -18,8 +18,6 @@ char *cpdf_version ();
 void cpdf_setFast ();
 void cpdf_setSlow ();
 
-/* Undocumented. */
-void cpdf_setDemo (int);
 
 /* Errors. cpdf_lastError and cpdf_lastErrorString hold information about the
  * last error to have occurred. They should be consulted after each call. If
@@ -1181,3 +1179,6 @@ char *cpdf_stampAsXObject (int, int, int);
 /*void cpdf_setBookmarkDestination (int,
                                   struct cpdf_bookmarkDestination
                                   cpdf_getBookmarkDestination);*/
+/* Undocumented. */
+void cpdf_setDemo (int);
+
