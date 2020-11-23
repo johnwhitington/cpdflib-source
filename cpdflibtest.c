@@ -78,20 +78,262 @@ enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
 char *cpdf_lookupPdfUserPassword (int); */
 
   /* CHAPTER 2. Merging and Splitting */
+
+/*int cpdf_mergeSimple (int *, int);
+int cpdf_merge (int *, int, int, int);
+int cpdf_mergeSame (int *, int, int, int, int *);
+int cpdf_selectPages (int, int); */
+
   /* CHAPTER 3. Pages */
+
+/*void cpdf_scalePages (int, int, double, double);
+void cpdf_scaleToFit (int, int, double, double, double);
+void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize, double);
+void cpdf_scaleContents (int, int, struct cpdf_position, double);
+void cpdf_shiftContents (int, int, double, double);
+void cpdf_rotate (int, int, int);
+void cpdf_rotateBy (int, int, int);
+void cpdf_rotateContents (int, int, double);
+void cpdf_upright (int, int);
+void cpdf_hFlip (int, int);
+void cpdf_vFlip (int, int);
+void cpdf_crop (int, int, double, double, double, double);
+void cpdf_removeCrop (int, int);
+void cpdf_removeTrim (int, int);
+void cpdf_removeArt (int, int);
+void cpdf_removeBleed (int, int);
+void cpdf_trimMarks (int, int);
+void cpdf_showBoxes (int, int);
+void cpdf_hardBox (int, int, const char[]);*/
+
   /* CHAPTER 4. Encryption */
+/* Encryption covered under Chapter 1 in cpdflib. */
+
   /* CHAPTER 5. Compression */
+
+/*void cpdf_compress (int);
+void cpdf_decompress (int);
+int cpdf_squeeze (const char[], const char[], const char[], const char[]);*/
+
+void cpdf_squeezeInMemory (int);
   /* CHAPTER 6. Bookmarks */
+
+/*void cpdf_startGetBookmarkInfo (int);
+int cpdf_numberBookmarks (void);
+int cpdf_getBookmarkLevel (int);
+int cpdf_getBookmarkPage (int, int);
+char *cpdf_getBookmarkText (int);
+int cpdf_getBookmarkOpenStatus (int);
+void cpdf_endGetBookmarkInfo (void);
+void cpdf_startSetBookmarkInfo (int);
+void cpdf_setBookmarkLevel (int, int);
+void cpdf_setBookmarkPage (int, int, int);
+void cpdf_setBookmarkOpenStatus (int, int);
+void cpdf_setBookmarkText (int, const char[]);
+void cpdf_endSetBookmarkInfo (int);*/
+
   /* CHAPTER 7. Presentations */
+/* Not included in the library version */
   /* CHAPTER 8. Logos, Watermarks and Stamps */
+
+/*void cpdf_stampOn (int, int, int);
+void cpdf_stampUnder (int, int, int);
+void cpdf_stampExtended (int, int, int, int, int, struct cpdf_position, int);
+int cpdf_combinePages (int, int);
+void cpdf_addText (int,         
+                   int,         
+                   int,         
+                   const char[],        
+                   struct cpdf_position,        
+                   double,
+                   int,  
+                   enum cpdf_font,
+                   double,     
+                   double,   
+                   double,  
+                   double, 
+                   int,       
+                   int,     
+                   int,      
+                   double,    
+                   enum cpdf_justification,
+                   int,  
+                   int, 
+                   const char[], 
+                   double,   
+                   int      
+  );
+void cpdf_addTextSimple (int, 
+                         int, 
+                         const char[],
+                         struct cpdf_position,
+                         enum cpdf_font,
+                         double);
+int cpdf_addTextHowMany (void);
+char *cpdf_addTextReturnText (int);
+double cpdf_addTextReturnX (int);
+double cpdf_addTextReturnY (int);
+double cpdf_addTextReturnRotation (int);
+double cpdf_addTextReturnBaselineAdjustment (void);
+void cpdf_removeText (int, int);
+int cpdf_textWidth (enum cpdf_font, const char[]);*/
+
   /* CHAPTER 9. Multipage facilities */
+
+/*void cpdf_twoUp (int);
+void cpdf_twoUpStack (int);
+void cpdf_padBefore (int, int);
+void cpdf_padAfter (int, int);
+void cpdf_padEvery (int, int);
+void cpdf_padMultiple (int, int);
+void cpdf_padMultipleBefore (int, int);*/
+
   /* CHAPTER 10. Annotations */
+
+/* Not in the library version */
+
   /* CHAPTER 11. Document Information and Metadata */
+
+/*int cpdf_isLinearized (const char[]);
+int cpdf_getVersion (int);
+int cpdf_getMajorVersion (int);
+char *cpdf_getTitle (int);
+char *cpdf_getAuthor (int);
+char *cpdf_getSubject (int);
+char *cpdf_getKeywords (int);
+char *cpdf_getCreator (int);
+char *cpdf_getProducer (int);
+char *cpdf_getCreationDate (int);
+char *cpdf_getModificationDate (int);
+char *cpdf_getTitleXMP (int);
+char *cpdf_getAuthorXMP (int);
+char *cpdf_getSubjectXMP (int);
+char *cpdf_getKeywordsXMP (int);
+char *cpdf_getCreatorXMP (int);
+char *cpdf_getProducerXMP (int);
+char *cpdf_getCreationDateXMP (int);
+char *cpdf_getModificationDateXMP (int);
+void cpdf_setTitle (int, const char[]);
+void cpdf_setAuthor (int, const char[]);
+void cpdf_setSubject (int, const char[]);
+void cpdf_setKeywords (int, const char[]);
+void cpdf_setCreator (int, const char[]);
+void cpdf_setProducer (int, const char[]);
+void cpdf_setCreationDate (int, const char[]);
+void cpdf_setModificationDate (int, const char[]);
+void cpdf_setTitleXMP (int, const char[]);
+void cpdf_setAuthorXMP (int, const char[]);
+void cpdf_setSubjectXMP (int, const char[]);
+void cpdf_setKeywordsXMP (int, const char[]);
+void cpdf_setCreatorXMP (int, const char[]);
+void cpdf_setProducerXMP (int, const char[]);
+void cpdf_setCreationDateXMP (int, const char[]);
+void cpdf_setModificationDateXMP (int, const char[]);
+void cpdf_getDateComponents (const char[], int *, int *, int *, int *, int *,
+                             int *, int *, int *);
+char *cpdf_dateStringOfComponents (int, int, int, int, int, int, int, int);
+int cpdf_getPageRotation (int, int);
+int cpdf_hasBox (int, int, const char[]);
+void cpdf_getMediaBox (int, int, double *, double *, double *, double *);
+void cpdf_getCropBox (int, int, double *, double *, double *, double *);
+void cpdf_getTrimBox (int, int, double *, double *, double *, double *);
+void cpdf_getArtBox (int, int, double *, double *, double *, double *);
+void cpdf_getBleedBox (int, int, double *, double *, double *, double *);
+void cpdf_setMediabox (int, int, double, double, double, double);
+void cpdf_setCropBox (int, int, double, double, double, double);
+void cpdf_setTrimBox (int, int, double, double, double, double);
+void cpdf_setArtBox (int, int, double, double, double, double);
+void cpdf_setBleedBox (int, int, double, double, double, double);
+void cpdf_markTrapped (int);
+void cpdf_markUntrapped (int);
+void cpdf_markTrappedXMP (int);
+void cpdf_markUntrappedXMP (int);
+void cpdf_setPageLayout (int, enum cpdf_layout);
+void cpdf_setPageMode (int, enum cpdf_pageMode);
+void cpdf_hideToolbar (int, int);
+void cpdf_hideMenubar (int, int);
+void cpdf_hideWindowUi (int, int);
+void cpdf_fitWindow (int, int);
+void cpdf_centerWindow (int, int);
+void cpdf_displayDocTitle (int, int);
+void cpdf_openAtPage (int, int, int);
+void cpdf_setMetadataFromFile (int, const char[]);
+void cpdf_setMetadataFromByteArray (int, void *, int);
+void *cpdf_getMetadata (int, int *);
+void cpdf_removeMetadata (int);
+void cpdf_createMetadata (int);
+void cpdf_setMetadataDate (int, const char[]);
+void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int,
+                         int, int);
+void cpdf_removePageLabels (int);
+char *cpdf_getPageLabelStringForPage (int, int);
+int cpdf_startGetPageLabels (int);
+enum cpdf_pageLabelStyle cpdf_getPageLabelStyle (int);
+char *cpdf_getPageLabelPrefix (int);
+int cpdf_getPageLabelOffset (int);
+int cpdf_getPageLabelRange (int);
+void cpdf_endGetPageLabels ();*/
+
   /* CHAPTER 12. File Attachments */
+
+/*void cpdf_attachFile (const char[], int);
+void cpdf_attachFileToPage (const char[], int, int);
+void cpdf_attachFileFromMemory (void *, int, const char[], int);
+void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int);
+void cpdf_removeAttachedFiles (int);
+void cpdf_startGetAttachments (int);
+int cpdf_numberGetAttachments (void);
+char *cpdf_getAttachmentName (int);
+int cpdf_getAttachmentPage (int);
+void *cpdf_getAttachmentData (int, int *);
+void cpdf_endGetAttachments (void);*/
+
   /* CHAPTER 13. Images */
+/*int cpdf_startGetImageResolution (int, int);
+int cpdf_getImageResolutionPageNumber (int);
+char *cpdf_getImageResolutionImageName (int);
+int cpdf_getImageResolutionXPixels (int);
+int cpdf_getImageResolutionYPixels (int);
+double cpdf_getImageResolutionXRes (int);
+double cpdf_getImageResolutionYRes (int);
+void cpdf_endGetImageResolution (void);*/
+
   /* CHAPTER 14. Fonts */
+
+/*void cpdf_startGetFontInfo (int);
+int cpdf_numberFonts (void);
+int cpdf_getFontPage (int);
+char *cpdf_getFontName (int);
+char *cpdf_getFontType (int);
+char *cpdf_getFontEncoding (int);
+void cpdf_endGetFontInfo (void);
+void cpdf_removeFonts (int);
+void cpdf_copyFont (int, int, int, int, const char[]);*/
+
   /* CHAPTER 15. Miscellaneous */
+
+/*void cpdf_draft (int, int, int);
+void cpdf_removeAllText (int, int);
+void cpdf_blackText (int, int);
+void cpdf_blackLines (int, int);
+void cpdf_blackFills (int, int);
+void cpdf_thinLines (int, int, double);
+void cpdf_copyId (int, int);
+void cpdf_removeId (int);
+void cpdf_setVersion (int, int);
+void cpdf_removeDictEntry (int, const char[]);
+void cpdf_removeClipping (int, int);*/
+
   /* CHAPTER 16. Undocumented or Experimental */ 
+
+/*void cpdf_addContent (const char[], int, int, int);
+void cpdf_outputJSON (const char[], int, int, int);
+void cpdf_OCGCoalesce (int);
+void cpdf_OCGRename (int, const char[], const char[]);
+void cpdf_OCGOrderAll (int);
+char *cpdf_stampAsXObject (int, int, int);
+void cpdf_setDemo (int);*/
+
   printf ("***** 0. Initialisation\n\n");
 
   printf ("cpdf_startup()\n");
