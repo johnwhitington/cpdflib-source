@@ -151,8 +151,8 @@ double cpdf_inOfPt (double);
  * 
  * o A range must contain no spaces.
  * 
- * o A tilde ( ̃) defines a page number counting from the end of the document
- * rather than the beginning. Page  ̃1 is the last page,  ̃2 the
+ * o A tilde (~) defines a page number counting from the end of the document
+ * rather than the beginning. Page ~1 is the last page, ~2 the
  * penultimate page etc. */
 
 /* cpdf_parsePagespec(pdf, range) parses a page specification with reference to
@@ -1113,6 +1113,7 @@ void cpdf_removeDictEntry (int, const char[]);
  * range */
 void cpdf_removeClipping (int, int);
 
+/* CHAPTER UNDOC */
 
 /* Undocumented. To come in v2.4 */
 void cpdf_addContent (const char[], int, int, int);

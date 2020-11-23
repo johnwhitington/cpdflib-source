@@ -1,0 +1,2 @@
+#!/bin/bash
+csplit -k -f splits/c cpdflibwrapper.h '/CHAPTER/' {20}

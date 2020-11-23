@@ -4,4 +4,4 @@ rm -f testoutputs/*
 rm -f foo
 rm -f merged.pdf merge
 rm -f squeezed.pdf squeeze
-
+rm -f *.aux *.idx *.log *.out *.toc
