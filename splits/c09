@@ -37,19 +37,19 @@ int cpdf_combinePages (int, int);
  * %A        Full weekday name (Sunday, Monday etc.)
  * %b        Abbreviated month name (Jan, Feb etc.)
  * %B        Full month name (January, February etc.)
- * %d        Day of the month (01–31)
- * %e        Day of the month (1–31)
- * %H        Hour in 24-hour clock (00–23)
- * %I        Hour in 12-hour clock (01–12)
- * %j        Day of the year (001–366)
- * %m        Month of the year (01–12)
- * %M        Minute of the hour (00–59)
+ * %d        Day of the month (01-31)
+ * %e        Day of the month (1-31)
+ * %H        Hour in 24-hour clock (00-23)
+ * %I        Hour in 12-hour clock (01-12)
+ * %j        Day of the year (001-366)
+ * %m        Month of the year (01-12)
+ * %M        Minute of the hour (00-59)
  * %p        "a.m" or "p.m"
- * %S        Second of the minute (00–61)
+ * %S        Second of the minute (00-61)
  * %T        Same as %H:%M:%S
- * %u        Weekday (1–7, 1 = Monday)
- * %w        Weekday (0–6, 0 = Monday)
- * %Y        Year (0000–9999)
+ * %u        Weekday (1-7, 1 = Monday)
+ * %w        Weekday (0-6, 0 = Monday)
+ * %Y        Year (0000-9999)
  * %%        The % character */
 
 /* The standard fonts */
