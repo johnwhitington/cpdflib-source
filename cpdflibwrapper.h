@@ -305,6 +305,32 @@ int cpdf_hasPermission (int, enum cpdf_permission);
  * a document. */
 enum cpdf_encryptionMethod cpdf_encryptionKind (int);
 
+/* Encryption and Permission status */
+
+/* Internal status of a pdf loaded by the library. This is data kept separate
+ * from the actual PDF. */
+enum cpdf_pdfStatus
+{
+  cpdf_notEncrypted,
+  cpdf_encrypted,
+  cpdf_wasDecryptedWithUser,
+  cpdf_wasDecryptedWithOwner
+};
+
+/* cpdf_lookupPdfStatus(pdf) returns the encryption status of a PDF. */
+enum cpdf_pdfStatus cpdf_lookupPdfStatus (int);
+
+/* cpdf_hasPermissionStatus(pdf, permission) returns true if the PDF has or had
+ * the permission given set, assuming it is or was encrypted? */
+int cpdf_hasPermissionStatus (int, enum cpdf_permission);
+
+/* cpdf_encryptionMethod(pdf) returns what is (or was) the encryption method? */
+enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
+
+/* cpdf_lookupPdfUserPassword(pdf) finds the user password which was used to
+ * decrypt a PDF, if is has status cpdf_wasDecryptedWithUser */
+char *cpdf_lookupPdfUserPassword (int);
+
 
 /* CHAPTER 2. Merging and Splitting */
 
@@ -1078,30 +1104,7 @@ void cpdf_removeDictEntry (int, const char[]);
 void cpdf_removeClipping (int, int);
 
 /* UNCATALOGUED AS YET */
-/* Encryption and Permission status */
 
-/* Internal status of a pdf loaded by the library. This is data kept separate
- * from the actual PDF. */
-enum cpdf_pdfStatus
-{
-  cpdf_notEncrypted,
-  cpdf_encrypted,
-  cpdf_wasDecryptedWithUser,
-  cpdf_wasDecryptedWithOwner
-};
-
-/* Return the status of a PDF */
-enum cpdf_pdfStatus cpdf_lookupPdfStatus (int);
-
-/* Does a PDF have a given permission, assuming it is or was encrypted? */
-int cpdf_hasPermissionStatus (int, enum cpdf_permission);
-
-/* What is (or was) the encryption method? */
-enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
-
-/* Find the user password which was used to decrypt a PDF, if is has status
- * cpdf_wasDecryptedWithUser */
-char *cpdf_lookupPdfUserPassword (int);
 
 /* Squeeze */
 int cpdf_squeeze (const char[], const char[], const char[], const char[]);
