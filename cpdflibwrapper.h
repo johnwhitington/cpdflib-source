@@ -3,6 +3,8 @@
 A C wrapper to cpdf PDF tools library. Free for non-commercial use. See LICENSE
 for details. To purchase a license, please visit http://www.coherentpdf.com/
 
+Text arguments and results are in UTF8.
+
 */
 
 /* CHAPTER 0. Preliminaries */
@@ -544,7 +546,7 @@ void cpdf_stampExtended (int, int, int, int, int, struct cpdf_position, int);
  * each page of 'over' over each page of 'under' */
 int cpdf_combinePages (int, int);
 
-/* Adding text. Adds UTF8 text to a PDF, if the characters exist in the font. */
+/* Adding text. Adds text to a PDF, if the characters exist in the font. */
 
 /* Special codes
  * 
