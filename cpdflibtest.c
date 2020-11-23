@@ -32,14 +32,14 @@ main (int argc, char **argv)
   int pdf = cpdf_fromFile ("testinputs/hello.pdf", "");
 
   printf ("Afterwards, Error number = %i, Error string = %s\n",
-	  cpdf_lastError, cpdf_lastErrorString);
+          cpdf_lastError, cpdf_lastErrorString);
 
   printf ("toFile()\n");
   cpdf_toFile (pdf, "testoutputs/out.pdf", false, false);
 
   printf ("toFileExt()\n");
   cpdf_toFileExt (pdf, "testoutputs/tofileext.pdf", false, false, true, true,
-		  true);
+                  true);
   cpdf_deletePdf (pdf);
 
 
@@ -68,11 +68,11 @@ main (int argc, char **argv)
   int permissions = { cpdf_noEdit };
   int encmethod = cpdf_pdf40bit;
   cpdf_toFileEncrypted (pdf, encmethod, &permissions, 1, "owner", "user",
-			false, false, "testoutputs/encrypted.pdf");
+                        false, false, "testoutputs/encrypted.pdf");
 
   cpdf_toFileEncryptedExt (pdf, encmethod, &permissions, 1, "owner", "user",
-			   false, false, true, true, true,
-			   "testoutputs/encryptedext.pdf");
+                           false, false, true, true, true,
+                           "testoutputs/encryptedext.pdf");
   cpdf_deletePdf (pdf);
 
   pdf = cpdf_fromFile ("testinputs/hello.pdf", "");
@@ -80,7 +80,7 @@ main (int argc, char **argv)
   int pdfenc = cpdf_fromFile ("testoutputs/encrypted.pdf", "user");
 
   printf ("hasPermission()\n");
-  printf ("Haspermission %i, %i\n", cpdf_hasPermission (pdf, cpdf_noEdit), cpdf_hasPermission (pdf, cpdf_noCopy));	//Fails
+  printf ("Haspermission %i, %i\n", cpdf_hasPermission (pdf, cpdf_noEdit), cpdf_hasPermission (pdf, cpdf_noCopy));      //Fails
 
   printf ("encryptionKind()\n");
   printf ("encryption kind is %i\n", cpdf_encryptionKind (pdfenc));
@@ -243,9 +243,9 @@ main (int argc, char **argv)
   for (x = 0; x < num_bookmarks; x++)
     {
       printf
-	("Bookmark at level %i points to page %i and has text %s and open %i\n",
-	 cpdf_getBookmarkLevel (x), cpdf_getBookmarkPage (book, x),
-	 cpdf_getBookmarkText (x), cpdf_getBookmarkOpenStatus (x));
+        ("Bookmark at level %i points to page %i and has text %s and open %i\n",
+         cpdf_getBookmarkLevel (x), cpdf_getBookmarkPage (book, x),
+         cpdf_getBookmarkText (x), cpdf_getBookmarkOpenStatus (x));
     };
   printf ("endGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo ();
@@ -297,7 +297,7 @@ main (int argc, char **argv)
   for (x2 = 0; x2 < rl; x2++)
     {
       printf ("at position %i the value is %i\n", x2,
-	      cpdf_rangeGet (r20, x2));
+              cpdf_rangeGet (r20, x2));
     };
 
   printf ("Delete the pdf\n");
@@ -322,19 +322,19 @@ main (int argc, char **argv)
 
   int rfrompagespec = cpdf_parsePagespec (blanksized, "1-2,5-end");
   printf ("Validating pagespec gives %i\n",
-	  cpdf_validatePagespec ("1-2,5-end"));
+          cpdf_validatePagespec ("1-2,5-end"));
 
   printf ("There are %i pages in the blank sized pdf\n",
-	  cpdf_pages (blanksized));
+          cpdf_pages (blanksized));
 
   printf ("There are %i quick pages in the blank sized pdf\n",
-	  cpdf_pagesFast ("", "testoutputs/blanka4.pdf"));
+          cpdf_pagesFast ("", "testoutputs/blanka4.pdf"));
 
   printf ("String of pagespec is %s\n",
-	  cpdf_stringOfPagespec (blanksized, rfrompagespec));
+          cpdf_stringOfPagespec (blanksized, rfrompagespec));
 
   printf ("This document has isEncrypted = %i\n",
-	  cpdf_isEncrypted (blanksized));
+          cpdf_isEncrypted (blanksized));
 
   cpdf_deletePdf (pdflazy);
   cpdf_deletePdf (blankdoc);
@@ -379,28 +379,28 @@ main (int argc, char **argv)
       20,.cpdf_coord2 = 20
   };
   printf ("addText()\n");
-  cpdf_addText (true,		/* Just get metrics, don't add text */
-		textfile,	/* pdf */
-		textfile_all,	/* range */
-		"Some Text~~~~~~~~~~!",	/* text */
-		textpos,	/* position */
-		1.0,		/* line spacing */
-		1,		/* starting bates number */
-		cpdf_timesRoman,	/* font */
-		20,		/* font size */
-		0.5,		/* r */
-		0.5,		/* g */
-		0.5,		/* b */
-		false,		/* underneath */
-		false,		/* relative to crop box */
-		true,		/* outline text */
-		0.5,		/* opacity */
-		cpdf_leftJustify,	/* justification */
-		false,		/* midline */
-		false,		/* topline */
-		"",		/* filename */
-		1.0,		/* line width */
-		false);		/* embed fonts */
+  cpdf_addText (true,           /* Just get metrics, don't add text */
+                textfile,       /* pdf */
+                textfile_all,   /* range */
+                "Some Text~~~~~~~~~~!", /* text */
+                textpos,        /* position */
+                1.0,            /* line spacing */
+                1,              /* starting bates number */
+                cpdf_timesRoman,        /* font */
+                20,             /* font size */
+                0.5,            /* r */
+                0.5,            /* g */
+                0.5,            /* b */
+                false,          /* underneath */
+                false,          /* relative to crop box */
+                true,           /* outline text */
+                0.5,            /* opacity */
+                cpdf_leftJustify,       /* justification */
+                false,          /* midline */
+                false,          /* topline */
+                "",             /* filename */
+                1.0,            /* line width */
+                false);         /* embed fonts */
   //cpdf_addText(true, textfile, textfile_all, "Some Text~~~~~~~~~~!", textpos, 1.0, 1, cpdf_timesRoman, 20, 0.5, 0.5, 0.5, false, false, true, 0.5, cpdf_leftJustify, false, false, "", 1.0, false);
   cpdf_toFile (textfile, "testoutputs/added_text.pdf", false, false);
 
@@ -416,11 +416,11 @@ main (int argc, char **argv)
   for (x3 = 1; x3 <= bits; x3++)
     {
       printf ("Text is %s, x is %f, y is %f, rotation = %f, baseline = %f\n",
-	      cpdf_addTextReturnText (x3),
-	      cpdf_addTextReturnX (x3),
-	      cpdf_addTextReturnY (x3),
-	      cpdf_addTextReturnRotation (x3),
-	      cpdf_addTextReturnBaselineAdjustment ());
+              cpdf_addTextReturnText (x3),
+              cpdf_addTextReturnX (x3),
+              cpdf_addTextReturnY (x3),
+              cpdf_addTextReturnRotation (x3),
+              cpdf_addTextReturnBaselineAdjustment ());
     };
 
   printf ("removeText()\n");
@@ -480,9 +480,9 @@ main (int argc, char **argv)
   for (x4 = 0; x4 < numfonts; x4++)
     {
       printf ("Page %i, font %s has type %s and encoding %s\n",
-	      cpdf_getFontPage (x4),
-	      cpdf_getFontName (x4),
-	      cpdf_getFontType (x4), cpdf_getFontEncoding (x4));
+              cpdf_getFontPage (x4),
+              cpdf_getFontName (x4),
+              cpdf_getFontType (x4), cpdf_getFontEncoding (x4));
     };
   printf ("endGetFontInfo()\n");
   cpdf_endGetFontInfo ();
@@ -536,12 +536,12 @@ main (int argc, char **argv)
 
   printf ("dateStringOfComponents()\n");
   printf ("Make a date string from components: %s\n",
-	  cpdf_dateStringOfComponents (2003, 2, 5, 4, 6, 6, 0, 0));
+          cpdf_dateStringOfComponents (2003, 2, 5, 4, 6, 6, 0, 0));
 
   printf ("getDateComponents()\n");
   int year, month, day, hour, minute, second, hour_offset, minute_offset;
   cpdf_getDateComponents ("D:20061108125017Z", &year, &month, &day, &hour,
-			  &minute, &second, &hour_offset, &minute_offset);
+                          &minute, &second, &hour_offset, &minute_offset);
   printf
     ("Get the components from a date string D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n",
      year, month, day, hour, minute, second, hour_offset, minute_offset);
@@ -596,13 +596,13 @@ main (int argc, char **argv)
 
   printf ("hasBox()\n");
   printf ("Has page one a %s box? %i\n", "/CropBox",
-	  cpdf_hasBox (fonts, 1, "/CropBox"));
+          cpdf_hasBox (fonts, 1, "/CropBox"));
   printf ("Has page one a %s box? %i\n", "/BleedBox",
-	  cpdf_hasBox (fonts, 1, "/BleedBox"));
+          cpdf_hasBox (fonts, 1, "/BleedBox"));
   printf ("Has page one a %s box? %i\n", "/ArtBox",
-	  cpdf_hasBox (fonts, 1, "/ArtBox"));
+          cpdf_hasBox (fonts, 1, "/ArtBox"));
   printf ("Has page one a %s box? %i\n", "/TrimBox",
-	  cpdf_hasBox (fonts, 1, "/TrimBox"));
+          cpdf_hasBox (fonts, 1, "/TrimBox"));
 
   double minx, maxx, miny, maxy;
 
@@ -678,10 +678,10 @@ main (int argc, char **argv)
   cpdf_attachFileToPage ("logo.pdf", toattachto, 1);
   printf ("attachFileFromMemory\n");
   cpdf_attachFileFromMemory (metadata, metadata_length, "metadata.txt",
-			     toattachto);
+                             toattachto);
   printf ("attachFileToPageFromMemory\n");
   cpdf_attachFileToPageFromMemory (metadata, metadata_length, "metadata.txt",
-				   toattachto, 1);
+                                   toattachto, 1);
   cpdf_toFile (toattachto, "testoutputs/withattachment.pdf", false, false);
 
   printf ("startGetAttachments()\n");
@@ -705,7 +705,7 @@ main (int argc, char **argv)
   printf ("removeAttachedFiles()\n");
   cpdf_removeAttachedFiles (toattachto);
   cpdf_toFile (toattachto, "testoutputs/removedattachments.pdf", false,
-	       false);
+               false);
 
   cpdf_deletePdf (toattachto);
 
@@ -787,7 +787,7 @@ main (int argc, char **argv)
   cpdf_decryptPdf (enctest, "user");
   printf ("hasPermissionStatus()\n");
   printf ("pdf permission status = %i\n",
-	  cpdf_hasPermissionStatus (enctest, cpdf_noEdit));
+          cpdf_hasPermissionStatus (enctest, cpdf_noEdit));
   printf ("lookupPdfEncryption()\n");
   printf ("pdf encryption status = %i\n", cpdf_lookupPdfEncryption (enctest));
   printf ("lookupPdfUserPassword()\n");
@@ -797,7 +797,7 @@ main (int argc, char **argv)
 
   int london3 = cpdf_fromFile ("testinputs/london2.pdf", "");
   cpdf_addContent ("100 100 m 200 200 l 300 200 l 200 100 l h W n", true,
-		   london3, cpdf_all (london3));
+                   london3, cpdf_all (london3));
 
   cpdf_toFile (london3, "testoutputs/clip.pdf", false, false);
 
@@ -831,8 +831,8 @@ main (int argc, char **argv)
   char *name = cpdf_stampAsXObject (blank, cpdf_all (blank), logo);
   char content[200];
   sprintf (content,
-	   "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 500 500 cm %s Do Q",
-	   name, name, name);
+           "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 500 500 cm %s Do Q",
+           name, name, name);
   cpdf_addContent (content, true, blank, cpdf_all (blank));
 
   cpdf_toFile (blank, "testoutputs/xobject.pdf", false, false);
