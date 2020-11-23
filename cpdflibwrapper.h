@@ -247,6 +247,9 @@ void *cpdf_toMemory (int, int, int, int *);
 /* cpdf_isEncrypted(pdf) returns true if a documented is encrypted, false otherwise. */
 int cpdf_isEncrypted (int);
 
+/* Given a filename, is a PDF linearized? */
+int is_linearized (const char[]);
+
 /* cpdf_decryptPdf(pdf, userpw) attempts to decrypt a PDF using the given user
  * password. The error code is non-zero if the decryption fails. */
 void cpdf_decryptPdf (int, const char[]);
@@ -485,6 +488,13 @@ void cpdf_compress (int);
 /* cpdf_uncompress(pdf) uncompresses any streams in the given PDF, so long as
  * the compression method is supported. */
 void cpdf_decompress (int);
+
+/* cpdf_squeeze(userpw, logfile, infile, outfile) squeezes a file on disk,
+ * logging to logfile if given. */
+int cpdf_squeeze (const char[], const char[], const char[], const char[]);
+
+/* cpdf_squeezeToMemory(pdf) squeezes a pdf in memory. */
+void cpdf_squeezeInMemory (int);
 
 
 /* CHAPTER 6. Bookmarks */
@@ -1103,18 +1113,8 @@ void cpdf_removeDictEntry (int, const char[]);
  * range */
 void cpdf_removeClipping (int, int);
 
-/* UNCATALOGUED AS YET */
 
-
-/* Squeeze */
-int cpdf_squeeze (const char[], const char[], const char[], const char[]);
-
-/* cpdf_squeezeToMemory(pdf) squeezes a pdf */
-void cpdf_squeezeInMemory (int);
-
-/* Given a filename, is a PDF linearized? */
-int is_linearized (const char[]);
-
+/* Undocumented. To come in v2.4 */
 void cpdf_addContent (const char[], int, int, int);
 
 void cpdf_outputJSON (const char[], int, int, int);
@@ -1128,7 +1128,8 @@ void cpdf_OCGOrderAll (int);
 char *cpdf_stampAsXObject (int, int, int);
 
 
-/* Not implemented yet. */
+/* Destination extention to bookmarks code. Not implemented in cpdflib yet. */
+
 /* /1* Structure for a Pdfdest.t *1/ */
 /* enum cpdf_targetPageType */
 /* { */
