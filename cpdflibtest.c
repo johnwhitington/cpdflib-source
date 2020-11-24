@@ -175,14 +175,43 @@ int cpdf_hasPermissionStatus (int, enum cpdf_permission);
 enum cpdf_encryptionMethod cpdf_lookupPdfEncryption (int);
 char *cpdf_lookupPdfUserPassword (int); */
 
-  /* CHAPTER 2. Merging and Splitting */
+/* CHAPTER 2. Merging and Splitting */
+printf ("***** CHAPTER 2. Merging and Splitting\n");
+int mergepdf = cpdf_fromFile ("cpdflibmanual.pdf", "");
+int pdfs[] = { mergepdf, mergepdf, mergepdf };
+printf ("---cpdf_removeDuplicates()\n");
+int merged = cpdf_mergeSimple (pdfs, 3);
+prerr();
+cpdf_toFile (merged, "testoutputs/merged.pdf", false, false);
+printf ("---cpdf_removeDuplicates()\n");
+int merged2 = cpdf_merge (pdfs, 3, false, false);
+prerr();
+cpdf_toFile (merged2, "testoutputs/merged2.pdf", false, false);
+int a = cpdf_all (mergepdf);
+int b = cpdf_all (mergepdf);
+int c = cpdf_all (mergepdf);
+int ranges[] = { a, b, c };
+printf ("---cpdf_removeDuplicates()\n");
+int merged3 = cpdf_mergeSame (pdfs, 3, false, false, ranges);
+prerr();
+cpdf_toFile (merged3, "testoutputs/merged3.pdf", false, false);
+printf ("---cpdf_removeDuplicates()\n");
+int range_select = cpdf_range(1, 3);
+int selected = cpdf_selectPages (mergepdf, range_select);
+prerr();
+cpdf_toFile (selected, "testoutputs/selected.pdf", false, false);
+cpdf_deletePdf(mergepdf);
+cpdf_deletePdf(merged);
+cpdf_deletePdf(merged2);
+cpdf_deletePdf(merged3);
+cpdf_deletePdf(selected);
+cpdf_deleteRange(a);
+cpdf_deleteRange(b);
+cpdf_deleteRange(c);
+cpdf_deleteRange(range_select);
+cpdf_onExit ();
 
-/*int cpdf_mergeSimple (int *, int);
-int cpdf_merge (int *, int, int, int);
-int cpdf_mergeSame (int *, int, int, int, int *);
-int cpdf_selectPages (int, int); */
-
-  /* CHAPTER 3. Pages */
+/* CHAPTER 3. Pages */
 
 /*void cpdf_scalePages (int, int, double, double);
 void cpdf_scaleToFit (int, int, double, double, double);
