@@ -179,11 +179,11 @@ char *cpdf_lookupPdfUserPassword (int); */
 printf ("***** CHAPTER 2. Merging and Splitting\n");
 int mergepdf = cpdf_fromFile ("cpdflibmanual.pdf", "");
 int pdfs[] = { mergepdf, mergepdf, mergepdf };
-printf ("---cpdf_removeDuplicates()\n");
+printf ("---cpdf_mergeSimple()\n");
 int merged = cpdf_mergeSimple (pdfs, 3);
 prerr();
 cpdf_toFile (merged, "testoutputs/merged.pdf", false, false);
-printf ("---cpdf_removeDuplicates()\n");
+printf ("---cpdf_merge()\n");
 int merged2 = cpdf_merge (pdfs, 3, false, false);
 prerr();
 cpdf_toFile (merged2, "testoutputs/merged2.pdf", false, false);
@@ -191,11 +191,11 @@ int a = cpdf_all (mergepdf);
 int b = cpdf_all (mergepdf);
 int c = cpdf_all (mergepdf);
 int ranges[] = { a, b, c };
-printf ("---cpdf_removeDuplicates()\n");
+printf ("---cpdf_mergeSame()\n");
 int merged3 = cpdf_mergeSame (pdfs, 3, false, false, ranges);
 prerr();
 cpdf_toFile (merged3, "testoutputs/merged3.pdf", false, false);
-printf ("---cpdf_removeDuplicates()\n");
+printf ("---cpdf_selectPages()\n");
 int range_select = cpdf_range(1, 3);
 int selected = cpdf_selectPages (mergepdf, range_select);
 prerr();
@@ -351,7 +351,7 @@ cpdf_onExit();
 
 /* Not in the library version */
 
-  /* CHAPTER 11. Document Information and Metadata */
+/* CHAPTER 11. Document Information and Metadata */
 
 /*int cpdf_isLinearized (const char[]);
 int cpdf_getVersion (int);
@@ -469,19 +469,49 @@ void cpdf_endGetFontInfo (void);
 void cpdf_removeFonts (int);
 void cpdf_copyFont (int, int, int, int, const char[]);*/
 
-  /* CHAPTER 15. Miscellaneous */
-
-/*void cpdf_draft (int, int, int);
-void cpdf_removeAllText (int, int);
-void cpdf_blackText (int, int);
-void cpdf_blackLines (int, int);
-void cpdf_blackFills (int, int);
-void cpdf_thinLines (int, int, double);
-void cpdf_copyId (int, int);
-void cpdf_removeId (int);
-void cpdf_setVersion (int, int);
-void cpdf_removeDictEntry (int, const char[]);
-void cpdf_removeClipping (int, int);*/
+/* CHAPTER 15. Miscellaneous */
+printf ("***** CHAPTER 15. Miscellaneous\n");
+int misc = cpdf_fromFile("cpdflibmanual.pdf", "");
+int misc2 = cpdf_fromFile("frontmatter.pdf", "");
+int misc_r = cpdf_all(misc);
+printf ("---cpdf_draft()\n");
+cpdf_draft(misc, misc_r, true);
+prerr();
+printf ("---cpdf_removeAlltext()\n");
+cpdf_removeAllText(misc, misc_r);
+prerr();
+printf ("---cpdf_blackText()\n");
+cpdf_blackText(misc, misc_r);
+prerr();
+printf ("---cpdf_blackLines()\n");
+cpdf_blackLines(misc, misc_r);
+prerr();
+printf ("---cpdf_blackFills()\n");
+cpdf_blackFills(misc, misc_r);
+prerr();
+printf ("---cpdf_thinLines()\n");
+cpdf_thinLines(misc, misc_r, 2.0);
+prerr();
+printf ("---cpdf_copyId()\n");
+cpdf_copyId(misc2, misc);
+prerr();
+printf ("---cpdf_removeId()\n");
+cpdf_removeId(misc);
+prerr();
+printf ("---cpdf_setVersion()\n");
+cpdf_setVersion(misc, 1);
+prerr();
+printf ("---cpdf_removeDictEntry()\n");
+cpdf_removeDictEntry(misc, "/Producer");
+prerr();
+printf ("---cpdf_removeClipping()\n");
+cpdf_removeClipping(misc, misc_r);
+prerr();
+cpdf_toFile(misc, "testoutputs/misc.pdf", false, false);
+cpdf_deletePdf(misc);
+cpdf_deletePdf(misc2);
+cpdf_deleteRange(misc_r);
+cpdf_onExit();
 
 /* CHAPTER 16. Undocumented or Experimental */ 
 
