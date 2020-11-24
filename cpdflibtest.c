@@ -233,7 +233,7 @@ void cpdf_trimMarks (int, int);
 void cpdf_showBoxes (int, int);
 void cpdf_hardBox (int, int, const char[]);*/
 
-  /* CHAPTER 4. Encryption */
+/* CHAPTER 4. Encryption */
 /* Encryption covered under Chapter 1 in cpdflib. */
 
 /* CHAPTER 5. Compression */
@@ -270,9 +270,10 @@ void cpdf_setBookmarkOpenStatus (int, int);
 void cpdf_setBookmarkText (int, const char[]);
 void cpdf_endSetBookmarkInfo (int);*/
 
-  /* CHAPTER 7. Presentations */
+/* CHAPTER 7. Presentations */
 /* Not included in the library version */
-  /* CHAPTER 8. Logos, Watermarks and Stamps */
+
+/* CHAPTER 8. Logos, Watermarks and Stamps */
 
 /*void cpdf_stampOn (int, int, int);
 void cpdf_stampUnder (int, int, int);
@@ -316,17 +317,37 @@ double cpdf_addTextReturnBaselineAdjustment (void);
 void cpdf_removeText (int, int);
 int cpdf_textWidth (enum cpdf_font, const char[]);*/
 
-  /* CHAPTER 9. Multipage facilities */
+/* CHAPTER 9. Multipage facilities */
+printf ("***** CHAPTER 9. Multipage facilities\n");
+int mp = cpdf_fromFile("cpdflibmanual.pdf", "");
+printf ("---cpdf_twoUp()\n");
+cpdf_twoUp(mp);
+prerr ();
+printf ("---cpdf_twoUpStack()\n");
+cpdf_twoUpStack(mp);
+prerr ();
+int r = cpdf_range(1, 10);
+printf ("---cpdf_padBefore()\n");
+cpdf_padBefore(mp, r);
+prerr ();
+printf ("---cpdf_padAfter()\n");
+cpdf_padAfter(mp, r);
+prerr ();
+printf ("---cpdf_padEvery()\n");
+cpdf_padEvery(mp, 5);
+prerr ();
+printf ("---cpdf_padMultiple()\n");
+cpdf_padMultiple(mp, 10);
+prerr ();
+printf ("---cpdf_padMultupleBefore()\n");
+cpdf_padMultipleBefore(mp, 23);
+prerr ();
+cpdf_toFile(mp, "testoutputs/mp.pdf", false, false);
+cpdf_deletePdf(mp);
+cpdf_deleteRange(r);
+cpdf_onExit();
 
-/*void cpdf_twoUp (int);
-void cpdf_twoUpStack (int);
-void cpdf_padBefore (int, int);
-void cpdf_padAfter (int, int);
-void cpdf_padEvery (int, int);
-void cpdf_padMultiple (int, int);
-void cpdf_padMultipleBefore (int, int);*/
-
-  /* CHAPTER 10. Annotations */
+/* CHAPTER 10. Annotations */
 
 /* Not in the library version */
 
@@ -462,7 +483,7 @@ void cpdf_setVersion (int, int);
 void cpdf_removeDictEntry (int, const char[]);
 void cpdf_removeClipping (int, int);*/
 
-  /* CHAPTER 16. Undocumented or Experimental */ 
+/* CHAPTER 16. Undocumented or Experimental */ 
 
 /*void cpdf_addContent (const char[], int, int, int);
 void cpdf_outputJSON (const char[], int, int, int);
