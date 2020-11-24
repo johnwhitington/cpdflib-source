@@ -1252,22 +1252,6 @@ cpdf_decompress (int pdf)
   CAMLreturn0;
 }
 
-int
-cpdf_squeeze (char *userpw, char *logfile, char *infile, char *outfile)
-{
-  CAMLparam0 ();
-  CAMLlocal2 (fn, out);
-  CAMLlocalN (args, 4);
-  fn = *caml_named_value ("squeeze");
-  args[0] = caml_copy_string (userpw);
-  args[1] = caml_copy_string (logfile);
-  args[2] = caml_copy_string (infile);
-  args[3] = caml_copy_string (outfile);
-  out = caml_callbackN (fn, 4, args);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out));
-}
-
 void
 cpdf_squeezeInMemory (int pdf)
 {

@@ -487,10 +487,6 @@ void cpdf_compress (int);
  * the compression method is supported. */
 void cpdf_decompress (int);
 
-/* cpdf_squeeze(userpw, logfile, infile, outfile) squeezes a file on disk,
- * logging to logfile if given. */
-int cpdf_squeeze (const char[], const char[], const char[], const char[]);
-
 /* cpdf_squeezeToMemory(pdf) squeezes a pdf in memory. */
 void cpdf_squeezeInMemory (int);
 

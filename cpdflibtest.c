@@ -236,13 +236,25 @@ void cpdf_hardBox (int, int, const char[]);*/
   /* CHAPTER 4. Encryption */
 /* Encryption covered under Chapter 1 in cpdflib. */
 
-  /* CHAPTER 5. Compression */
+/* CHAPTER 5. Compression */
+printf ("***** CHAPTER 5. Compression\n");
+int tocompress = cpdf_fromFile ("cpdflibmanual.pdf", "");
+printf ("---cpdf_compress()\n");
+cpdf_compress (tocompress);
+prerr ();
+cpdf_toFile (tocompress, "testoutputs/compressed.pdf", false, false);
+printf ("---cpdf_decompress()\n");
+cpdf_decompress (tocompress);
+prerr ();
+cpdf_toFile (tocompress, "testoutputs/decompressed.pdf", false, false);
+printf ("---cpdf_squeezeInMemory()\n");
+cpdf_squeezeInMemory(tocompress);
+cpdf_toFile (tocompress, "testoutputs/squeezedinmemory.pdf", false, false);
+prerr ();
+cpdf_deletePdf (tocompress);
+cpdf_onExit ();
 
-/*void cpdf_compress (int);
-void cpdf_decompress (int);
-int cpdf_squeeze (const char[], const char[], const char[], const char[]);*/
-/* void cpdf_squeezeInMemory (int); */
-  /* CHAPTER 6. Bookmarks */
+/* CHAPTER 6. Bookmarks */
 
 /*void cpdf_startGetBookmarkInfo (int);
 int cpdf_numberBookmarks (void);

@@ -2451,21 +2451,6 @@ let onexit () =
 
 let _ = Callback.register "onexit" onexit
 
-let squeeze userpw log_file file_in file_out =
-  try
-    Cpdfcommand.go_withargv
-      [|"cpdf";
-        file_in;
-        "user=" ^ userpw;
-        "-stay-on-error";
-        "-squeeze-log-to"; log_file;
-        "-squeeze";
-        "-recrypt";
-        "-o"; file_out|];
-    0
-  with
-    Cpdfcommand.StayOnError -> 1
-
 (* Look up the pdf, squeeze it with Cpdf.squeeze *)
 let squeezeInMemory pdf =
   if !dbg then flprint "Cpdflib.squeezeInMemory\n";
@@ -2475,16 +2460,7 @@ let squeezeInMemory pdf =
   with
     e -> handle_error "squeezeInMemory" e; err_unit
 
-let _ = Callback.register "squeeze" squeeze
 let _ = Callback.register "squeezeInMemory" squeezeInMemory
-
-let is_linearized filename =
-  let ch = open_in_bin filename in
-    let r = Pdfread.is_linearized (Pdfio.input_of_channel ch) in
-      close_in ch;
-      r
-
-let _ = Callback.register "is_linearized" is_linearized
 
 let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
