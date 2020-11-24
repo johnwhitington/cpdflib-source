@@ -92,8 +92,8 @@ int cpdf_blankDocumentPaper (enum cpdf_papersize, int);
 /* Remove a PDF from memory, given its number. */
 void cpdf_deletePdf (int);
 
-/* Calling cpdf_replacePdf(a, b) places PDF b under number a. Original a and b are
- * no longer available. */
+/* Calling cpdf_replacePdf(a, b) places PDF b under number a. Name b is no
+ * longer available. */
 void cpdf_replacePdf (int, int);
 
 /* To enumerate the list of currently allocated PDFs, call

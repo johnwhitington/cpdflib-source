@@ -314,6 +314,7 @@ let replace_pdf i pdf =
 
 let enumeratePairs = ref []
 
+(* FIXME put something useful here... *)
 let info_of_pdf _ = "info"
 
 (* debug window *)
