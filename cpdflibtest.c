@@ -540,17 +540,39 @@ double cpdf_getImageResolutionXRes (int);
 double cpdf_getImageResolutionYRes (int);
 void cpdf_endGetImageResolution (void);*/
 
-  /* CHAPTER 14. Fonts */
-
-/*void cpdf_startGetFontInfo (int);
-int cpdf_numberFonts (void);
-int cpdf_getFontPage (int);
-char *cpdf_getFontName (int);
-char *cpdf_getFontType (int);
-char *cpdf_getFontEncoding (int);
-void cpdf_endGetFontInfo (void);
-void cpdf_removeFonts (int);
-void cpdf_copyFont (int, int, int, int, const char[]);*/
+/* CHAPTER 14. Fonts */
+printf ("***** CHAPTER 14. Fonts\n");
+int fonts = cpdf_fromFile("cpdflibmanual.pdf", "");
+int fonts2 = cpdf_fromFile ("frontmatter.pdf", "");
+printf ("---cpdf_startGetFontInfo()\n");
+cpdf_startGetFontInfo(fonts);
+prerr();
+printf ("---cpdf_numberFonts()\n");
+int n_fonts = cpdf_numberFonts();
+prerr();
+for (int x = 0; x < n_fonts; x++)
+{
+  printf ("Page %i, font %s has type %s and encoding %s\n",
+          cpdf_getFontPage (x),
+          cpdf_getFontName (x),
+          cpdf_getFontType (x), cpdf_getFontEncoding (x));
+};
+prerr();
+printf ("---cpdf_endGetFontInfo()\n");
+cpdf_endGetFontInfo();
+prerr();
+printf ("---cpdf_removeFonts()\n");
+int fontrange = cpdf_all(fonts);
+cpdf_removeFonts(fonts);
+prerr();
+cpdf_toFile(fonts, "testoutputs/remove_fonts.pdf", false, false);
+printf ("---cpdf_copyFont()\n");
+cpdf_copyFont (fonts, fonts2, fontrange, 1, "/F0");
+prerr();
+cpdf_deletePdf(fonts);
+cpdf_deletePdf(fonts2);
+cpdf_deleteRange(fontrange);
+cpdf_onExit();
 
 /* CHAPTER 15. Miscellaneous */
 printf ("***** CHAPTER 15. Miscellaneous\n");
