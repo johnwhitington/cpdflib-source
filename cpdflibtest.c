@@ -212,26 +212,89 @@ cpdf_deleteRange(range_select);
 cpdf_onExit ();
 
 /* CHAPTER 3. Pages */
-
-/*void cpdf_scalePages (int, int, double, double);
-void cpdf_scaleToFit (int, int, double, double, double);
-void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize, double);
-void cpdf_scaleContents (int, int, struct cpdf_position, double);
-void cpdf_shiftContents (int, int, double, double);
-void cpdf_rotate (int, int, int);
-void cpdf_rotateBy (int, int, int);
-void cpdf_rotateContents (int, int, double);
-void cpdf_upright (int, int);
-void cpdf_hFlip (int, int);
-void cpdf_vFlip (int, int);
-void cpdf_crop (int, int, double, double, double, double);
-void cpdf_removeCrop (int, int);
-void cpdf_removeTrim (int, int);
-void cpdf_removeArt (int, int);
-void cpdf_removeBleed (int, int);
-void cpdf_trimMarks (int, int);
-void cpdf_showBoxes (int, int);
-void cpdf_hardBox (int, int, const char[]);*/
+printf ("***** CHAPTER 3. Pages\n");
+int pagespdf = cpdf_fromFile ("cpdflibmanual.pdf", "");
+int r3 = cpdf_all(pagespdf);
+printf ("---cpdf_scalePages()\n");
+cpdf_scalePages(pagespdf, r3, 1.5, 1.8);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/scalepages.pdf", false, false);
+printf ("---cpdf_scaleToFit()\n");
+cpdf_scaleToFit(pagespdf, r3, 1.5, 1.8, 0.9);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/scaletofit.pdf", false, false);
+printf ("---cpdf_scaleToFitPaper()\n");
+cpdf_scaleToFitPaper(pagespdf, r3, cpdf_a4portrait, 0.8);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/scaletofitpaper.pdf", false, false);
+printf ("---cpdf_scaleContents()\n");
+struct cpdf_position p = {.cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
+cpdf_scaleContents(pagespdf, r3, p, 2.0);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/scalecontents.pdf", false, false);
+printf ("---cpdf_shiftContents()\n");
+cpdf_shiftContents(pagespdf, r3, 1.5, 1.25);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/shiftcontents.pdf", false, false);
+printf ("---cpdf_rotate()\n");
+cpdf_rotate(pagespdf, r3, 90);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/rotate.pdf", false, false);
+printf ("---cpdf_rotateBy()\n");
+cpdf_rotateBy(pagespdf, r3, 90);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/rotateby.pdf", false, false);
+printf ("---cpdf_rotateContents()\n");
+cpdf_rotateContents(pagespdf, r3, 35.0);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/rotatecontents.pdf", false, false);
+printf ("---cpdf_upright()\n");
+cpdf_upright(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/upright.pdf", false, false);
+printf ("---cpdf_hFlip()\n");
+cpdf_hFlip(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/hflip.pdf", false, false);
+printf ("---cpdf_vFlip()\n");
+cpdf_vFlip(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/vflip.pdf", false, false);
+printf ("---cpdf_crop()\n");
+cpdf_crop(pagespdf, r3, 0.0, 0.0, 400.0, 500.0);
+prerr();
+printf ("---cpdf_trimMarks()\n");
+cpdf_trimMarks(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/trim_marks.pdf", false, false);
+printf ("---cpdf_showBoxes()\n");
+cpdf_showBoxes(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/show_boxes.pdf", false, false);
+printf ("---cpdf_hardBox()\n");
+cpdf_hardBox(pagespdf, r3, "/MediaBox");
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/hard_box.pdf", false, false);
+cpdf_toFile(pagespdf, "testoutputs/crop.pdf", false, false);
+printf ("---cpdf_removeCrop()\n");
+cpdf_removeCrop(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/remove_crop.pdf", false, false);
+printf ("---cpdf_removeTrim()\n");
+cpdf_removeTrim(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/remove_trim.pdf", false, false);
+printf ("---cpdf_removeArt()\n");
+cpdf_removeArt(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/remove_art.pdf", false, false);
+printf ("---cpdf_removeBleed()\n");
+cpdf_removeBleed(pagespdf, r3);
+prerr();
+cpdf_toFile(pagespdf, "testoutputs/remove_bleed.pdf", false, false);
+cpdf_deletePdf(pagespdf);
+cpdf_deleteRange(r3);
+cpdf_onExit ();
 
 /* CHAPTER 4. Encryption */
 /* Encryption covered under Chapter 1 in cpdflib. */
@@ -255,20 +318,40 @@ cpdf_deletePdf (tocompress);
 cpdf_onExit ();
 
 /* CHAPTER 6. Bookmarks */
-
-/*void cpdf_startGetBookmarkInfo (int);
-int cpdf_numberBookmarks (void);
-int cpdf_getBookmarkLevel (int);
-int cpdf_getBookmarkPage (int, int);
-char *cpdf_getBookmarkText (int);
-int cpdf_getBookmarkOpenStatus (int);
-void cpdf_endGetBookmarkInfo (void);
-void cpdf_startSetBookmarkInfo (int);
-void cpdf_setBookmarkLevel (int, int);
-void cpdf_setBookmarkPage (int, int, int);
-void cpdf_setBookmarkOpenStatus (int, int);
-void cpdf_setBookmarkText (int, const char[]);
-void cpdf_endSetBookmarkInfo (int);*/
+printf ("***** CHAPTER 6. Bookmarks\n");
+int markspdf = cpdf_fromFile ("cpdflibmanual.pdf", "");
+printf ("---cpdf_startGetBookmarkInfo()\n");
+cpdf_startGetBookmarkInfo(markspdf);
+printf ("---cpdf_numberBookmarks()\n");
+int n_marks = cpdf_numberBookmarks();
+prerr ();
+printf ("There are %i bookmarks\n", n_marks);
+for (int x = 0; x < n_marks; x++)
+{
+  int level = cpdf_getBookmarkLevel(x);
+  int page = cpdf_getBookmarkPage(markspdf, x);
+  char* text = cpdf_getBookmarkText(x);
+  int open = cpdf_getBookmarkOpenStatus(x);
+  printf("Bookmark at level %i points to page %i and has text \"%s\" and open %i\n",
+         level, page, text, open);
+}
+prerr();
+printf ("---cpdf_startGetBookmarkInfo()\n");
+cpdf_endGetBookmarkInfo();
+prerr();
+printf ("---cpdf_startSetBookmarkInfo()\n");
+cpdf_startSetBookmarkInfo(1);
+prerr();
+cpdf_setBookmarkLevel(0, 0);
+cpdf_setBookmarkPage(markspdf, 0, 20);
+cpdf_setBookmarkOpenStatus(0, true);
+cpdf_setBookmarkText(0, "New bookmark!");
+prerr();
+printf ("---cpdf_endSetBookmarkInfo()\n");
+cpdf_endSetBookmarkInfo(markspdf);
+prerr();
+cpdf_deletePdf (markspdf);
+cpdf_onExit ();
 
 /* CHAPTER 7. Presentations */
 /* Not included in the library version */
@@ -433,7 +516,7 @@ int cpdf_getPageLabelOffset (int);
 int cpdf_getPageLabelRange (int);
 void cpdf_endGetPageLabels ();*/
 
-  /* CHAPTER 12. File Attachments */
+/* CHAPTER 12. File Attachments */
 
 /*void cpdf_attachFile (const char[], int);
 void cpdf_attachFileToPage (const char[], int, int);

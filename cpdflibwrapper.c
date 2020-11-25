@@ -1383,7 +1383,7 @@ cpdf_setBookmarkPage (int pdf, int serial, int pagenum)
 {
   CAMLparam0 ();
   CAMLlocal5 (serial_v, fn_v, out_v, pagenum_v, pdf_v);
-  fn_v = *caml_named_value ("getBookmarkPage");
+  fn_v = *caml_named_value ("setBookmarkPage");
   serial_v = Val_int (serial);
   pdf_v = Val_int (pdf);
   pagenum_v = Val_int (pagenum);
@@ -1410,7 +1410,7 @@ cpdf_setBookmarkText (int serial, char *text)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, serial_v, text_v, out_v);
-  fn = *caml_named_value ("getBookmarkText");
+  fn = *caml_named_value ("setBookmarkText");
   serial_v = Val_int (serial);
   out_v = caml_callback (fn, serial_v);
   text_v = caml_copy_string (text);
