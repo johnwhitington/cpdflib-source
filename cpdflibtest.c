@@ -519,10 +519,19 @@ void cpdf_endGetPageLabels ();*/
 /* CHAPTER 12. File Attachments */
 printf ("***** CHAPTER 12. File Attachments\n");
 int attachments = cpdf_fromFile("testinputs/has_attachments.pdf", "");
-/*void cpdf_attachFile (const char[], int);
-void cpdf_attachFileToPage (const char[], int, int);
-void cpdf_attachFileFromMemory (void *, int, const char[], int);
-void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int); */
+printf ("---cpdf_attachFile()\n");
+cpdf_attachFile ("testinputs/image.pdf", attachments);
+prerr();
+printf ("---cpdf_attachFileToPage()\n");
+cpdf_attachFileToPage ("testinputs/image.pdf", attachments, 1);
+prerr();
+printf ("---cpdf_attachFileFromMemory\n");
+cpdf_attachFileFromMemory ((void *) 0, 0, "metadata.txt", attachments);
+prerr();
+printf ("---cpdf_attachFileToPageFromMemory\n");
+cpdf_attachFileToPageFromMemory ((void *) 0, 0, "metadata.txt", attachments, 1);
+prerr();
+cpdf_toFile (attachments, "testoutputs/with_attachments.pdf", false, false);
 printf ("---cpdf_numberGetAttachments()\n");
 cpdf_startGetAttachments(attachments);
 prerr();
