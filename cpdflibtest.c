@@ -517,18 +517,37 @@ int cpdf_getPageLabelRange (int);
 void cpdf_endGetPageLabels ();*/
 
 /* CHAPTER 12. File Attachments */
-
+printf ("***** CHAPTER 12. File Attachments\n");
+int attachments = cpdf_fromFile("testinputs/has_attachments.pdf", "");
 /*void cpdf_attachFile (const char[], int);
 void cpdf_attachFileToPage (const char[], int, int);
 void cpdf_attachFileFromMemory (void *, int, const char[], int);
-void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int);
-void cpdf_removeAttachedFiles (int);
-void cpdf_startGetAttachments (int);
-int cpdf_numberGetAttachments (void);
-char *cpdf_getAttachmentName (int);
-int cpdf_getAttachmentPage (int);
-void *cpdf_getAttachmentData (int, int *);
-void cpdf_endGetAttachments (void);*/
+void cpdf_attachFileToPageFromMemory (void *, int, const char[], int, int); */
+printf ("---cpdf_numberGetAttachments()\n");
+cpdf_startGetAttachments(attachments);
+prerr();
+printf ("---cpdf_numberGetAttachments()\n");
+int numatt = cpdf_numberGetAttachments ();
+prerr();
+printf ("There are %i attachements to get\n", numatt);
+for (int x = 0; x < numatt; x++)
+  {
+    printf ("Attachment %i is named %s\n", x, cpdf_getAttachmentName (x));
+    printf ("It is on page %i\n", cpdf_getAttachmentPage (x));
+    int length;
+    cpdf_getAttachmentData (x, &length);
+    printf ("Contains %i bytes of data\n", length);
+  };
+prerr();
+printf ("---cpdf_endGetAttachments()\n");
+cpdf_endGetAttachments ();
+prerr();
+printf ("cpdf_removeAttachedFiles()\n");
+cpdf_removeAttachedFiles (attachments);
+prerr();
+cpdf_toFile(attachments, "testoutputs/removed_attachments.pdf", false, false);
+cpdf_deletePdf(attachments);
+cpdf_onExit();
 
 /* CHAPTER 13. Images */
 printf ("***** CHAPTER 13. Images\n");
