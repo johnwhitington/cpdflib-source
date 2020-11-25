@@ -660,13 +660,39 @@ cpdf_deleteRange(misc_r);
 cpdf_onExit();
 
 /* CHAPTER 16. Undocumented or Experimental */ 
-
-/*void cpdf_addContent (const char[], int, int, int);
-void cpdf_outputJSON (const char[], int, int, int);
-void cpdf_OCGCoalesce (int);
-void cpdf_OCGRename (int, const char[], const char[]);
-void cpdf_OCGOrderAll (int);
-char *cpdf_stampAsXObject (int, int, int);
-void cpdf_setDemo (int);*/
-  return 0;
+printf ("***** CHAPTER 16. Undocumented or Experimental\n");
+int undoc = cpdf_fromFile("cpdflibmanual.pdf", "");
+int logo = cpdf_fromFile ("logo.pdf", "");
+int r_undoc = cpdf_all(undoc);
+printf("---cpdf_stampAsXObject()\n");
+char *name = cpdf_stampAsXObject (undoc, r_undoc, logo);
+prerr();
+char content[200];
+sprintf (content,
+         "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 500 500 cm %s Do Q",
+         name, name, name);
+printf("---cpdf_addContent()\n");
+cpdf_addContent (content, true, undoc, r_undoc);
+prerr();
+printf("---cpdf_outputJSON()\n");
+cpdf_outputJSON ("testoutputs/json.json", true, true, undoc);
+prerr();
+printf("---cpdf_OCGCoalesce()\n");
+cpdf_OCGCoalesce (undoc);
+prerr();
+printf("---cpdf_OCGRename()\n");
+cpdf_OCGRename (undoc, "a", "b");
+prerr();
+printf("---cpdf_OCGOrderAll()\n");
+cpdf_OCGOrderAll (undoc);
+prerr();
+printf("---cpdf_setDemo()\n");
+cpdf_setDemo (true);
+prerr();
+cpdf_toFile(undoc, "testoutputs/demo.pdf", false, false);
+cpdf_deletePdf(undoc);
+cpdf_deletePdf(logo);
+cpdf_deleteRange(r_undoc);
+cpdf_onExit();
+return 0;
 }
