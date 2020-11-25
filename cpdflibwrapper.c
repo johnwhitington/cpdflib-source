@@ -3107,13 +3107,13 @@ cpdf_endGetAttachments (void)
 /* CHAPTER 13. Images */
 
 int
-cpdf_startGetImageResolution (int pdf, int res)
+cpdf_startGetImageResolution (int pdf, double res)
 {
   CAMLparam0 ();
   CAMLlocal4 (fn, pdf_v, out_v, res_v);
   fn = *caml_named_value ("startGetImageResolution");
   pdf_v = Val_int (pdf);
-  res_v = Val_int (res);
+  res_v = caml_copy_double (res);
   out_v = caml_callback2 (fn, pdf_v, res_v);
   updateLastError ();
   CAMLreturnT (int, Int_val (out_v));

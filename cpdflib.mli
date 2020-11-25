@@ -206,7 +206,7 @@ val getAttachmentPage : int -> int
 val getAttachmentData : int -> Pdfio.rawbytes 
 
 (* CHAPTER 13. Images *)
-val startGetImageResolution : int -> int -> int
+val startGetImageResolution : int -> float -> int
 val getImageResolutionPageNumber : int -> int
 val getImageResolutionImageName : int -> string
 val getImageResolutionXPixels : int -> int

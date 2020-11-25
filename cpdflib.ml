@@ -2250,15 +2250,58 @@ let _ = Callback.register "getAttachmentPage" getAttachmentPage
 let _ = Callback.register "getAttachmentData" getAttachmentData
 
 (* CHAPTER 13. Images *)
-let startGetImageResolution pdf res = 0
-let endGetImageResolution () = ()
-let getImageResolutionPageNumber serial = 0
-let getImageResolutionImageName serial = "/Im0"
-let getImageResolutionXPixels serial = 0
-let getImageResolutionYPixels serial = 0
-let getImageResolutionXRes serial = 0.
-let getImageResolutionYRes serial = 0.
+let images = ref [||]
 
+let startGetImageResolution pdf res = 
+  images :=
+    Array.of_list
+      (Cpdf.image_resolution (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res);
+  Array.length !images
+
+let endGetImageResolution () =
+  images := [||]
+
+let getImageResolutionPageNumber serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionPageNumber\n";
+  try
+    begin match !images.(serial) with r, _, _, _, _, _ -> r end
+  with e ->
+    handle_error "getImageResolutionPageNumber" e; err_int
+
+let getImageResolutionImageName serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionImageName\n";
+  try
+    begin match !images.(serial) with _, r, _, _, _, _ -> r end
+  with e ->
+    handle_error "getImageResolutionImageName" e; err_string
+
+let getImageResolutionXPixels serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionXPixels\n";
+  try
+    begin match !images.(serial) with _, _, r, _, _, _ -> r end
+  with e ->
+    handle_error "getImageResolutionXPixels" e; err_int
+
+let getImageResolutionYPixels serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionYPixels\n";
+  try
+    begin match !images.(serial) with _, _, _, r, _, _ -> r end
+  with e ->
+    handle_error "getImageResolutionYPixels" e; err_int
+
+let getImageResolutionXRes serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionXRes\n";
+  try
+    begin match !images.(serial) with _, _, _, _, r, _ -> r end
+  with e ->
+    handle_error "getImageResolutionXRes" e; err_float
+
+let getImageResolutionYRes serial =
+  if !dbg then flprint "Cpdflib.getImageResolutionYRes\n";
+  try
+    begin match !images.(serial) with _, _, _, _, _, r -> r end
+  with e ->
+    handle_error "getImageResolutionYRes" e; err_float
 
 let _ = Callback.register "startGetImageResolution" startGetImageResolution
 let _ = Callback.register "endGetImageResolution" endGetImageResolution

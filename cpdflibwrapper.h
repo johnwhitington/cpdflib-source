@@ -1033,7 +1033,7 @@ void cpdf_endGetAttachments (void);
  * high min_required_resolution. Then, call the other functions giving a serial
  * number 0..<total number> - 1, to retrieve the data. Finally, call
  * cpdf_endGetImageResolution to clean up. */
-int cpdf_startGetImageResolution (int, int);
+int cpdf_startGetImageResolution (int, float);
 int cpdf_getImageResolutionPageNumber (int);
 char *cpdf_getImageResolutionImageName (int);
 int cpdf_getImageResolutionXPixels (int);

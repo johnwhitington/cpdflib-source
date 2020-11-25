@@ -530,15 +530,28 @@ int cpdf_getAttachmentPage (int);
 void *cpdf_getAttachmentData (int, int *);
 void cpdf_endGetAttachments (void);*/
 
-  /* CHAPTER 13. Images */
-/*int cpdf_startGetImageResolution (int, int);
-int cpdf_getImageResolutionPageNumber (int);
-char *cpdf_getImageResolutionImageName (int);
-int cpdf_getImageResolutionXPixels (int);
-int cpdf_getImageResolutionYPixels (int);
-double cpdf_getImageResolutionXRes (int);
-double cpdf_getImageResolutionYRes (int);
-void cpdf_endGetImageResolution (void);*/
+/* CHAPTER 13. Images */
+printf ("***** CHAPTER 13. Images\n");
+int images = cpdf_fromFile("testinputs/image.pdf", "");
+printf ("---cpdf_startGetImageResolution()\n");
+int n = cpdf_startGetImageResolution(images, 500000.);
+prerr();
+for (int x = 0; x < n; x++)
+{
+  int page = cpdf_getImageResolutionPageNumber(x);
+  char* name = cpdf_getImageResolutionImageName(x);
+  int xp = cpdf_getImageResolutionXPixels(x);
+  int yp = cpdf_getImageResolutionYPixels(x);
+  double xres = cpdf_getImageResolutionXRes(x);
+  double yres = cpdf_getImageResolutionYRes(x);
+  printf("IMAGE: %i, %s, %i, %i, %f, %f\n", page, name, xp, yp, xres, yres);
+}
+prerr();
+printf ("---cpdf_endGetImageResolution()\n");
+cpdf_endGetImageResolution();
+prerr();
+cpdf_deletePdf(images);
+cpdf_onExit();
 
 /* CHAPTER 14. Fonts */
 printf ("***** CHAPTER 14. Fonts\n");
