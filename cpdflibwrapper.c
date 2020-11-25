@@ -577,7 +577,7 @@ cpdf_toFile (int pdf, char *filename, int linearize, int make_id)
 
 void
 cpdf_toFileExt (int pdf, char *filename, int linearize, int make_id,
-                int preserve_objstm, int create_objstm, int compress_objstm)
+		int preserve_objstm, int create_objstm, int compress_objstm)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, unit);
@@ -616,7 +616,7 @@ cpdf_toMemory (int pdf, int linearize, int make_id, int *retlen)
       int x;
       char *indata = Data_bigarray_val (bytestream);
       for (x = 0; x < size; x++)
-        {
+	{
 	  memory[x] = indata[x];
 	};
     }
@@ -861,7 +861,7 @@ cpdf_mergeSimple (int *pdfs, int len)
 
 int
 cpdf_merge (int *pdfs, int len, int retain_numbering,
-            int remove_duplicate_fonts)
+	    int remove_duplicate_fonts)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, array, temp, len_v, retain_numbering_v);
@@ -884,7 +884,7 @@ cpdf_merge (int *pdfs, int len, int retain_numbering,
 
 int
 cpdf_mergeSame (int *pdfs, int len, int retain_numbering,
-                int remove_duplicate_fonts, int *ranges)
+		int remove_duplicate_fonts, int *ranges)
 {
   CAMLparam0 ();
   CAMLlocal3 (array, rangearray, fn);
@@ -1002,7 +1002,7 @@ struct cpdf_position
 
 void
 cpdf_scaleContents (int pdf, int range, struct cpdf_position pos,
-                    double scale)
+		    double scale)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 6);
@@ -1467,8 +1467,8 @@ cpdf_stampUnder (int pdf, int pdf2, int range)
 
 void
 cpdf_stampExtended (int pdf, int pdf2, int range, int isover,
-                    int scale_stamp_to_fit, struct cpdf_position pos,
-                    int relative_to_cropbox)
+		    int scale_stamp_to_fit, struct cpdf_position pos,
+		    int relative_to_cropbox)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, unit);
@@ -1578,40 +1578,40 @@ void cpdf_addText
 
 void
 cpdf_addTextSimple (int pdf, int range, char *text, struct cpdf_position pos,
-                    enum cpdf_font font, double fontsize)
+		    enum cpdf_font font, double fontsize)
 {
   CAMLparam0 ();
   char s[] = "";
   cpdf_addText (1,
-                /* Do not collect metrics, but add text */
-                pdf, range, text, pos, 1.0,
-                /* Normal line spacing */
-                0,
-                /* Starting bates number */
-                font, fontsize, 0,
-                /* r = 0 */
-                0,
-                /* g = 0 */
-                0,
-                /* b = 0 */
-                1,
-                /* Text not underneath */
-                1,
-                /* Text not relative to crop box */
-                1,
-                /* Text not outlined */
-                1.0,
-                /* Opaque */
-                cpdf_leftJustify, 1,
-                /* baseline not midline */
-                1,
-                /* baseline not topline */
-                s,
-                /* file name */
-                0.0,
-                /* line width */
-                1
-                /* don't embed fonts */
+		/* Do not collect metrics, but add text */
+		pdf, range, text, pos, 1.0,
+		/* Normal line spacing */
+		0,
+		/* Starting bates number */
+		font, fontsize, 0,
+		/* r = 0 */
+		0,
+		/* g = 0 */
+		0,
+		/* b = 0 */
+		1,
+		/* Text not underneath */
+		1,
+		/* Text not relative to crop box */
+		1,
+		/* Text not outlined */
+		1.0,
+		/* Opaque */
+		cpdf_leftJustify, 1,
+		/* baseline not midline */
+		1,
+		/* baseline not topline */
+		s,
+		/* file name */
+		0.0,
+		/* line width */
+		1
+		/* don't embed fonts */
     );
   CAMLreturn0;
 }
@@ -2285,8 +2285,8 @@ void cpdf_getDateComponents
 
 char *
 cpdf_dateStringOfComponents (int year, int month, int day, int hour,
-                             int minute, int second, int hour_offset,
-                             int minute_offset)
+			     int minute, int second, int hour_offset,
+			     int minute_offset)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 8);
@@ -2335,7 +2335,7 @@ cpdf_hasBox (int pdf, int pagenumber, char *boxname)
 
 void
 cpdf_getMediaBox (int pdf, int pagenumber, double *minx, double *maxx,
-                  double *miny, double *maxy)
+		  double *miny, double *maxy)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -2358,7 +2358,7 @@ cpdf_getMediaBox (int pdf, int pagenumber, double *minx, double *maxx,
 
 void
 cpdf_getCropBox (int pdf, int pagenumber, double *minx, double *maxx,
-                 double *miny, double *maxy)
+		 double *miny, double *maxy)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -2381,7 +2381,7 @@ cpdf_getCropBox (int pdf, int pagenumber, double *minx, double *maxx,
 
 void
 cpdf_getTrimBox (int pdf, int pagenumber, double *minx, double *maxx,
-                 double *miny, double *maxy)
+		 double *miny, double *maxy)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -2404,7 +2404,7 @@ cpdf_getTrimBox (int pdf, int pagenumber, double *minx, double *maxx,
 
 void
 cpdf_getArtBox (int pdf, int pagenumber, double *minx, double *maxx,
-                double *miny, double *maxy)
+		double *miny, double *maxy)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -2427,7 +2427,7 @@ cpdf_getArtBox (int pdf, int pagenumber, double *minx, double *maxx,
 
 void
 cpdf_getBleedBox (int pdf, int pagenumber, double *minx, double *maxx,
-                  double *miny, double *maxy)
+		  double *miny, double *maxy)
 {
   CAMLparam0 ();
   CAMLlocal5 (fn, pdf_v, pagenumber_v, tuple_v, minx_v);
@@ -2450,7 +2450,7 @@ cpdf_getBleedBox (int pdf, int pagenumber, double *minx, double *maxx,
 
 void
 cpdf_setMediabox (int pdf, int range, double minx, double maxx, double miny,
-                  double maxy)
+		  double maxy)
 {
   CAMLparam0 ();
   CAMLlocalN (args, 6);
@@ -2469,7 +2469,7 @@ cpdf_setMediabox (int pdf, int range, double minx, double maxx, double miny,
 
 void
 cpdf_setCropBox (int pdf, int range, double minx, double maxx, double miny,
-                 double maxy)
+		 double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
@@ -2488,7 +2488,7 @@ cpdf_setCropBox (int pdf, int range, double minx, double maxx, double miny,
 
 void
 cpdf_setTrimBox (int pdf, int range, double minx, double maxx, double miny,
-                 double maxy)
+		 double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
@@ -2507,7 +2507,7 @@ cpdf_setTrimBox (int pdf, int range, double minx, double maxx, double miny,
 
 void
 cpdf_setArtBox (int pdf, int range, double minx, double maxx, double miny,
-                double maxy)
+		double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
@@ -2526,7 +2526,7 @@ cpdf_setArtBox (int pdf, int range, double minx, double maxx, double miny,
 
 void
 cpdf_setBleedBox (int pdf, int range, double minx, double maxx, double miny,
-                  double maxy)
+		  double maxy)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out_v);
@@ -2772,7 +2772,7 @@ cpdf_getMetadata (int pdf, int *retlen)
       int x;
       char *indata = Data_bigarray_val (bytestream);
       for (x = 0; x < size; x++)
-        {
+	{
 	  memory[x] = indata[x];
 	};
     }
@@ -2987,7 +2987,7 @@ cpdf_attachFileFromMemory (void *data, int length, char *filename, int pdf)
 
 void
 cpdf_attachFileToPageFromMemory (void *data, int length, char *filename,
-                                 int pdf, int page)
+				 int pdf, int page)
 {
   CAMLparam0 ();
   CAMLlocal3 (unit_v, fn, filename_v);
@@ -3083,7 +3083,7 @@ cpdf_getAttachmentData (int serial, int *retlen)
       int x;
       char *indata = Data_bigarray_val (bytestream);
       for (x = 0; x < size; x++)
-        {
+	{
 	  memory[x] = indata[x];
 	};
     }
@@ -3304,7 +3304,7 @@ cpdf_removeFonts (int pdf)
 
 void
 cpdf_copyFont (int from_pdf, int to_pdf, int range, int pagenumber,
-               char *fontname)
+	       char *fontname)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn_v, out_v);
@@ -3485,7 +3485,7 @@ cpdf_addContent (char *s, int before, int range, int pdf)
 
 void
 cpdf_outputJSON (char *filename, int parse_content, int no_stream_data,
-                 int pdf)
+		 int pdf)
 {
   CAMLparam0 ();
   CAMLlocal2 (fn, out);

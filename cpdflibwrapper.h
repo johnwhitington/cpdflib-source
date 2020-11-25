@@ -67,22 +67,22 @@ int cpdf_blankDocument (double, double, int);
 /* Standard page sizes. */
 enum cpdf_papersize
 {
-  cpdf_a0portrait,              /* A0 portrait */
-  cpdf_a1portrait,              /* A1 portrait */
-  cpdf_a2portrait,              /* A2 portrait */
-  cpdf_a3portrait,              /* A3 portrait */
-  cpdf_a4portrait,              /* A4 portrait */
-  cpdf_a5portrait,              /* A5 portrait */
-  cpdf_a0landscape,             /* A0 landscape */
-  cpdf_a1landscape,             /* A1 landscape */
-  cpdf_a2landscape,             /* A2 landscape */
-  cpdf_a3landscape,             /* A3 landscape */
-  cpdf_a4landscape,             /* A4 landscape */
-  cpdf_a5landscape,             /* A5 landscape */
-  cpdf_usletterportrait,        /* US Letter portrait */
-  cpdf_usletterlandscape,       /* US Letter landscape */
-  cpdf_uslegalportrait,         /* US Legal portrait */
-  cpdf_uslegallandscape         /* US Legal landscape */
+  cpdf_a0portrait,		/* A0 portrait */
+  cpdf_a1portrait,		/* A1 portrait */
+  cpdf_a2portrait,		/* A2 portrait */
+  cpdf_a3portrait,		/* A3 portrait */
+  cpdf_a4portrait,		/* A4 portrait */
+  cpdf_a5portrait,		/* A5 portrait */
+  cpdf_a0landscape,		/* A0 landscape */
+  cpdf_a1landscape,		/* A1 landscape */
+  cpdf_a2landscape,		/* A2 landscape */
+  cpdf_a3landscape,		/* A3 landscape */
+  cpdf_a4landscape,		/* A4 landscape */
+  cpdf_a5landscape,		/* A5 landscape */
+  cpdf_usletterportrait,	/* US Letter portrait */
+  cpdf_usletterlandscape,	/* US Letter landscape */
+  cpdf_uslegalportrait,		/* US Legal portrait */
+  cpdf_uslegallandscape		/* US Legal landscape */
 };
 
 /* cpdf_blankDocumentPaper(papersize, num_pages) makes a blank document given a
@@ -260,28 +260,28 @@ void cpdf_decryptPdfOwner (int, const char[]);
  * one of them indicates a restriction. */
 enum cpdf_permission
 {
-  cpdf_noEdit,                  /* Cannot edit the document */
-  cpdf_noPrint,                 /* Cannot print the document */
-  cpdf_noCopy,                  /* Cannot copy the document */
-  cpdf_noAnnot,                 /* Cannot annotate the document */
-  cpdf_noForms,                 /* Cannot edit forms in the document */
-  cpdf_noExtract,               /* Cannot extract information */
-  cpdf_noAssemble,              /* Cannot assemble into a bigger document */
-  cpdf_noHqPrint                /* Cannot print high quality */
+  cpdf_noEdit,			/* Cannot edit the document */
+  cpdf_noPrint,			/* Cannot print the document */
+  cpdf_noCopy,			/* Cannot copy the document */
+  cpdf_noAnnot,			/* Cannot annotate the document */
+  cpdf_noForms,			/* Cannot edit forms in the document */
+  cpdf_noExtract,		/* Cannot extract information */
+  cpdf_noAssemble,		/* Cannot assemble into a bigger document */
+  cpdf_noHqPrint		/* Cannot print high quality */
 };
 
 /* Encryption methods. Suffixes 'false' and 'true' indicates lack of or
  * presence of encryption for XMP metadata streams. */
 enum cpdf_encryptionMethod
 {
-  cpdf_pdf40bit,                /* 40 bit RC4 encryption */
-  cpdf_pdf128bit,               /* 128 bit RC4 encryption */
-  cpdf_aes128bitfalse,          /* 128 bit AES encryption, do not encrypt metadata. */
-  cpdf_aes128bittrue,           /* 128 bit AES encryption, encrypt metadat */
-  cpdf_aes256bitfalse,          /* Deprecated. Do not use for new files */
-  cpdf_aes256bittrue,           /* Deprecated. Do not use for new files */
-  cpdf_aes256bitisofalse,       /* 256 bit AES encryption, do not encrypt metadata. */
-  cpdf_aes256bitisotrue         /* 256 bit AES encryption, encrypt metadata */
+  cpdf_pdf40bit,		/* 40 bit RC4 encryption */
+  cpdf_pdf128bit,		/* 128 bit RC4 encryption */
+  cpdf_aes128bitfalse,		/* 128 bit AES encryption, do not encrypt metadata. */
+  cpdf_aes128bittrue,		/* 128 bit AES encryption, encrypt metadat */
+  cpdf_aes256bitfalse,		/* Deprecated. Do not use for new files */
+  cpdf_aes256bittrue,		/* Deprecated. Do not use for new files */
+  cpdf_aes256bitisofalse,	/* 256 bit AES encryption, do not encrypt metadata. */
+  cpdf_aes256bitisotrue		/* 256 bit AES encryption, encrypt metadata */
 };
 
 /* cpdf_toFileEncrypted(pdf, encryption_method, permissions, permission_length,
@@ -376,19 +376,19 @@ void cpdf_scaleToFitPaper (int, int, enum cpdf_papersize, double);
 /* Positions on the page. Used for scaling about a point, and adding text. */
 enum cpdf_anchor
 {
-  cpdf_posCentre,               /* Absolute centre */
-  cpdf_posLeft,                 /* Absolute left */
-  cpdf_posRight,                /* Absolute right */
-  cpdf_top,                     /* Top top centre of the page */
-  cpdf_topLeft,                 /* The top left of the page */
-  cpdf_topRight,                /* The top right of the page */
-  cpdf_left,                    /* The left hand side of the page, halfway down */
-  cpdf_bottomLeft,              /* The bottom left of the page */
-  cpdf_bottom,                  /* The bottom middle of the page */
-  cpdf_bottomRight,             /* The bottom right of the page */
-  cpdf_right,                   /* The right hand side of the page, halfway down */
-  cpdf_diagonal,                /* Diagonal, bottom left to top right */
-  cpdf_reverseDiagonal          /* Diagonal, top left to bottom right */
+  cpdf_posCentre,		/* Absolute centre */
+  cpdf_posLeft,			/* Absolute left */
+  cpdf_posRight,		/* Absolute right */
+  cpdf_top,			/* Top top centre of the page */
+  cpdf_topLeft,			/* The top left of the page */
+  cpdf_topRight,		/* The top right of the page */
+  cpdf_left,			/* The left hand side of the page, halfway down */
+  cpdf_bottomLeft,		/* The bottom left of the page */
+  cpdf_bottom,			/* The bottom middle of the page */
+  cpdf_bottomRight,		/* The bottom right of the page */
+  cpdf_right,			/* The right hand side of the page, halfway down */
+  cpdf_diagonal,		/* Diagonal, bottom left to top right */
+  cpdf_reverseDiagonal		/* Diagonal, top left to bottom right */
 };
 
 /* A cpdf_position is an anchor (above) and zero or one or two parameters
@@ -409,9 +409,9 @@ enum cpdf_anchor
  * cpdf_reverseDiagonal: Zero paremeters */
 struct cpdf_position
 {
-  int cpdf_anchor;              /* Position anchor */
-  double cpdf_coord1;           /* Parameter one */
-  double cpdf_coord2;           /* Parameter two */
+  int cpdf_anchor;		/* Position anchor */
+  double cpdf_coord1;		/* Parameter one */
+  double cpdf_coord2;		/* Parameter two */
 };
 
 /* cpdf_scaleContents(pdf, range, position, scale) scales the contents of the
@@ -606,60 +606,60 @@ int cpdf_combinePages (int, int);
 /* The standard fonts */
 enum cpdf_font
 {
-  cpdf_timesRoman,              /* Times Roman */
-  cpdf_timesBold,               /* Times Bold */
-  cpdf_timesItalic,             /* Times Italic */
-  cpdf_timesBoldItalic,         /* Times Bold Italic */
-  cpdf_helvetica,               /* Helvetica */
-  cpdf_helveticaBold,           /* Helvetica Bold */
-  cpdf_helveticaOblique,        /* Helvetica Oblique */
-  cpdf_helveticaBoldOblique,    /* Helvetica Bold Oblique */
-  cpdf_courier,                 /* Courier */
-  cpdf_courierBold,             /* Courier Bold */
-  cpdf_courierOblique,          /* Courier Oblique */
-  cpdf_courierBoldOblique       /* Courier Bold Oblique */
+  cpdf_timesRoman,		/* Times Roman */
+  cpdf_timesBold,		/* Times Bold */
+  cpdf_timesItalic,		/* Times Italic */
+  cpdf_timesBoldItalic,		/* Times Bold Italic */
+  cpdf_helvetica,		/* Helvetica */
+  cpdf_helveticaBold,		/* Helvetica Bold */
+  cpdf_helveticaOblique,	/* Helvetica Oblique */
+  cpdf_helveticaBoldOblique,	/* Helvetica Bold Oblique */
+  cpdf_courier,			/* Courier */
+  cpdf_courierBold,		/* Courier Bold */
+  cpdf_courierOblique,		/* Courier Oblique */
+  cpdf_courierBoldOblique	/* Courier Bold Oblique */
 };
 
 /* Justifications for multi line text */
 enum cpdf_justification
 {
-  cpdf_leftJustify,             /* Left justify */
-  cpdf_CentreJustify,           /* Centre justify */
-  cpdf_RightJustify             /* Right justify */
+  cpdf_leftJustify,		/* Left justify */
+  cpdf_CentreJustify,		/* Centre justify */
+  cpdf_RightJustify		/* Right justify */
 };
 
 /* Add text */
-void cpdf_addText (int,         /* If true, don't actually add text but collect metrics. */
-                   int,         /* Document */
-                   int,         /* Page Range */
-                   const char[],        /* The text to add */
-                   struct cpdf_position,        /* Position to add text at */
-                   double,      /* Linespacing, 1.0 = normal */
-                   int,         /* Starting Bates number */
-                   enum cpdf_font,      /* Font */
-                   double,      /* Font size in points */
-                   double,      /* Red component of colour, 0.0 - 1.0 */
-                   double,      /* Green component of colour, 0.0 - 1.0 */
-                   double,      /* Blue component of colour, 0.0 - 1.0 */
-                   int,         /* If true, text is added underneath rather than on top */
-                   int,         /* If true, position is relative to crop box not media box */
-                   int,         /* If true, text is outline rather than filled */
-                   double,      /* Opacity, 1.0 = opaque, 0.0 = wholly transparent */
-                   enum cpdf_justification,     /* Justification */
-                   int,         /* If true, position is relative to midline of text, not baseline */
-                   int,         /* If true, position is relative to topline of text, not baseline */
-                   const char[],        /* filename that this document was read from (optional) */
-                   double,      /* line width */
-                   int          /* embed fonts */
+void cpdf_addText (int,		/* If true, don't actually add text but collect metrics. */
+		   int,		/* Document */
+		   int,		/* Page Range */
+		   const char[],	/* The text to add */
+		   struct cpdf_position,	/* Position to add text at */
+		   double,	/* Linespacing, 1.0 = normal */
+		   int,		/* Starting Bates number */
+		   enum cpdf_font,	/* Font */
+		   double,	/* Font size in points */
+		   double,	/* Red component of colour, 0.0 - 1.0 */
+		   double,	/* Green component of colour, 0.0 - 1.0 */
+		   double,	/* Blue component of colour, 0.0 - 1.0 */
+		   int,		/* If true, text is added underneath rather than on top */
+		   int,		/* If true, position is relative to crop box not media box */
+		   int,		/* If true, text is outline rather than filled */
+		   double,	/* Opacity, 1.0 = opaque, 0.0 = wholly transparent */
+		   enum cpdf_justification,	/* Justification */
+		   int,		/* If true, position is relative to midline of text, not baseline */
+		   int,		/* If true, position is relative to topline of text, not baseline */
+		   const char[],	/* filename that this document was read from (optional) */
+		   double,	/* line width */
+		   int		/* embed fonts */
   );
 
 /* Add text, with most parameters default */
-void cpdf_addTextSimple (int,   /* Document */
-                         int,   /* Page range */
-                         const char[],  /* The text to add */
-                         struct cpdf_position,  /* Position to add text at */
-                         enum cpdf_font,        /* font */
-                         double);       /* font size */
+void cpdf_addTextSimple (int,	/* Document */
+			 int,	/* Page range */
+			 const char[],	/* The text to add */
+			 struct cpdf_position,	/* Position to add text at */
+			 enum cpdf_font,	/* font */
+			 double);	/* font size */
 
 /* To return metrics about the text which would be added. Call cpdf_addText
  * first with the first argument set to false, and the other arguments filled
@@ -829,7 +829,7 @@ void cpdf_setModificationDateXMP (int, const char[]);
 /* cpdf_getDateComponents(datestring, year, month, day, hour, minute, second,
  * hour_offset, minute_offset) returns the components from a PDF date string. */
 void cpdf_getDateComponents (const char[], int *, int *, int *, int *, int *,
-                             int *, int *, int *);
+			     int *, int *, int *);
 
 /* cpdf_dateStringOfComponents(year, month, day, hour, minute, second,
  * hour_offset, minute_offset) builds a PDF date string from individual
@@ -946,11 +946,11 @@ void cpdf_setMetadataDate (int, const char[]);
 /* Styles of page label */
 enum cpdf_pageLabelStyle
 {
-  cpdf_decimalArabic,           /* 1,2,3... */
-  cpdf_uppercaseRoman,          /* I, II, III... */
-  cpdf_lowercaseRoman,          /* i, ii, iii... */
-  cpdf_uppercaseLetters,        /* A, B, C... */
-  cpdf_lowercaseLetters         /* a, b, c... */
+  cpdf_decimalArabic,		/* 1,2,3... */
+  cpdf_uppercaseRoman,		/* I, II, III... */
+  cpdf_lowercaseRoman,		/* i, ii, iii... */
+  cpdf_uppercaseLetters,	/* A, B, C... */
+  cpdf_lowercaseLetters		/* a, b, c... */
 };
 
 /* Add a page labels.
@@ -960,7 +960,7 @@ enum cpdf_pageLabelStyle
  * The prefix is prefix text for each label. The range is the page range the
  * labels apply to. Offset can be used to shift the numbering up or down. */
 void cpdf_addPageLabels (int, enum cpdf_pageLabelStyle, const char[], int,
-                         int, int);
+			 int, int);
 
 /* cpdf_removePageLabels(pdf) removes the page labels from the document. */
 void cpdf_removePageLabels (int);
@@ -1177,4 +1177,3 @@ char *cpdf_stampAsXObject (int, int, int);
                                   cpdf_getBookmarkDestination);*/
 /* Undocumented. */
 void cpdf_setDemo (int);
-
