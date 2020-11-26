@@ -781,63 +781,6 @@ cpdf_encryptionKind (int pdf)
   CAMLreturnT (int, Int_val (out_v));
 }
 
-enum cpdf_pdfStatus
-{ cpdf_notEncrypted,
-  cpdf_encrypted,
-  cpdf_wasDecryptedWithUser,
-  cpdf_wasDecryptedWithOwner
-};
-
-enum cpdf_pdfStatus
-cpdf_lookupPdfStatus (int pdf)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (fn, pdf_v, out);
-  fn = *caml_named_value ("lookupPdfStatus");
-  pdf_v = Val_int (pdf);
-  out = caml_callback (fn, pdf_v);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out));
-}
-
-
-int
-cpdf_hasPermissionStatus (int pdf, enum cpdf_permission tocheck)
-{
-  CAMLparam0 ();
-  CAMLlocal4 (fn, pdf_v, tocheck_v, out_v);
-  fn = *caml_named_value ("hasPermissionStatus");
-  pdf_v = Val_int (pdf);
-  tocheck_v = Val_int (tocheck);
-  out_v = caml_callback2 (fn, pdf_v, tocheck_v);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out_v));
-}
-
-int
-cpdf_lookupPdfEncryption (int pdf)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (fn, pdf_v, out_v);
-  fn = *caml_named_value ("lookupPdfEncryption");
-  pdf_v = Val_int (pdf);
-  out_v = caml_callback (fn, pdf_v);
-  updateLastError ();
-  CAMLreturnT (int, Int_val (out_v));
-}
-
-char *
-cpdf_lookupPdfUserPassword (int pdf)
-{
-  CAMLparam0 ();
-  CAMLlocal3 (fn, pdf_v, out_v);
-  fn = *caml_named_value ("lookupPdfUserPassword");
-  pdf_v = Val_int (pdf);
-  out_v = caml_callback (fn, pdf_v);
-  updateLastError ();
-  CAMLreturnT (char *, (char *) String_val (out_v));
-}
-
 
 /* CHAPTER 2. Merging and Splitting */
 

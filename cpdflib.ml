@@ -369,6 +369,8 @@ let flatten_encryptionKind = function
   | Some Pdfwrite.AES256bitISO true -> 7
   | Some Pdfwrite.AES256bitISO false -> 8
 
+(* 20/11/2020: We have removed status stuff from cpdflibwrapper, but left the machinery here for now *)
+
 (* hasPermissionStatus looks for a permission in the /status/ of a PDF, not the PDF itself *)
 let hasPermissionStatus i tocheck =
   if !dbg then flprint "Cpdflib.hasPermissionStatus\n";
