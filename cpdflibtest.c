@@ -397,48 +397,76 @@ main (int argc, char **argv)
 /* Not included in the library version */
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
+  printf ("***** CHAPTER 8. Logos, Watermarks and Stamps\n");
+  struct cpdf_position textpos = {.cpdf_anchor = cpdf_topLeft,.cpdf_coord1 =
+      20,.cpdf_coord2 = 20
+  };
+  int textfile = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int textfile_all = cpdf_all(textfile);
+  printf ("---cpdf_addText()\n");
+  cpdf_addText (false,           /* Just get metrics, don't add text */
+                textfile,       /* pdf */
+                textfile_all,   /* range */
+                "Some Text~~~~~~~~~~!", /* text */
+                textpos,        /* position */
+                1.0,            /* line spacing */
+                1,              /* starting bates number */
+                cpdf_timesRoman,        /* font */
+                20,             /* font size */
+                0.5,            /* r */
+                0.5,            /* g */
+                0.5,            /* b */
+                false,          /* underneath */
+                false,          /* relative to crop box */
+                true,           /* outline text */
+                0.5,            /* opacity */
+                cpdf_leftJustify,       /* justification */
+                false,          /* midline */
+                false,          /* topline */
+                "",             /* filename */
+                1.0,            /* line width */
+                false);         /* embed fonts */
+  prerr();
+  printf ("---cpdf_addTextSimple()\n");
+  cpdf_addTextSimple (textfile, textfile_all, "The text!", textpos, cpdf_timesRoman, 50.0);
+  prerr();
+  cpdf_toFile (textfile, "testoutputs/added_text.pdf", false, false);
+  printf ("---cpdf_removeText()\n");
+  cpdf_removeText (textfile, textfile_all);
+  cpdf_toFile (textfile, "testoutputs/removed_text.pdf", false, false);
+  prerr();
+  int width = cpdf_textWidth (cpdf_timesRoman, "What is the width of this?");
 
-/*void cpdf_stampOn (int, int, int);
-void cpdf_stampUnder (int, int, int);
-void cpdf_stampExtended (int, int, int, int, int, struct cpdf_position, int);
-int cpdf_combinePages (int, int);
-void cpdf_addText (int,         
-                   int,         
-                   int,         
-                   const char[],        
-                   struct cpdf_position,        
-                   double,
-                   int,  
-                   enum cpdf_font,
-                   double,     
-                   double,   
-                   double,  
-                   double, 
-                   int,       
-                   int,     
-                   int,      
-                   double,    
-                   enum cpdf_justification,
-                   int,  
-                   int, 
-                   const char[], 
-                   double,   
-                   int      
-  );
-void cpdf_addTextSimple (int, 
-                         int, 
-                         const char[],
-                         struct cpdf_position,
-                         enum cpdf_font,
-                         double);
-int cpdf_addTextHowMany (void);
-char *cpdf_addTextReturnText (int);
-double cpdf_addTextReturnX (int);
-double cpdf_addTextReturnY (int);
-double cpdf_addTextReturnRotation (int);
-double cpdf_addTextReturnBaselineAdjustment (void);
-void cpdf_removeText (int, int);
-int cpdf_textWidth (enum cpdf_font, const char[]);*/
+  int stamp = cpdf_fromFile ("logo.pdf", "");
+  int stampee = cpdf_fromFile ("cpdflibmanual.pdf", "");
+  int stamp_range = cpdf_all (stamp);
+  printf ("---cpdf_stampOn()\n");
+  cpdf_stampOn (stamp, stampee, stamp_range);
+  prerr();
+  printf ("---cpdf_stampUnder()\n");
+  cpdf_stampUnder (stamp, stampee, stamp_range);
+  prerr();
+  struct cpdf_position pos = {.cpdf_anchor = cpdf_topLeft,.cpdf_coord1 =
+      20,.cpdf_coord2 = 20
+  };
+  printf ("---cpdf_stampExtended()\n");
+  cpdf_stampExtended (stamp, stampee, stamp_range, true, true, pos, true);
+  prerr();
+  cpdf_toFile (stamp, "testoutputs/stamp_after.pdf", false, false);
+  cpdf_toFile (stampee, "testoutputs/stampee_after.pdf", false, false);
+  int c1 = cpdf_fromFile ("logo.pdf", "");
+  int c2 = cpdf_fromFile ("cpdflibmanual.pdf", "");
+  printf ("---cpdf_combinePages()\n");
+  int c3 = cpdf_combinePages (c1, c2);
+  cpdf_toFile (c3, "testoutputs/c3after.pdf", false, false);
+  cpdf_deletePdf(stamp);
+  cpdf_deletePdf(stampee);
+  cpdf_deletePdf(c1);
+  cpdf_deletePdf(c2);
+  cpdf_deletePdf(c3);
+  cpdf_deletePdf(textfile);
+  cpdf_deleteRange(stamp_range);
+  cpdf_deleteRange(textfile_all);
 
 /* CHAPTER 9. Multipage facilities */
   printf ("***** CHAPTER 9. Multipage facilities\n");

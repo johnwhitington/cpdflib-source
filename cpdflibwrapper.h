@@ -634,19 +634,6 @@ void cpdf_addTextSimple (int,	/* Document */
 			 enum cpdf_font,	/* font */
 			 double);	/* font size */
 
-/* To return metrics about the text which would be added. Call cpdf_addText
- * first with the first argument set to false, and the other arguments filled
- * in as appropriate. Now, the metrics have been collected. Call
- * cpdf_addTextHowMany to find out how many lines of text there are. Now, for
- * each line (0...n-1), the functions cpdf_addTextReturn* give the metrics of
- * the text as calculated. */
-int cpdf_addTextHowMany (void);
-char *cpdf_addTextReturnText (int);
-double cpdf_addTextReturnX (int);
-double cpdf_addTextReturnY (int);
-double cpdf_addTextReturnRotation (int);
-double cpdf_addTextReturnBaselineAdjustment (void);
-
 /* cpdf_removeText(pdf, range) will remove any text added by libcpdf from the
  * given pages. */
 void cpdf_removeText (int, int);
