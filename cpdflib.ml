@@ -2429,7 +2429,7 @@ let startGetPageLabels pdf =
     labels := Array.of_list (Pdfpagelabels.read (lookup_pdf pdf));
     Array.length !labels
   with
-    e -> handle_error "getPageLabelRange\n" e; err_int
+    e -> handle_error "startGetPageLabels\n" e; err_int
 
 let int_of_labelstyle = function
   | Pdfpagelabels.DecimalArabic -> 0
