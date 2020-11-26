@@ -133,6 +133,35 @@ main (int argc, char **argv)
   printf ("---cpdf_isInRange()\n");
   int range_is_in_range = cpdf_isInRange (range_all, 5);
   prerr ();
+  printf ("---cpdf_parsePagespec()\n");
+  int rfrompagespec = cpdf_parsePagespec (f2, "1-2,5-end");
+  prerr ();
+  printf ("---cpdf_validatePagespec()\n");
+  printf ("Validating pagespec gives %i\n", cpdf_validatePagespec ("1-2,5-end"));
+  prerr ();
+  printf ("---cpdf_stringOfPagespec()\n");
+  printf ("String of pagespec is %s\n", cpdf_stringOfPagespec (f2, range));
+  prerr ();
+  printf ("---cpdf_blankRange()\n");
+  int br = cpdf_blankRange();
+  prerr ();
+  printf ("---cpdf_pages()\n");
+  printf ("Pages = %i\n", cpdf_pages(f2));
+  prerr ();
+  printf ("---cpdf_pagesFast()\n");
+  printf ("Pages = %i\n", cpdf_pagesFast("", "cpdflibmanual.pdf"));
+  prerr ();
+  printf ("---cpdf_toFile()\n");
+  cpdf_toFile (f2, "testoutputs/tofile.pdf", false, false);
+  prerr ();
+  printf ("---cpdf_toFileExt()\n");
+  cpdf_toFileExt (f2, "testoutputs/tofileext.pdf", false, true, true, true, true);
+  prerr ();
+  printf ("---cpdf_isEncrypted()\n");
+  printf ("isencrypted:%i\n", cpdf_isEncrypted(f2));
+  prerr ();
+  printf ("---cpdf_isLinearized()\n");
+  printf ("islinearized:%i\n", cpdf_isLinearized("cpdflibmanual.pdf"));
   cpdf_deletePdf (f2);
   cpdf_deletePdf (frommemlazy);
   cpdf_deletePdf (blankdoc);
@@ -148,20 +177,11 @@ main (int argc, char **argv)
   cpdf_deleteRange (range_get);
   cpdf_deleteRange (range_add);
   cpdf_deleteRange (range_is_in_range);
+  cpdf_deleteRange (rfrompagespec);
+  cpdf_deleteRange (br);
   cpdf_onExit ();
 
 /*
-int cpdf_parsePagespec (int, const char[]);
-int cpdf_validatePagespec (const char[]);
-char *cpdf_stringOfPagespec (int, int);
-int cpdf_blankRange (void);
-int cpdf_pages (int);
-int cpdf_pagesFast (const char[], const char[]);
-void cpdf_toFile (int, const char[], int, int);
-void cpdf_toFileExt (int, const char[], int, int, int, int, int);
-void *cpdf_toMemory (int, int, int, int *);
-int cpdf_isEncrypted (int);
-int is_linearized (const char[]);
 void cpdf_decryptPdf (int, const char[]);
 void cpdf_decryptPdfOwner (int, const char[]);
 void cpdf_toFileEncrypted

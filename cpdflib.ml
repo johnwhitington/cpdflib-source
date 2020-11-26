@@ -429,6 +429,7 @@ let _ = Callback.register "lookupPdfUserPassword" lookupPdfUserPassword
 
 let parsePagespec pdf str =
   if !dbg then flprint "Cpdflib.parsePagespec\n";
+  Printf.printf "Parse_pagespec: %i:%s\n" pdf str;
   try
     new_range (Array.of_list (Cpdf.parse_pagespec (lookup_pdf pdf) str))
   with
