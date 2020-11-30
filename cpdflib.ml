@@ -2493,7 +2493,7 @@ let onexit () =
   Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
   Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
   Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
-  flprint "\n"
+  print_string "\n"
 
 let _ = Callback.register "onexit" onexit
 
