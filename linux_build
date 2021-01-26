@@ -1,4 +1,13 @@
 #!/bin/bash
+cfiles=(cpdflibwrapper)
+finalcfile=cpdflibtest
+libname=cpdf
+mlfiles=(cpdflib)
+mlifiles=(cpdflib)
+mllibs=(unix)
+ocamlfind=ocamlfind
+ocamlfind_packs=(camlpdf cpdf)
+stubs=(camlpdf)
 echo ***EXTRACTING INFORMATION
 #Extract some information from ocamlc and set up basic parameters
 ranlib=`ocamlc -config 2>/dev/null | grep ranlib | sed 's/ranlib: //'`
@@ -105,6 +114,7 @@ $ocamlfind ocamlc -c ${finalcfile}.c
 linkflags="-L. -l${libname} -L$libdir $camllink $native_c_libraries"
 echo "STATIC LINKER: "$link
 echo "STATIC LINKER FLAGS: "$linkflags
+echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
 $link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
 echo ***BUILD example executable with dynamic .dll library on Windows
 #Build an example executable, with dynamic .dll library on Windows
