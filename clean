@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -f *.a *.o *.cmi *.cmx *.dll cpdflibtest
+rm -f *.a *.o *.cmi *.cmx *.dll *.so *.dylib cpdflibtest cpdflibtest-withshared
 rm -f testoutputs/*
 rm -f foo
 rm -f merged.pdf merge
