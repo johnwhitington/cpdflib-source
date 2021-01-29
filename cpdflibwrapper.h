@@ -245,9 +245,6 @@ void *cpdf_toMemory (int, int, int, int *);
 /* cpdf_isEncrypted(pdf) returns true if a documented is encrypted, false otherwise. */
 int cpdf_isEncrypted (int);
 
-/* Given a filename, is a PDF linearized? */
-int is_linearized (const char[]);
-
 /* cpdf_decryptPdf(pdf, userpw) attempts to decrypt a PDF using the given user
  * password. The error code is non-zero if the decryption fails. */
 void cpdf_decryptPdf (int, const char[]);
