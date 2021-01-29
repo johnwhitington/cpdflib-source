@@ -282,7 +282,7 @@ enum cpdf_encryptionMethod
 };
 
 /* cpdf_toFileEncrypted(pdf, encryption_method, permissions, permission_length,
- * owner_password, user password, linearize, makeid) writes a file as
+ * owner_password, user password, linearize, makeid, filename) writes a file as
  * encrypted. */
 void cpdf_toFileEncrypted
   (int, int, int *, int, const char[], const char[], int, int, const char[]);
