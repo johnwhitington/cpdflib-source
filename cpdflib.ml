@@ -52,7 +52,8 @@ let getLastErrorString () =
 
 (* Clear the error status *)
 let clearError () =
-  lastError := noerror
+  lastError := noerror;
+  lastErrorString := ""
 
 (* Used within all functions to wrap the error up *)
 let handle_error fn e =

@@ -73,6 +73,7 @@ cpdf_clearError (void)
   unit_v = Val_unit;
   result_v = caml_callback (clearError_v, unit_v);
   cpdf_lastError = 0;
+  cpdf_lastErrorString = "";
   CAMLreturn0;
 }
 

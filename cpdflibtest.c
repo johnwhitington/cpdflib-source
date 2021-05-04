@@ -7,6 +7,7 @@ void
 prerr (void)
 {
   printf ("(%i | %s)\n", cpdf_lastError, cpdf_lastErrorString);
+  cpdf_clearError();
 }
 
 int
@@ -599,7 +600,9 @@ main (int argc, char **argv)
   cpdf_toFile (info, "testoutputs/setinfo.pdf", false, false);
   printf ("---cpdf_getDateComponents()\n");
   int year, month, day, hour, minute, second, hour_offset, minute_offset;
-  cpdf_getDateComponents ("D:20061108125017Z", &year, &month, &day, &hour,
+  //cpdf_getDateComponents ("D:20061108125017Z", &year, &month, &day, &hour,
+//			  &minute, &second, &hour_offset, &minute_offset);
+  cpdf_getDateComponents ("now", &year, &month, &day, &hour,
 			  &minute, &second, &hour_offset, &minute_offset);
   prerr ();
   printf
