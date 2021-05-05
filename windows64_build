@@ -4,7 +4,7 @@ finalcfile=cpdflibtest
 libname=cpdf
 mlfiles=(cpdflib)
 mlifiles=(cpdflib)
-mllibs=(unix)
+mllibs=()
 ocamlfind=ocamlfind
 ocamlfind_packs=(camlpdf cpdf)
 stubs=(camlpdf)
@@ -36,7 +36,7 @@ echo exesuffix: $exesuffix
 if [ ${#mllibs[@]} -gt 0 ]; then
 camllibs=$(printf "%s.cmxa " "${mllibs[@]}")
 fi
-if [ ${#mllibs[@]} -gt 0 ]; then
+if [ ${#mlfiles[@]} -gt 0 ]; then
 camlcmx=$(printf "%s.cmx " "${mlfiles[@]}")
 fi
 if [ ${#mllibs[@]} -gt 0 ]; then
