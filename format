@@ -1,0 +1,3 @@
+clang-format -style=Google -i cpdflibwrapper.h
+clang-format -style=Google -i cpdflibwrapper.c
+clang-format -style=Google -i cpdflibtest.c

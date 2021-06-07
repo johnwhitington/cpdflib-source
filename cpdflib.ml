@@ -18,9 +18,11 @@ let _ = Callback.register "version" version
 (* Demo Handling *)
 let demo = ref false 
 
+let ppstub f n p = (f n p, n, Pdftransform.i_matrix)
+
 let nobble pdf =
   if !demo then
-    Cpdf.recompress_pdf (Cpdf.process_pages (Cpdf.nobble_page pdf) pdf (ilist 1 (Pdfpage.endpage pdf)))
+    Cpdf.recompress_pdf (Cpdf.process_pages (ppstub (Cpdf.nobble_page pdf)) pdf (ilist 1 (Pdfpage.endpage pdf)))
   else
     pdf
 

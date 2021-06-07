@@ -12,15 +12,15 @@ directory).
 Prerequisites for building:
 
 1. OCaml
-2. Ocamlfind
-3. CamlPDF, same versino as cpdflib
+2. OCamlfind
+3. CamlPDF, same version as cpdflib
 4. CPDF, same version as cpdflib
 
-To build, just run ./build. This makes the static library libcpdf.a and, on
-Windows, the dynamic library libcpdf.dll. In addition, it builds the
-libcpdftest binary using static linking. This contains tests which exercise
-every libcpdf function.
+To build, just run ./build. This makes the static library libcpdf.a (or
+similar) and the dynamic library libcpdf.dll (or similar). In addition, it
+builds the libcpdftest binary using static and dynamic linking. This contains
+tests which exercise every libcpdf function.
 
-The build script also outputs suitable linker flags.
+The build script also outputs suitable linker flags to standard output.
 
 contact@coherentgraphics.co.uk
