@@ -2319,7 +2319,7 @@ let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 
 
-(* CHAPTER 15. Miscellaneous *)
+(* CHAPTER 17. Miscellaneous *)
 let draft pdf range boxes =
   if !dbg then flprint "Cpdflib.draft\n";
   try
@@ -2491,14 +2491,6 @@ let _ = Callback.register "getPageLabelRange" getPageLabelRange
 let _ = Callback.register "endGetPageLabels" endGetPageLabels
 let _ = Callback.register "getPageLabelStringForPage" getPageLabelStringForPage
 
-let onexit () =
-  if !dbg then flprint "Cpdflib.onexit\n";
-  Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
-  Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
-  Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
-  print_string "\n"
-
-let _ = Callback.register "onexit" onexit
 
 (* Look up the pdf, squeeze it with Cpdf.squeeze *)
 let squeezeInMemory pdf =
@@ -2511,6 +2503,7 @@ let squeezeInMemory pdf =
 
 let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
+(* CHAPTER 15. PDF and JSON *)
 let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
   try
@@ -2531,6 +2524,8 @@ let outputJSON filename parse_content no_stream_data pdf =
 
 let _ = Callback.register "outputJSON" outputJSON
 
+
+(* CHAPTER 16. Optional Content Groups *)
 let ocgnamelist = ref [||]
 
 let startGetOCGList pdf =
@@ -2597,4 +2592,11 @@ let stampAsXObject pdf range stamp_pdf =
 
 let _ = Callback.register "stampAsXObject" stampAsXObject
 
+let onexit () =
+  if !dbg then flprint "Cpdflib.onexit\n";
+  Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
+  Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
+  Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
+  print_string "\n"
 
+let _ = Callback.register "onexit" onexit
