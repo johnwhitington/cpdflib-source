@@ -1232,7 +1232,15 @@ void cpdf_outputJSON(const char[], int, int, int);
 
 /* CHAPTER 16. Optional Content Groups */
 
-/* FIXME ADD cpdf_OCGList */
+/* Begin retrieving optional content group names. The serial number 0..<n - 1>
+ * is returned. */
+int cpdf_startGetOCGList(int pdf);
+
+/* Retrieve an OCG name, given its serial number 0..<n - 1> */
+char *cpdf_OCGListEntry(int i);
+
+/* End retrieval of optional content group names. */
+void cpdf_engGetOCGList(void);
 
 /* cpdf_OCGRename(pdf, from, to) will rename an optional content group. */
 void cpdf_OCGRename(int, const char[], const char[]);

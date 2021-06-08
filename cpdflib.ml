@@ -2531,6 +2531,34 @@ let outputJSON filename parse_content no_stream_data pdf =
 
 let _ = Callback.register "outputJSON" outputJSON
 
+let ocgnamelist = ref [||]
+
+let startGetOCGList pdf =
+  if !dbg then flprint "Cpdflib.startGetOCGList\n";
+  try
+    ocgnamelist := Array.of_list (Cpdf.ocg_get_list (lookup_pdf pdf));
+    Array.length !ocgnamelist;
+  with
+    e -> handle_error "startGetOCGList" e; err_int
+
+let ocgListEntry n =
+  if !dbg then flprint "Cpdflib.ocgListEntry\n";
+  try
+    Array.get !ocgnamelist n
+  with
+    e -> handle_error "ocgListEntry" e; err_string
+
+let endGetOCGList () =
+  if !dbg then flprint "Cpdflib.endGetOCGList";
+  try
+    ocgnamelist := [||]
+  with
+    e -> handle_error "endGetOCGList" e; err_unit
+
+let _ = Callback.register "startGetOCGList" startGetOCGList
+let _ = Callback.register "ocgListEntry" ocgListEntry
+let _ = Callback.register "endGetOCGList" endGetOCGList
+
 let ocgCoalesce pdf =
   if !dbg then flprint "Cpdflib.ocgCoalesce";
   try

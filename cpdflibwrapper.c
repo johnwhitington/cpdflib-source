@@ -2762,6 +2762,20 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
 }
 
 /* CHAPTER 16. Optional Content Groups */
+int cpdf_startGetOCGList(int pdf)
+{
+   return 1;
+}
+
+char *cpdf_OCGListEntry(int i)
+{
+  return "foo";
+}
+
+void cpdf_endGetOCGList()
+{
+}
+
 void cpdf_OCGCoalesce(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, pdf_v, unit_v);
