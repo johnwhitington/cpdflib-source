@@ -767,6 +767,16 @@ void cpdf_removeText(int, int);
  */
 int cpdf_textWidth(enum cpdf_font, const char[]);
 
+/* cpdf_addContent(content, before, range, pdf) adds page content before (if
+ * true) or after (if false) the existing content to pages in the given range
+ * in the given PDF. */
+void cpdf_addContent(const char[], int, int, int);
+
+/* cpdf_stampAsXObject(pdf, range, stamp_pdf) stamps stamp_pdf onto the pages
+ * in the given range in pdf as a shared Form XObject. The name of the
+ * newly-created XObject is returned. */
+char *cpdf_stampAsXObject(int, int, int);
+
 /* CHAPTER 9. Multipage facilities */
 
 /*
@@ -1212,7 +1222,31 @@ void cpdf_removeFonts(int);
  */
 void cpdf_copyFont(int, int, int, int, const char[]);
 
-/* CHAPTER 15. Miscellaneous */
+/* CHAPTER 15. PDF and JSON */
+
+/* cpdf_outputJSON(filename, parse_content, no_stream_data, pdf) outputs a PDF
+ * in JSON format to the given filename. If parse_content is true, page content
+ * is parsed. If no_stream_data is true, all stream data is supressed entirely.
+ * */
+void cpdf_outputJSON(const char[], int, int, int);
+
+/* CHAPTER 16. Optional Content Groups */
+
+/* FIXME ADD cpdf_OCGList */
+
+/* cpdf_OCGRename(pdf, from, to) will rename an optional content group. */
+void cpdf_OCGRename(int, const char[], const char[]);
+
+/* Ensure that every optional content group appears in the OCG order list. */
+void cpdf_OCGOrderAll(int);
+
+/* Coalesce optional content groups. For example, if we merge or stamp two
+ * files both with an OCG called "Layer 1", we will have two different optional
+ * content groups. This function will merge the two into a single optional
+ * content group. */
+void cpdf_OCGCoalesce(int);
+
+/* CHAPTER 17. Miscellaneous */
 
 /*
  * cpdf_draft(pdf, range, boxes) removes images on the given pages, replacing
@@ -1262,20 +1296,7 @@ void cpdf_removeDictEntry(int, const char[]);
  */
 void cpdf_removeClipping(int, int);
 
-/* CHAPTER UNDOC */
-
-/* Undocumented. To come in v2.4 */
-void cpdf_addContent(const char[], int, int, int);
-
-void cpdf_outputJSON(const char[], int, int, int);
-
-void cpdf_OCGCoalesce(int);
-
-void cpdf_OCGRename(int, const char[], const char[]);
-
-void cpdf_OCGOrderAll(int);
-
-char *cpdf_stampAsXObject(int, int, int);
+/* CHAPTER X. Internal or undocumented. */
 
 /* Destination extention to bookmarks code. Not implemented in cpdflib yet. */
 
@@ -1333,5 +1354,6 @@ char *cpdf_stampAsXObject(int, int, int);
  * void cpdf_setBookmarkDestination (int, struct cpdf_bookmarkDestination
  * cpdf_getBookmarkDestination);
  */
-/* Undocumented. */
+
+/* Internal. Used for demo versions of the commercial version of cpdflib. */
 void cpdf_setDemo(int);
