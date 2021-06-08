@@ -1240,7 +1240,7 @@ int cpdf_startGetOCGList(int pdf);
 char *cpdf_OCGListEntry(int i);
 
 /* End retrieval of optional content group names. */
-void cpdf_engGetOCGList(void);
+void cpdf_endGetOCGList(void);
 
 /* cpdf_OCGRename(pdf, from, to) will rename an optional content group. */
 void cpdf_OCGRename(int, const char[], const char[]);
