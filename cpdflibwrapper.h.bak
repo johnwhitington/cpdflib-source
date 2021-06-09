@@ -46,7 +46,7 @@ void cpdf_onExit(void);
 
 /*
  * cpdf_fromFile(filename, userpw) loads a PDF file from a given file. Supply
- * a user password (possibly blank) in case the file is encrypted. It won't be
+ * a user password (possibly blank) in case the file is encypted. It won't be
  * decrypted, but sometimes the password is needed just to load the file.
  */
 int cpdf_fromFile(const char[], const char[]);
@@ -55,7 +55,7 @@ int cpdf_fromFile(const char[], const char[]);
  * cpdf_fromFileLazy(pdf, userpw) loads a PDF from a file, doing only minimal
  * parsing. The objects will be read and parsed when they are actually
  * needed. Use this when the whole file won't be required. Also supply a user
- * password (possibly blank) in case the file is encrypted. It won't be
+ * password (possibly blank) in case the file is encypted. It won't be
  * decrypted, but sometimes the password is needed just to load the file.
  */
 int cpdf_fromFileLazy(const char[], const char[]);
@@ -337,7 +337,7 @@ enum cpdf_encryptionMethod {
   cpdf_pdf128bit,         /* 128 bit RC4 encryption */
   cpdf_aes128bitfalse,    /* 128 bit AES encryption, do not encrypt
                            * metadata. */
-  cpdf_aes128bittrue,     /* 128 bit AES encryption, encrypt metadata */
+  cpdf_aes128bittrue,     /* 128 bit AES encryption, encrypt metadat */
   cpdf_aes256bitfalse,    /* Deprecated. Do not use for new files */
   cpdf_aes256bittrue,     /* Deprecated. Do not use for new files */
   cpdf_aes256bitisofalse, /* 256 bit AES encryption, do not encrypt
@@ -474,7 +474,7 @@ enum cpdf_anchor {
  *
  * cpdf_diagonal: Zero parameters
  *
- * cpdf_reverseDiagonal: Zero parameters
+ * cpdf_reverseDiagonal: Zero paremeters
  */
 struct cpdf_position {
   int cpdf_anchor;    /* Position anchor */
@@ -876,10 +876,10 @@ void cpdf_padMultipleBefore(int, int);
  */
 int cpdf_isLinearized(const char[]);
 
-/* cpdf_getVersion(pdf) returns the minor version number of a document. */
+/* cpdf_vetVersion(pdf) returns the minor version number of a document. */
 int cpdf_getVersion(int);
 
-/* cpdf_getMajorVersion(pdf) returns the minor version number of a document. */
+/* cpdf_vetMajorVersion(pdf) returns the minor version number of a document. */
 int cpdf_getMajorVersion(int);
 
 /* cpdf_getTitle(pdf) returns the title of a document. */
@@ -1018,7 +1018,7 @@ int cpdf_hasBox(int, int, const char[]);
 
 /*
  * These functions get a box given the document, page range, min x, max x,
- * min y, max y in points. Only succeeds if such a box exists, as checked by
+ * min y, max y in points. Only suceeds if such a box exists, as checked by
  * cpdf_hasBox.
  */
 void cpdf_getMediaBox(int, int, double *, double *, double *, double *);
@@ -1277,7 +1277,7 @@ void cpdf_copyFont(int, int, int, int, const char[]);
 
 /* cpdf_outputJSON(filename, parse_content, no_stream_data, pdf) outputs a PDF
  * in JSON format to the given filename. If parse_content is true, page content
- * is parsed. If no_stream_data is true, all stream data is suppressed entirely.
+ * is parsed. If no_stream_data is true, all stream data is supressed entirely.
  * */
 void cpdf_outputJSON(const char[], int, int, int);
 
@@ -1357,7 +1357,7 @@ void cpdf_removeClipping(int, int);
 
 /* CHAPTER X. Internal or undocumented. */
 
-/* Destination extension to bookmarks code. Not implemented in cpdflib yet. */
+/* Destination extention to bookmarks code. Not implemented in cpdflib yet. */
 
 /* /1* Structure for a Pdfdest.t *1/ */
 /* enum cpdf_targetPageType */
