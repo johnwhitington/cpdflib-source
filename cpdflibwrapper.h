@@ -38,7 +38,7 @@ void cpdf_clearError(void);
 /*
  * cpdf_onExit is a debug function which prints some information about
  * resource usage. This can be used to detect if PDFs or ranges are being
- * deallocated properly.
+ * deallocated properly. Contrary to its name, it may be run at any time.
  */
 void cpdf_onExit(void);
 
@@ -110,7 +110,7 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
 void cpdf_deletePdf(int);
 
 /*
- * Calling cpdf_replacePdf(a, b) places PDF b under number a. Name b is no
+ * Calling cpdf_replacePdf(a, b) places PDF b under number a. Number b is no
  * longer available.
  */
 void cpdf_replacePdf(int, int);
@@ -149,6 +149,8 @@ double cpdf_inOfPt(double);
  * certain pages. A page specification is a textual description of a page
  * range, such as "1-12,18-end". Here is the syntax:
  *
+ * o A range must contain no spaces.
+ *
  * o A dash (-) defines ranges, e.g. 1-5 or 6-3.
  *
  * o A comma (,) allows one to specify several ranges, e.g. 1-2,4-5.
@@ -158,7 +160,7 @@ double cpdf_inOfPt(double);
  * o The words odd and even can be used in place of or at the end of a page
  * range to restrict to just the odd or even pages.
  *
- * o  The words portrait and landscape can be used in place of or at the end of
+ * o The words portrait and landscape can be used in place of or at the end of
  * a page range to restrict to just those pages which are portrait or
  * landscape. Note that the meaning of "portrait" and "landscape" does not
  * take account of any viewing rotation in place (use cpdf_upright first, if
@@ -168,8 +170,6 @@ double cpdf_inOfPt(double);
  * o The word reverse is the same as end-1.
  *
  * o The word all is the same as 1-end.
- *
- * o A range must contain no spaces.
  *
  * o A tilde (~) defines a page number counting from the end of the document
  * rather than the beginning. Page ~1 is the last page, ~2 the penultimate
@@ -185,7 +185,7 @@ int cpdf_parsePagespec(int, const char[]);
 
 /*
  * cpdf_validatePagespec(range) validates a page specification so far as is
- * possible in the absence of the actual document
+ * possible in the absence of the actual document. Result is true if valid.
  */
 int cpdf_validatePagespec(const char[]);
 
@@ -203,7 +203,7 @@ int cpdf_blankRange(void);
 void cpdf_deleteRange(int);
 
 /*
- * cpdf_range(from, to) build a range from one page to another inclusive. For
+ * cpdf_range(from, to) builds a range from one page to another inclusive. For
  * example, cpdf_range(3,7) gives the range 3,4,5,6,7
  */
 int cpdf_range(int, int);
@@ -213,13 +213,13 @@ int cpdf_all(int);
 
 /*
  * cpdf_even(range) makes a range which contains just the even pages of
- * another range
+ * another range.
  */
 int cpdf_even(int);
 
 /*
  * cpdf_odd(range) makes a range which contains just the odd pages of another
- * range
+ * range.
  */
 int cpdf_odd(int);
 
@@ -238,7 +238,7 @@ int cpdf_difference(int, int);
 /* cpdf_removeDuplicates(range) deduplicates a range, making a new one. */
 int cpdf_removeDuplicates(int);
 
-/* cpdf_rangeLenght gives the number of pages in a range. */
+/* cpdf_rangeLength gives the number of pages in a range. */
 int cpdf_rangeLength(int);
 
 /*
@@ -271,8 +271,8 @@ int cpdf_pagesFast(const char[], const char[]);
 
 /*
  * cpdf_toFile (pdf, filename, linearize, make_id) writes the file to a given
- * filename. If linearize is true, it will be linearized. If make_id is true,
- * it will be given a new ID.
+ * filename. If linearize is true, it will be linearized if a linearizer is
+ * available. If make_id is true, it will be given a new ID.
  */
 void cpdf_toFile(int, const char[], int, int);
 
@@ -450,15 +450,31 @@ enum cpdf_anchor {
  * A cpdf_position is an anchor (above) and zero or one or two parameters
  * (cpdf_coord1, cpdf_coord2).
  *
- * cpdf_posCentre: Two parameters, x and y cpdf_posLeft: Two parameters, x and y
- * cpdf_posRight: Two parameters, x and y cpdf_top: One parameter -- distance
- * from top cpdf_topLeft: One parameter -- distance from top left
- * cpdf_topRight: One parameter -- distance from top right cpdf_left: One
- * parameter -- distance from left middle cpdf_bottomLeft: One parameter --
- * distance from bottom left cpdf_bottom: One parameter -- distance from
- * bottom cpdf_bottomRight: One parameter -- distance from bottom right
- * cpdf_right: One parameter -- distance from right cpdf_diagonal: Zero
- * parameters cpdf_reverseDiagonal: Zero paremeters
+ * cpdf_posCentre: Two parameters, x and y
+ *
+ * cpdf_posLeft: Two parameters, x and y
+ *
+ * cpdf_posRight: Two parameters, x and y
+ *
+ * cpdf_top: One parameter -- distance from top
+ *
+ * cpdf_topLeft: One parameter -- distance from top left
+ *
+ * cpdf_topRight: One parameter -- distance from top right
+ *
+ * cpdf_left: One parameter -- distance from left middle
+ *
+ * cpdf_bottomLeft: One parameter -- distance from bottom left
+ *
+ * cpdf_bottom: One parameter -- distance from bottom
+ *
+ * cpdf_bottomRight: One parameter -- distance from bottom right
+ *
+ * cpdf_right: One parameter -- distance from right
+ *
+ * cpdf_diagonal: Zero parameters
+ *
+ * cpdf_reverseDiagonal: Zero paremeters
  */
 struct cpdf_position {
   int cpdf_anchor;    /* Position anchor */
@@ -634,7 +650,7 @@ void cpdf_endSetBookmarkInfo(int);
 
 /* CHAPTER 7. Presentations */
 
-/* Not included in the library version */
+/* Not included in the library version. */
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
@@ -658,13 +674,13 @@ void cpdf_stampUnder(int, int, int);
  * true, pdf goes over pdf2, isover false, pdf goes under pdf2 -
  * scale_stamp_to_fit scales the stamp to fit the page - pos gives the
  * position to put the stamp - relative_to_cropbox: if true, pos is relative
- * to cropbox not mediabox
+ * to cropbox not mediabox.
  */
 void cpdf_stampExtended(int, int, int, int, int, struct cpdf_position, int);
 
 /*
  * cpdf_combinePages(under, over) combines the PDFs page-by-page, putting
- * each page of 'over' over each page of 'under'
+ * each page of 'over' over each page of 'under'.
  */
 int cpdf_combinePages(int, int);
 
@@ -673,21 +689,55 @@ int cpdf_combinePages(int, int);
 /*
  * Special codes
  *
- * %Page     Page number in arabic notation (1, 2, 3...) %roman    Page number
- * in lower-case roman notation (i, ii, iii...) %Roman    Page number in
- * upper-case roman notation (I, II, III...) %EndPage  Last page of document
- * in arabic notation %Label    The page label of the page %EndLabel The page
- * label of the last page %filename The full file name of the input document
- * %a        Abbreviated weekday name (Sun, Mon etc.) %A        Full weekday
- * name (Sunday, Monday etc.) %b        Abbreviated month name (Jan, Feb
- * etc.) %B        Full month name (January, February etc.) %d        Day of
- * the month (01-31) %e        Day of the month (1-31) %H        Hour in
- * 24-hour clock (00-23) %I        Hour in 12-hour clock (01-12) %j
- * Day of the year (001-366) %m        Month of the year (01-12) %M
- * Minute of the hour (00-59) %p        "a.m" or "p.m" %S        Second of
- * the minute (00-61) %T        Same as %H:%M:%S %u        Weekday (1-7, 1 =
- * Monday) %w        Weekday (0-6, 0 = Monday) %Y        Year (0000-9999) %%
- * The % character
+ * %Page     Page number in arabic notation (1, 2, 3...)
+ *
+ * %roman    Page number in lower-case roman notation (i, ii, iii...)
+ *
+ * %Roman    Page number in upper-case roman notation (I, II, III...)
+ *
+ * %EndPage  Last page of document in arabic notation
+ *
+ * %Label    The page label of the page
+ *
+ * %EndLabel The page label of the last page
+ *
+ * %filename The full file name of the input document
+ *
+ * %a        Abbreviated weekday name (Sun, Mon etc.)
+ *
+ * %A        Full weekday name (Sunday, Monday etc.)
+ *
+ * %b        Abbreviated month name (Jan, Feb etc.)
+ *
+ * %B        Full month name (January, February etc.)
+ *
+ * %d        Day of the month (01-31)
+ *
+ * %e        Day of the month (1-31)
+ *
+ * %H        Hour in 24-hour clock (00-23)
+ *
+ * %I        Hour in 12-hour clock (01-12)
+ *
+ * %j        Day of the year (001-366)
+ *
+ * %m        Month of the year (01-12)
+ *
+ * %M        Minute of the hour (00-59)
+ *
+ * %p        "a.m" or "p.m"
+ *
+ * %S        Second of the minute (00-61)
+ *
+ * %T        Same as %H:%M:%S
+ *
+ * %u        Weekday (1-7, 1 = Monday)
+ *
+ * %w        Weekday (0-6, 0 = Monday)
+ *
+ * %Y        Year (0000-9999)
+ *
+ * %%        The % character
  */
 
 /* The standard fonts */
@@ -746,7 +796,7 @@ void cpdf_addText(int,                  /* If true, don't actually add text but
                   int           /* embed fonts */
 );
 
-/* Add text, with most parameters default */
+/* Add text, with most parameters default. */
 void cpdf_addTextSimple(int,                  /* Document */
                         int,                  /* Page range */
                         const char[],         /* The text to add */
@@ -789,17 +839,17 @@ void cpdf_twoUpStack(int);
 
 /*
  * cpdf_padBefore(pdf, range) adds a blank page before each page in the given
- * range
+ * range.
  */
 void cpdf_padBefore(int, int);
 
 /*
  * cpdf_padAfter(pdf, range) adds a blank page after each page in the given
- * range
+ * range.
  */
 void cpdf_padAfter(int, int);
 
-/* cpdf_pageEvery(pdf, n) adds a blank page after every n pages */
+/* cpdf_pageEvery(pdf, n) adds a blank page after every n pages. */
 void cpdf_padEvery(int, int);
 
 /*
@@ -962,14 +1012,14 @@ int cpdf_getPageRotation(int, int);
 
 /*
  * cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
- * given box. E.g "/CropBox"
+ * given box. E.g "/CropBox".
  */
 int cpdf_hasBox(int, int, const char[]);
 
 /*
  * These functions get a box given the document, page range, min x, max x,
  * min y, max y in points. Only suceeds if such a box exists, as checked by
- * cpdf_hasBox
+ * cpdf_hasBox.
  */
 void cpdf_getMediaBox(int, int, double *, double *, double *, double *);
 void cpdf_getCropBox(int, int, double *, double *, double *, double *);
@@ -1024,25 +1074,26 @@ enum cpdf_pageMode {
 /* cpdf_setPageMode(pdf, mode) sets the page mode for a document. */
 void cpdf_setPageMode(int, enum cpdf_pageMode);
 
-/* cpdf_hideToolbar(pdf, flag) sets the hide toolbar flag */
+/* cpdf_hideToolbar(pdf, flag) sets the hide toolbar flag. */
 void cpdf_hideToolbar(int, int);
 
-/* cpdf_hideMenubar(pdf, flag) sets the hide menu bar flag */
+/* cpdf_hideMenubar(pdf, flag) sets the hide menu bar flag. */
 void cpdf_hideMenubar(int, int);
 
-/* cpdf_hideWindowUi(pdf, flag) sets the hide window UI flag */
+/* cpdf_hideWindowUi(pdf, flag) sets the hide window UI flag. */
 void cpdf_hideWindowUi(int, int);
 
-/* cpdf_fitWindow(pdf, flag) sets the fit window flag */
+/* cpdf_fitWindow(pdf, flag) sets the fit window flag. */
 void cpdf_fitWindow(int, int);
 
-/* cpdf_centerWindow(pdf, flag) sets the center window flag */
+/* cpdf_centerWindow(pdf, flag) sets the center window flag. */
 void cpdf_centerWindow(int, int);
 
-/* cpdf_displayDocTitle(pdf, flag) sets the display doc title flag */
+/* cpdf_displayDocTitle(pdf, flag) sets the display doc title flag. */
 void cpdf_displayDocTitle(int, int);
 
-/* cpdf_openAtPage(pdf, fit, pagenumber) */
+/* cpdf_openAtPage(pdf, fit, pagenumber) sets the PDF to open, possibly with
+ * zoom-to-fit, at the given page number. */
 void cpdf_openAtPage(int, int, int);
 
 /*
@@ -1063,7 +1114,7 @@ void cpdf_setMetadataFromByteArray(int, void *, int);
  */
 void *cpdf_getMetadata(int, int *);
 
-/* cpdf_removeMetadata(pdf) removes the XMP metadata from a document */
+/* cpdf_removeMetadata(pdf) removes the XMP metadata from a document. */
 void cpdf_removeMetadata(int);
 
 /*
@@ -1081,7 +1132,7 @@ void cpdf_setMetadataDate(int, const char[]);
 
 /* Styles of page label */
 enum cpdf_pageLabelStyle {
-  cpdf_decimalArabic,    /* 1,2,3... */
+  cpdf_decimalArabic,    /* 1, 2, 3... */
   cpdf_uppercaseRoman,   /* I, II, III... */
   cpdf_lowercaseRoman,   /* i, ii, iii... */
   cpdf_uppercaseLetters, /* A, B, C... */
@@ -1104,7 +1155,7 @@ void cpdf_removePageLabels(int);
 
 /*
  * cpdf_getPageLabelStringForPage(pdf, page number) calculates the full label
- * string for a given page, and returns it
+ * string for a given page, and returns it.
  */
 char *cpdf_getPageLabelStringForPage(int, int);
 
@@ -1163,16 +1214,16 @@ int cpdf_numberGetAttachments(void);
 /* Get the name of the attachment. */
 char *cpdf_getAttachmentName(int);
 
-/* Gets the page number. 0 = document level */
+/* Gets the page number. 0 = document level. */
 int cpdf_getAttachmentPage(int);
 
 /*
  * cpdf_getAttachmentData(serial number, &length) returns a pointer to the
- * data, and its length
+ * data, and its length.
  */
 void *cpdf_getAttachmentData(int, int *);
 
-/* Clean up. */
+/* Clean up after getting attachments. */
 void cpdf_endGetAttachments(void);
 
 /* CHAPTER 13. Images. */
@@ -1236,7 +1287,7 @@ void cpdf_outputJSON(const char[], int, int, int);
  * is returned. */
 int cpdf_startGetOCGList(int pdf);
 
-/* Retrieve an OCG name, given its serial number 0..<n - 1> */
+/* Retrieve an OCG name, given its serial number 0..<n - 1>. */
 char *cpdf_OCGListEntry(int i);
 
 /* End retrieval of optional content group names. */
@@ -1286,7 +1337,7 @@ void cpdf_thinLines(int, int, double);
 /* cpdf_copyId(from, to) copies the /ID from one document to another. */
 void cpdf_copyId(int, int);
 
-/* cpdf_removeId(pdf) removes a document's /ID */
+/* cpdf_removeId(pdf) removes a document's /ID. */
 void cpdf_removeId(int);
 
 /* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
@@ -1294,13 +1345,13 @@ void cpdf_setVersion(int, int);
 
 /*
  * cpdf_removeDictEntry(pdf, key) removes any dictionary entry with the given
- * key anywhere in the document
+ * key anywhere in the document.
  */
 void cpdf_removeDictEntry(int, const char[]);
 
 /*
  * cpdf_removeClipping(pdf, range) removes all clipping from pages in the
- * given range
+ * given range.
  */
 void cpdf_removeClipping(int, int);
 

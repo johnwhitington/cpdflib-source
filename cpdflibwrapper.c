@@ -2762,18 +2762,34 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
 }
 
 /* CHAPTER 16. Optional Content Groups */
-int cpdf_startGetOCGList(int pdf)
-{
-   return 1;
+int cpdf_startGetOCGList(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn_v, pdf_v, out_v);
+  fn_v = *caml_named_value("startGetOCGList");
+  pdf_v = Val_int(pdf);
+  out_v = caml_callback(fn_v, pdf_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
 }
 
-char *cpdf_OCGListEntry(int i)
-{
-  return "foo";
+char *cpdf_OCGListEntry(int serial) {
+  CAMLparam0();
+  CAMLlocal3(fn, serial_v, out_v);
+  fn = *caml_named_value("ocgListEntry");
+  serial_v = Val_int(serial);
+  out_v = caml_callback(fn, serial_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
 }
 
-void cpdf_endGetOCGList()
-{
+void cpdf_endGetOCGList(void) {
+  CAMLparam0();
+  CAMLlocal3(fn_v, unit_v, out_v);
+  fn_v = *caml_named_value("endGetOCGList");
+  unit_v = Val_unit;
+  out_v = caml_callback(fn_v, unit_v);
+  updateLastError();
+  CAMLreturn0;
 }
 
 void cpdf_OCGCoalesce(int pdf) {
