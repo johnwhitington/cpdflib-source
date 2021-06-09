@@ -2924,6 +2924,18 @@ void cpdf_setVersion(int pdf, int version) {
   CAMLreturn0;
 }
 
+void cpdf_setFullVersion(int pdf, int major, int minor) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, pdf_v, major_v, minor_v);
+  fn = *caml_named_value("setFullVersion");
+  pdf_v = Val_int(pdf);
+  major_v = Val_int(major);
+  minor_v = Val_int(minor);
+  unit = caml_callback3(fn, pdf_v, major_v, minor_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_removeDictEntry(int pdf, char *str) {
   CAMLparam0();
   CAMLlocal4(fn, inpdf, instr, out);

@@ -920,6 +920,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_setVersion()\n");
   cpdf_setVersion(misc, 1);
   prerr();
+  printf("---cpdf_setFullVersion()\n");
+  cpdf_setFullVersion(misc, 2, 0);
+  prerr();
   printf("---cpdf_removeDictEntry()\n");
   cpdf_removeDictEntry(misc, "/Producer");
   prerr();

@@ -1636,6 +1636,14 @@ let setVersion pdf version =
   with
     e -> handle_error "setVersion" e; err_unit
 
+let setFullVersion pdf major minor =
+  if !dbg then flprint "Cpdflib.setFullVersion\n";
+  try
+    (lookup_pdf pdf).Pdf.major <- major;
+    (lookup_pdf pdf).Pdf.minor <- minor
+  with
+    e -> handle_error "setFullVersion" e; err_unit
+
 let setTitle pdf title =
   if !dbg then flprint "Cpdflib.setTitle\n";
   try
@@ -2112,6 +2120,7 @@ let _ = Callback.register "getModificationDateXMP" getModificationDateXMP
 let _ = Callback.register "getDateComponents" getDateComponents
 let _ = Callback.register "dateStringOfComponents" dateStringOfComponents
 let _ = Callback.register "setVersion" setVersion
+let _ = Callback.register "setFullVersion" setFullVersion
 let _ = Callback.register "setTitle" setTitle
 let _ = Callback.register "setAuthor" setAuthor
 let _ = Callback.register "setSubject" setSubject

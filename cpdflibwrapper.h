@@ -1343,6 +1343,10 @@ void cpdf_removeId(int);
 /* cpdf_setVersion(pdf, version) sets the minor version number of a document. */
 void cpdf_setVersion(int, int);
 
+/* cpdf_setFullVersion(pdf, major_version, minor_version) sets the full version
+ * number of a document. */
+void cpdf_setFullVersion(int, int, int);
+
 /*
  * cpdf_removeDictEntry(pdf, key) removes any dictionary entry with the given
  * key anywhere in the document.

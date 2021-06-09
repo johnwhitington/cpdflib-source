@@ -249,6 +249,7 @@ val thinLines : pdf -> range -> float -> unit
 val copyId : pdf -> int -> unit
 val removeId : pdf -> unit
 val setVersion : pdf -> int -> unit
+val setFullVersion : pdf -> int -> int -> unit
 val removeDictEntry : pdf -> string -> unit
 val removeClipping : pdf -> range -> unit
 
