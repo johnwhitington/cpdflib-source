@@ -1,6 +1,6 @@
 (* CHAPTER 1. Basics *)
 type pdf
-val setdemo : bool -> unit
+
 val fast : bool ref
 val setFast : unit -> unit
 val setSlow : unit -> unit
@@ -114,6 +114,8 @@ val stampExtended : pdf -> pdf -> range -> bool -> bool -> float -> float -> int
 val combinePages : pdf -> pdf -> pdf
 val addText : bool -> pdf -> int -> string -> int -> float -> float -> float -> int -> Pdftext.standard_font -> float -> float -> float -> float -> bool -> bool -> bool -> float -> Cpdf.justification -> bool -> bool -> string -> float -> bool -> unit
 val removeText : pdf -> range -> unit
+val addContent : string -> bool -> int -> int -> unit
+val stampAsXObject : int -> int -> int -> string
  
 (* CHAPTER 9. Multipage facilities *)
 val twoUp : pdf -> unit
@@ -226,7 +228,18 @@ val endGetFontInfo : unit -> unit
 val copyFont : pdf -> pdf -> range -> int -> string -> unit
 val removeFonts : int -> unit
 
-(* CHAPTER 15. Miscellaneous *)
+(* CHAPTER 15. PDF and JSON *)
+val outputJSON : string -> bool -> bool -> int -> unit
+
+(* CHAPTER 16. Optional Content Groups *)
+val startGetOCGList : int -> int
+val ocgListEntry : int -> string
+val endGetOCGList : unit -> unit
+val ocgCoalesce : int -> unit
+val ocgRename : int -> string -> string -> unit
+val ocgOrderAll : int -> unit
+
+(* CHAPTER 17. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
 val removeAllText : pdf -> range -> unit
 val blackText : pdf -> range -> unit
@@ -236,13 +249,9 @@ val thinLines : pdf -> range -> float -> unit
 val copyId : pdf -> int -> unit
 val removeId : pdf -> unit
 val setVersion : pdf -> int -> unit
+val setFullVersion : pdf -> int -> int -> unit
 val removeDictEntry : pdf -> string -> unit
 val removeClipping : pdf -> range -> unit
 
-(* UNCATALOGUED AS YET *)
-val addContent : string -> bool -> int -> int -> unit
-val outputJSON : string -> bool -> bool -> int -> unit
-val ocgCoalesce : int -> unit
-val ocgRename : int -> string -> string -> unit
-val ocgOrderAll : int -> unit
-val stampAsXObject : int -> int -> int -> string
+(* CHAPTER X. Undocumented or internal *)
+val setdemo : bool -> unit

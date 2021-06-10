@@ -1352,6 +1352,31 @@ int cpdf_textWidth(int font, char *text) {
   CAMLreturnT(int, Int_val(out_v));
 }
 
+void cpdf_addContent(char *s, int before, int range, int pdf) {
+  CAMLparam0();
+  CAMLlocal2(fn, out);
+  CAMLlocalN(args, 4);
+  args[0] = caml_copy_string(s);
+  args[1] = Val_int(before);
+  args[2] = Val_int(range);
+  args[3] = Val_int(pdf);
+  fn = *caml_named_value("addContent");
+  out = caml_callbackN(fn, 4, args);
+  CAMLreturn0;
+}
+
+char *cpdf_stampAsXObject(int pdf, int range, int stamp_pdf) {
+  CAMLparam0();
+  CAMLlocal5(pdf_v, range_v, stamp_pdf_v, fn, name_v);
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  stamp_pdf_v = Val_int(stamp_pdf);
+  fn = *caml_named_value("stampAsXObject");
+  name_v = caml_callback3(fn, pdf_v, range_v, stamp_pdf_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(name_v));
+}
+
 /* CHAPTER 9. Multipage facilities */
 
 void cpdf_twoUp(int pdf) {
@@ -2720,7 +2745,85 @@ void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber,
   CAMLreturn0;
 }
 
-/* CHAPTER 15. Miscellaneous */
+/* CHAPTER 15. PDF and JSON */
+
+void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
+                     int pdf) {
+  CAMLparam0();
+  CAMLlocal2(fn, out);
+  CAMLlocalN(args, 4);
+  args[0] = caml_copy_string(filename);
+  args[1] = Val_int(parse_content);
+  args[2] = Val_int(no_stream_data);
+  args[3] = Val_int(pdf);
+  fn = *caml_named_value("outputJSON");
+  out = caml_callbackN(fn, 4, args);
+  CAMLreturn0;
+}
+
+/* CHAPTER 16. Optional Content Groups */
+int cpdf_startGetOCGList(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn_v, pdf_v, out_v);
+  fn_v = *caml_named_value("startGetOCGList");
+  pdf_v = Val_int(pdf);
+  out_v = caml_callback(fn_v, pdf_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+
+char *cpdf_OCGListEntry(int serial) {
+  CAMLparam0();
+  CAMLlocal3(fn, serial_v, out_v);
+  fn = *caml_named_value("ocgListEntry");
+  serial_v = Val_int(serial);
+  out_v = caml_callback(fn, serial_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+
+void cpdf_endGetOCGList(void) {
+  CAMLparam0();
+  CAMLlocal3(fn_v, unit_v, out_v);
+  fn_v = *caml_named_value("endGetOCGList");
+  unit_v = Val_unit;
+  out_v = caml_callback(fn_v, unit_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_OCGCoalesce(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, pdf_v, unit_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgCoalesce");
+  unit_v = caml_callback(fn, pdf_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_OCGRename(int pdf, char *f, char *t) {
+  CAMLparam0();
+  CAMLlocal5(pdf_v, unit_v, fn, f_v, t_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgRename");
+  f_v = caml_copy_string(f);
+  t_v = caml_copy_string(t);
+  unit_v = caml_callback3(fn, pdf_v, f_v, t_v);
+  CAMLreturn0;
+}
+
+void cpdf_OCGOrderAll(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, pdf_v, unit_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("ocgOrderAll");
+  unit_v = caml_callback(fn, pdf_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
+/* CHAPTER 17. Miscellaneous */
 void cpdf_draft(int pdf, int range, int boxes) {
   CAMLparam0();
   CAMLlocal5(unit, pdf_v, range_v, boxes_v, fn);
@@ -2821,6 +2924,18 @@ void cpdf_setVersion(int pdf, int version) {
   CAMLreturn0;
 }
 
+void cpdf_setFullVersion(int pdf, int major, int minor) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, pdf_v, major_v, minor_v);
+  fn = *caml_named_value("setFullVersion");
+  pdf_v = Val_int(pdf);
+  major_v = Val_int(major);
+  minor_v = Val_int(minor);
+  unit = caml_callback3(fn, pdf_v, major_v, minor_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_removeDictEntry(int pdf, char *str) {
   CAMLparam0();
   CAMLlocal4(fn, inpdf, instr, out);
@@ -2843,77 +2958,7 @@ void cpdf_removeClipping(int pdf, int range) {
   CAMLreturn0;
 }
 
-/* To come in v2.4 */
-void cpdf_addContent(char *s, int before, int range, int pdf) {
-  CAMLparam0();
-  CAMLlocal2(fn, out);
-  CAMLlocalN(args, 4);
-  args[0] = caml_copy_string(s);
-  args[1] = Val_int(before);
-  args[2] = Val_int(range);
-  args[3] = Val_int(pdf);
-  fn = *caml_named_value("addContent");
-  out = caml_callbackN(fn, 4, args);
-  CAMLreturn0;
-}
-
-void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
-                     int pdf) {
-  CAMLparam0();
-  CAMLlocal2(fn, out);
-  CAMLlocalN(args, 4);
-  args[0] = caml_copy_string(filename);
-  args[1] = Val_int(parse_content);
-  args[2] = Val_int(no_stream_data);
-  args[3] = Val_int(pdf);
-  fn = *caml_named_value("outputJSON");
-  out = caml_callbackN(fn, 4, args);
-  CAMLreturn0;
-}
-
-void cpdf_OCGCoalesce(int pdf) {
-  CAMLparam0();
-  CAMLlocal3(fn, pdf_v, unit_v);
-  pdf_v = Val_int(pdf);
-  fn = *caml_named_value("ocgCoalesce");
-  unit_v = caml_callback(fn, pdf_v);
-  updateLastError();
-  CAMLreturn0;
-}
-
-void cpdf_OCGRename(int pdf, char *f, char *t) {
-  CAMLparam0();
-  CAMLlocal5(pdf_v, unit_v, fn, f_v, t_v);
-  pdf_v = Val_int(pdf);
-  fn = *caml_named_value("ocgRename");
-  f_v = caml_copy_string(f);
-  t_v = caml_copy_string(t);
-  unit_v = caml_callback3(fn, pdf_v, f_v, t_v);
-  CAMLreturn0;
-}
-
-void cpdf_OCGOrderAll(int pdf) {
-  CAMLparam0();
-  CAMLlocal3(fn, pdf_v, unit_v);
-  pdf_v = Val_int(pdf);
-  fn = *caml_named_value("ocgOrderAll");
-  unit_v = caml_callback(fn, pdf_v);
-  updateLastError();
-  CAMLreturn0;
-}
-
-char *cpdf_stampAsXObject(int pdf, int range, int stamp_pdf) {
-  CAMLparam0();
-  CAMLlocal5(pdf_v, range_v, stamp_pdf_v, fn, name_v);
-  pdf_v = Val_int(pdf);
-  range_v = Val_int(range);
-  stamp_pdf_v = Val_int(stamp_pdf);
-  fn = *caml_named_value("stampAsXObject");
-  name_v = caml_callback3(fn, pdf_v, range_v, stamp_pdf_v);
-  updateLastError();
-  CAMLreturnT(char *, (char *)String_val(name_v));
-}
-
+/* CHAPTER X. Internal or undocumented */
 void cpdf_setDemo(int b) {
   CAMLparam0();
   CAMLlocal3(setdemo_v, int_v, result_v);

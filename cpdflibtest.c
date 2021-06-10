@@ -463,6 +463,25 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(stamp_range);
   cpdf_deleteRange(textfile_all);
 
+  int undoc = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int logo = cpdf_fromFile("logo.pdf", "");
+  int r_undoc = cpdf_all(undoc);
+  printf("---cpdf_stampAsXObject()\n");
+  char *name = cpdf_stampAsXObject(undoc, r_undoc, logo);
+  prerr();
+  char content[200];
+  sprintf(content,
+          "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 "
+          "500 500 cm %s Do Q",
+          name, name, name);
+  printf("---cpdf_addContent()\n");
+  cpdf_addContent(content, true, undoc, r_undoc);
+  prerr();
+  cpdf_toFile(undoc, "testoutputs/demo.pdf", false, false);
+  cpdf_deletePdf(undoc);
+  cpdf_deletePdf(logo);
+  cpdf_deleteRange(r_undoc);
+
   /* CHAPTER 9. Multipage facilities */
   printf("***** CHAPTER 9. Multipage facilities\n");
   int mp = cpdf_fromFile("cpdflibmanual.pdf", "");
@@ -840,10 +859,39 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(fontrange);
   cpdf_onExit();
 
-  /* CHAPTER 15. Miscellaneous */
-  printf("***** CHAPTER 15. Miscellaneous\n");
+  /* CHAPTER 15. PDF and JSON */
+  printf("***** CHAPTER 15. PDF and JSON\n");
+  printf("---cpdf_outputJSON()\n");
+  int json = cpdf_fromFile("cpdflibmanual.pdf", "");
+  cpdf_outputJSON("testoutputs/json.json", true, true, json);
+  prerr();
+
+  /* CHAPTER 16. Optional Content Groups */
+  int ocg = cpdf_fromFile("cpdflibmanual.pdf", "");
+  printf("***** CHAPTER 16. Optional Content Groups\n");
+  printf("---cpdf_startOCGList()\n");
+  int nocgs = cpdf_startGetOCGList(ocg);
+  prerr();
+  printf("---cpdf_OCGListEntry()\n");
+  cpdf_OCGListEntry(0);
+  prerr();
+  printf("---cpdf_endGetOCGList()\n");
+  cpdf_endGetOCGList();
+  prerr();
+  printf("---cpdf_OCGCoalesce()\n");
+  cpdf_OCGCoalesce(ocg);
+  prerr();
+  printf("---cpdf_OCGRename()\n");
+  cpdf_OCGRename(ocg, "a", "b");
+  prerr();
+  printf("---cpdf_OCGOrderAll()\n");
+  cpdf_OCGOrderAll(ocg);
+  prerr();
+
+  /* CHAPTER 17. Miscellaneous */
+  printf("***** CHAPTER 17. Miscellaneous\n");
   int misc = cpdf_fromFile("cpdflibmanual.pdf", "");
-  int misc2 = cpdf_fromFile("frontmatter.pdf", "");
+  int misc2 = cpdf_fromFile("logo.pdf", "");
   int misc_r = cpdf_all(misc);
   printf("---cpdf_draft()\n");
   cpdf_draft(misc, misc_r, true);
@@ -872,6 +920,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_setVersion()\n");
   cpdf_setVersion(misc, 1);
   prerr();
+  printf("---cpdf_setFullVersion()\n");
+  cpdf_setFullVersion(misc, 2, 0);
+  prerr();
   printf("---cpdf_removeDictEntry()\n");
   cpdf_removeDictEntry(misc, "/Producer");
   prerr();
@@ -884,41 +935,12 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(misc_r);
   cpdf_onExit();
 
-  /* CHAPTER 16. Undocumented or Experimental */
-  printf("***** CHAPTER 16. Undocumented or Experimental\n");
-  int undoc = cpdf_fromFile("cpdflibmanual.pdf", "");
-  int logo = cpdf_fromFile("logo.pdf", "");
-  int r_undoc = cpdf_all(undoc);
-  printf("---cpdf_stampAsXObject()\n");
-  char *name = cpdf_stampAsXObject(undoc, r_undoc, logo);
-  prerr();
-  char content[200];
-  sprintf(content,
-          "q 1 0 0 1 100 100 cm %s Do Q q 1 0 0 1 300 300 cm %s Do Q q 1 0 0 1 "
-          "500 500 cm %s Do Q",
-          name, name, name);
-  printf("---cpdf_addContent()\n");
-  cpdf_addContent(content, true, undoc, r_undoc);
-  prerr();
-  printf("---cpdf_outputJSON()\n");
-  cpdf_outputJSON("testoutputs/json.json", true, true, undoc);
-  prerr();
-  printf("---cpdf_OCGCoalesce()\n");
-  cpdf_OCGCoalesce(undoc);
-  prerr();
-  printf("---cpdf_OCGRename()\n");
-  cpdf_OCGRename(undoc, "a", "b");
-  prerr();
-  printf("---cpdf_OCGOrderAll()\n");
-  cpdf_OCGOrderAll(undoc);
-  prerr();
+  /* CHAPTER X. Undocumented or Internal */
+  printf("***** CHAPTER X. Undocumented or Internal\n");
   printf("---cpdf_setDemo()\n");
   cpdf_setDemo(true);
   prerr();
-  cpdf_toFile(undoc, "testoutputs/demo.pdf", false, false);
-  cpdf_deletePdf(undoc);
-  cpdf_deletePdf(logo);
-  cpdf_deleteRange(r_undoc);
+
   cpdf_onExit();
   return 0;
 }

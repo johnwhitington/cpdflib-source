@@ -1636,6 +1636,14 @@ let setVersion pdf version =
   with
     e -> handle_error "setVersion" e; err_unit
 
+let setFullVersion pdf major minor =
+  if !dbg then flprint "Cpdflib.setFullVersion\n";
+  try
+    (lookup_pdf pdf).Pdf.major <- major;
+    (lookup_pdf pdf).Pdf.minor <- minor
+  with
+    e -> handle_error "setFullVersion" e; err_unit
+
 let setTitle pdf title =
   if !dbg then flprint "Cpdflib.setTitle\n";
   try
@@ -2112,6 +2120,7 @@ let _ = Callback.register "getModificationDateXMP" getModificationDateXMP
 let _ = Callback.register "getDateComponents" getDateComponents
 let _ = Callback.register "dateStringOfComponents" dateStringOfComponents
 let _ = Callback.register "setVersion" setVersion
+let _ = Callback.register "setFullVersion" setFullVersion
 let _ = Callback.register "setTitle" setTitle
 let _ = Callback.register "setAuthor" setAuthor
 let _ = Callback.register "setSubject" setSubject
@@ -2319,7 +2328,7 @@ let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 
 
-(* CHAPTER 15. Miscellaneous *)
+(* CHAPTER 17. Miscellaneous *)
 let draft pdf range boxes =
   if !dbg then flprint "Cpdflib.draft\n";
   try
@@ -2491,14 +2500,6 @@ let _ = Callback.register "getPageLabelRange" getPageLabelRange
 let _ = Callback.register "endGetPageLabels" endGetPageLabels
 let _ = Callback.register "getPageLabelStringForPage" getPageLabelStringForPage
 
-let onexit () =
-  if !dbg then flprint "Cpdflib.onexit\n";
-  Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
-  Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
-  Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
-  print_string "\n"
-
-let _ = Callback.register "onexit" onexit
 
 (* Look up the pdf, squeeze it with Cpdf.squeeze *)
 let squeezeInMemory pdf =
@@ -2511,6 +2512,7 @@ let squeezeInMemory pdf =
 
 let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
+(* CHAPTER 15. PDF and JSON *)
 let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
   try
@@ -2530,6 +2532,36 @@ let outputJSON filename parse_content no_stream_data pdf =
     e -> handle_error "outputJSON" e; err_unit
 
 let _ = Callback.register "outputJSON" outputJSON
+
+
+(* CHAPTER 16. Optional Content Groups *)
+let ocgnamelist = ref [||]
+
+let startGetOCGList pdf =
+  if !dbg then flprint "Cpdflib.startGetOCGList\n";
+  try
+    ocgnamelist := Array.of_list (Cpdf.ocg_get_list (lookup_pdf pdf));
+    Array.length !ocgnamelist;
+  with
+    e -> handle_error "startGetOCGList" e; err_int
+
+let ocgListEntry n =
+  if !dbg then flprint "Cpdflib.ocgListEntry\n";
+  try
+    Array.get !ocgnamelist n
+  with
+    e -> handle_error "ocgListEntry" e; err_string
+
+let endGetOCGList () =
+  if !dbg then flprint "Cpdflib.endGetOCGList";
+  try
+    ocgnamelist := [||]
+  with
+    e -> handle_error "endGetOCGList" e; err_unit
+
+let _ = Callback.register "startGetOCGList" startGetOCGList
+let _ = Callback.register "ocgListEntry" ocgListEntry
+let _ = Callback.register "endGetOCGList" endGetOCGList
 
 let ocgCoalesce pdf =
   if !dbg then flprint "Cpdflib.ocgCoalesce";
@@ -2569,4 +2601,11 @@ let stampAsXObject pdf range stamp_pdf =
 
 let _ = Callback.register "stampAsXObject" stampAsXObject
 
+let onexit () =
+  if !dbg then flprint "Cpdflib.onexit\n";
+  Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
+  Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
+  Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
+  print_string "\n"
 
+let _ = Callback.register "onexit" onexit
