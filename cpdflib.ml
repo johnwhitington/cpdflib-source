@@ -11,7 +11,7 @@ let setSlow () = fast := false
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
 
-let version = "2.4 (Devel)"
+let version = "2.4"
 
 let _ = Callback.register "version" version
 
@@ -61,6 +61,7 @@ let clearError () =
 let handle_error fn e =
   let errstr = Printf.sprintf "ERROR: %s: %s" fn (Printexc.to_string e) in
     prerr_endline errstr;
+    flush stderr;
     lastError := basicError;
     lastErrorString := errstr
 
@@ -434,7 +435,6 @@ let _ = Callback.register "lookupPdfUserPassword" lookupPdfUserPassword
 
 let parsePagespec pdf str =
   if !dbg then flprint "Cpdflib.parsePagespec\n";
-  Printf.printf "Parse_pagespec: %i:%s\n" pdf str;
   try
     new_range (Array.of_list (Cpdf.parse_pagespec (lookup_pdf pdf) str))
   with
@@ -2606,6 +2606,7 @@ let onexit () =
   Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
   Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
   Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
-  print_string "\n"
+  print_string "\n";
+  flush stdout
 
 let _ = Callback.register "onexit" onexit
