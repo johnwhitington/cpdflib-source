@@ -1,4 +1,5 @@
 #!/bin/bash
+#On mingw64/win32, static build is ok. Dynamic build requires libgcc_s_sjlj-1.dll to be shipped, unfortunately. -static -static-libgcc does not work in this case, because dynamically linking libcpdf causes the whole thing to be linked dynamically. mingw64/win64 does not suffer from this fault
 cfiles=(cpdflibwrapper)
 finalcfile=cpdflibtest
 libname=cpdf
@@ -115,7 +116,7 @@ linkflags="-L. -l${libname} -L$libdir $camllink $native_c_libraries"
 #echo "STATIC LINKER: "$link
 #echo "STATIC LINKER FLAGS: "$linkflags
 #echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
-#$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
+$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
 echo ***BUILD example executable with dynamic .dll library on Windows
 #Build an example executable, with dynamic .dll library on Windows
 if [ "${uname:0:6}" == "CYGWIN" ];then
