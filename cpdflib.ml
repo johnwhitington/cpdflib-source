@@ -1125,6 +1125,13 @@ type mut_pdfmarks =
                     
 let setbookmarkinfo = ref [||]
 
+let debug_setbookmarkinfo () =
+  Printf.printf "debug_setbookmarkinfo: %i %s %s %b\n"
+  !setbookmarkinfo.(0).mut_level
+  !setbookmarkinfo.(0).mut_text
+  (Pdfdest.string_of_destination !setbookmarkinfo.(0).mut_target)
+  !setbookmarkinfo.(0).mut_isopen
+
 let startSetBookmarkInfo num_bookmarks =
   if !dbg then flprint "Cpdflib.startSetBookmarkInfo\n";
   setbookmarkinfo :=

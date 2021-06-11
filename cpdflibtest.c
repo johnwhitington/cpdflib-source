@@ -386,6 +386,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_endSetBookmarkInfo()\n");
   cpdf_endSetBookmarkInfo(markspdf);
   prerr();
+  cpdf_toFile(markspdf, "testoutputs/newmarks.pdf", false, false);
+  prerr();
   cpdf_deletePdf(markspdf);
   cpdf_onExit();
 
@@ -830,7 +832,7 @@ int main(int argc, char **argv) {
   /* CHAPTER 14. Fonts */
   printf("***** CHAPTER 14. Fonts\n");
   int fonts = cpdf_fromFile("cpdflibmanual.pdf", "");
-  int fonts2 = cpdf_fromFile("frontmatter.pdf", "");
+  int fonts2 = cpdf_fromFile("testinputs/frontmatter.pdf", "");
   printf("---cpdf_startGetFontInfo()\n");
   cpdf_startGetFontInfo(fonts);
   prerr();
