@@ -867,13 +867,14 @@ int main(int argc, char **argv) {
   prerr();
 
   /* CHAPTER 16. Optional Content Groups */
-  int ocg = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
   printf("***** CHAPTER 16. Optional Content Groups\n");
   printf("---cpdf_startOCGList()\n");
   int nocgs = cpdf_startGetOCGList(ocg);
   prerr();
   printf("---cpdf_OCGListEntry()\n");
-  cpdf_OCGListEntry(0);
+  printf("%s", cpdf_OCGListEntry(0));
+  printf("\n");
   prerr();
   printf("---cpdf_endGetOCGList()\n");
   cpdf_endGetOCGList();
@@ -882,7 +883,7 @@ int main(int argc, char **argv) {
   cpdf_OCGCoalesce(ocg);
   prerr();
   printf("---cpdf_OCGRename()\n");
-  cpdf_OCGRename(ocg, "a", "b");
+  cpdf_OCGRename(ocg, "Layer 1", "Layer 2");
   prerr();
   printf("---cpdf_OCGOrderAll()\n");
   cpdf_OCGOrderAll(ocg);
