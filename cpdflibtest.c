@@ -863,7 +863,11 @@ int main(int argc, char **argv) {
   printf("***** CHAPTER 15. PDF and JSON\n");
   printf("---cpdf_outputJSON()\n");
   int json = cpdf_fromFile("cpdflibmanual.pdf", "");
-  cpdf_outputJSON("testoutputs/json.json", true, true, json);
+  cpdf_outputJSON("testoutputs/json.json", false, false, json);
+  prerr();
+  cpdf_outputJSON("testoutputs/jsonnostream.json", false, true, json);
+  prerr();
+  cpdf_outputJSON("testoutputs/jsonparsed.json", true, false, json);
   prerr();
 
   /* CHAPTER 16. Optional Content Groups */
