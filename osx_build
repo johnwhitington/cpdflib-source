@@ -103,7 +103,7 @@ rm -rf tmp_asmrun
 #Build an example executable, with static .a
 echo ***BUILD example executable with static .a
 $ocamlfind ocamlc -c ${finalcfile}.c
-staticlinkflags="-L. -l${libname} -L$libdir $camllink $native_c_libraries"
+staticlinkflags="-L.. -L. -l${libname} -L$libdir $camllink $native_c_libraries"
 echo "STATIC LINKER: "$link
 echo "STATIC LINKER FLAGS: "$staticlinkflags
 echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $staticlinkflags
