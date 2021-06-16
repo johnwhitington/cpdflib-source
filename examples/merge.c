@@ -1,6 +1,6 @@
-/* Very simple test. Requires a file "hello.pdf" in the CWD */
+/* Very simple test. Requires a file "hello.pdf" in the parent of the CWD */
 #include <stdbool.h>
-#include "cpdflibwrapper.h"
+#include "../cpdflibwrapper.h"
 
 int main (int argc, char ** argv)
 {
@@ -11,7 +11,7 @@ int main (int argc, char ** argv)
   cpdf_clearError();
 
   /* We will take the input hello.pdf and repeat it three times */
-  int mergepdf = cpdf_fromFile("hello.pdf", "");
+  int mergepdf = cpdf_fromFile("../hello.pdf", "");
 
   /* Check the error state */
   if (cpdf_lastError) return 1;

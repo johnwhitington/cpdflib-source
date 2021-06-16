@@ -1,6 +1,6 @@
 /* Squeeze the manual. */
 #include <stdbool.h>
-#include "cpdflibwrapper.h"
+#include "../cpdflibwrapper.h"
 
 int main (int argc, char ** argv)
 {
@@ -11,7 +11,7 @@ int main (int argc, char ** argv)
   cpdf_clearError();
 
   /* Use the cpdflib manual as an example. */
-  int pdf = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int pdf = cpdf_fromFile("../cpdflibmanual.pdf", "");
 
   /* Check the error state */
   if (cpdf_lastError) return 1;

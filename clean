@@ -2,6 +2,6 @@
 rm -f *.a *.o *.cmi *.cmx *.dll *.so *.dylib cpdflibtest cpdflibtest-withshared
 rm -f testoutputs/*
 rm -f foo
-rm -f merged.pdf merge
-rm -f squeezed.pdf squeeze
+rm -f examples/merged.pdf examples/merge examples/merge.o
+rm -f examples/squeezed.pdf examples/squeeze examples/squeeze.o
 rm -f *.aux *.idx *.log *.out *.toc
