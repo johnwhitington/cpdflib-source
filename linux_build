@@ -104,11 +104,20 @@ rm -rf tmp_asmrun
 #Build an example executable, with static .a
 echo ***BUILD example executable with static .a
 $ocamlfind ocamlc -c ${finalcfile}.c
-linkflags="-L. -l${libname} -L$libdir $camllink $native_c_libraries"
+staticlinkflags="-L.. -L. -l${libname} -L$libdir $camllink $native_c_libraries"
 echo "STATIC LINKER: "$link
-echo "STATIC LINKER FLAGS: "$linkflags
-echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
-$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
+echo "STATIC LINKER FLAGS: "$staticlinkflags
+echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $staticlinkflags
+$link -o $finalcfile$exesuffix ${finalcfile}.o $staticlinkflags
+
+#Build the other examples
+echo ***BUILD the other examples
+cd examples
+$ocamlfind ocamlc -c merge.c
+$link -o merge$exesuffix merge.o $staticlinkflags
+$ocamlfind ocamlc -c squeeze.c
+$link -o squeeze$exesuffix squeeze.o $staticlinkflags
+cd ..
 
 #Using -output-obj for dynamic library (moved here so static build doesn't pick it up!)
 echo ***MAKING DYNAMIC LIBRARY WITH -output-obj
