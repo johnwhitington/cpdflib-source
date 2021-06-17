@@ -668,10 +668,8 @@ int main(int argc, char **argv) {
   cpdf_toFile(info, "testoutputs/setinfo.pdf", false, false);
   printf("---cpdf_getDateComponents()\n");
   int year, month, day, hour, minute, second, hour_offset, minute_offset;
-  // cpdf_getDateComponents("D:20061108125017Z", &year, &month, &day, &hour,
-  //&minute, &second, &hour_offset, &minute_offset);
-  cpdf_getDateComponents("now", &year, &month, &day, &hour, &minute, &second,
-                         &hour_offset, &minute_offset);
+  cpdf_getDateComponents("D:20061108125017Z", &year, &month, &day, &hour,
+  &minute, &second, &hour_offset, &minute_offset);
   prerr();
   printf("D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n", year, month,
          day, hour, minute, second, hour_offset, minute_offset);
@@ -924,6 +922,8 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_outputJSON("testoutputs/jsonparsed.json", true, false, json);
   prerr();
+  cpdf_deletePdf(json);
+  cpdf_onExit();
 
   /* CHAPTER 16. Optional Content Groups */
   int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
@@ -947,6 +947,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_OCGOrderAll()\n");
   cpdf_OCGOrderAll(ocg);
   prerr();
+  cpdf_deletePdf(ocg);
+  cpdf_onExit();
 
   /* CHAPTER 17. Miscellaneous */
   printf("***** CHAPTER 17. Miscellaneous\n");
@@ -1024,7 +1026,9 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc10);
   cpdf_deletePdf(misc11);
   cpdf_deletePdf(misc12);
+  cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
+  cpdf_onExit();
 
   /* CHAPTER X. Undocumented or Internal */
   printf("***** CHAPTER X. Undocumented or Internal\n");
