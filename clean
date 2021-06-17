@@ -4,4 +4,5 @@ rm -f testoutputs/*
 rm -f foo
 rm -f examples/merged.pdf examples/merge examples/merge.o
 rm -f examples/squeezed.pdf examples/squeeze examples/squeeze.o
+rm -f examples/libcpdf.dll
 rm -f *.aux *.idx *.log *.out *.toc
