@@ -108,18 +108,18 @@ ar rc lib${libname}.a ${x}.o
 done
 $ranlib lib${libname}.a
 rm -rf tmp_asmrun
-#echo ***BUILD example executable with static .a
-#Build an example executable, with static .a
 $ocamlfind ocamlc -c ${finalcfile}.c
-linkflags="-L. -l${libname} -L$libdir $camllink $native_c_libraries"
-#echo "STATIC LINKER: "$link
-#echo "STATIC LINKER FLAGS: "$linkflags
-#echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
-#$link -o $finalcfile$exesuffix ${finalcfile}.o $linkflags
-echo ***BUILD example executable with dynamic .dll library on Windows
+
 #Build an example executable, with dynamic .dll library on Windows
+echo ***BUILD example executable with dynamic .dll library on Windows
 if [ "${uname:0:6}" == "CYGWIN" ];then
 echo "DYNAMIC LINKER CALL"
-echo "cc -o $finalcfile-shared$exesuffix ${finalcfile}.o -Wl,-rpath,. -L. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink"
-cc -o $finalcfile-shared$exesuffix ${finalcfile}.o -Wl,-rpath,. -L. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
+echo "cc -o $finalcfile$exesuffix ${finalcfile}.o -Wl,-rpath,. -L. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink"
+cc -o $finalcfile$exesuffix ${finalcfile}.o -Wl,-rpath,. -L. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
+cd examples
+$ocamlfind ocamlc -c merge.c
+$ocamlfind ocamlc -c squeeze.c
+cc -o merge$exesuffix merge.o -Wl,-rpath,. -L.. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
+cc -o squeeze$exesuffix squeeze.o -Wl,-rpath,. -L.. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
+cp ../libcpdf.dll .
 fi
