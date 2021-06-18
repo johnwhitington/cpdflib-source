@@ -669,7 +669,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_getDateComponents()\n");
   int year, month, day, hour, minute, second, hour_offset, minute_offset;
   cpdf_getDateComponents("D:20061108125017Z", &year, &month, &day, &hour,
-  &minute, &second, &hour_offset, &minute_offset);
+                         &minute, &second, &hour_offset, &minute_offset);
   prerr();
   printf("D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n", year, month,
          day, hour, minute, second, hour_offset, minute_offset);
