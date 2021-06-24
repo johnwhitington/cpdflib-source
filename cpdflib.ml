@@ -1109,7 +1109,7 @@ let getBookmarkLevel serial =
 
 let getBookmarkText serial =
   if !dbg then flprint "Cpdflib.getBookmarkText\n";
-  try !bookmarkinfo.(serial).Pdfmarks.text with
+  try Pdftext.utf8_of_pdfdocstring !bookmarkinfo.(serial).Pdfmarks.text with
     e -> handle_error "getBookmarkText" e; err_string
 
 let getBookmarkOpenStatus serial =
@@ -2473,7 +2473,7 @@ let getPageLabelPrefix n =
   try
     match !labels.(n).Pdfpagelabels.labelprefix with
     | None -> ""
-    | Some x -> x
+    | Some x -> Pdftext.utf8_of_pdfdocstring x
   with
     e -> handle_error "getPageLabelPrefix\n" e; err_string
 
