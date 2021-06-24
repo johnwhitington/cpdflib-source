@@ -7,9 +7,6 @@ int main (int argc, char ** argv)
   /* Initialise cpdf */
   cpdf_startup(argv);
 
-  /* Clear the error state */
-  cpdf_clearError();
-
   /* We will take the input hello.pdf and repeat it three times */
   int mergepdf = cpdf_fromFile("../hello.pdf", "");
 
@@ -25,10 +22,8 @@ int main (int argc, char ** argv)
   /* Merge them */
   int merged = cpdf_mergeSimple(pdfs, 3);
   
-  /* Check the error state */
   if (cpdf_lastError) return 1;
 
-  /* Clear the error state */
   cpdf_clearError();
 
   /* Write output */
