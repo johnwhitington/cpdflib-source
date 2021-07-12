@@ -1163,6 +1163,20 @@ char *cpdf_getPageLabelStringForPage(int, int);
  * Get page label data. Call cpdf_startGetPageLabels to find out how many
  * there are, then use these serial numbers to get the style, prefix, offset
  * and start value (note not a range). Call cpdf_endGetPageLabels to clean up.
+ *
+ * For example, a document might have five pages of introduction with roman
+ * numerals, followed by the rest of the pages in decimal arabic, numbered from
+ * one:
+ *
+ * labelstyle = LowercaseRoman
+ * labelprefix = ""
+ * startpage = 1
+ * startvalue = 1
+ *
+ * labelstyle = DecimalArabic
+ * labelprefix = ""
+ * startpage = 6
+ * startvalue = 1
  */
 int cpdf_startGetPageLabels(int);
 enum cpdf_pageLabelStyle cpdf_getPageLabelStyle(int);
