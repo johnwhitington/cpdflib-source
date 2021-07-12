@@ -1162,7 +1162,7 @@ char *cpdf_getPageLabelStringForPage(int, int);
 /*
  * Get page label data. Call cpdf_startGetPageLabels to find out how many
  * there are, then use these serial numbers to get the style, prefix, offset
- * and range. Call cpdf_endGetPageLabels to clean up.
+ * and start value (note not a range). Call cpdf_endGetPageLabels to clean up.
  */
 int cpdf_startGetPageLabels(int);
 enum cpdf_pageLabelStyle cpdf_getPageLabelStyle(int);

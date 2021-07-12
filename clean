@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -f *.a *.o *.cmi *.cmx *.dll *.so *.dylib cpdflibtest cpdflibtest-withshared
+rm -f *.a *.o *.cmi *.cmx *.dll *.so *.dylib cpdflibtest cpdflibtest-withshared *.rtYk1s
 rm -f testoutputs/*
 rm -f foo
 rm -f examples/merged.pdf examples/merge examples/merge.o
