@@ -228,12 +228,12 @@ int main(int argc, char **argv) {
   printf("---cpdf_mergeSame()\n");
   int merged3 = cpdf_mergeSame(pdfs, 3, false, false, ranges);
   prerr();
-  cpdf_toFile(merged3, "testoutputs/03merged3.pdf", false, false);
+  cpdf_toFile(merged3, "testoutputs/02merged3.pdf", false, false);
   printf("---cpdf_selectPages()\n");
   int range_select = cpdf_range(1, 3);
   int selected = cpdf_selectPages(mergepdf, range_select);
   prerr();
-  cpdf_toFile(selected, "testoutputs/04selected.pdf", false, false);
+  cpdf_toFile(selected, "testoutputs/02selected.pdf", false, false);
   cpdf_deletePdf(mergepdf);
   cpdf_deletePdf(merged);
   cpdf_deletePdf(merged2);
