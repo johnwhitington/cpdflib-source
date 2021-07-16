@@ -529,9 +529,9 @@ int main(int argc, char **argv) {
   int mp2 = cpdf_fromFile("cpdflibmanual.pdf", "");
   cpdf_twoUpStack(mp2);
   prerr();
-  int r = cpdf_range(1, 10);
   cpdf_toFile(mp2, "testoutputs/09mp2.pdf", false, false);
   printf("---cpdf_padBefore()\n");
+  int r = cpdf_range(1, 10);
   int mp3 = cpdf_fromFile("cpdflibmanual.pdf", "");
   cpdf_padBefore(mp3, r);
   prerr();
