@@ -63,7 +63,6 @@ int main(int argc, char **argv) {
   printf("---cpdf_replacePdf()\n");
   cpdf_replacePdf(f2, frommem);
   prerr();
-  cpdf_toFile(f2, "testoutputs/01blanka4.pdf", false, false);
   printf("---cpdf_startEnumeratePDFs()\n");
   int numpdfs = cpdf_startEnumeratePDFs();
   prerr();
