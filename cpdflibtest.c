@@ -760,7 +760,7 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_toFile(info, "testoutputs/11open.pdf", false, false);
   printf("---cpdf_setMetadataFromFile()\n");
-  cpdf_setMetadataFromFile(info, "cpdflib.ml");
+  cpdf_setMetadataFromFile(info, "cpdflibmanual.pdf");
   prerr();
   cpdf_toFile(info, "testoutputs/11metadata1.pdf", false, false);
   printf("---cpdf_setMetadataFromByteArray()\n");
