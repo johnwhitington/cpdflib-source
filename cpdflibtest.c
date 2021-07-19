@@ -148,12 +148,14 @@ int main(int argc, char **argv) {
   printf("Pages = %i\n", cpdf_pagesFast("", "cpdflibmanual.pdf"));
   prerr();
   printf("---cpdf_toFile()\n");
-  cpdf_toFile(f2, "testoutputs/01tofile.pdf", false, false);
+  int fout = cpdf_fromFile("cpdflibmanual.pdf", "");
+  cpdf_toFile(fout, "testoutputs/01tofile.pdf", false, false);
   prerr();
   printf("---cpdf_toFileExt()\n");
-  cpdf_toFileExt(f2, "testoutputs/01tofileext.pdf", false, true, true, true,
+  cpdf_toFileExt(fout, "testoutputs/01tofileext.pdf", false, true, true, true,
                  true);
   cpdf_deletePdf(f2);
+  cpdf_deletePdf(fout);
   prerr();
   int f3 = cpdf_fromFile("cpdflibmanual.pdf", "");
   printf("---cpdf_isEncrypted()\n");
@@ -853,7 +855,8 @@ int main(int argc, char **argv) {
   printf("cpdf_removeAttachedFiles()\n");
   cpdf_removeAttachedFiles(attachments);
   prerr();
-  cpdf_toFile(attachments, "testoutputs/12removed_attachments.pdf", false, false);
+  cpdf_toFile(attachments, "testoutputs/12removed_attachments.pdf", false,
+              false);
   cpdf_deletePdf(attachments);
   cpdf_onExit();
 
