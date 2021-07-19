@@ -28,8 +28,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();
-  //printf("---cpdf_onExit()\n");
-  //cpdf_onExit();
+  // printf("---cpdf_onExit()\n");
+  // cpdf_onExit();
 
   /* CHAPTER 1. Basics */
   printf("***** CHAPTER 1. Basics\n");
@@ -878,10 +878,9 @@ int main(int argc, char **argv) {
   printf("***** CHAPTER 14. Fonts\n");
   int fonts = cpdf_fromFile("cpdflibmanual.pdf", "");
   int fonts2 = cpdf_fromFile("testinputs/frontmatter.pdf", "");
-  printf("---cpdf_startGetFontInfo()\n");
+  printf("---cpdf: Get Fonts\n");
   cpdf_startGetFontInfo(fonts);
   prerr();
-  printf("---cpdf_numberFonts()\n");
   int n_fonts = cpdf_numberFonts();
   prerr();
   for (int x = 0; x < n_fonts; x++) {
@@ -890,7 +889,6 @@ int main(int argc, char **argv) {
            cpdf_getFontEncoding(x));
   };
   prerr();
-  printf("---cpdf_endGetFontInfo()\n");
   cpdf_endGetFontInfo();
   prerr();
   printf("---cpdf_removeFonts()\n");
@@ -920,14 +918,12 @@ int main(int argc, char **argv) {
   /* CHAPTER 16. Optional Content Groups */
   int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
   printf("***** CHAPTER 16. Optional Content Groups\n");
-  printf("---cpdf_startOCGList()\n");
+  printf("---cpdf: Get OCG List\n");
   int nocgs = cpdf_startGetOCGList(ocg);
   prerr();
-  printf("---cpdf_OCGListEntry()\n");
   printf("%s", cpdf_OCGListEntry(0));
   printf("\n");
   prerr();
-  printf("---cpdf_endGetOCGList()\n");
   cpdf_endGetOCGList();
   prerr();
   printf("---cpdf_OCGCoalesce()\n");
@@ -1026,6 +1022,6 @@ int main(int argc, char **argv) {
   cpdf_setDemo(true);
   prerr();
 
-  //cpdf_onExit();
+  // cpdf_onExit();
   return 0;
 }
