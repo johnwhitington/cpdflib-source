@@ -5,7 +5,8 @@
 #include "cpdflibwrapper.h"
 
 void prerr(void) {
-  printf("(%i | %s)\n", cpdf_lastError, cpdf_lastErrorString);
+  if (cpdf_lastError > 0)
+    printf("(%i | %s)\n", cpdf_lastError, cpdf_lastErrorString);
   cpdf_clearError();
 }
 
@@ -972,7 +973,7 @@ int main(int argc, char **argv) {
   cpdf_draft(misc, misc_r, true);
   prerr();
   cpdf_toFile(misc, "testoutputs/17draft.pdf", false, false);
-  printf("---cpdf_removeAlltext()\n");
+  printf("---cpdf_removeAllText()\n");
   cpdf_removeAllText(misc2, misc_r);
   prerr();
   cpdf_toFile(misc2, "testoutputs/17removealltext.pdf", false, false);
