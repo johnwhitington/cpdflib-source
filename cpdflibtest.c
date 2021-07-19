@@ -28,8 +28,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();
-  printf("---cpdf_onExit()\n");
-  cpdf_onExit();
+  //printf("---cpdf_onExit()\n");
+  //cpdf_onExit();
 
   /* CHAPTER 1. Basics */
   printf("***** CHAPTER 1. Basics\n");
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_odd()\n");
   int range_odd = cpdf_odd(range_all);
   prerr();
-  printf("---cpdf_rangeUnion\n");
+  printf("---cpdf_rangeUnion()\n");
   int range_union = cpdf_rangeUnion(range, range_all);
   prerr();
   printf("---cpdf_difference()\n");
@@ -209,7 +209,6 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(range_is_in_range);
   cpdf_deleteRange(rfrompagespec);
   cpdf_deleteRange(br);
-  cpdf_onExit();
 
   /* CHAPTER 2. Merging and Splitting */
   printf("***** CHAPTER 2. Merging and Splitting\n");
@@ -245,7 +244,6 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(b);
   cpdf_deleteRange(c);
   cpdf_deleteRange(range_select);
-  cpdf_onExit();
 
   /* CHAPTER 3. Pages */
   printf("***** CHAPTER 3. Pages\n");
@@ -367,7 +365,6 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(pagespdf18);
   cpdf_deletePdf(pagespdf19);
   cpdf_deleteRange(r3);
-  cpdf_onExit();
 
   /* CHAPTER 4. Encryption */
   /* Encryption covered under Chapter 1 in cpdflib. */
@@ -388,7 +385,6 @@ int main(int argc, char **argv) {
   cpdf_toFile(tocompress, "testoutputs/05squeezedinmemory.pdf", false, false);
   prerr();
   cpdf_deletePdf(tocompress);
-  cpdf_onExit();
 
   /* CHAPTER 6. Bookmarks */
   printf("***** CHAPTER 6. Bookmarks\n");
@@ -427,7 +423,6 @@ int main(int argc, char **argv) {
   cpdf_toFile(markspdf, "testoutputs/06newmarks.pdf", false, false);
   prerr();
   cpdf_deletePdf(markspdf);
-  cpdf_onExit();
 
   /* CHAPTER 7. Presentations */
   /* Not included in the library version */
@@ -567,7 +562,6 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(mp6);
   cpdf_deletePdf(mp7);
   cpdf_deleteRange(r);
-  cpdf_onExit();
 
   /* CHAPTER 10. Annotations */
 
@@ -817,7 +811,6 @@ int main(int argc, char **argv) {
   cpdf_toFile(info, "testoutputs/11pagelabels.pdf", false, false);
   cpdf_deletePdf(info);
   cpdf_deleteRange(r_info);
-  cpdf_onExit();
 
   /* CHAPTER 12. File Attachments */
   printf("***** CHAPTER 12. File Attachments\n");
@@ -859,7 +852,6 @@ int main(int argc, char **argv) {
   cpdf_toFile(attachments, "testoutputs/12removed_attachments.pdf", false,
               false);
   cpdf_deletePdf(attachments);
-  cpdf_onExit();
 
   /* CHAPTER 13. Images */
   printf("***** CHAPTER 13. Images\n");
@@ -881,7 +873,6 @@ int main(int argc, char **argv) {
   cpdf_endGetImageResolution();
   prerr();
   cpdf_deletePdf(images);
-  cpdf_onExit();
 
   /* CHAPTER 14. Fonts */
   printf("***** CHAPTER 14. Fonts\n");
@@ -913,7 +904,6 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(fonts);
   cpdf_deletePdf(fonts2);
   cpdf_deleteRange(fontrange);
-  cpdf_onExit();
 
   /* CHAPTER 15. PDF and JSON */
   printf("***** CHAPTER 15. PDF and JSON\n");
@@ -926,7 +916,6 @@ int main(int argc, char **argv) {
   cpdf_outputJSON("testoutputs/15jsonparsed.json", true, false, json);
   prerr();
   cpdf_deletePdf(json);
-  cpdf_onExit();
 
   /* CHAPTER 16. Optional Content Groups */
   int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
@@ -951,7 +940,6 @@ int main(int argc, char **argv) {
   cpdf_OCGOrderAll(ocg);
   prerr();
   cpdf_deletePdf(ocg);
-  cpdf_onExit();
 
   /* CHAPTER 17. Miscellaneous */
   printf("***** CHAPTER 17. Miscellaneous\n");
@@ -1031,7 +1019,6 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc12);
   cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
-  cpdf_onExit();
 
   /* CHAPTER X. Undocumented or Internal */
   printf("***** CHAPTER X. Undocumented or Internal\n");
@@ -1039,6 +1026,6 @@ int main(int argc, char **argv) {
   cpdf_setDemo(true);
   prerr();
 
-  cpdf_onExit();
+  //cpdf_onExit();
   return 0;
 }
