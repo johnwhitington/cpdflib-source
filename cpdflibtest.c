@@ -58,25 +58,19 @@ int main(int argc, char **argv) {
   int blanksized = cpdf_blankDocumentPaper(cpdf_a4portrait, 10);
   prerr();
   cpdf_toFile(blanksized, "testoutputs/01blanka4.pdf", false, false);
-  printf("---cpdf_deletePdf()\n");
   cpdf_deletePdf(f);
   prerr();
-  printf("---cpdf_replacePdf()\n");
   cpdf_replacePdf(f2, frommem);
   prerr();
-  printf("---cpdf_startEnumeratePDFs()\n");
+  printf("---cpdf: enumerate PDFs\n");
   int numpdfs = cpdf_startEnumeratePDFs();
   prerr();
   for (int x = 0; x < numpdfs; x++) {
-    printf("---cpdf_enumeratePDFsKey()\n");
     int key = cpdf_enumeratePDFsKey(x);
     prerr();
-    printf("---cpdf_enumeratePDFsInfo()\n");
     char *info = cpdf_enumeratePDFsInfo(x);
     prerr();
-    printf("For key %i, info is %s\n", key, info);
   }
-  printf("---cpdf_endEnumeratePDFs)\n");
   cpdf_endEnumeratePDFs();
   prerr();
   printf("---cpdf_ptOfIn()\n");
@@ -740,7 +734,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_hideMenubar()\n");
   cpdf_hideMenubar(info, true);
   prerr();
-  printf("---cpdf_setWindowUi()\n");
+  printf("---cpdf_hideWindowUi()\n");
   cpdf_hideWindowUi(info, true);
   prerr();
   printf("---cpdf_fitWindow()\n");
@@ -782,24 +776,19 @@ int main(int argc, char **argv) {
   printf("---cpdf_addPageLabels()\n");
   cpdf_addPageLabels(info, cpdf_uppercaseRoman, "PREFIX-", 1, r_info, false);
   prerr();
-  printf("---cpdf_startGetPageLabels()\n");
+  printf("---cpdf: get page labels\n");
   int pln = cpdf_startGetPageLabels(info);
   printf("There are %i labels\n", pln);
   prerr();
-  printf("---cpdf_getPageLabelStyle()\n");
   int pl1 = cpdf_getPageLabelStyle(0);
   prerr();
-  printf("---cpdf_getPageLabelPrefix()\n");
   char *pl2 = cpdf_getPageLabelPrefix(0);
   prerr();
-  printf("---cpdf_getPageLabelOffset()\n");
   int pl3 = cpdf_getPageLabelOffset(0);
   prerr();
-  printf("---cpdf_getPageLabelRange()\n");
   int pl4 = cpdf_getPageLabelRange(0);
   prerr();
   printf("Page label: %i, %s, %i, %i\n", pl1, pl2, pl3, pl4);
-  printf("---cpdf_endGetPageLabels()\n");
   cpdf_endGetPageLabels();
   prerr();
   printf("---cpdf_addPageLabelStringForPage()\n");
@@ -821,20 +810,19 @@ int main(int argc, char **argv) {
   printf("---cpdf_attachFileToPage()\n");
   cpdf_attachFileToPage("testinputs/image.pdf", attachments, 1);
   prerr();
-  printf("---cpdf_attachFileFromMemory\n");
+  printf("---cpdf_attachFileFromMemory()\n");
   cpdf_attachFileFromMemory((void *)0, 0, "metadata.txt", attachments);
   prerr();
-  printf("---cpdf_attachFileToPageFromMemory\n");
+  printf("---cpdf_attachFileToPageFromMemory()\n");
   cpdf_attachFileToPageFromMemory((void *)0, 0, "metadata.txt", attachments, 1);
   prerr();
   cpdf_toFile(attachments, "testoutputs/12with_attachments.pdf", false, false);
-  printf("---cpdf_numberGetAttachments()\n");
+  printf("---cpdf: get attachments\n");
   cpdf_startGetAttachments(attachments);
   prerr();
-  printf("---cpdf_numberGetAttachments()\n");
   int numatt = cpdf_numberGetAttachments();
   prerr();
-  printf("There are %i attachements to get\n", numatt);
+  printf("There are %i attachments to get\n", numatt);
   for (int x = 0; x < numatt; x++) {
     printf("Attachment %i is named %s\n", x, cpdf_getAttachmentName(x));
     printf("It is on page %i\n", cpdf_getAttachmentPage(x));
@@ -843,10 +831,9 @@ int main(int argc, char **argv) {
     printf("Contains %i bytes of data\n", length);
   };
   prerr();
-  printf("---cpdf_endGetAttachments()\n");
   cpdf_endGetAttachments();
   prerr();
-  printf("cpdf_removeAttachedFiles()\n");
+  printf("---cpdf_removeAttachedFiles()\n");
   cpdf_removeAttachedFiles(attachments);
   prerr();
   cpdf_toFile(attachments, "testoutputs/12removed_attachments.pdf", false,
@@ -855,8 +842,8 @@ int main(int argc, char **argv) {
 
   /* CHAPTER 13. Images */
   printf("***** CHAPTER 13. Images\n");
+  printf("---cpdf: get image resolution\n");
   int images = cpdf_fromFile("testinputs/image.pdf", "");
-  printf("---cpdf_startGetImageResolution()\n");
   int n = cpdf_startGetImageResolution(images, 500000.);
   prerr();
   for (int x = 0; x < n; x++) {
@@ -869,7 +856,6 @@ int main(int argc, char **argv) {
     printf("IMAGE: %i, %s, %i, %i, %f, %f\n", page, name, xp, yp, xres, yres);
   }
   prerr();
-  printf("---cpdf_endGetImageResolution()\n");
   cpdf_endGetImageResolution();
   prerr();
   cpdf_deletePdf(images);
