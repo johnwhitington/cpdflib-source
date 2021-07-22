@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_encryptionKind()\n");
   printf("encryption kind is %i\n", cpdf_encryptionKind(pdfenc));
   prerr();
-  printf("---cpdf_decryptPdf\n");
+  printf("---cpdf_decryptPdf()\n");
   cpdf_decryptPdf(pdfenc, "user");
   prerr();
   printf("---cpdf_decryptPdfOwner()\n");
@@ -383,9 +383,8 @@ int main(int argc, char **argv) {
   /* CHAPTER 6. Bookmarks */
   printf("***** CHAPTER 6. Bookmarks\n");
   int markspdf = cpdf_fromFile("cpdflibmanual.pdf", "");
-  printf("---cpdf_startGetBookmarkInfo()\n");
+  printf("---cpdf: get bookmarks\n");
   cpdf_startGetBookmarkInfo(markspdf);
-  printf("---cpdf_numberBookmarks()\n");
   int n_marks = cpdf_numberBookmarks();
   prerr();
   printf("There are %i bookmarks\n", n_marks);
@@ -400,10 +399,9 @@ int main(int argc, char **argv) {
         level, page, text, open);
   }
   prerr();
-  printf("---cpdf_startGetBookmarkInfo()\n");
   cpdf_endGetBookmarkInfo();
   prerr();
-  printf("---cpdf_startSetBookmarkInfo()\n");
+  printf("---cpdf: set bookmarks\n");
   cpdf_startSetBookmarkInfo(1);
   prerr();
   cpdf_setBookmarkLevel(0, 0);
@@ -411,7 +409,6 @@ int main(int argc, char **argv) {
   cpdf_setBookmarkOpenStatus(0, true);
   cpdf_setBookmarkText(0, "New bookmark!");
   prerr();
-  printf("---cpdf_endSetBookmarkInfo()\n");
   cpdf_endSetBookmarkInfo(markspdf);
   prerr();
   cpdf_toFile(markspdf, "testoutputs/06newmarks.pdf", false, false);
@@ -460,6 +457,7 @@ int main(int argc, char **argv) {
   cpdf_removeText(textfile, textfile_all);
   cpdf_toFile(textfile, "testoutputs/08removed_text.pdf", false, false);
   prerr();
+  printf("---cpdf_textWidth()\n");
   int width = cpdf_textWidth(cpdf_timesRoman, "What is the width of this?");
   int stamp = cpdf_fromFile("logo.pdf", "");
   int stampee = cpdf_fromFile("cpdflibmanual.pdf", "");
@@ -574,36 +572,52 @@ int main(int argc, char **argv) {
   printf("---cpdf_getMajorVersion()\n");
   printf("major version:%i\n", cpdf_getMajorVersion(info));
   prerr();
+  printf("---cpdf_getTitle()\n");
   char *title = cpdf_getTitle(info);
   printf("title: %s\n", title);
+  printf("---cpdf_getAuthor()\n");
   char *author = cpdf_getAuthor(info);
   printf("author: %s\n", author);
+  printf("---cpdf_getSubject()\n");
   char *subject = cpdf_getSubject(info);
   printf("subject: %s\n", subject);
+  printf("---cpdf_getKeywords()\n");
   char *keywords = cpdf_getKeywords(info);
   printf("keywords: %s\n", keywords);
+  printf("---cpdf_getCreator()\n");
   char *creator = cpdf_getCreator(info);
   printf("creator: %s\n", creator);
+  printf("---cpdf_getProducer()\n");
   char *producer = cpdf_getProducer(info);
   printf("producer: %s\n", producer);
+  printf("---cpdf_getCreationDate()\n");
   char *creationdate = cpdf_getCreationDate(info);
   printf("creationdate: %s\n", creationdate);
+  printf("---cpdf_getModificationDate()\n");
   char *modificationdate = cpdf_getModificationDate(info);
   printf("modificationdate: %s\n", modificationdate);
+  printf("---cpdf_getTitleXMP()\n");
   char *titleXMP = cpdf_getTitleXMP(info);
   printf("titleXMP: %s\n", titleXMP);
+  printf("---cpdf_getAuthorXMP()\n");
   char *authorXMP = cpdf_getAuthorXMP(info);
   printf("authorXMP: %s\n", authorXMP);
+  printf("---cpdf_getSubjectXMP()\n");
   char *subjectXMP = cpdf_getSubjectXMP(info);
   printf("subjectXMP: %s\n", subjectXMP);
+  printf("---cpdf_getKeywordsXMP()\n");
   char *keywordsXMP = cpdf_getKeywordsXMP(info);
   printf("keywordsXMP: %s\n", keywordsXMP);
+  printf("---cpdf_getCreatorXMP()\n");
   char *creatorXMP = cpdf_getCreatorXMP(info);
   printf("creatorXMP: %s\n", creatorXMP);
+  printf("---cpdf_getProducerXMP()\n");
   char *producerXMP = cpdf_getProducerXMP(info);
   printf("producerXMP: %s\n", producerXMP);
+  printf("---cpdf_getCreationDateXMP()\n");
   char *creationdateXMP = cpdf_getCreationDateXMP(info);
   printf("creationdateXMP: %s\n", creationdateXMP);
+  printf("---cpdf_getModificationDateXMP()\n");
   char *modificationdateXMP = cpdf_getModificationDateXMP(info);
   printf("modificationdateXMP: %s\n", modificationdateXMP);
   prerr();
@@ -663,7 +677,10 @@ int main(int argc, char **argv) {
   prerr();
   printf("D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n", year, month,
          day, hour, minute, second, hour_offset, minute_offset);
-  printf("---cpdf_getPageRotation");
+  printf("---cpdf_dateStringOfComponents()\n");
+  char * datestring = cpdf_dateStringOfComponents(year, month, day, hour, minute, second, hour_offset, minute_offset);
+  printf("%s\n", datestring);
+  printf("---cpdf_getPageRotation()\n");
   int rotation = cpdf_getPageRotation(info, 1);
   prerr();
   printf("/Rotate on page 1 = %i\n", rotation);
@@ -680,7 +697,7 @@ int main(int argc, char **argv) {
   cpdf_getCropBox(info, 1, &minx, &maxx, &miny, &maxy);
   prerr();
   printf("Crop: %f %f %f %f\n", minx, maxx, miny, maxy);
-  printf("--cpdf_getBleedBox()\n");
+  printf("---cpdf_getBleedBox()\n");
   cpdf_getBleedBox(info, 1, &minx, &maxx, &miny, &maxy);
   prerr();
   printf("Bleed: %f %f %f %f\n", minx, maxx, miny, maxy);
@@ -692,7 +709,7 @@ int main(int argc, char **argv) {
   cpdf_getTrimBox(info, 1, &minx, &maxx, &miny, &maxy);
   prerr();
   printf("Trim: %f %f %f %f\n", minx, maxx, miny, maxy);
-  printf("---cpdf_setMediabox()\n");
+  printf("---cpdf_setMediaBox()\n");
   cpdf_setMediabox(info, r_info, 100, 500, 150, 550);
   prerr();
   printf("---cpdf_setCropBox()\n");
@@ -770,6 +787,7 @@ int main(int argc, char **argv) {
   cpdf_createMetadata(info);
   prerr();
   cpdf_toFile(info, "testoutputs/11metadata3.pdf", false, false);
+  printf("---cpdf_setMetadataDate()\n");
   cpdf_setMetadataDate(info, "now");
   prerr();
   cpdf_toFile(info, "testoutputs/11metadata4.pdf", false, false);
@@ -791,13 +809,14 @@ int main(int argc, char **argv) {
   printf("Page label: %i, %s, %i, %i\n", pl1, pl2, pl3, pl4);
   cpdf_endGetPageLabels();
   prerr();
-  printf("---cpdf_addPageLabelStringForPage()\n");
-  char *pllabel = cpdf_getPageLabelStringForPage(info, 1);
-  prerr();
-  printf("Label string is %s\n", pllabel);
+  printf("---cpdf_removePageLabels()\n");
   cpdf_removePageLabels(info);
   prerr();
   cpdf_toFile(info, "testoutputs/11pagelabels.pdf", false, false);
+  printf("---cpdf_getPageLabelStringForPage()\n");
+  char *pllabel = cpdf_getPageLabelStringForPage(info, 1);
+  prerr();
+  printf("Label string is %s\n", pllabel);
   cpdf_deletePdf(info);
   cpdf_deleteRange(r_info);
 
