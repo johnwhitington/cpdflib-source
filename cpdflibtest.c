@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
   int f2 = cpdf_fromFileLazy("cpdflibmanual.pdf", "");
   prerr();
   int buflen;
+  printf("---cpdf_toMemory()\n");
   void *buf = cpdf_toMemory(f, false, false, &buflen);
   FILE *fp;
   printf("---cpdf_fromMemory()\n");
@@ -125,10 +126,10 @@ int main(int argc, char **argv) {
   int range_is_in_range = cpdf_isInRange(range_all, 5);
   prerr();
   printf("---cpdf_parsePagespec()\n");
-  int rfrompagespec = cpdf_parsePagespec(f2, "1-2,5-end");
+  int rfrompagespec = cpdf_parsePagespec(f2, "1-3,end");
   prerr();
   printf("---cpdf_validatePagespec()\n");
-  printf("Validating pagespec gives %i\n", cpdf_validatePagespec("1-2,5-end"));
+  printf("Validating pagespec gives %i\n", cpdf_validatePagespec("1-4,5,6"));
   prerr();
   printf("---cpdf_stringOfPagespec()\n");
   printf("String of pagespec is %s\n", cpdf_stringOfPagespec(f2, range));
@@ -563,9 +564,6 @@ int main(int argc, char **argv) {
   printf("***** CHAPTER 11. Document Information and Metadata\n");
   int info = cpdf_fromFile("cpdflibmanual.pdf", "");
   int r_info = cpdf_all(info);
-  printf("---cpdf_isLinearized()\n");
-  printf("is_linearized:%i\n", cpdf_isLinearized("cpdflibmanual.pdf"));
-  prerr();
   printf("---cpdf_getVersion()\n");
   printf("minor version:%i\n", cpdf_getVersion(info));
   prerr();
