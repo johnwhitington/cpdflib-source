@@ -676,7 +676,8 @@ int main(int argc, char **argv) {
   printf("D:20061108125017Z = %i, %i, %i, %i, %i, %i, %i, %i\n", year, month,
          day, hour, minute, second, hour_offset, minute_offset);
   printf("---cpdf_dateStringOfComponents()\n");
-  char * datestring = cpdf_dateStringOfComponents(year, month, day, hour, minute, second, hour_offset, minute_offset);
+  char *datestring = cpdf_dateStringOfComponents(
+      year, month, day, hour, minute, second, hour_offset, minute_offset);
   printf("%s\n", datestring);
   printf("---cpdf_getPageRotation()\n");
   int rotation = cpdf_getPageRotation(info, 1);
