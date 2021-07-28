@@ -1026,6 +1026,6 @@ int main(int argc, char **argv) {
   cpdf_setDemo(true);
   prerr();
 
-  // cpdf_onExit();
+  //cpdf_onExit();
   return 0;
 }
