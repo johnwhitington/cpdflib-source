@@ -845,19 +845,19 @@ let _ = Callback.register "selectPages" selectPages
 
 (* CHAPTER 3. Pages *)
 let read_position f1 f2 = function
-  | 0 -> Cpdf.PosCentre (f1, f2)
-  | 1 -> Cpdf.PosLeft (f1, f2)
-  | 2 -> Cpdf.PosRight (f1, f2)
-  | 3 -> Cpdf.Top f1
-  | 4 -> Cpdf.TopLeft f1
-  | 5 -> Cpdf.TopRight f1
-  | 6 -> Cpdf.Left f1
-  | 7 -> Cpdf.BottomLeft f1
-  | 8 -> Cpdf.Bottom f1
-  | 9 -> Cpdf.BottomRight f1
-  | 10 -> Cpdf.Right f1
-  | 11 -> Cpdf.Diagonal
-  | 12 -> Cpdf.ReverseDiagonal
+  | 0 -> Cpdfposition.PosCentre (f1, f2)
+  | 1 -> Cpdfposition.PosLeft (f1, f2)
+  | 2 -> Cpdfposition.PosRight (f1, f2)
+  | 3 -> Cpdfposition.Top f1
+  | 4 -> Cpdfposition.TopLeft f1
+  | 5 -> Cpdfposition.TopRight f1
+  | 6 -> Cpdfposition.Left f1
+  | 7 -> Cpdfposition.BottomLeft f1
+  | 8 -> Cpdfposition.Bottom f1
+  | 9 -> Cpdfposition.BottomRight f1
+  | 10 -> Cpdfposition.Right f1
+  | 11 -> Cpdfposition.Diagonal
+  | 12 -> Cpdfposition.ReverseDiagonal
   | _ -> failwith "read_position"
 
 let bl0_1, bl0_2, bl0_3 = 0., 0., 7
@@ -883,7 +883,7 @@ let scaleToFit i range w h scale =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdf.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -899,7 +899,7 @@ let scaleToFitPaper i range papersize scale =
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf (Cpdf.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdf.scale_to_fit_pdf (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 
@@ -1326,7 +1326,7 @@ let addText_inner
          underneath (* underneath *)
          text (* text *)
          (Array.to_list range) (* page range *)
-         Cpdf.Horizontal (* orientation *)
+         Cpdfposition.Horizontal (* orientation *)
          cropbox (* relative to cropbox *)
          opacity (* opacity *)
          justification (* justification *)
