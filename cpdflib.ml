@@ -436,21 +436,21 @@ let _ = Callback.register "lookupPdfUserPassword" lookupPdfUserPassword
 let parsePagespec pdf str =
   if !dbg then flprint "Cpdflib.parsePagespec\n";
   try
-    new_range (Array.of_list (Cpdf.parse_pagespec (lookup_pdf pdf) str))
+    new_range (Array.of_list (Cpdfpagespec.parse_pagespec (lookup_pdf pdf) str))
   with
     e -> handle_error "parsePagespec" e; err_int
 
 let stringOfPagespec pdf range =
   if !dbg then flprint "Cpdflib.stringOfPagespec\n";
   try
-    Cpdf.string_of_pagespec (lookup_pdf pdf) (Array.to_list (lookup_range range))
+    Cpdfpagespec.string_of_pagespec (lookup_pdf pdf) (Array.to_list (lookup_range range))
   with
     e -> handle_error "stringOfPagespec" e; err_string
 
 let validatePagespec spec =
   if !dbg then flprint "Cpdflib.validatePagespec\n";
   try
-    Cpdf.validate_pagespec spec
+    Cpdfpagespec.validate_pagespec spec
   with
     e -> handle_error "validatePagespec" e; err_bool
 
