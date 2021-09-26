@@ -277,7 +277,7 @@ int cpdf_pagesFast(const char[], const char[]);
 void cpdf_toFile(int, const char[], int, int);
 
 /*
- * cpdf_toFile (pdf, filename, linearize, make_id, preserve_objstm,
+ * cpdf_toFileExt (pdf, filename, linearize, make_id, preserve_objstm,
  * generate_objstm, compress_objstm) writes the file to a given filename. If
  * make_id is true, it will be given a new ID.  If preserve_objstm is true,
  * existing object streams will be preserved. If generate_objstm is true,
@@ -415,7 +415,7 @@ int cpdf_selectPages(int, int);
 void cpdf_scalePages(int, int, double, double);
 
 /*
- * cpdf_scaleToFit(pdf, range, width height, scale) scales the content to fit
+ * cpdf_scaleToFit(pdf, range, width, height, scale) scales the content to fit
  * new page dimensions (width x height) multiplied by scale (typically 1.0).
  * Other boxed (crop etc. are altered as appropriate)
  */
@@ -570,7 +570,7 @@ void cpdf_hardBox(int, int, const char[]);
 void cpdf_compress(int);
 
 /*
- * cpdf_uncompress(pdf) uncompresses any streams in the given PDF, so long as
+ * cpdf_decompress(pdf) decompresses any streams in the given PDF, so long as
  * the compression method is supported.
  */
 void cpdf_decompress(int);
@@ -1017,7 +1017,7 @@ int cpdf_getPageRotation(int, int);
 int cpdf_hasBox(int, int, const char[]);
 
 /*
- * These functions get a box given the document, page range, min x, max x,
+ * These functions get a box given the document, page number, min x, max x,
  * min y, max y in points. Only succeeds if such a box exists, as checked by
  * cpdf_hasBox.
  */
@@ -1283,7 +1283,7 @@ void cpdf_removeFonts(int);
 /*
  * cpdf_copyFont(from, to, range, pagenumber, fontname) copies the given font
  * from the given page in the 'from' PDF to every page in the 'to' PDF. The
- * new font is stored under it's font name.
+ * new font is stored under its font name.
  */
 void cpdf_copyFont(int, int, int, int, const char[]);
 
