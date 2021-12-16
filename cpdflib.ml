@@ -15,20 +15,11 @@ let version = "2.4"
 
 let _ = Callback.register "version" version
 
-(* Demo Handling *)
-let demo = ref false 
-
 let ppstub f n p = (f n p, n, Pdftransform.i_matrix)
 
-let nobble pdf =
-  if !demo then
-    Cpdf.recompress_pdf (Cpdf.process_pages (ppstub (Cpdf.nobble_page pdf)) pdf (ilist 1 (Pdfpage.endpage pdf)))
-  else
-    pdf
-
+(* No longer does anything *)
 let setdemo b =
-  if !dbg then flprint "Cpdflib.setdemo\n";
-  demo := b
+  if !dbg then flprint "Cpdflib.setdemo\n"
 
 let _ = Callback.register "setdemo" setdemo
 
@@ -505,7 +496,7 @@ let toFile pdf filename linearize make_id =
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
-      Pdfwrite.pdf_to_file_options linearize None make_id (nobble pdf) filename
+      Pdfwrite.pdf_to_file_options linearize None make_id pdf filename
   with
     e -> handle_error "toFile" e; err_unit
 
@@ -518,7 +509,7 @@ let toFileExt
       Pdf.remove_unreferenced pdf;
       Pdfwrite.pdf_to_file_options
         ~preserve_objstm ~generate_objstm ~compress_objstm
-        linearize None make_id (nobble pdf) filename
+        linearize None make_id pdf filename
   with
     e -> handle_error "toFileOptions" e; err_unit
 
@@ -529,7 +520,7 @@ let toFileMemory pdf linearize make_id =
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
       let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-        Pdfwrite.pdf_to_output linearize None (nobble pdf) o;
+        Pdfwrite.pdf_to_output linearize None pdf o;
         Pdfio.raw_of_bytes
           (Pdfio.extract_bytes_from_input_output o bytes)
   with
@@ -1306,8 +1297,7 @@ let _ = Callback.register "addTextReturnBaselineAdjustment" addTextReturnBaselin
 let addText_inner
   metrics pdf range text position linespacing bates font fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
-  let fontname = Pdftext.string_of_standard_font font
-  and color = color.r, color.g, color.b in
+  let fontname = Pdftext.string_of_standard_font font in
     let newpdf =
       (Cpdf.addtexts
          metrics (* metrics *)
@@ -1319,7 +1309,7 @@ let addText_inner
          embed_fonts (* embed fonts *)
          bates (* bates number *)
          None (* pad bates *)
-         color (* colour *)
+         (Cpdf.RGB (color.r, color.g, color.b)) (* colour *)
          position (* position *)
          linespacing (* line spacing *)
          fontsize (* font size *)
@@ -1452,7 +1442,7 @@ let fontinfo = ref [||]
 let startGetFontInfo pdf =
   if !dbg then flprint "Cpdflib.startGetFontInfo\n";
   try
-    fontinfo := Array.of_list (Cpdf.list_fonts (lookup_pdf pdf))
+    fontinfo := Array.of_list (Cpdf.list_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))
   with
     e -> handle_error "startGetFontInfo" e; err_unit
 
