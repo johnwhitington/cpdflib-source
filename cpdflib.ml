@@ -2170,7 +2170,7 @@ let attachFile filename pdf =
   if !dbg then flprint "Cpdflib.attachFile\n";
   try
     update_pdf
-      (Cpdf.attach_file false None (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file false None (lookup_pdf pdf) filename)
       (lookup_pdf pdf);
   with
     e -> handle_error "attachFile" e; err_unit
@@ -2179,7 +2179,7 @@ let attachFileFromMemory rawbytes filename pdf =
   if !dbg then flprint "Cpdflib.attachFileFromMemory\n";
   try
     update_pdf
-      (Cpdf.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileFromMemory" e; err_unit
@@ -2188,7 +2188,7 @@ let attachFileToPage filename pdf pagenumber =
   if !dbg then flprint "Cpdflib.attachFileToPage\n";
   try
     update_pdf
-      (Cpdf.attach_file false (Some pagenumber) (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file false (Some pagenumber) (lookup_pdf pdf) filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileToPage" e; err_unit
@@ -2197,7 +2197,7 @@ let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
   if !dbg then flprint "Cpdflib.attachFileToPageFromMemory\n";
   try
     update_pdf
-      (Cpdf.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileToPageFromMemory" e; err_unit
@@ -2205,7 +2205,7 @@ let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
 let removeAttachedFiles pdf =
   if !dbg then flprint "Cpdflib.removeAttachedFiles\n";
   try
-    update_pdf (Cpdf.remove_attached_files (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfattach.remove_attached_files (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeAttachedFiles" e; err_unit
 
@@ -2214,7 +2214,7 @@ let attachments = ref []
 let startGetAttachments pdf =
   if !dbg then flprint "Cpdflib.startGetAttachments\n";
   try
-    attachments := Cpdf.list_attached_files (lookup_pdf pdf)
+    attachments := Cpdfattach.list_attached_files (lookup_pdf pdf)
   with
     e -> handle_error "startGetAttachments" e; err_unit
 
@@ -2230,14 +2230,14 @@ let numberGetAttachments () =
 let getAttachmentName serial =
   if !dbg then flprint "Cpdflib.getAttachmentName\n";
   try
-    (select (serial + 1) !attachments).Cpdf.name
+    (select (serial + 1) !attachments).Cpdfattach.name
   with e ->
     handle_error "getAttachmentName" e; err_string
 
 let getAttachmentPage serial =
   if !dbg then flprint "Cpdflib.getAttachmentPage\n";
   try
-    (select (serial + 1) !attachments).Cpdf.pagenumber
+    (select (serial + 1) !attachments).Cpdfattach.pagenumber
   with e ->
     handle_error "getAttachmentPage" e; err_int
 
@@ -2245,7 +2245,7 @@ let getAttachmentData serial =
   if !dbg then flprint "Cpdflib.getAttachmentData\n";
   try
     Pdfio.raw_of_bytes
-      ((select (serial + 1) !attachments).Cpdf.data ())
+      ((select (serial + 1) !attachments).Cpdfattach.data ())
   with e ->
     handle_error "getAttachmentData" e; err_data
 
@@ -2336,21 +2336,21 @@ let draft pdf range boxes =
 let blackText pdf range =
   if !dbg then flprint "Cpdflib.blackText\n";
   try
-    update_pdf (Cpdf.blacktext (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacktext (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackText" e; err_unit
 
 let blackLines pdf range =
   if !dbg then flprint "Cpdflib.blackLines\n";
   try
-    update_pdf (Cpdf.blacklines (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacklines (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackLines" e; err_unit
 
 let blackFills pdf range =
   if !dbg then flprint "Cpdflib.blackFills\n";
   try
-    update_pdf (Cpdf.blackfills (0., 0., 0.) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blackfills (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackFills" e; err_unit
 
@@ -2385,7 +2385,7 @@ let removeId pdf =
 let removeDictEntry pdf key =
   if !dbg then flprint "Cpdf.removeDictEntry\n";
   try
-    Cpdf.remove_dict_entry (lookup_pdf pdf) key
+    Cpdf.remove_dict_entry (lookup_pdf pdf) key None
   with
     e -> handle_error "removeDictEntry" e; err_unit
 
@@ -2523,7 +2523,8 @@ let outputJSON filename parse_content no_stream_data pdf =
   if !dbg then flprint "Cpdflib.outputJSON";
   try
     let handle = open_out_bin filename in
-      CpdfwriteJSON.write handle parse_content no_stream_data (lookup_pdf pdf);
+      Cpdfjson.to_output
+        (Pdfio.output_of_channel handle) ~parse_content ~no_stream_data ~decompress_streams:false (lookup_pdf pdf);
       close_out handle
   with
     e -> handle_error "outputJSON" e; err_unit
