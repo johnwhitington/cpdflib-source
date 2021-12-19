@@ -1048,12 +1048,12 @@ let _ = Callback.register "hardBox" hardBox
 (* CHAPTER 5. Compression *)
 let compress pdf =
   if !dbg then flprint "Cpdflib.compress\n";
-  try update_pdf (Cpdf.recompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
+  try update_pdf (Cpdfsqueeze.recompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
     e -> handle_error "compress" e; err_unit
 
 let decompress pdf =
   if !dbg then flprint "Cpdflib.decompress\n";
-  try update_pdf (Cpdf.decompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
+  try update_pdf (Cpdfsqueeze.decompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
     e -> handle_error "decompress" e; err_unit
 
 let _ = Callback.register "compress" compress
@@ -1378,14 +1378,14 @@ let twoUpStack pdf =
 let padBefore pdf range =
   if !dbg then flprint "Cpdflib.padBefore\n";
   try
-    update_pdf (Cpdf.padbefore (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfpad.padbefore (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padBefore" e; err_unit
  
 let padAfter pdf range =
   if !dbg then flprint "Cpdflib.padAfter\n";
   try
-    update_pdf (Cpdf.padafter (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfpad.padafter (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padAfter" e; err_unit
 
@@ -1398,21 +1398,21 @@ let padEvery pdf n =
       | [] -> []
       | l -> if last l = Pdfpage.endpage pdf then all_but_last l else l
     in
-      update_pdf (Cpdf.padafter range pdf) pdf
+      update_pdf (Cpdfpad.padafter range pdf) pdf
   with
     e -> handle_error "padEvery" e; err_unit
 
 let padMultiple pdf n =
   if !dbg then flprint "Cpdflib.padMultiple\n";
   try
-    update_pdf (Cpdf.padmultiple n (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfpad.padmultiple n (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padMultiple" e; err_unit
 
 let padMultipleBefore pdf n =
   if !dbg then flprint "Cpdflib.padMultipleBefore\n";
   try
-    update_pdf (Cpdf.padmultiple (-n) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfpad.padmultiple (-n) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padMultipleBefore" e; err_unit
 
@@ -1497,112 +1497,112 @@ let getMajorVersion pdf =
 let getTitle pdf =
   if !dbg then flprint "Cpdflib.getTitle\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Title"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Title"
   with
     e -> handle_error "getTitle" e; err_string
 
 let getAuthor pdf =
   if !dbg then flprint "Cpdflib.getAuthor\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Author"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Author"
   with
     e -> handle_error "getAuthor" e; err_string
 
 let getSubject pdf =
   if !dbg then flprint "Cpdflib.getSubject\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Subject"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Subject"
   with
     e -> handle_error "getSubject" e; err_string
 
 let getKeywords pdf =
   if !dbg then flprint "Cpdflib.getKeywords\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Keywords"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Keywords"
   with
     e -> handle_error "getKeywords" e; err_string
 
 let getCreator pdf =
   if !dbg then flprint "Cpdflib.getCreator\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Creator"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Creator"
   with
     e -> handle_error "getCreator" e; err_string
 
 let getProducer pdf =
   if !dbg then flprint "Cpdflib.getProducer\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Producer"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Producer"
   with
     e -> handle_error "getProducer" e; err_string
 
 let getCreationDate pdf =
   if !dbg then flprint "Cpdflib.getCreationDate\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/CreationDate"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/CreationDate"
   with
     e -> handle_error "getCreationDate" e; err_string
 
 let getModificationDate pdf =
   if !dbg then flprint "Cpdflib.getModificationDate\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/ModDate"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/ModDate"
   with
     e -> handle_error "getModificationDate" e; err_string
 
 let getTitleXMP pdf =
   if !dbg then flprint "Cpdflib.getTitleXMP\n";
   try
-    Cpdf.get_info_utf8 (lookup_pdf pdf) "/Title"
+    Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Title"
   with
     e -> handle_error "getTitleXMP" e; err_string
 
 let getAuthorXMP pdf =
   if !dbg then flprint "Cpdflib.getAuthorXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/Author"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Author"
   with
     e -> handle_error "getAuthorXMP" e; err_string
 
 let getSubjectXMP pdf =
   if !dbg then flprint "Cpdflib.getSubjectXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/Subject"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Subject"
   with
     e -> handle_error "getSubjectXMP" e; err_string
 
 let getKeywordsXMP pdf =
   if !dbg then flprint "Cpdflib.getKeywordsXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/Keywords"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Keywords"
   with
     e -> handle_error "getKeywordsXMP" e; err_string
 
 let getCreatorXMP pdf =
   if !dbg then flprint "Cpdflib.getCreatorXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/Creator"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Creator"
   with
     e -> handle_error "getCreatorXMP" e; err_string
 
 let getProducerXMP pdf =
   if !dbg then flprint "Cpdflib.getProducerXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/Producer"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Producer"
   with
     e -> handle_error "getProducerXMP" e; err_string
 
 let getCreationDateXMP pdf =
   if !dbg then flprint "Cpdflib.getCreationDateXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/CreationDate"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/CreationDate"
   with
     e -> handle_error "getCreationDateXMP" e; err_string
 
 let getModificationDateXMP pdf =
   if !dbg then flprint "Cpdflib.getModificationDateXMP\n";
   try
-    Cpdf.get_xmp_info (lookup_pdf pdf) "/ModDate"
+    Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/ModDate"
   with
     e -> handle_error "getModificationDateXMP" e; err_string
 
@@ -1645,7 +1645,7 @@ let setTitle pdf title =
   if !dbg then flprint "Cpdflib.setTitle\n";
   try
     let title = Pdftext.pdfdocstring_of_utf8 title in
-      update_pdf (Cpdf.set_pdf_info ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setTitle" e; err_unit
 
@@ -1653,7 +1653,7 @@ let setAuthor pdf author =
   if !dbg then flprint "Cpdflib.setAuthor\n";
   try
     let author = Pdftext.pdfdocstring_of_utf8 author in
-      update_pdf (Cpdf.set_pdf_info ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setAuthor" e; err_unit
 
@@ -1661,7 +1661,7 @@ let setSubject pdf subject =
   if !dbg then flprint "Cpdflib.setSubject\n";
   try
     let subject = Pdftext.pdfdocstring_of_utf8 subject in
-      update_pdf (Cpdf.set_pdf_info ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setSubject" e; err_unit
 
@@ -1669,7 +1669,7 @@ let setKeywords pdf keywords =
   if !dbg then flprint "Cpdflib.setKeywords\n";
   try
     let keywords = Pdftext.pdfdocstring_of_utf8 keywords in
-      update_pdf (Cpdf.set_pdf_info ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setKeywords" e; err_unit
 
@@ -1677,7 +1677,7 @@ let setCreator pdf creator =
   if !dbg then flprint "Cpdflib.setCreator\n";
   try
     let creator = Pdftext.pdfdocstring_of_utf8 creator in
-      update_pdf (Cpdf.set_pdf_info ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "SetCreator" e; err_unit
 
@@ -1685,7 +1685,7 @@ let setProducer pdf producer =
   if !dbg then flprint "Cpdflib.setProducer\n";
   try      
     let producer = Pdftext.pdfdocstring_of_utf8 producer in
-      update_pdf (Cpdf.set_pdf_info ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setProducer" e; err_unit
 
@@ -1693,7 +1693,7 @@ let setCreationDate pdf date =
   if !dbg then flprint "Cpdflib.setCreationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
-      update_pdf (Cpdf.set_pdf_info ("/CreationDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/CreationDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setCreationDate" e; err_unit
 
@@ -1701,21 +1701,21 @@ let setModificationDate pdf date =
   if !dbg then flprint "Cpdflib.setModificationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
-      update_pdf (Cpdf.set_pdf_info ("/ModDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ("/ModDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setModificationDate" e; err_unit
 
 let markTrapped pdf =
   if !dbg then flprint "Cpdflib.markTrapped\n";
   try
-    update_pdf (Cpdf.set_pdf_info ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_pdf_info ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markTrapped" e; err_unit
 
 let markUntrapped pdf =
   if !dbg then flprint "Cpdflib.markUntrapped\n";
   try
-    update_pdf (Cpdf.set_pdf_info ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_pdf_info ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markUntrapped" e; err_unit
 
@@ -1723,7 +1723,7 @@ let setTitleXMP pdf title =
   if !dbg then flprint "Cpdflib.setTitle\n";
   try
     let title = Pdftext.pdfdocstring_of_utf8 title in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setTitle" e; err_unit
 
@@ -1731,7 +1731,7 @@ let setAuthorXMP pdf author =
   if !dbg then flprint "Cpdflib.setAuthor\n";
   try
     let author = Pdftext.pdfdocstring_of_utf8 author in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setAuthor" e; err_unit
 
@@ -1739,7 +1739,7 @@ let setSubjectXMP pdf subject =
   if !dbg then flprint "Cpdflib.setSubject\n";
   try
     let subject = Pdftext.pdfdocstring_of_utf8 subject in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setSubject" e; err_unit
 
@@ -1747,7 +1747,7 @@ let setKeywordsXMP pdf keywords =
   if !dbg then flprint "Cpdflib.setKeywords\n";
   try
     let keywords = Pdftext.pdfdocstring_of_utf8 keywords in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setKeywords" e; err_unit
 
@@ -1755,7 +1755,7 @@ let setCreatorXMP pdf creator =
   if !dbg then flprint "Cpdflib.setCreator\n";
   try
     let creator = Pdftext.pdfdocstring_of_utf8 creator in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "SetCreator" e; err_unit
 
@@ -1763,7 +1763,7 @@ let setProducerXMP pdf producer =
   if !dbg then flprint "Cpdflib.setProducer\n";
   try      
     let producer = Pdftext.pdfdocstring_of_utf8 producer in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setProducer" e; err_unit
 
@@ -1771,7 +1771,7 @@ let setCreationDateXMP pdf date =
   if !dbg then flprint "Cpdflib.setCreationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/CreationDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/CreationDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setCreationDate" e; err_unit
 
@@ -1779,21 +1779,21 @@ let setModificationDateXMP pdf date =
   if !dbg then flprint "Cpdflib.setModificationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
-      update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/ModDate", Pdf.String (Cpdf.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/ModDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setModificationDate" e; err_unit
 
 let markTrappedXMP pdf =
   if !dbg then flprint "Cpdflib.markTrapped\n";
   try
-    update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markTrapped" e; err_unit
 
 let markUntrappedXMP pdf =
   if !dbg then flprint "Cpdflib.markUntrapped\n";
   try
-    update_pdf (Cpdf.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markUntrapped" e; err_unit
 
@@ -1826,7 +1826,7 @@ let setPageLayout pdf layout =
       | 5 -> TwoPageRight
       | _ -> failwith "setPageLayout"
     in
-      update_pdf (Cpdf.set_page_layout (lookup_pdf pdf) (string_of_layout layout)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_page_layout (lookup_pdf pdf) (string_of_layout layout)) (lookup_pdf pdf)
   with
     e -> handle_error "setPageLayout" e; err_unit
 
@@ -1859,49 +1859,49 @@ let setPageMode pdf mode =
       | 5 -> UseAttachments
       | _ -> failwith "setPageMode"
     in
-      update_pdf (Cpdf.set_page_mode (lookup_pdf pdf) (string_of_mode mode)) (lookup_pdf pdf)
+      update_pdf (Cpdfmetadata.set_page_mode (lookup_pdf pdf) (string_of_mode mode)) (lookup_pdf pdf)
   with
     e -> handle_error "setPageMode" e; err_unit
 
 let hideToolbar pdf b =
   if !dbg then flprint "Cpdflib.hideToolbar\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/HideToolbar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/HideToolbar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideToolbar" e; err_unit
 
 let hideMenubar pdf b =
   if !dbg then flprint "Cpdflib.hideMenubar\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/HideMenubar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/HideMenubar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideMenubar" e; err_unit
 
 let hideWindowUi pdf b =
   if !dbg then flprint "Cpdflib.hideWindowUi\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/HideWindowUI", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/HideWindowUI", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideWindowUi" e; err_unit
 
 let fitWindow pdf b =
   if !dbg then flprint "Cpdflib.fitWindow\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/FitWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/FitWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "fitWindow" e; err_unit
 
 let centerWindow pdf b =
   if !dbg then flprint "Cpdflib.centerWindow\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/CenterWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/CenterWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "centerWindow" e; err_unit
 
 let displayDocTitle pdf b =
   if !dbg then flprint "Cpdflib.displayDocTitle\n";
   try
-    update_pdf (Cpdf.set_viewer_preference ("/DisplayDocTitle", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_viewer_preference ("/DisplayDocTitle", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "displayDocTitle" e; err_unit
 
@@ -1909,28 +1909,28 @@ let displayDocTitle pdf b =
 let openAtPage pdf fit pagenum =
   if !dbg then flprint "Cpdflib.openAtPage\n";
   try
-    update_pdf (Cpdf.set_open_action (lookup_pdf pdf) fit pagenum) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_open_action (lookup_pdf pdf) fit pagenum) (lookup_pdf pdf)
   with
     e -> handle_error "openAtPage" e; err_unit
 
 let setMetadataFromFile pdf filename =
   if !dbg then flprint "Cpdflib.setMetadataFromFile\n";
   try
-    update_pdf (Cpdf.set_metadata false filename (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_metadata false filename (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataFromFile" e; err_unit
 
 let setMetadataFromByteArray pdf bytes =
   if !dbg then flprint "Cpdflib.setMetadataFromByteArray\n";
   try
-    update_pdf (Cpdf.set_metadata_from_bytes false (Pdfio.bytes_of_raw bytes) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_metadata_from_bytes false (Pdfio.bytes_of_raw bytes) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataFromByteArray" e; err_unit
 
 let getMetadata pdf =
   if !dbg then flprint "Cpdflib.getMetadata\n";
   try
-    match Cpdf.get_metadata (lookup_pdf pdf) with
+    match Cpdfmetadata.get_metadata (lookup_pdf pdf) with
       None -> err_data
     | Some data -> Pdfio.raw_of_bytes data
   with
@@ -1939,21 +1939,21 @@ let getMetadata pdf =
 let removeMetadata pdf =
   if !dbg then flprint "Cpdflib.removeMetadata\n";
   try
-    update_pdf (Cpdf.remove_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.remove_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeMetadata" e; err_unit
 
 let createMetadata pdf =
   if !dbg then flprint "Cpdflib.createMetadata\n";
   try
-    update_pdf (Cpdf.create_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.create_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "createMetadata" e; err_unit
 
 let setMetadataDate pdf date =
   if !dbg then flprint "Cpdflib.setMetadataDate\n";
   try
-    update_pdf (Cpdf.set_metadata_date (lookup_pdf pdf) date) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_metadata_date (lookup_pdf pdf) date) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataDate" e; err_unit
 
@@ -2364,7 +2364,7 @@ let thinLines pdf range thickness =
 let copyId from_pdf to_pdf =
   if !dbg then flprint "Cpdflib.copyId\n";
   try
-    update_pdf (Cpdf.copy_id false (lookup_pdf from_pdf) (lookup_pdf to_pdf)) (lookup_pdf to_pdf)
+    update_pdf (Cpdfmetadata.copy_id false (lookup_pdf from_pdf) (lookup_pdf to_pdf)) (lookup_pdf to_pdf)
   with
     e -> handle_error "copyId" e; err_unit
 
@@ -2502,7 +2502,7 @@ let _ = Callback.register "getPageLabelStringForPage" getPageLabelStringForPage
 let squeezeInMemory pdf =
   if !dbg then flprint "Cpdflib.squeezeInMemory\n";
   try
-    Cpdf.squeeze ~logto:"nolog" (lookup_pdf pdf);
+    Cpdfsqueeze.squeeze ~logto:"nolog" (lookup_pdf pdf);
     update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
   with
     e -> handle_error "squeezeInMemory" e; err_unit
@@ -2538,7 +2538,7 @@ let ocgnamelist = ref [||]
 let startGetOCGList pdf =
   if !dbg then flprint "Cpdflib.startGetOCGList\n";
   try
-    ocgnamelist := Array.of_list (Cpdf.ocg_get_list (lookup_pdf pdf));
+    ocgnamelist := Array.of_list (Cpdfocg.ocg_get_list (lookup_pdf pdf));
     Array.length !ocgnamelist;
   with
     e -> handle_error "startGetOCGList" e; err_int
@@ -2564,7 +2564,7 @@ let _ = Callback.register "endGetOCGList" endGetOCGList
 let ocgCoalesce pdf =
   if !dbg then flprint "Cpdflib.ocgCoalesce";
   try
-    Cpdf.ocg_coalesce (lookup_pdf pdf)
+    Cpdfocg.ocg_coalesce (lookup_pdf pdf)
   with
     e -> handle_error "ocgCoalesce" e; err_unit
 
@@ -2573,7 +2573,7 @@ let _ = Callback.register "ocgCoalesce" ocgCoalesce
 let ocgRename pdf f t =
   if !dbg then flprint "Cpdflib.ocgRename";
   try
-    Cpdf.ocg_rename f t (lookup_pdf pdf) 
+    Cpdfocg.ocg_rename f t (lookup_pdf pdf) 
   with
     e -> handle_error "ocgRename" e; err_unit
 
@@ -2582,7 +2582,7 @@ let _ = Callback.register "ocgRename" ocgRename
 let ocgOrderAll pdf =
   if !dbg then flprint "Cpdflib.ocgOrderAll";
   try
-    Cpdf.ocg_order_all (lookup_pdf pdf)
+    Cpdfocg.ocg_order_all (lookup_pdf pdf)
   with
     e -> handle_error "ocgOrderAll" e; err_unit
 
