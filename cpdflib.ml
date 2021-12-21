@@ -1447,7 +1447,7 @@ let fontinfo = ref [||]
 let startGetFontInfo pdf =
   if !dbg then flprint "Cpdflib.startGetFontInfo\n";
   try
-    fontinfo := Array.of_list (Cpdf.list_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))
+    fontinfo := Array.of_list (Cpdffont.list_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))
   with
     e -> handle_error "startGetFontInfo" e; err_unit
 
