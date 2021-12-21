@@ -2334,7 +2334,7 @@ let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 let draft pdf range boxes =
   if !dbg then flprint "Cpdflib.draft\n";
   try
-    update_pdf (Cpdf.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfdraft.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "draft" e; err_unit
 
