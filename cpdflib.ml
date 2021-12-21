@@ -2376,7 +2376,7 @@ let copyId from_pdf to_pdf =
 let removeAllText pdf range =
   if !dbg then flprint "Cpdflib.removeAllText\n";
   try
-    update_pdf (Cpdf.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfaddtext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeAllText" e; err_unit
 
