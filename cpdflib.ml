@@ -2272,7 +2272,7 @@ let images = ref [||]
 let startGetImageResolution pdf res = 
   images :=
     Array.of_list
-      (Cpdf.image_resolution (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res);
+      (Cpdfimage.image_resolution (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res);
   Array.length !images
 
 let endGetImageResolution () =
