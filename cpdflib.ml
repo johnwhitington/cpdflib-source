@@ -1242,7 +1242,7 @@ let combinePages pdf pdf2 =
 let removeText pdf range =
   if !dbg then flprint "Cpdflib.removeText\n";
   try
-    update_pdf (Cpdf.removetext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfaddtext.removetext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeText" e; err_unit
 
@@ -1264,32 +1264,32 @@ let rgb r g b = {r = r; g = g; b = b}
 
 let addTextHowMany () =
   if !dbg then flprint "Cpdflib.addTextHowMany\n";
-  try Cpdf.metrics_howmany () with
+  try Cpdfaddtext.metrics_howmany () with
     e -> handle_error "addTextHowMany" e; err_int
 
 let addTextReturnText i =
   if !dbg then flprint "Cpdflib.addTextReturnText\n";
-  try Cpdf.metrics_text i with
+  try Cpdfaddtext.metrics_text i with
     e -> handle_error "addTextReturnText" e; err_string
 
 let addTextReturnX i =
   if !dbg then flprint "Cpdflib.addTextReturnX\n";
-  try Cpdf.metrics_x i with
+  try Cpdfaddtext.metrics_x i with
     e -> handle_error "addTextReturnX" e; err_float
 
 let addTextReturnY i =
   if !dbg then flprint "Cpdflib.addTextReturnY\n";
-  try Cpdf.metrics_y i with
+  try Cpdfaddtext.metrics_y i with
     e -> handle_error "addTextReturnY" e; err_float
 
 let addTextReturnRotation i =
   if !dbg then flprint "Cpdflib.addTextReturnRotation\n";
-  try Cpdf.metrics_rot i with
+  try Cpdfaddtext.metrics_rot i with
     e -> handle_error "addTextReturnRotation" e; err_float
 
 let addTextReturnBaselineAdjustment () =
   if !dbg then flprint "Cpdflib.addTextReturnBaselineAdjustment\n";
-  try Cpdf.metrics_baseline_adjustment () with
+  try Cpdfaddtext.metrics_baseline_adjustment () with
     e -> handle_error "addTextReturnBaselineAdjustment" e; err_float
 
 let _ = Callback.register "addTextHowMany" addTextHowMany
@@ -1304,7 +1304,7 @@ let addText_inner
 =
   let fontname = Pdftext.string_of_standard_font font in
     let newpdf =
-      (Cpdf.addtexts
+      (Cpdfaddtext.addtexts
          metrics (* metrics *)
          linewidth (* linewidth *)
          outline (* outline *)
@@ -1314,7 +1314,7 @@ let addText_inner
          embed_fonts (* embed fonts *)
          bates (* bates number *)
          None (* pad bates *)
-         (Cpdf.RGB (color.r, color.g, color.b)) (* colour *)
+         (Cpdfaddtext.RGB (color.r, color.g, color.b)) (* colour *)
          position (* position *)
          linespacing (* line spacing *)
          fontsize (* font size *)
@@ -2341,21 +2341,21 @@ let draft pdf range boxes =
 let blackText pdf range =
   if !dbg then flprint "Cpdflib.blackText\n";
   try
-    update_pdf (Cpdf.blacktext (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackText" e; err_unit
 
 let blackLines pdf range =
   if !dbg then flprint "Cpdflib.blackLines\n";
   try
-    update_pdf (Cpdf.blacklines (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackLines" e; err_unit
 
 let blackFills pdf range =
   if !dbg then flprint "Cpdflib.blackFills\n";
   try
-    update_pdf (Cpdf.blackfills (Cpdf.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdf.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackFills" e; err_unit
 

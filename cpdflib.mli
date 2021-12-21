@@ -112,7 +112,7 @@ val stampOn : pdf -> pdf -> range -> unit
 val stampUnder : pdf -> pdf -> range -> unit
 val stampExtended : pdf -> pdf -> range -> bool -> bool -> float -> float -> int -> bool -> unit 
 val combinePages : pdf -> pdf -> pdf
-val addText : bool -> pdf -> int -> string -> int -> float -> float -> float -> int -> Pdftext.standard_font -> float -> float -> float -> float -> bool -> bool -> bool -> float -> Cpdf.justification -> bool -> bool -> string -> float -> bool -> unit
+val addText : bool -> pdf -> int -> string -> int -> float -> float -> float -> int -> Pdftext.standard_font -> float -> float -> float -> float -> bool -> bool -> bool -> float -> Cpdfaddtext.justification -> bool -> bool -> string -> float -> bool -> unit
 val removeText : pdf -> range -> unit
 val addContent : string -> bool -> int -> int -> unit
 val stampAsXObject : int -> int -> int -> string
