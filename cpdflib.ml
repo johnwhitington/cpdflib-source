@@ -528,7 +528,7 @@ let toFileMemory pdf linearize make_id =
 
 let blankDocument width height pages =
   if !dbg then flprint "Cpdflib.blankDocument\n";
-  try new_pdf (Cpdf.blank_document width height pages) with
+  try new_pdf (Cpdfcreate.blank_document width height pages) with
     e -> handle_error "blankDocument" e; err_int
 
 let papersize_of_int = function
@@ -552,7 +552,7 @@ let papersize_of_int = function
 
 let blankDocumentPaper papersize pages =
   if !dbg then flprint "Cpdflib.blankDocumentPaper\n";
-  try new_pdf (Cpdf.blank_document_paper (papersize_of_int papersize) pages) with
+  try new_pdf (Cpdfcreate.blank_document_paper (papersize_of_int papersize) pages) with
     e -> handle_error "blankDocumentPaper" e; err_int
 
 (* Number of pages in a PDF *)
@@ -561,11 +561,16 @@ let pages i =
   try Pdfpage.endpage (lookup_pdf i) with
     e -> handle_error "pages" e; err_int
 
+(* Get the number of pages in file. Doesn't need decryption. *)
+let endpage_io ?revision i user_pw owner_pw =
+  let pdf = Pdfread.pdf_of_input_lazy ?revision user_pw owner_pw i in
+    Pdfpage.endpage pdf
+
 let pagesFast password filename =
   if !dbg then flprint "Cpdflib.pagesFast\n";
   try
     let channel = open_in_bin filename in
-      let r = Cpdf.endpage_io (Pdfio.input_of_channel channel) (Some password) None in
+      let r = endpage_io (Pdfio.input_of_channel channel) (Some password) None in
         close_in channel;
         r
   with
@@ -2422,7 +2427,7 @@ let addPageLabels pdf style prefix offset range progress =
     and prefix =
       if prefix = "" then None else Some (Pdftext.pdfdocstring_of_utf8 prefix)
     in
-      Cpdf.add_page_labels (lookup_pdf pdf) progress style prefix offset (Array.to_list (lookup_range range))
+      Cpdfpagelabels.add_page_labels (lookup_pdf pdf) progress style prefix offset (Array.to_list (lookup_range range))
   with
     e -> handle_error "addPageLabels" e; err_unit
 
