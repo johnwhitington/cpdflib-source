@@ -871,7 +871,7 @@ let scalePages i range sx sy =
   if !dbg then flprint "Cpdflib.scalePages\n";
   try
     let sxsylist = many (sx, sy) (pages i) in
-      update_pdf (Cpdf.scale_pdf ~fast:!fast sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdfpage.scale_pdf ~fast:!fast sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scalePages" e; err_unit
 
@@ -879,7 +879,7 @@ let scaleToFit i range w h scale =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdfpage.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
@@ -895,7 +895,7 @@ let scaleToFitPaper i range papersize scale =
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdf.scale_to_fit_pdf (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdfpage.scale_to_fit_pdf (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 
@@ -903,42 +903,42 @@ let shiftContents i range dx dy =
   if !dbg then flprint "Cpdflib.shiftContents\n";
   try
     let dxdylist = many (dx, dy) (pages i) in
-    update_pdf (Cpdf.shift_pdf ~fast:!fast dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.shift_pdf ~fast:!fast dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "shiftContents" e; err_unit
 
 let scaleContents pdf range pos f1 f2 factor =
   if !dbg then flprint "Cpdflib.scaleContents\n";
   try
-    update_pdf (Cpdf.scale_contents ~fast:!fast (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdfpage.scale_contents ~fast:!fast (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "scaleContents" e; err_unit
 
 let rotate i range angle =
   if !dbg then flprint "Cpdflib.rotate\n";
   try
-    update_pdf (Cpdf.rotate_pdf angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.rotate_pdf angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotate" e; err_unit
 
 let rotateBy i range angle =
   if !dbg then flprint "Cpdflib.rotateBy\n";
   try
-    update_pdf (Cpdf.rotate_pdf_by angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.rotate_pdf_by angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotateBy" e; err_unit
 
 let rotateContents i range angle =
   if !dbg then flprint "Cpdflib.rotateContents\n";
   try
-    update_pdf (Cpdf.rotate_contents ~fast:!fast angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.rotate_contents ~fast:!fast angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotateContents" e; err_unit
 
 let upright i range =
   if !dbg then flprint "Cpdflib.upright\n";
   try
-    update_pdf (Cpdf.upright ~fast:!fast (Array.to_list (lookup_range range)) (lookup_pdf i)) (lookup_pdf i)
+    update_pdf (Cpdfpage.upright ~fast:!fast (Array.to_list (lookup_range range)) (lookup_pdf i)) (lookup_pdf i)
   with
     e -> handle_error "upright" e; err_unit
 
@@ -967,28 +967,28 @@ let crop i range x y w h =
 let removeCrop i range =
   if !dbg then flprint "Cpdflib.removeCrop\n";
   try
-    update_pdf (Cpdf.remove_cropping_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.remove_cropping_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeCrop" e; err_unit
 
 let removeTrim i range =
   if !dbg then flprint "Cpdflib.removeTrim\n";
   try
-    update_pdf (Cpdf.remove_trim_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.remove_trim_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeTrim" e; err_unit
 
 let removeArt i range =
   if !dbg then flprint "Cpdflib.removeArt\n";
   try
-    update_pdf (Cpdf.remove_art_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.remove_art_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeArt" e; err_unit
 
 let removeBleed i range =
   if !dbg then flprint "Cpdflib.removeBleed\n";
   try
-    update_pdf (Cpdf.remove_bleed_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.remove_bleed_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeBleed" e; err_unit
 
@@ -997,7 +997,7 @@ let setMediabox i range minx maxx miny maxy =
   try
     let lst = many (minx, miny, maxx -. minx, maxy -. miny) (pages i) in
     update_pdf
-      (Cpdf.set_mediabox lst (lookup_pdf i) (Array.to_list (lookup_range range))) 
+      (Cpdfpage.set_mediabox lst (lookup_pdf i) (Array.to_list (lookup_range range))) 
       (lookup_pdf i)
   with
     e -> handle_error "setMediaBox" e; err_unit
@@ -1024,7 +1024,7 @@ let hardBox i range box =
   if !dbg then flprint "Cpdflib.hardBox\n";
   try
     update_pdf
-      (Cpdf.hard_box (lookup_pdf i) (Array.to_list (lookup_range range)) box false !fast)
+      (Cpdfpage.hard_box (lookup_pdf i) (Array.to_list (lookup_range range)) box false !fast)
       (lookup_pdf i)
   with
     e -> handle_error "hardBox" e; err_unit
@@ -1369,14 +1369,14 @@ let _ = Callback.register "textWidth" textWidth
 let twoUp pdf =
   if !dbg then flprint "Cpdflib.twoUp\n";
   try
-    update_pdf (Cpdf.twoup !fast (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfimpose.twoup !fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUp" e; err_unit
 
 let twoUpStack pdf =
   if !dbg then flprint "Cpdflib.twoUpStack\n";
   try
-    update_pdf (Cpdf.twoup_stack !fast (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfimpose.twoup_stack !fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUpStack" e; err_unit
 
