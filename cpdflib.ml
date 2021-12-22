@@ -945,14 +945,14 @@ let upright i range =
 let hFlip i range =
   if !dbg then flprint "Cpdflib.hFlip\n";
   try
-    update_pdf (Cpdf.hflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.hflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "hFlip" e; err_unit
 
 let vFlip i range =
   if !dbg then flprint "Cpdflib.vFlip\n";
   try
-    update_pdf (Cpdf.vflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.vflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "vFlip" e; err_unit
 
@@ -960,7 +960,7 @@ let crop i range x y w h =
   if !dbg then flprint "Cpdflib.crop\n";
   try
     let xywhlist = many (x, y, w, h) (pages i) in
-    update_pdf (Cpdf.crop_pdf xywhlist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+    update_pdf (Cpdfpage.crop_pdf xywhlist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "crop" e; err_unit
 
@@ -1006,7 +1006,7 @@ let trimMarks i range =
   if !dbg then flprint "Cpdflib.trimMarks\n";
   try
     update_pdf
-      (Cpdf.trim_marks (lookup_pdf i) (Array.to_list (lookup_range range)))
+      (Cpdfpage.trim_marks (lookup_pdf i) (Array.to_list (lookup_range range)))
       (lookup_pdf i)
   with
     e -> handle_error "trimMarks" e; err_unit
@@ -1015,7 +1015,7 @@ let showBoxes i range =
   if !dbg then flprint "Cpdflib.showBoxes\n";
   try
     update_pdf
-      (Cpdf.show_boxes (lookup_pdf i) (Array.to_list (lookup_range range)))
+      (Cpdfpage.show_boxes (lookup_pdf i) (Array.to_list (lookup_range range)))
       (lookup_pdf i)
   with
     e -> handle_error "showBoxes" e; err_unit
@@ -1209,7 +1209,7 @@ let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relati
   if !dbg then flprint "Cpdflib.stampExtended\n";
   try
     update_pdf
-      (Cpdf.stamp
+      (Cpdfpage.stamp
          relative_to_cropbox
          (read_position pos1 pos2 pos3)
          false
@@ -1235,7 +1235,7 @@ let stampUnder pdf pdf2 range =
 let combinePages pdf pdf2 =
   if !dbg then flprint "Cpdflib.combinePages\n";
   try
-    new_pdf (Cpdf.combine_pages !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
+    new_pdf (Cpdfpage.combine_pages !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
   with
     e -> handle_error "combinePages" e; err_int
 
@@ -1964,7 +1964,7 @@ let setMetadataDate pdf date =
 
 let hasBox pdf pagenumber boxname =
   if !dbg then flprint "Cpdflib.hasBox\n";
-  try Cpdf.hasbox (lookup_pdf pdf) pagenumber boxname with
+  try Cpdfpage.hasbox (lookup_pdf pdf) pagenumber boxname with
     e -> handle_error "hasBox" e; err_bool
 
 let getPageRotation pdf pagenumber =
@@ -2075,28 +2075,28 @@ let getBleedBox pdf pagenumber =
 let setArtBox pdf range minx maxx miny maxy =
   if !dbg then flprint "Cpdflib.setArtBox\n";
   try
-    update_pdf (Cpdf.setBox "/ArtBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdfpage.setBox "/ArtBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setArtBox" e; err_unit
 
 let setBleedBox pdf range minx maxx miny maxy =
   if !dbg then flprint "Cpdflib.setBleedBox\n";
   try
-    update_pdf (Cpdf.setBox "/BleedBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdfpage.setBox "/BleedBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setBleedBox" e; err_unit
 
 let setTrimBox pdf range minx maxx miny maxy =
   if !dbg then flprint "Cpdflib.setTrimBox\n";
   try
-    update_pdf (Cpdf.setBox "/TrimBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdfpage.setBox "/TrimBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setTrimBox" e; err_unit
 
 let setCropBox pdf range minx maxx miny maxy =
   if !dbg then flprint "Cpdflib.setCropBox\n";
   try
-    update_pdf (Cpdf.setBox "/CropBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdfpage.setBox "/CropBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setCropBox" e; err_unit
 
@@ -2341,28 +2341,28 @@ let draft pdf range boxes =
 let blackText pdf range =
   if !dbg then flprint "Cpdflib.blackText\n";
   try
-    update_pdf (Cpdf.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackText" e; err_unit
 
 let blackLines pdf range =
   if !dbg then flprint "Cpdflib.blackLines\n";
   try
-    update_pdf (Cpdf.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackLines" e; err_unit
 
 let blackFills pdf range =
   if !dbg then flprint "Cpdflib.blackFills\n";
   try
-    update_pdf (Cpdf.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackFills" e; err_unit
 
 let thinLines pdf range thickness =
   if !dbg then flprint "Cpdflib.thinLines\n";
   try
-    update_pdf (Cpdf.thinlines (Array.to_list (lookup_range range)) thickness (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.thinlines (Array.to_list (lookup_range range)) thickness (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "thinLines" e; err_unit
 
@@ -2390,14 +2390,14 @@ let removeId pdf =
 let removeDictEntry pdf key =
   if !dbg then flprint "Cpdf.removeDictEntry\n";
   try
-    Cpdf.remove_dict_entry (lookup_pdf pdf) key None
+    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key None
   with
     e -> handle_error "removeDictEntry" e; err_unit
 
 let removeClipping pdf range =
   if !dbg then flprint "Cpdf.removeClipping\n";
   try
-    update_pdf (Cpdf.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "removeClipping" e; err_unit
 
@@ -2518,7 +2518,7 @@ let _ = Callback.register "squeezeInMemory" squeezeInMemory
 let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
   try
-    update_pdf (Cpdf.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftweak.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "addContent" e; err_unit
 
