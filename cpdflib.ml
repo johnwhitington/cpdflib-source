@@ -1125,7 +1125,7 @@ let debug_setbookmarkinfo () =
   Printf.printf "debug_setbookmarkinfo: %i %s %s %b\n"
   !setbookmarkinfo.(0).mut_level
   !setbookmarkinfo.(0).mut_text
-  (Pdfdest.string_of_destination !setbookmarkinfo.(0).mut_target)
+  (Pdfwrite.string_of_pdf (Pdfdest.pdfobject_of_destination !setbookmarkinfo.(0).mut_target))
   !setbookmarkinfo.(0).mut_isopen
 
 let startSetBookmarkInfo num_bookmarks =
