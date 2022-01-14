@@ -50,14 +50,6 @@ int main(int argc, char **argv) {
   int frommemlazy = cpdf_fromMemoryLazy(buf, buflen, "");
   prerr();
   cpdf_toFile(frommemlazy, "testoutputs/01fromMemoryLazy.pdf", false, false);
-  printf("---cpdf_blankDocument()\n");
-  int blankdoc = cpdf_blankDocument(100.0, 200.0, 20);
-  prerr();
-  cpdf_toFile(blankdoc, "testoutputs/01blank.pdf", false, false);
-  printf("---cpdf_blankDocumentPaper()\n");
-  int blanksized = cpdf_blankDocumentPaper(cpdf_a4portrait, 10);
-  prerr();
-  cpdf_toFile(blanksized, "testoutputs/01blanka4.pdf", false, false);
   cpdf_deletePdf(f);
   prerr();
   cpdf_replacePdf(f2, frommem);
@@ -186,8 +178,6 @@ int main(int argc, char **argv) {
   cpdf_decryptPdfOwner(pdfenc3, "owner");
   prerr();
   cpdf_deletePdf(frommemlazy);
-  cpdf_deletePdf(blankdoc);
-  cpdf_deletePdf(blanksized);
   cpdf_deletePdf(pdfenc);
   cpdf_deletePdf(pdfenc3);
   cpdf_deleteRange(range);
@@ -954,7 +944,19 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_deletePdf(ocg);
 
-  /* CHAPTER 17. Miscellaneous */
+  /* CHAPTER 17. Creating New PDFs */
+  printf("---cpdf_blankDocument()\n");
+  int blankdoc = cpdf_blankDocument(100.0, 200.0, 20);
+  prerr();
+  cpdf_toFile(blankdoc, "testoutputs/01blank.pdf", false, false);
+  printf("---cpdf_blankDocumentPaper()\n");
+  int blanksized = cpdf_blankDocumentPaper(cpdf_a4portrait, 10);
+  prerr();
+  cpdf_toFile(blanksized, "testoutputs/01blanka4.pdf", false, false);
+  cpdf_deletePdf(blankdoc);
+  cpdf_deletePdf(blanksized);
+
+  /* CHAPTER 18. Miscellaneous */
   printf("***** CHAPTER 17. Miscellaneous\n");
   int misc = cpdf_fromFile("cpdflibmanual.pdf", "");
   int misc2 = cpdf_fromFile("cpdflibmanual.pdf", "");

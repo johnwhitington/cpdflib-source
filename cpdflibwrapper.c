@@ -122,17 +122,6 @@ int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   CAMLreturnT(int, Int_val(pdf_v));
 }
 
-int cpdf_blankDocument(double width, double height, int pages) {
-  CAMLparam0();
-  CAMLlocal5(fn, width_v, height_v, pages_v, out);
-  fn = *caml_named_value("blankDocument");
-  width_v = caml_copy_double(width);
-  height_v = caml_copy_double(height);
-  pages_v = Val_int(pages);
-  out = caml_callback3(fn, width_v, height_v, pages_v);
-  updateLastError();
-  CAMLreturnT(int, Int_val(out));
-}
 
 enum cpdf_papersize {
   cpdf_a0portrait,
@@ -153,16 +142,6 @@ enum cpdf_papersize {
   cpdf_uslegallandscape
 };
 
-int cpdf_blankDocumentPaper(enum cpdf_papersize papersize, int pages) {
-  CAMLparam0();
-  CAMLlocal4(fn, papersize_v, pages_v, out);
-  fn = *caml_named_value("blankDocumentPaper");
-  papersize_v = Val_int(papersize);
-  pages_v = Val_int(pages);
-  out = caml_callback2(fn, papersize_v, pages_v);
-  updateLastError();
-  CAMLreturnT(int, Int_val(out));
-}
 
 void cpdf_deletePdf(int pdf) {
   CAMLparam0();
@@ -2872,7 +2851,32 @@ void cpdf_OCGOrderAll(int pdf) {
   CAMLreturn0;
 }
 
-/* CHAPTER 17. Miscellaneous */
+
+/* CHAPTER 17. Creating New PDFs */
+int cpdf_blankDocument(double width, double height, int pages) {
+  CAMLparam0();
+  CAMLlocal5(fn, width_v, height_v, pages_v, out);
+  fn = *caml_named_value("blankDocument");
+  width_v = caml_copy_double(width);
+  height_v = caml_copy_double(height);
+  pages_v = Val_int(pages);
+  out = caml_callback3(fn, width_v, height_v, pages_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out));
+}
+
+int cpdf_blankDocumentPaper(enum cpdf_papersize papersize, int pages) {
+  CAMLparam0();
+  CAMLlocal4(fn, papersize_v, pages_v, out);
+  fn = *caml_named_value("blankDocumentPaper");
+  papersize_v = Val_int(papersize);
+  pages_v = Val_int(pages);
+  out = caml_callback2(fn, papersize_v, pages_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out));
+}
+
+/* CHAPTER 18. Miscellaneous */
 void cpdf_draft(int pdf, int range, int boxes) {
   CAMLparam0();
   CAMLlocal5(unit, pdf_v, range_v, boxes_v, fn);
@@ -3017,61 +3021,3 @@ void cpdf_setDemo(int b) {
   updateLastError();
   CAMLreturn0;
 }
-
-/* Putative Destination extension to bookmarks code. Not implemented in cpdflib
- * yet. */
-/* NB Probably need to unparse /GoTo actions here for this to be useful? */
-/* /1* Structure for a Pdfdest.t *1/ */
-/* enum cpdf_targetPageType */
-/* { */
-/* cpdf_pageObject, */
-/* cpdf_otherDocPageNumber */
-/* }; */
-
-/* struct cpdf_targetPage */
-/* { */
-/* enum cpdf_targetPageType tpt; */
-/* int tp_content; */
-/* }; */
-
-/* enum cpdf_positionDestinationType */
-/* { */
-/*
- * cpdf_Action,                       /1* Pdfobject associated with this not
- * accessible *1/
- */
-/* cpdf_NullDestination, */
-/* cpdf_NamedDestinationElsewhere, */
-/* cpdf_XYZ, */
-/* cpdf_Fit, */
-/* cpdf_FitH, */
-/* cpdf_FitV, */
-/* cpdf_FitR, */
-/* cpdf_FitB, */
-/* cpdf_FitBH, */
-/* cpdf_FitBV */
-/* }; */
-
-/* struct cpdf_bookmarkDestination */
-/* { */
-/* struct cpdf_targetPage tp; */
-/* enum cpdf_positionDestinationType type; */
-/* double p1; */
-/* double p2; */
-/* double p3; */
-/* double p4; */
-/* int p1_is_some; */
-/* int p2_is_some; */
-/* int p3_is_some; */
-/* int p4_is_some; */
-/* char *named_destination_elsewhere_text; */
-/* }; */
-
-/* Get the destination from a bookmark */
-/* struct cpdf_bookmarkDestination cpdf_getBookmarkDestination (int); */
-
-/* Set the destination from a bookmark */
-/*
- * void cpdf_setBookmarkDestination (int, struct cpdf_bookmarkDestination
- * cpdf_getBookmarkDestination);
- */

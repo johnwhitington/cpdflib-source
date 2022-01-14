@@ -73,13 +73,6 @@ int cpdf_fromMemory(void *, int, const char[]);
  */
 int cpdf_fromMemoryLazy(void *, int, const char[]);
 
-/*
- * cpdf_blankDocument(width, height, num_pages) creates a blank document with
- * pages of the given width (in points), height (in points), and number of
- * pages.
- */
-int cpdf_blankDocument(double, double, int);
-
 /* Standard page sizes. */
 enum cpdf_papersize {
   cpdf_a0portrait,        /* A0 portrait */
@@ -99,12 +92,6 @@ enum cpdf_papersize {
   cpdf_uslegalportrait,   /* US Legal portrait */
   cpdf_uslegallandscape   /* US Legal landscape */
 };
-
-/*
- * cpdf_blankDocumentPaper(papersize, num_pages) makes a blank document given
- * a page size and number of pages.
- */
-int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
 
 /* Remove a PDF from memory, given its number. */
 void cpdf_deletePdf(int);
@@ -1328,7 +1315,22 @@ void cpdf_OCGOrderAll(int);
  * content group. */
 void cpdf_OCGCoalesce(int);
 
-/* CHAPTER 17. Miscellaneous */
+/* CHAPTER 17. Creating New PDFs */
+
+/*
+ * cpdf_blankDocument(width, height, num_pages) creates a blank document with
+ * pages of the given width (in points), height (in points), and number of
+ * pages.
+ */
+int cpdf_blankDocument(double, double, int);
+
+/*
+ * cpdf_blankDocumentPaper(papersize, num_pages) makes a blank document given
+ * a page size and number of pages.
+ */
+int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
+
+/* CHAPTER 18. Miscellaneous */
 
 /*
  * cpdf_draft(pdf, range, boxes) removes images on the given pages, replacing
