@@ -289,9 +289,8 @@ void cpdf_toFile(int, const char[], int, int);
 void cpdf_toFileExt(int, const char[], int, int, int, int, int);
 
 /*
- * Given a buffer of the correct size, cpdf_toFileMemory (pdf, linearize,
- * make_id, &length) writes it and returns the buffer. The buffer length is
- * filled in &length.
+ * cpdf_toFileMemory (pdf, linearize, make_id, &length) writes a PDF file it
+ * and returns the buffer. The buffer length is filled in &length.
  */
 void *cpdf_toMemory(int, int, int, int *);
 
@@ -1294,7 +1293,16 @@ void cpdf_copyFont(int, int, int, int, const char[]);
  * is parsed. If no_stream_data is true, all stream data is suppressed entirely.
  * */
 void cpdf_outputJSON(const char[], int, int, int);
+
+/* cpdf_outputJSONMemory(parse_content, no_stream_data, pdf, &length) is like
+ * outputJSON, but it write to a buffer in memory. The length is filled in. */
+void cpdf_outputJSONMemory(int, int, int, int *);
+
+/* Load a PDF from a JSON file given its filename */
 int cpdf_fromJSON(const char[]);
+
+/* Load a PDF from a JSON file in memory, given the buffer and its length */
+int cpdf_fromJSONMemory(void *, int);
 
 /* CHAPTER 16. Optional Content Groups */
 

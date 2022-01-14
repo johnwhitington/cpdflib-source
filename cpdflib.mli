@@ -39,6 +39,7 @@ val fromMemoryLazy : Pdfio.rawbytes -> string -> int
 val blankDocument : float -> float -> int -> pdf
 val blankDocumentPaper : int -> int -> pdf
 val toFile : pdf -> string -> bool -> bool -> unit
+val toFileMemory : int -> bool -> 'a -> Pdfio.rawbytes
 val pages : pdf -> int
 val pagesFast : string -> string -> int
 val all : pdf -> int
@@ -232,6 +233,7 @@ val removeFonts : int -> unit
 
 (* CHAPTER 15. PDF and JSON *)
 val outputJSON : string -> bool -> bool -> int -> unit
+val outputJSONMemory : bool -> bool -> int -> Pdfio.rawbytes 
 val fromJSON : string -> pdf
 val fromJSONMemory : Pdfio.rawbytes -> pdf
 

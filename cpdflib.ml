@@ -2515,6 +2515,8 @@ let squeezeInMemory pdf =
 let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
 (* CHAPTER 15. PDF and JSON *)
+
+(*FIXME Move this! *)
 let addContent s before pdf range =
   if !dbg then flprint "Cpdflib.addContent";
   try
@@ -2524,6 +2526,7 @@ let addContent s before pdf range =
 
 let _ = Callback.register "addContent" addContent
 
+(*FIXME Add decompress (anything else? To all the writers *)
 let outputJSON filename parse_content no_stream_data pdf =
   if !dbg then flprint "Cpdflib.outputJSON";
   try
@@ -2534,7 +2537,17 @@ let outputJSON filename parse_content no_stream_data pdf =
   with
     e -> handle_error "outputJSON" e; err_unit
 
+let outputJSONMemory parse_content no_stream_data pdf =
+  if !dbg then flprint "Cpdflib.toJSONMemory\n";
+  try
+    let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
+      Cpdfjson.to_output o ~parse_content ~no_stream_data ~decompress_streams:false (lookup_pdf pdf);
+      Pdfio.raw_of_bytes (Pdfio.extract_bytes_from_input_output o bytes)
+  with
+    e -> handle_error "toJSONMemory" e; err_data
+
 let _ = Callback.register "outputJSON" outputJSON
+let _ = Callback.register "outputJSONMemory" outputJSONMemory
 
 let fromJSON filename =
   if !dbg then flprint "Cpdflib.fromJSON";

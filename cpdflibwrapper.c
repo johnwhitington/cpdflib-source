@@ -2761,6 +2761,28 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
   CAMLreturn0;
 }
 
+void *cpdf_outputJSONMemory(int pdf, int *retlen) {
+  CAMLparam0();
+  CAMLlocal3(fn, bytestream, pdf_v);
+  fn = *caml_named_value("outputJSONMemory");
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("outputJSONMemory: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+
 int cpdf_fromJSON(char *filename) {
   CAMLparam0();
   CAMLlocal3(fromfile_v, filename_v, result_v);
@@ -2769,6 +2791,17 @@ int cpdf_fromJSON(char *filename) {
   result_v = caml_callback(fromfile_v, filename_v);
   updateLastError();
   CAMLreturnT(int, Int_val(result_v));
+}
+
+int cpdf_fromJSONMemory(void *data, int len) {
+  CAMLparam0();
+  CAMLlocal3(pdf_v, bytestream, fn);
+  bytestream =
+      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromJSONMemory");
+  pdf_v = caml_callback(fn, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
 }
 
 /* CHAPTER 16. Optional Content Groups */
