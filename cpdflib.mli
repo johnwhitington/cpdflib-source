@@ -34,6 +34,8 @@ val removeDuplicates : range -> range
 val isInRange: range -> int -> bool
 val fromFile : string -> string -> pdf
 val fromFileLazy : string -> string -> pdf
+val fromMemory : Pdfio.rawbytes -> string -> int
+val fromMemoryLazy : Pdfio.rawbytes -> string -> int
 val blankDocument : float -> float -> int -> pdf
 val blankDocumentPaper : int -> int -> pdf
 val toFile : pdf -> string -> bool -> bool -> unit
@@ -230,6 +232,8 @@ val removeFonts : int -> unit
 
 (* CHAPTER 15. PDF and JSON *)
 val outputJSON : string -> bool -> bool -> int -> unit
+val fromJSON : string -> pdf
+val fromJSONMemory : Pdfio.rawbytes -> pdf
 
 (* CHAPTER 16. Optional Content Groups *)
 val startGetOCGList : int -> int

@@ -2761,6 +2761,16 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
   CAMLreturn0;
 }
 
+int cpdf_fromJSON(char *filename) {
+  CAMLparam0();
+  CAMLlocal3(fromfile_v, filename_v, result_v);
+  fromfile_v = *caml_named_value("fromJSON");
+  filename_v = caml_copy_string(filename);
+  result_v = caml_callback(fromfile_v, filename_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(result_v));
+}
+
 /* CHAPTER 16. Optional Content Groups */
 int cpdf_startGetOCGList(int pdf) {
   CAMLparam0();

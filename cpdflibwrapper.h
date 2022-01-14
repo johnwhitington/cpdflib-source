@@ -1294,6 +1294,7 @@ void cpdf_copyFont(int, int, int, int, const char[]);
  * is parsed. If no_stream_data is true, all stream data is suppressed entirely.
  * */
 void cpdf_outputJSON(const char[], int, int, int);
+int cpdf_fromJSON(const char[]);
 
 /* CHAPTER 16. Optional Content Groups */
 

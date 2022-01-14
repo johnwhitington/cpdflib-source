@@ -2536,6 +2536,25 @@ let outputJSON filename parse_content no_stream_data pdf =
 
 let _ = Callback.register "outputJSON" outputJSON
 
+let fromJSON filename =
+  if !dbg then flprint "Cpdflib.fromJSON";
+  try
+    let fh = open_in_bin filename in
+      let pdf = Cpdfjson.of_input (Pdfio.input_of_channel fh) in
+      close_in fh;
+      new_pdf pdf
+  with
+    e -> handle_error "fromJSON" e; err_int
+
+let fromJSONMemory rawbytes =
+  if !dbg then flprint "Cpdflib.fromJSONMemory";
+  try
+    new_pdf (Cpdfjson.of_input (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+  with
+    e -> handle_error "fromJSONMemory" e; err_int
+
+let _ = Callback.register "fromJSON" fromJSON
+let _ = Callback.register "fromJSONMemory" fromJSONMemory
 
 (* CHAPTER 16. Optional Content Groups *)
 let ocgnamelist = ref [||]

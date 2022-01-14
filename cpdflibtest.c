@@ -917,6 +917,10 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_outputJSON("testoutputs/15jsonparsed.json", true, false, json);
   prerr();
+  printf("---cpdf_fromJSON()\n");
+  int jsonpdf = cpdf_fromJSON("testoutputs/15jsonparsed.json");
+  prerr();
+  cpdf_toFile(jsonpdf, "testoutputs/15fromjson.pdf", false, false);
   cpdf_deletePdf(json);
 
   /* CHAPTER 16. Optional Content Groups */
