@@ -232,8 +232,8 @@ val copyFont : pdf -> pdf -> range -> int -> string -> unit
 val removeFonts : int -> unit
 
 (* CHAPTER 15. PDF and JSON *)
-val outputJSON : string -> bool -> bool -> int -> unit
-val outputJSONMemory : bool -> bool -> int -> Pdfio.rawbytes 
+val outputJSON : string -> bool -> bool -> bool -> int -> unit
+val outputJSONMemory : bool -> bool -> bool -> int -> Pdfio.rawbytes 
 val fromJSON : string -> pdf
 val fromJSONMemory : Pdfio.rawbytes -> pdf
 

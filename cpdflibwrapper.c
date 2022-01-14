@@ -2747,28 +2747,32 @@ void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber,
 
 /* CHAPTER 15. PDF and JSON */
 
-void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
+void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data, int decompress_streams,
                      int pdf) {
   CAMLparam0();
   CAMLlocal2(fn, out);
-  CAMLlocalN(args, 4);
+  CAMLlocalN(args, 5);
   args[0] = caml_copy_string(filename);
   args[1] = Val_int(parse_content);
   args[2] = Val_int(no_stream_data);
-  args[3] = Val_int(pdf);
+  args[3] = Val_int(decompress_streams);
+  args[4] = Val_int(pdf);
   fn = *caml_named_value("outputJSON");
-  out = caml_callbackN(fn, 4, args);
+  out = caml_callbackN(fn, 5, args);
   CAMLreturn0;
 }
 
-void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data, int *retlen) {
+void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data, int decompress_streams, int *retlen) {
   CAMLparam0();
-  CAMLlocal5(fn, bytestream, pdf_v, parse_content_v, no_stream_data_v);
+  CAMLlocal2(fn, bytestream);
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(parse_content);
+  args[2] = Val_int(no_stream_data);
+  args[3] = Val_int(decompress_streams);
+  CAMLlocal1(decompress_streams_v);
   fn = *caml_named_value("outputJSONMemory");
-  pdf_v = Val_int(pdf);
-  parse_content_v = Val_int(parse_content);
-  no_stream_data_v = Val_int(no_stream_data);
-  bytestream = caml_callback3(fn, parse_content_v, no_stream_data_v, pdf_v);
+  bytestream = caml_callbackN(fn, 4, args);
   updateLastError();
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];

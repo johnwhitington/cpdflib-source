@@ -526,34 +526,6 @@ let toFileMemory pdf linearize make_id =
   with
     e -> handle_error "toFileMemory" e; err_data
 
-let blankDocument width height pages =
-  if !dbg then flprint "Cpdflib.blankDocument\n";
-  try new_pdf (Cpdfcreate.blank_document width height pages) with
-    e -> handle_error "blankDocument" e; err_int
-
-let papersize_of_int = function
-  | 0 -> Pdfpaper.a0
-  | 1 -> Pdfpaper.a1
-  | 2 -> Pdfpaper.a2
-  | 3 -> Pdfpaper.a3
-  | 4 -> Pdfpaper.a4
-  | 5 -> Pdfpaper.a5
-  | 6 -> Pdfpaper.landscape Pdfpaper.a0
-  | 7 -> Pdfpaper.landscape Pdfpaper.a1
-  | 8 -> Pdfpaper.landscape Pdfpaper.a2
-  | 9 -> Pdfpaper.landscape Pdfpaper.a3
-  | 10 -> Pdfpaper.landscape Pdfpaper.a4
-  | 11 -> Pdfpaper.landscape Pdfpaper.a5
-  | 12 -> Pdfpaper.usletter
-  | 13 -> Pdfpaper.landscape Pdfpaper.usletter
-  | 14 -> Pdfpaper.uslegal
-  | 15 -> Pdfpaper.landscape Pdfpaper.uslegal
-  | _ -> raise (Failure "unknown papersize")
-
-let blankDocumentPaper papersize pages =
-  if !dbg then flprint "Cpdflib.blankDocumentPaper\n";
-  try new_pdf (Cpdfcreate.blank_document_paper (papersize_of_int papersize) pages) with
-    e -> handle_error "blankDocumentPaper" e; err_int
 
 (* Number of pages in a PDF *)
 let pages i =
@@ -752,8 +724,7 @@ let _ = Callback.register "decryptPdfOwner" decryptPdfOwner
 let _ = Callback.register "toFile" toFile
 let _ = Callback.register "toFileExt" toFileExt
 let _ = Callback.register "toFileMemory" toFileMemory
-let _ = Callback.register "blankDocument" blankDocument
-let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
+
 let _ = Callback.register "pages" pages
 let _ = Callback.register "pagesFast" pagesFast
 let _ = Callback.register "all" all
@@ -889,6 +860,25 @@ let points_of_papersize p =
   and h = Pdfpaper.height p in
     let c  = Pdfunits.convert 0. u Pdfunits.PdfPoint in
       c w, c h
+
+let papersize_of_int = function
+  | 0 -> Pdfpaper.a0
+  | 1 -> Pdfpaper.a1
+  | 2 -> Pdfpaper.a2
+  | 3 -> Pdfpaper.a3
+  | 4 -> Pdfpaper.a4
+  | 5 -> Pdfpaper.a5
+  | 6 -> Pdfpaper.landscape Pdfpaper.a0
+  | 7 -> Pdfpaper.landscape Pdfpaper.a1
+  | 8 -> Pdfpaper.landscape Pdfpaper.a2
+  | 9 -> Pdfpaper.landscape Pdfpaper.a3
+  | 10 -> Pdfpaper.landscape Pdfpaper.a4
+  | 11 -> Pdfpaper.landscape Pdfpaper.a5
+  | 12 -> Pdfpaper.usletter
+  | 13 -> Pdfpaper.landscape Pdfpaper.usletter
+  | 14 -> Pdfpaper.uslegal
+  | 15 -> Pdfpaper.landscape Pdfpaper.uslegal
+  | _ -> raise (Failure "unknown papersize")
 
 let scaleToFitPaper i range papersize scale =
   if !dbg then flprint "Cpdflib.scaleToFitPaper\n";
@@ -1364,6 +1354,26 @@ let _ = Callback.register "combinePages" combinePages
 let _ = Callback.register "removeText" removeText
 let _ = Callback.register "addText" addText
 let _ = Callback.register "textWidth" textWidth
+
+let addContent s before pdf range =
+  if !dbg then flprint "Cpdflib.addContent";
+  try
+    update_pdf (Cpdftweak.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "addContent" e; err_unit
+
+let _ = Callback.register "addContent" addContent
+
+let stampAsXObject pdf range stamp_pdf =
+  if !dbg then flprint "Cpdflib.stampAsXObject";
+  try
+     let pdf', name = Cpdfxobject.stamp_as_xobject (lookup_pdf pdf) (Array.to_list (lookup_range range)) (lookup_pdf stamp_pdf) in
+     update_pdf pdf' (lookup_pdf pdf);
+     name
+  with
+    e -> handle_error "stampAsXObject" e; err_string
+
+let _ = Callback.register "stampAsXObject" stampAsXObject
 
 (* CHAPTER 9. Multipage facilities *)
 let twoUp pdf =
@@ -2330,87 +2340,6 @@ let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 
 
-(* CHAPTER 17. Miscellaneous *)
-let draft pdf range boxes =
-  if !dbg then flprint "Cpdflib.draft\n";
-  try
-    update_pdf (Cpdfdraft.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "draft" e; err_unit
-
-let blackText pdf range =
-  if !dbg then flprint "Cpdflib.blackText\n";
-  try
-    update_pdf (Cpdftweak.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "blackText" e; err_unit
-
-let blackLines pdf range =
-  if !dbg then flprint "Cpdflib.blackLines\n";
-  try
-    update_pdf (Cpdftweak.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "blackLines" e; err_unit
-
-let blackFills pdf range =
-  if !dbg then flprint "Cpdflib.blackFills\n";
-  try
-    update_pdf (Cpdftweak.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "blackFills" e; err_unit
-
-let thinLines pdf range thickness =
-  if !dbg then flprint "Cpdflib.thinLines\n";
-  try
-    update_pdf (Cpdftweak.thinlines (Array.to_list (lookup_range range)) thickness (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "thinLines" e; err_unit
-
-let copyId from_pdf to_pdf =
-  if !dbg then flprint "Cpdflib.copyId\n";
-  try
-    update_pdf (Cpdfmetadata.copy_id false (lookup_pdf from_pdf) (lookup_pdf to_pdf)) (lookup_pdf to_pdf)
-  with
-    e -> handle_error "copyId" e; err_unit
-
-let removeAllText pdf range =
-  if !dbg then flprint "Cpdflib.removeAllText\n";
-  try
-    update_pdf (Cpdfaddtext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "removeAllText" e; err_unit
-
-let removeId pdf =
-  if !dbg then flprint "Cpdflib.removeId\n";
-  try
-    (lookup_pdf pdf).Pdf.trailerdict <- Pdf.remove_dict_entry (lookup_pdf pdf).Pdf.trailerdict "/ID"
-  with
-    e -> handle_error "removeId" e; err_unit
-
-let removeDictEntry pdf key =
-  if !dbg then flprint "Cpdf.removeDictEntry\n";
-  try
-    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key None
-  with
-    e -> handle_error "removeDictEntry" e; err_unit
-
-let removeClipping pdf range =
-  if !dbg then flprint "Cpdf.removeClipping\n";
-  try
-    update_pdf (Cpdftweak.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
-  with
-    e -> handle_error "removeClipping" e; err_unit
-
-let _ = Callback.register "draft" draft
-let _ = Callback.register "blackText" blackText
-let _ = Callback.register "blackLines" blackLines
-let _ = Callback.register "blackFills" blackFills
-let _ = Callback.register "thinLines" thinLines
-let _ = Callback.register "copyId" copyId
-let _ = Callback.register "removeAllText" removeAllText
-let _ = Callback.register "removeId" removeId
-let _ = Callback.register "removeDictEntry" removeDictEntry
-let _ = Callback.register "removeClipping" removeClipping
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range progress =
@@ -2515,33 +2444,21 @@ let squeezeInMemory pdf =
 let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
 (* CHAPTER 15. PDF and JSON *)
-
-(*FIXME Move this! *)
-let addContent s before pdf range =
-  if !dbg then flprint "Cpdflib.addContent";
-  try
-    update_pdf (Cpdftweak.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
-  with
-    e -> handle_error "addContent" e; err_unit
-
-let _ = Callback.register "addContent" addContent
-
-(*FIXME Add decompress (anything else? To all the writers *)
-let outputJSON filename parse_content no_stream_data pdf =
+let outputJSON filename parse_content no_stream_data decompress_streams pdf =
   if !dbg then flprint "Cpdflib.outputJSON";
   try
     let handle = open_out_bin filename in
       Cpdfjson.to_output
-        (Pdfio.output_of_channel handle) ~parse_content ~no_stream_data ~decompress_streams:false (lookup_pdf pdf);
+        (Pdfio.output_of_channel handle) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       close_out handle
   with
     e -> handle_error "outputJSON" e; err_unit
 
-let outputJSONMemory parse_content no_stream_data pdf =
+let outputJSONMemory parse_content no_stream_data decompress_streams pdf =
   if !dbg then flprint "Cpdflib.toJSONMemory\n";
   try
     let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-      Cpdfjson.to_output o ~parse_content ~no_stream_data ~decompress_streams:false (lookup_pdf pdf);
+      Cpdfjson.to_output o ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       Pdfio.raw_of_bytes (Pdfio.extract_bytes_from_input_output o bytes)
   with
     e -> handle_error "outputJSONMemory" e; err_data
@@ -2625,16 +2542,103 @@ let ocgOrderAll pdf =
 
 let _ = Callback.register "ocgOrderAll" ocgOrderAll
 
-let stampAsXObject pdf range stamp_pdf =
-  if !dbg then flprint "Cpdflib.stampAsXObject";
-  try
-     let pdf', name = Cpdfxobject.stamp_as_xobject (lookup_pdf pdf) (Array.to_list (lookup_range range)) (lookup_pdf stamp_pdf) in
-     update_pdf pdf' (lookup_pdf pdf);
-     name
-  with
-    e -> handle_error "stampAsXObject" e; err_string
+(* CHAPTER 17. Creating new PDFs *)
+let blankDocument width height pages =
+  if !dbg then flprint "Cpdflib.blankDocument\n";
+  try new_pdf (Cpdfcreate.blank_document width height pages) with
+    e -> handle_error "blankDocument" e; err_int
 
-let _ = Callback.register "stampAsXObject" stampAsXObject
+
+let blankDocumentPaper papersize pages =
+  if !dbg then flprint "Cpdflib.blankDocumentPaper\n";
+  try new_pdf (Cpdfcreate.blank_document_paper (papersize_of_int papersize) pages) with
+    e -> handle_error "blankDocumentPaper" e; err_int
+
+let _ = Callback.register "blankDocument" blankDocument
+let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
+
+(* CHAPTER 18. Miscellaneous *)
+let draft pdf range boxes =
+  if !dbg then flprint "Cpdflib.draft\n";
+  try
+    update_pdf (Cpdfdraft.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "draft" e; err_unit
+
+let blackText pdf range =
+  if !dbg then flprint "Cpdflib.blackText\n";
+  try
+    update_pdf (Cpdftweak.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "blackText" e; err_unit
+
+let blackLines pdf range =
+  if !dbg then flprint "Cpdflib.blackLines\n";
+  try
+    update_pdf (Cpdftweak.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "blackLines" e; err_unit
+
+let blackFills pdf range =
+  if !dbg then flprint "Cpdflib.blackFills\n";
+  try
+    update_pdf (Cpdftweak.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "blackFills" e; err_unit
+
+let thinLines pdf range thickness =
+  if !dbg then flprint "Cpdflib.thinLines\n";
+  try
+    update_pdf (Cpdftweak.thinlines (Array.to_list (lookup_range range)) thickness (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "thinLines" e; err_unit
+
+let copyId from_pdf to_pdf =
+  if !dbg then flprint "Cpdflib.copyId\n";
+  try
+    update_pdf (Cpdfmetadata.copy_id false (lookup_pdf from_pdf) (lookup_pdf to_pdf)) (lookup_pdf to_pdf)
+  with
+    e -> handle_error "copyId" e; err_unit
+
+let removeAllText pdf range =
+  if !dbg then flprint "Cpdflib.removeAllText\n";
+  try
+    update_pdf (Cpdfaddtext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "removeAllText" e; err_unit
+
+let removeId pdf =
+  if !dbg then flprint "Cpdflib.removeId\n";
+  try
+    (lookup_pdf pdf).Pdf.trailerdict <- Pdf.remove_dict_entry (lookup_pdf pdf).Pdf.trailerdict "/ID"
+  with
+    e -> handle_error "removeId" e; err_unit
+
+let removeDictEntry pdf key =
+  if !dbg then flprint "Cpdf.removeDictEntry\n";
+  try
+    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key None
+  with
+    e -> handle_error "removeDictEntry" e; err_unit
+
+let removeClipping pdf range =
+  if !dbg then flprint "Cpdf.removeClipping\n";
+  try
+    update_pdf (Cpdftweak.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+  with
+    e -> handle_error "removeClipping" e; err_unit
+
+let _ = Callback.register "draft" draft
+let _ = Callback.register "blackText" blackText
+let _ = Callback.register "blackLines" blackLines
+let _ = Callback.register "blackFills" blackFills
+let _ = Callback.register "thinLines" thinLines
+let _ = Callback.register "copyId" copyId
+let _ = Callback.register "removeAllText" removeAllText
+let _ = Callback.register "removeId" removeId
+let _ = Callback.register "removeDictEntry" removeDictEntry
+let _ = Callback.register "removeClipping" removeClipping
+
 
 let onexit () =
   if !dbg then flprint "Cpdflib.onexit\n";

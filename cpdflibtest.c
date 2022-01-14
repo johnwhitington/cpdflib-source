@@ -910,11 +910,13 @@ int main(int argc, char **argv) {
   printf("***** CHAPTER 15. PDF and JSON\n");
   printf("---cpdf_outputJSON()\n");
   int json = cpdf_fromFile("cpdflibmanual.pdf", "");
-  cpdf_outputJSON("testoutputs/15json.json", false, false, json);
+  cpdf_outputJSON("testoutputs/15json.json", false, false, false, json);
   prerr();
-  cpdf_outputJSON("testoutputs/15jsonnostream.json", false, true, json);
+  cpdf_outputJSON("testoutputs/15jsonnostream.json", false, true, false, json);
   prerr();
-  cpdf_outputJSON("testoutputs/15jsonparsed.json", true, false, json);
+  cpdf_outputJSON("testoutputs/15jsonparsed.json", true, false, false, json);
+  prerr();
+  cpdf_outputJSON("testoutputs/15jsondecomp.json", false, false, true, json);
   prerr();
   printf("---cpdf_fromJSON()\n");
   int jsonpdf = cpdf_fromJSON("testoutputs/15jsonparsed.json");
@@ -922,7 +924,7 @@ int main(int argc, char **argv) {
   cpdf_toFile(jsonpdf, "testoutputs/15fromjson.pdf", false, false);
   int jbuflen;
   printf("---cpdf_outputJSONMemory()\n");
-  void *jbuf = cpdf_outputJSONMemory(jsonpdf, false, false, &jbuflen);
+  void *jbuf = cpdf_outputJSONMemory(jsonpdf, false, false, false, &jbuflen);
   printf("---cpdf_fromJSONMemory()\n");
   int jfrommem = cpdf_fromJSONMemory(jbuf, jbuflen);
   cpdf_toFile(jfrommem, "testoutputs/15fromJSONMemory.pdf", false, false);
