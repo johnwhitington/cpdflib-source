@@ -122,7 +122,6 @@ int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   CAMLreturnT(int, Int_val(pdf_v));
 }
 
-
 enum cpdf_papersize {
   cpdf_a0portrait,
   cpdf_a1portrait,
@@ -141,7 +140,6 @@ enum cpdf_papersize {
   cpdf_uslegalportrait,
   cpdf_uslegallandscape
 };
-
 
 void cpdf_deletePdf(int pdf) {
   CAMLparam0();
@@ -1357,6 +1355,28 @@ char *cpdf_stampAsXObject(int pdf, int range, int stamp_pdf) {
 }
 
 /* CHAPTER 9. Multipage facilities */
+
+void cpdf_impose(double x, double y, int fit, int columns, int rtl, int btt,
+                 int center, double margin, double spacing, double linewidth, int pdf) {
+  CAMLparam0();
+  CAMLlocalN(args, 11);
+  args[0] = caml_copy_double(x);
+  args[1] = caml_copy_double(y);
+  args[2] = Val_bool(fit);
+  args[3] = Val_bool(columns);
+  args[4] = Val_bool(rtl);
+  args[5] = Val_bool(btt);
+  args[6] = Val_bool(center);
+  args[7] = caml_copy_double(margin);
+  args[8] = caml_copy_double(spacing);
+  args[9] = caml_copy_double(linewidth);
+  args[10] = Val_int(pdf);
+  CAMLlocal2(fn, out_v);
+  fn = *caml_named_value("impose");
+  out_v = caml_callbackN(fn, 11, args);
+  updateLastError();
+  CAMLreturn0;
+}
 
 void cpdf_twoUp(int pdf) {
   CAMLparam0();
@@ -2850,7 +2870,6 @@ void cpdf_OCGOrderAll(int pdf) {
   updateLastError();
   CAMLreturn0;
 }
-
 
 /* CHAPTER 17. Creating New PDFs */
 int cpdf_blankDocument(double width, double height, int pages) {
