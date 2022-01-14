@@ -36,8 +36,6 @@ val fromFile : string -> string -> pdf
 val fromFileLazy : string -> string -> pdf
 val fromMemory : Pdfio.rawbytes -> string -> int
 val fromMemoryLazy : Pdfio.rawbytes -> string -> int
-val blankDocument : float -> float -> int -> pdf
-val blankDocumentPaper : int -> int -> pdf
 val toFile : pdf -> string -> bool -> bool -> unit
 val toFileMemory : int -> bool -> 'a -> Pdfio.rawbytes
 val pages : pdf -> int
@@ -245,7 +243,11 @@ val ocgCoalesce : int -> unit
 val ocgRename : int -> string -> string -> unit
 val ocgOrderAll : int -> unit
 
-(* CHAPTER 17. Miscellaneous *)
+(* CHAPTER 17. Creating New PDFs *)
+val blankDocument : float -> float -> int -> pdf
+val blankDocumentPaper : int -> int -> pdf
+
+(* CHAPTER 18. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
 val removeAllText : pdf -> range -> unit
 val blackText : pdf -> range -> unit

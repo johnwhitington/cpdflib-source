@@ -2747,8 +2747,8 @@ void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber,
 
 /* CHAPTER 15. PDF and JSON */
 
-void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data, int decompress_streams,
-                     int pdf) {
+void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
+                     int decompress_streams, int pdf) {
   CAMLparam0();
   CAMLlocal2(fn, out);
   CAMLlocalN(args, 5);
@@ -2762,7 +2762,8 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data, int 
   CAMLreturn0;
 }
 
-void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data, int decompress_streams, int *retlen) {
+void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data,
+                            int decompress_streams, int *retlen) {
   CAMLparam0();
   CAMLlocal2(fn, bytestream);
   CAMLlocalN(args, 4);
