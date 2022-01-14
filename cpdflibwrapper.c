@@ -2761,12 +2761,14 @@ void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
   CAMLreturn0;
 }
 
-void *cpdf_outputJSONMemory(int pdf, int *retlen) {
+void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data, int *retlen) {
   CAMLparam0();
-  CAMLlocal3(fn, bytestream, pdf_v);
+  CAMLlocal5(fn, bytestream, pdf_v, parse_content_v, no_stream_data_v);
   fn = *caml_named_value("outputJSONMemory");
   pdf_v = Val_int(pdf);
-  bytestream = caml_callback(fn, pdf_v);
+  parse_content_v = Val_int(parse_content);
+  no_stream_data_v = Val_int(no_stream_data);
+  bytestream = caml_callback3(fn, parse_content_v, no_stream_data_v, pdf_v);
   updateLastError();
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];

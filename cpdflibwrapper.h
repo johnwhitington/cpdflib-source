@@ -1296,7 +1296,7 @@ void cpdf_outputJSON(const char[], int, int, int);
 
 /* cpdf_outputJSONMemory(parse_content, no_stream_data, pdf, &length) is like
  * outputJSON, but it write to a buffer in memory. The length is filled in. */
-void cpdf_outputJSONMemory(int, int, int, int *);
+void* cpdf_outputJSONMemory(int, int, int, int *);
 
 /* Load a PDF from a JSON file given its filename */
 int cpdf_fromJSON(const char[]);

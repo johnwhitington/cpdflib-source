@@ -2544,7 +2544,7 @@ let outputJSONMemory parse_content no_stream_data pdf =
       Cpdfjson.to_output o ~parse_content ~no_stream_data ~decompress_streams:false (lookup_pdf pdf);
       Pdfio.raw_of_bytes (Pdfio.extract_bytes_from_input_output o bytes)
   with
-    e -> handle_error "toJSONMemory" e; err_data
+    e -> handle_error "outputJSONMemory" e; err_data
 
 let _ = Callback.register "outputJSON" outputJSON
 let _ = Callback.register "outputJSONMemory" outputJSONMemory

@@ -42,7 +42,6 @@ int main(int argc, char **argv) {
   int buflen;
   printf("---cpdf_toMemory()\n");
   void *buf = cpdf_toMemory(f, false, false, &buflen);
-  FILE *fp;
   printf("---cpdf_fromMemory()\n");
   int frommem = cpdf_fromMemory(buf, buflen, "");
   cpdf_toFile(frommem, "testoutputs/01fromMemory.pdf", false, false);
@@ -921,7 +920,15 @@ int main(int argc, char **argv) {
   int jsonpdf = cpdf_fromJSON("testoutputs/15jsonparsed.json");
   prerr();
   cpdf_toFile(jsonpdf, "testoutputs/15fromjson.pdf", false, false);
+  int jbuflen;
+  printf("---cpdf_outputJSONMemory()\n");
+  void *jbuf = cpdf_outputJSONMemory(jsonpdf, false, false, &jbuflen);
+  printf("---cpdf_fromJSONMemory()\n");
+  int jfrommem = cpdf_fromJSONMemory(jbuf, jbuflen);
+  cpdf_toFile(jfrommem, "testoutputs/15fromJSONMemory.pdf", false, false);
+  prerr();
   cpdf_deletePdf(json);
+  cpdf_deletePdf(jsonpdf);
 
   /* CHAPTER 16. Optional Content Groups */
   int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
