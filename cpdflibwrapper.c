@@ -2766,10 +2766,10 @@ void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data, int 
   CAMLparam0();
   CAMLlocal2(fn, bytestream);
   CAMLlocalN(args, 4);
-  args[0] = Val_int(pdf);
-  args[1] = Val_int(parse_content);
-  args[2] = Val_int(no_stream_data);
-  args[3] = Val_int(decompress_streams);
+  args[0] = Val_int(parse_content);
+  args[1] = Val_int(no_stream_data);
+  args[2] = Val_int(decompress_streams);
+  args[3] = Val_int(pdf);
   fn = *caml_named_value("outputJSONMemory");
   bytestream = caml_callbackN(fn, 4, args);
   updateLastError();
