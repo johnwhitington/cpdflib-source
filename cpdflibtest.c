@@ -510,6 +510,11 @@ int main(int argc, char **argv) {
   cpdf_twoUpStack(mp2);
   prerr();
   cpdf_toFile(mp2, "testoutputs/09mp2.pdf", false, false);
+  printf("---cpdf_impose()\n");
+  int mp25 = cpdf_fromFile("cpdflibmanual.pdf", "");
+  cpdf_impose(mp25, 5.0, 4.0, false, false, false, false, false, 40.0, 20.0, 2.0);
+  prerr();
+  cpdf_toFile(mp25, "testoutputs/09mp25.pdf", false, false);
   printf("---cpdf_padBefore()\n");
   int r = cpdf_range(1, 10);
   int mp3 = cpdf_fromFile("cpdflibmanual.pdf", "");

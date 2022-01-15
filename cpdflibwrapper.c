@@ -1360,17 +1360,17 @@ void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl, int
                  int center, double margin, double spacing, double linewidth) {
   CAMLparam0();
   CAMLlocalN(args, 11);
-  args[0] = caml_copy_double(x);
-  args[1] = caml_copy_double(y);
-  args[2] = Val_bool(fit);
-  args[3] = Val_bool(columns);
-  args[4] = Val_bool(rtl);
-  args[5] = Val_bool(btt);
-  args[6] = Val_bool(center);
-  args[7] = caml_copy_double(margin);
-  args[8] = caml_copy_double(spacing);
-  args[9] = caml_copy_double(linewidth);
-  args[10] = Val_int(pdf);
+  args[0] = Val_int(pdf);
+  args[1] = caml_copy_double(x);
+  args[2] = caml_copy_double(y);
+  args[3] = Val_bool(fit);
+  args[4] = Val_bool(columns);
+  args[5] = Val_bool(rtl);
+  args[6] = Val_bool(btt);
+  args[7] = Val_bool(center);
+  args[8] = caml_copy_double(margin);
+  args[9] = caml_copy_double(spacing);
+  args[10] = caml_copy_double(linewidth);
   CAMLlocal2(fn, out_v);
   fn = *caml_named_value("impose");
   out_v = caml_callbackN(fn, 11, args);

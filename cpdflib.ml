@@ -1440,6 +1440,7 @@ let padMultipleBefore pdf n =
 
 let _ = Callback.register "twoUp" twoUp
 let _ = Callback.register "twoUpStack" twoUpStack
+let _ = Callback.register "impose" impose
 let _ = Callback.register "padBefore" padBefore
 let _ = Callback.register "padAfter" padAfter
 let _ = Callback.register "padEvery" padEvery
