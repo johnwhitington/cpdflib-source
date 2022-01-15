@@ -404,6 +404,10 @@ int main(int argc, char **argv) {
   cpdf_toFile(markspdf, "testoutputs/06newmarks.pdf", false, false);
   prerr();
   cpdf_deletePdf(markspdf);
+  printf("---cpdf_tableOfContents\n");
+  int tocfile = cpdf_fromFile("cpdflibmanual.pdf", "");
+  cpdf_tableOfContents(tocfile, cpdf_timesRoman, 12.0, false);
+  cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
 
   /* CHAPTER 7. Presentations */
   /* Not included in the library version */

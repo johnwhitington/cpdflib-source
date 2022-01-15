@@ -1144,6 +1144,21 @@ void cpdf_endSetBookmarkInfo(int pdf) {
   CAMLreturn0;
 }
 
+void cpdf_tableOfContents(int pdf, int font, double fontsize, int bookmark)
+{
+  printf("inside  cpdflibwrapper tableOfcontents\n");
+  CAMLparam0();
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(font);
+  args[2] = caml_copy_double(fontsize);
+  args[3] = Val_int(bookmark);
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("tableOfContents");
+  out_v = caml_callbackN(fn_v, 4, args);
+  CAMLreturn0;
+}
+
 /* CHAPTER 7. Presentations */
 
 /* Not included in the library version */

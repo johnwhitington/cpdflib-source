@@ -105,6 +105,7 @@ val setBookmarkPage : pdf -> int -> int -> unit
 val setBookmarkLevel : int -> int -> unit
 val setBookmarkText : int -> string -> unit
 val setBookmarkOpenStatus : int -> bool -> unit
+val tableOfContents : pdf -> Pdftext.standard_font -> float -> string -> bool -> unit
 
 (* CHAPTER 7. Presentations *)
 

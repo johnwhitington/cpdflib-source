@@ -1180,6 +1180,13 @@ let endSetBookmarkInfo pdf =
     with
       e -> handle_error "endSetBookmarkInfo" e; err_unit
 
+let tableOfContents pdf font fontsize title bookmark =
+  if !dbg then flprint "Cpdflib.tableOfContents\n";
+  try
+    update_pdf (Cpdftoc.typeset_table_of_contents font fontsize title bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "tableOfContents" e; err_unit
+
 let _ = Callback.register "startGetBookmarkInfo" startGetBookmarkInfo
 let _ = Callback.register "endGetBookmarkInfo" endGetBookmarkInfo
 let _ = Callback.register "numberBookmarks" numberBookmarks
@@ -1193,6 +1200,7 @@ let _ = Callback.register "setBookmarkPage" setBookmarkPage
 let _ = Callback.register "setBookmarkLevel" setBookmarkLevel
 let _ = Callback.register "setBookmarkText" setBookmarkText
 let _ = Callback.register "setBookmarkOpenStatus" setBookmarkOpenStatus
+let _ = Callback.register "tableOfContents" tableOfContents
 
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
 let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relative_to_cropbox =
