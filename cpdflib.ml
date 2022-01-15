@@ -1376,6 +1376,13 @@ let stampAsXObject pdf range stamp_pdf =
 let _ = Callback.register "stampAsXObject" stampAsXObject
 
 (* CHAPTER 9. Multipage facilities *)
+let impose pdf x y fit columns rtl btt center margin spacing linewidth =
+  if !dbg then flprint "Cpdflib.impose\n";
+  try
+    update_pdf (Cpdfimpose.impose x y fit columns rtl btt center margin spacing linewidth !fast (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "impose" e; err_unit
+
 let twoUp pdf =
   if !dbg then flprint "Cpdflib.twoUp\n";
   try

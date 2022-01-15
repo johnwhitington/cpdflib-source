@@ -1356,8 +1356,8 @@ char *cpdf_stampAsXObject(int pdf, int range, int stamp_pdf) {
 
 /* CHAPTER 9. Multipage facilities */
 
-void cpdf_impose(double x, double y, int fit, int columns, int rtl, int btt,
-                 int center, double margin, double spacing, double linewidth, int pdf) {
+void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl, int btt,
+                 int center, double margin, double spacing, double linewidth) {
   CAMLparam0();
   CAMLlocalN(args, 11);
   args[0] = caml_copy_double(x);
