@@ -557,8 +557,13 @@ int main(int argc, char **argv) {
   cpdf_deleteRange(r);
 
   /* CHAPTER 10. Annotations */
-
-  /* Not in the library version */
+  printf("***** CHAPTER 10. Annotations\n");
+  int annot = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int annotlength;
+  printf("---cpdf_annotatonsJSON()\n");
+  cpdf_annotationsJSON(annot, &annotlength);
+  printf("Contains %i bytes of data\n", annotlength);
+  cpdf_deletePdf(annot);
 
   /* CHAPTER 11. Document Information and Metadata */
   printf("***** CHAPTER 11. Document Information and Metadata\n");

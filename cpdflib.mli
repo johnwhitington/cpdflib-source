@@ -130,6 +130,7 @@ val padMultiple : pdf -> int -> unit
 val padMultipleBefore : pdf -> int -> unit
 
 (* CHAPTER 10. Annotations *)
+val annotationsJSON : pdf -> Pdfio.rawbytes
 
 (* CHAPTER 11. Document Information and Metadata *)
 val getVersion : pdf -> int

@@ -866,7 +866,8 @@ void cpdf_padMultipleBefore(int, int);
 
 /* CHAPTER 10. Annotations */
 
-/* Not in the library version */
+/* Return the annotations from a PDF in JSON format, returning also its length. */
+void *cpdf_annotationsJSON(int, int*);
 
 /* CHAPTER 11. Document Information and Metadata */
 

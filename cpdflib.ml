@@ -1184,7 +1184,7 @@ let tableOfContents pdf font fontsize title bookmark =
   if !dbg then flprint "Cpdflib.tableOfContents\n";
   flprint "inside tableOfContents\n";
   try
-    update_pdf (Cpdftoc.typeset_table_of_contents font fontsize title bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
 
@@ -1388,7 +1388,7 @@ let _ = Callback.register "stampAsXObject" stampAsXObject
 let impose pdf x y fit columns rtl btt center margin spacing linewidth =
   if !dbg then flprint "Cpdflib.impose\n";
   try
-    update_pdf (Cpdfimpose.impose x y fit columns rtl btt center margin spacing linewidth !fast (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfimpose.impose ~x ~y ~fit ~columns ~rtl ~btt ~center ~margin ~spacing ~linewidth ~fast:!fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "impose" e; err_unit
 
@@ -1458,9 +1458,19 @@ let _ = Callback.register "padMultipleBefore" padMultipleBefore
 
 
 (* CHAPTER 10. Annotations *)
+let annotationsJSON pdf =
+  if !dbg then flprint "Cpdflib.annotationsJSON\n";
+  try
+    Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf))
+  with
+    e -> handle_error "annotationsJSON" e; err_data
+
+let _ = Callback.register "annotationsJSON" annotationsJSON
+
 (* CHAPTER 11. Document Information and Metadata *)
 
 let isLinearized string =
+  if !dbg then flprint "Cpdflib.isLinearized\n";
   try
     Pdfread.is_linearized (Pdfio.input_of_channel (open_in_bin string))
   with
@@ -2578,12 +2588,12 @@ let contents_of_file filename =
 
 let textToPDF width height font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDF\n";
-  try new_pdf (Cpdftexttopdf.typeset (Pdfpaper.make Pdfunits.PdfPoint width height) font fontsize (contents_of_file filename)) with
+  try new_pdf (Cpdftexttopdf.typeset ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height) ~font ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDF" e; err_int
 
 let textToPDFPaper papersize font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDFPaper\n";
-  try new_pdf (Cpdftexttopdf.typeset (papersize_of_int papersize) font fontsize (contents_of_file filename)) with
+  try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDF" e; err_int
 
 let _ = Callback.register "blankDocument" blankDocument

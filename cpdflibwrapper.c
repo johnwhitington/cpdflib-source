@@ -1470,8 +1470,29 @@ void cpdf_padMultipleBefore(int pdf, int n) {
 }
 
 /* CHAPTER 10. Annotations */
-
-/* Not implemented in cpdflib */
+void *cpdf_annotationsJSON(int pdf, int *retlen)
+{
+  
+  CAMLparam0();
+  CAMLlocal3(fn, bytestream, pdf_v);
+  fn = *caml_named_value("annotationsJSON");
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("annotationsJSON: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
 
 /* CHAPTER 11. Document Information and Metadata */
 int cpdf_isLinearized(char *filename) {
