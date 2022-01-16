@@ -634,10 +634,10 @@ void cpdf_setBookmarkText(int, const char[]);
  */
 void cpdf_endSetBookmarkInfo(int);
 
-/* cpdf_tableOfContents(pdf, font, fontsize, bookmark) typesets a table of
- * contents from existing bookmarks and prepends it to the document. If
+/* cpdf_tableOfContents(pdf, font, fontsize, title, bookmark) typesets a table
+ * of contents from existing bookmarks and prepends it to the document. If
  * bookmark is set, the table of contents gets its own bookmark. */
-void cpdf_tableOfContents(int, int, double, int);
+void cpdf_tableOfContents(int, int, double, char*, int);
 
 /* CHAPTER 7. Presentations */
 
