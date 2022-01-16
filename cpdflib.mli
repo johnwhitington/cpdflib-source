@@ -248,6 +248,8 @@ val ocgOrderAll : int -> unit
 (* CHAPTER 17. Creating New PDFs *)
 val blankDocument : float -> float -> int -> pdf
 val blankDocumentPaper : int -> int -> pdf
+val textToPDF : float -> float -> Pdftext.standard_font -> float -> string -> pdf
+val textToPDFPaper : int -> Pdftext.standard_font -> float -> string -> pdf
 
 (* CHAPTER 18. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit

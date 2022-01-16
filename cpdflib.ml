@@ -2565,14 +2565,31 @@ let blankDocument width height pages =
   try new_pdf (Cpdfcreate.blank_document width height pages) with
     e -> handle_error "blankDocument" e; err_int
 
-
 let blankDocumentPaper papersize pages =
   if !dbg then flprint "Cpdflib.blankDocumentPaper\n";
   try new_pdf (Cpdfcreate.blank_document_paper (papersize_of_int papersize) pages) with
     e -> handle_error "blankDocumentPaper" e; err_int
 
+let contents_of_file filename =
+  let ch = open_in_bin filename in
+    let s = really_input_string ch (in_channel_length ch) in
+      close_in ch;
+      (Pdfio.bytes_of_string s)
+
+let textToPDF width height font fontsize filename =
+  if !dbg then flprint "Cpdflib.textToPDF\n";
+  try new_pdf (Cpdftexttopdf.typeset (Pdfpaper.make Pdfunits.PdfPoint width height) font fontsize (contents_of_file filename)) with
+    e -> handle_error "textToPDF" e; err_int
+
+let textToPDFPaper papersize font fontsize filename =
+  if !dbg then flprint "Cpdflib.textToPDFPaper\n";
+  try new_pdf (Cpdftexttopdf.typeset (papersize_of_int papersize) font fontsize (contents_of_file filename)) with
+    e -> handle_error "textToPDF" e; err_int
+
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
+let _ = Callback.register "textToPDF" textToPDF
+let _ = Callback.register "textToPDFPaper" textToPDFPaper
 
 (* CHAPTER 18. Miscellaneous *)
 let draft pdf range boxes =
