@@ -1470,9 +1470,7 @@ void cpdf_padMultipleBefore(int pdf, int n) {
 }
 
 /* CHAPTER 10. Annotations */
-void *cpdf_annotationsJSON(int pdf, int *retlen)
-{
-  
+void *cpdf_annotationsJSON(int pdf, int *retlen) {
   CAMLparam0();
   CAMLlocal3(fn, bytestream, pdf_v);
   fn = *caml_named_value("annotationsJSON");
@@ -2932,8 +2930,8 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize papersize, int pages) {
   CAMLreturnT(int, Int_val(out));
 }
 
-int cpdf_textToPDF(double w, double h, int font, double fontsize, char *filename)
-{
+int cpdf_textToPDF(double w, double h, int font, double fontsize,
+                   char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 5);
@@ -2947,8 +2945,8 @@ int cpdf_textToPDF(double w, double h, int font, double fontsize, char *filename
   CAMLreturnT(int, Int_val(out_v));
 }
 
-int cpdf_textToPDFPaper(int papersize, int font, double fontsize, char *filename)
-{
+int cpdf_textToPDFPaper(int papersize, int font, double fontsize,
+                        char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 4);

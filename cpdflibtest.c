@@ -970,10 +970,12 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_toFile(blanksized, "testoutputs/01blanka4.pdf", false, false);
   printf("---cpdf_textToPDF()\n");
-  int ttpdf = cpdf_textToPDF(500.0, 600.0, cpdf_timesItalic, 8.0, "cpdflibtest.c");
+  int ttpdf =
+      cpdf_textToPDF(500.0, 600.0, cpdf_timesItalic, 8.0, "cpdflibtest.c");
   cpdf_toFile(ttpdf, "testoutputs/01ttpdf.pdf", false, false);
   printf("---cpdf_textToPDFPaper()\n");
-  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, cpdf_timesBoldItalic, 10.0, "cpdflibtest.c");
+  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, cpdf_timesBoldItalic,
+                                       10.0, "cpdflibtest.c");
   cpdf_toFile(ttpdfpaper, "testoutputs/01ttpdfpaper.pdf", false, false);
   cpdf_deletePdf(ttpdf);
   cpdf_deletePdf(ttpdfpaper);

@@ -634,6 +634,14 @@ void cpdf_setBookmarkText(int, const char[]);
  */
 void cpdf_endSetBookmarkInfo(int);
 
+/* cpdf_getBookmarksJSON(pdf, length) returns the bookmark data and sets the
+ * length. */
+void *cpdf_getBookmarksJSON(int, int *);
+
+/* cpdf_setBookmarksJSON(pdf, data, datalength) sets the bookmarks from JSON
+ * bookmark data. */
+void cpdf_setBookmarksJSON(int, void *, int);
+
 /* cpdf_tableOfContents(pdf, font, fontsize, title, bookmark) typesets a table
  * of contents from existing bookmarks and prepends it to the document. If
  * bookmark is set, the table of contents gets its own bookmark. */
@@ -866,8 +874,9 @@ void cpdf_padMultipleBefore(int, int);
 
 /* CHAPTER 10. Annotations */
 
-/* Return the annotations from a PDF in JSON format, returning also its length. */
-void *cpdf_annotationsJSON(int, int*);
+/* Return the annotations from a PDF in JSON format, returning also its length.
+ */
+void *cpdf_annotationsJSON(int, int *);
 
 /* CHAPTER 11. Document Information and Metadata */
 
