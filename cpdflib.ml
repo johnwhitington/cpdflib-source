@@ -1180,9 +1180,23 @@ let endSetBookmarkInfo pdf =
     with
       e -> handle_error "endSetBookmarkInfo" e; err_unit
 
+let getBookmarksJSON pdf =
+  if !dbg then flprint "Cpdflib.getBookmarksJSON()\n";
+  try
+    Pdfio.raw_of_bytes (Cpdfbookmarks.get_bookmarks_json (lookup_pdf pdf))
+  with
+    e -> handle_error "getBookmarksJSON" e; err_data
+
+let setBookmarksJSON pdf data =
+  if !dbg then flprint "Cpdflib.setBookmarksJSON()\n";
+  try
+    let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw data) in
+      update_pdf (Cpdfbookmarks.add_bookmarks ~json:true false i (lookup_pdf pdf)) (lookup_pdf pdf)
+  with
+    e -> handle_error "setBookmarksJSON" e; err_unit
+
 let tableOfContents pdf font fontsize title bookmark =
   if !dbg then flprint "Cpdflib.tableOfContents\n";
-  flprint "inside tableOfContents\n";
   try
     update_pdf (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -1201,6 +1215,8 @@ let _ = Callback.register "setBookmarkPage" setBookmarkPage
 let _ = Callback.register "setBookmarkLevel" setBookmarkLevel
 let _ = Callback.register "setBookmarkText" setBookmarkText
 let _ = Callback.register "setBookmarkOpenStatus" setBookmarkOpenStatus
+let _ = Callback.register "getBookmarksJSON" getBookmarksJSON
+let _ = Callback.register "setBookmarksJSON" setBookmarksJSON
 let _ = Callback.register "tableOfContents" tableOfContents
 
 (* CHAPTER 8. Logos, Watermarks and Stamps *)

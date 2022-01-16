@@ -105,6 +105,8 @@ val setBookmarkPage : pdf -> int -> int -> unit
 val setBookmarkLevel : int -> int -> unit
 val setBookmarkText : int -> string -> unit
 val setBookmarkOpenStatus : int -> bool -> unit
+val getBookmarksJSON : pdf -> Pdfio.rawbytes
+val setBookmarksJSON : pdf -> Pdfio.rawbytes -> unit
 val tableOfContents : pdf -> Pdftext.standard_font -> float -> string -> bool -> unit
 
 (* CHAPTER 7. Presentations *)
