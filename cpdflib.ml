@@ -1182,6 +1182,7 @@ let endSetBookmarkInfo pdf =
 
 let tableOfContents pdf font fontsize title bookmark =
   if !dbg then flprint "Cpdflib.tableOfContents\n";
+  flprint "inside tableOfContents\n";
   try
     update_pdf (Cpdftoc.typeset_table_of_contents font fontsize title bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
   with
