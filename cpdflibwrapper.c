@@ -1144,8 +1144,8 @@ void cpdf_endSetBookmarkInfo(int pdf) {
   CAMLreturn0;
 }
 
-void cpdf_tableOfContents(int pdf, int font, double fontsize, char* title, int bookmark)
-{
+void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
+                          int bookmark) {
   CAMLparam0();
   CAMLlocalN(args, 5);
   args[0] = Val_int(pdf);
@@ -1371,8 +1371,9 @@ char *cpdf_stampAsXObject(int pdf, int range, int stamp_pdf) {
 
 /* CHAPTER 9. Multipage facilities */
 
-void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl, int btt,
-                 int center, double margin, double spacing, double linewidth) {
+void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl,
+                 int btt, int center, double margin, double spacing,
+                 double linewidth) {
   CAMLparam0();
   CAMLlocalN(args, 11);
   args[0] = Val_int(pdf);
@@ -2908,6 +2909,35 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize papersize, int pages) {
   out = caml_callback2(fn, papersize_v, pages_v);
   updateLastError();
   CAMLreturnT(int, Int_val(out));
+}
+
+int cpdf_textToPDF(double w, double h, int font, double fontsize, char *filename)
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 5);
+  args[0] = caml_copy_double(w);
+  args[1] = caml_copy_double(h);
+  args[2] = Val_int(font);
+  args[3] = caml_copy_double(fontsize);
+  args[4] = caml_copy_string(filename);
+  fn_v = *caml_named_value("textToPDF");
+  out_v = caml_callbackN(fn_v, 5, args);
+  CAMLreturnT(int, Int_val(out_v));
+}
+
+int cpdf_textToPDFPaper(int papersize, int font, double fontsize, char *filename)
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 4);
+  fn_v = *caml_named_value("textToPDFPaper");
+  args[0] = Val_int(papersize);
+  args[1] = Val_int(font);
+  args[2] = caml_copy_double(fontsize);
+  args[3] = caml_copy_string(filename);
+  out_v = caml_callbackN(fn_v, 4, args);
+  CAMLreturnT(int, Int_val(out_v));
 }
 
 /* CHAPTER 18. Miscellaneous */

@@ -826,7 +826,8 @@ char *cpdf_stampAsXObject(int, int, int);
  * columns rather than rows. rtl is right-to-left, btt bottom-to-top. Center is
  * unused for now. Margin is the margin around the output, spacing the spacing
  * between imposed inputs. */
-void cpdf_impose(int, double, double, int, int, int, int, int, double, double, double);
+void cpdf_impose(int, double, double, int, int, int, int, int, double, double,
+                 double);
 
 /*
  * Impose a document two up. cpdf_twoUp does so by retaining the existing
@@ -1330,8 +1331,7 @@ void cpdf_OCGCoalesce(int);
 
 /* CHAPTER 17. Creating New PDFs */
 
-/*
- * cpdf_blankDocument(width, height, num_pages) creates a blank document with
+/* cpdf_blankDocument(width, height, num_pages) creates a blank document with
  * pages of the given width (in points), height (in points), and number of
  * pages.
  */
@@ -1342,6 +1342,15 @@ int cpdf_blankDocument(double, double, int);
  * a page size and number of pages.
  */
 int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
+
+/* cpdf_textToPDF(w, h, font, fontsize, filename) typesets a UTF8 text file
+ * ragged right on a page of size w * h in points in the given font and font
+ * size. */
+int cpdf_textToPDF(double, double, int, double, const char[]);
+
+/* cpdf_textToPDF(papersize font, fontsize, filename) typesets a UTF8 text file
+ * ragged right on a page of the given size in the given font and font size. */
+int cpdf_textToPDFPaper(int, int, double, const char[]);
 
 /* CHAPTER 18. Miscellaneous */
 

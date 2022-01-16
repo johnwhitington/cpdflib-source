@@ -406,7 +406,8 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(markspdf);
   printf("---cpdf_tableOfContents\n");
   int tocfile = cpdf_fromFile("cpdflibmanual.pdf", "");
-  cpdf_tableOfContents(tocfile, cpdf_timesRoman, 12.0, "Table of Contents", false);
+  cpdf_tableOfContents(tocfile, cpdf_timesRoman, 12.0, "Table of Contents",
+                       false);
   cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
 
   /* CHAPTER 7. Presentations */
@@ -516,7 +517,8 @@ int main(int argc, char **argv) {
   cpdf_toFile(mp2, "testoutputs/09mp2.pdf", false, false);
   printf("---cpdf_impose()\n");
   int mp25 = cpdf_fromFile("cpdflibmanual.pdf", "");
-  cpdf_impose(mp25, 5.0, 4.0, false, false, false, false, false, 40.0, 20.0, 2.0);
+  cpdf_impose(mp25, 5.0, 4.0, false, false, false, false, false, 40.0, 20.0,
+              2.0);
   prerr();
   cpdf_toFile(mp25, "testoutputs/09mp25.pdf", false, false);
   printf("---cpdf_padBefore()\n");
@@ -962,6 +964,14 @@ int main(int argc, char **argv) {
   int blanksized = cpdf_blankDocumentPaper(cpdf_a4portrait, 10);
   prerr();
   cpdf_toFile(blanksized, "testoutputs/01blanka4.pdf", false, false);
+  printf("---cpdf_textToPDF()\n");
+  int ttpdf = cpdf_textToPDF(500.0, 600.0, cpdf_timesItalic, 8.0, "cpdflibtest.c");
+  cpdf_toFile(ttpdf, "testoutputs/01ttpdf.pdf", false, false);
+  printf("---cpdf_textToPDFPaper()\n");
+  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, cpdf_timesBoldItalic, 10.0, "cpdflibtest.c");
+  cpdf_toFile(ttpdfpaper, "testoutputs/01ttpdfpaper.pdf", false, false);
+  cpdf_deletePdf(ttpdf);
+  cpdf_deletePdf(ttpdfpaper);
   cpdf_deletePdf(blankdoc);
   cpdf_deletePdf(blanksized);
 
