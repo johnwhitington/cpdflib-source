@@ -1410,6 +1410,23 @@ void cpdf_setFullVersion(int, int, int);
  */
 void cpdf_removeDictEntry(int, const char[]);
 
+/* cpdf_removeDictEntrySearch(pdf, key, seachterm) removes any dictionary entry
+ * with the given key whose value matches the given search term. */
+void cpdf_removeDictEntrySearch(int, const char[], const char[]);
+
+/* cpdf_replaceDictEntry(pdf, key, newvalue) replaces the value associated with
+ * the given key */
+void cpdf_replaceDictEntry(int, const char[], const char[]);
+
+/* cpdf_replaceDictEntry(pdf, key, newvalue, searchterm) replaces the value
+ * associated with the given key if the existing value matches the search term.
+ */
+void cpdf_replaceDictEntrySearch(int, const char[], const char[], const char[]);
+
+/* cpdf_getDictEntries(pdf, key, length) returns a JSON array containing any
+ * and all values associated with the given key, and fills in its length. */
+void *cpdf_getDictEntries(int, const char[], int *retlen);
+
 /*
  * cpdf_removeClipping(pdf, range) removes all clipping from pages in the
  * given range.

@@ -1144,6 +1144,42 @@ void cpdf_endSetBookmarkInfo(int pdf) {
   CAMLreturn0;
 }
 
+void *cpdf_getBookmarksJSON(int pdf, int *retlen)
+{
+  CAMLparam0();
+  CAMLlocal3(fn, bytestream, pdf_v);
+  fn = *caml_named_value("getBookmarksJSON");
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) printf("getBookmarksJSON: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+
+void cpdf_setBookmarksJSON(int pdf, void *data, int len)
+{
+  CAMLparam0();
+  CAMLlocal4(unit, bytestream, fn, valpdf);
+  bytestream =
+      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("setBookmarksJSON");
+  valpdf = Val_int(pdf);
+  unit = caml_callback2(fn, valpdf, bytestream);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
                           int bookmark) {
   CAMLparam0();

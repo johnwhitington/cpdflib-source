@@ -404,11 +404,20 @@ int main(int argc, char **argv) {
   cpdf_toFile(markspdf, "testoutputs/06newmarks.pdf", false, false);
   prerr();
   cpdf_deletePdf(markspdf);
-  printf("---cpdf_tableOfContents\n");
+  printf("---cpdf_getBookmarksJSON()\n");
+  int marksjson = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int markslength;
+  void *marksdata = cpdf_getBookmarksJSON(marksjson, &markslength);
+  printf("Contains %i bytes of data\n", markslength);
+  printf("---cpdf_setBookmarksJSON()\n");
+  cpdf_setBookmarksJSON(marksjson, marksdata, markslength);
+  cpdf_toFile(marksjson, "testoutputs/06jsonmarks.pdf", false, false);
+  printf("---cpdf_tableOfContents()\n");
   int tocfile = cpdf_fromFile("cpdflibmanual.pdf", "");
   cpdf_tableOfContents(tocfile, cpdf_timesRoman, 12.0, "Table of Contents",
                        false);
   cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
+  cpdf_deletePdf(tocfile);
 
   /* CHAPTER 7. Presentations */
   /* Not included in the library version */
@@ -561,7 +570,7 @@ int main(int argc, char **argv) {
   int annot = cpdf_fromFile("cpdflibmanual.pdf", "");
   int annotlength;
   printf("---cpdf_annotatonsJSON()\n");
-  cpdf_annotationsJSON(annot, &annotlength);
+  void *data = cpdf_annotationsJSON(annot, &annotlength);
   printf("Contains %i bytes of data\n", annotlength);
   cpdf_deletePdf(annot);
 
