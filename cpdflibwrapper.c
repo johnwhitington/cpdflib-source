@@ -1154,6 +1154,7 @@ void *cpdf_getBookmarksJSON(int pdf, int *retlen)
   updateLastError();
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
+  printf("************in cpdf_getBookmarksJSON, we got %i bytes of data\n", size);
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) printf("getBookmarksJSON: failed");
   if (size > 0) {
