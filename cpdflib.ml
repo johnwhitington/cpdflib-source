@@ -2684,21 +2684,25 @@ let removeDictEntry pdf key =
 let removeDictEntrySearch pdf key searchterm =
   if !dbg then flprint "Cpdf.removeDictEntrySearch\n";
   try
-    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json searchterm))
+    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
   with
     e -> handle_error "removeDictEntrySearch" e; err_unit
 
 let replaceDictEntry pdf key value =
   if !dbg then flprint "Cpdf.replaceDictEntry\n";
   try
-    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json value) None
+    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) None
   with
     e -> handle_error "replaceDictEntry" e; err_unit
 
 let replaceDictEntrySearch pdf key value searchterm =
   if !dbg then flprint "Cpdf.replaceDictEntrySearch\n";
   try
-    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json value) (Some (Cpdfjson.object_of_json searchterm))
+    Cpdftweak.replace_dict_entry
+      (lookup_pdf pdf)
+      key
+      (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value))
+      (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
   with
     e -> handle_error "replaceDictEntrySearch" e; err_unit
 
