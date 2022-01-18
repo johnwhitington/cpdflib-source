@@ -266,6 +266,10 @@ val removeId : pdf -> unit
 val setVersion : pdf -> int -> unit
 val setFullVersion : pdf -> int -> int -> unit
 val removeDictEntry : pdf -> string -> unit
+val removeDictEntrySearch : pdf -> string -> string -> unit
+val replaceDictEntry : pdf -> string -> string -> unit
+val replaceDictEntrySearch : pdf -> string -> string -> string -> unit
+val getDictEntries : pdf -> string -> Pdfio.rawbytes
 val removeClipping : pdf -> range -> unit
 
 (* CHAPTER X. Undocumented or internal *)

@@ -2681,6 +2681,34 @@ let removeDictEntry pdf key =
   with
     e -> handle_error "removeDictEntry" e; err_unit
 
+let removeDictEntrySearch pdf key searchterm =
+  if !dbg then flprint "Cpdf.removeDictEntrySearch\n";
+  try
+    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json searchterm))
+  with
+    e -> handle_error "removeDictEntrySearch" e; err_unit
+
+let replaceDictEntry pdf key value =
+  if !dbg then flprint "Cpdf.replaceDictEntry\n";
+  try
+    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json value) None
+  with
+    e -> handle_error "replaceDictEntry" e; err_unit
+
+let replaceDictEntrySearch pdf key value searchterm =
+  if !dbg then flprint "Cpdf.replaceDictEntrySearch\n";
+  try
+    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json value) (Some (Cpdfjson.object_of_json searchterm))
+  with
+    e -> handle_error "replaceDictEntrySearch" e; err_unit
+
+let getDictEntries pdf key =
+  if !dbg then flprint "Cpdflib.getDictEntries\n";
+  try
+    Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries (lookup_pdf pdf) key)
+  with
+    e -> handle_error "getDictEntries" e; err_data
+
 let removeClipping pdf range =
   if !dbg then flprint "Cpdf.removeClipping\n";
   try
@@ -2697,6 +2725,10 @@ let _ = Callback.register "copyId" copyId
 let _ = Callback.register "removeAllText" removeAllText
 let _ = Callback.register "removeId" removeId
 let _ = Callback.register "removeDictEntry" removeDictEntry
+let _ = Callback.register "removeDictEntrySearch" removeDictEntrySearch
+let _ = Callback.register "replaceDictEntry" replaceDictEntry
+let _ = Callback.register "replaceDictEntrySearch" removeDictEntry
+let _ = Callback.register "getDictEntries" getDictEntries
 let _ = Callback.register "removeClipping" removeClipping
 
 
