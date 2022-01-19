@@ -530,6 +530,11 @@ int main(int argc, char **argv) {
               2.0);
   prerr();
   cpdf_toFile(mp25, "testoutputs/09mp25.pdf", false, false);
+  int mp26 = cpdf_fromFile("cpdflibmanual.pdf", "");
+  cpdf_impose(mp26, 2000, 1000, true, false, false, false, false, 40.0, 20.0,
+              2.0);
+  prerr();
+  cpdf_toFile(mp26, "testoutputs/09mp26.pdf", false, false);
   printf("---cpdf_padBefore()\n");
   int r = cpdf_range(1, 10);
   int mp3 = cpdf_fromFile("cpdflibmanual.pdf", "");
@@ -563,6 +568,8 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(mp5);
   cpdf_deletePdf(mp6);
   cpdf_deletePdf(mp7);
+  cpdf_deletePdf(mp25);
+  cpdf_deletePdf(mp26);
   cpdf_deleteRange(r);
 
   /* CHAPTER 10. Annotations */
@@ -1048,23 +1055,30 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_toFile(misc10, "testoutputs/17setfullversion.pdf", false, false);
   printf("---cpdf_removeDictEntry()\n");
+  int misc13 = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int misc14 = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int misc15 = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int misc16 = cpdf_fromFile("cpdflibmanual.pdf", "");
   cpdf_removeDictEntry(misc11, "/Producer");
   prerr();
+  cpdf_toFile(misc11, "testoutputs/17removedictentry.pdf", false, false);
   printf("---cpdf_removeDictEntrySearch()\n");
-  cpdf_removeDictEntrySearch(misc11, "/Producer", "1");
+  cpdf_removeDictEntrySearch(misc13, "/Producer", "1");
   prerr();
+  cpdf_toFile(misc13, "testoutputs/17removedictentrysearch.pdf", false, false);
   printf("---cpdf_replaceDictEntry()\n");
-  cpdf_replaceDictEntry(misc11, "/Producer", "1");
+  cpdf_replaceDictEntry(misc14, "/Producer", "{\"I\" : 1}");
   prerr();
+  cpdf_toFile(misc14, "testoutputs/17replacedictentry.pdf", false, false);
   printf("---cpdf_replaceDictEntrySearch()\n");
-  cpdf_replaceDictEntrySearch(misc11, "/Producer", "1", "2");
+  cpdf_replaceDictEntrySearch(misc15, "/Producer", "1", "2");
   prerr();
+  cpdf_toFile(misc15, "testoutputs/17replacedictentrysearch.pdf", false, false);
   printf("---cpdf_getDictEntries()\n");
   int gedlength;
-  void * geddata = cpdf_getDictEntries(misc11, "/Producer", &gedlength);
+  void * geddata = cpdf_getDictEntries(misc16, "/Producer", &gedlength);
   printf("length of entries data = %i\n", gedlength);
   prerr();
-  cpdf_toFile(misc11, "testoutputs/17removedictentry.pdf", false, false);
   printf("---cpdf_removeClipping()\n");
   cpdf_removeClipping(misc12, misc_r);
   prerr();
@@ -1081,6 +1095,10 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc10);
   cpdf_deletePdf(misc11);
   cpdf_deletePdf(misc12);
+  cpdf_deletePdf(misc13);
+  cpdf_deletePdf(misc14);
+  cpdf_deletePdf(misc15);
+  cpdf_deletePdf(misc16);
   cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
 
@@ -1090,6 +1108,6 @@ int main(int argc, char **argv) {
   cpdf_setDemo(true);
   prerr();
 
-  // cpdf_onExit();
+  /* cpdf_onExit(); */
   return 0;
 }
