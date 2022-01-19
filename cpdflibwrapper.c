@@ -496,7 +496,7 @@ void *cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen) {
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("toMemory: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "toMemory: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -1154,9 +1154,8 @@ void *cpdf_getBookmarksJSON(int pdf, int *retlen)
   updateLastError();
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
-  printf("************in cpdf_getBookmarksJSON, we got %i bytes of data\n", size);
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("getBookmarksJSON: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "getBookmarksJSON: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -1517,7 +1516,7 @@ void *cpdf_annotationsJSON(int pdf, int *retlen) {
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("annotationsJSON: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "annotationsJSON: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -2350,7 +2349,7 @@ void *cpdf_getMetadata(int pdf, int *retlen) {
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("getMetadata: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "getMetadata: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -2613,7 +2612,7 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("getAttachmentData: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "getAttachmentData: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -2848,7 +2847,7 @@ void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data,
   char *memory = NULL;
   int size = Bigarray_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0) printf("outputJSONMemory: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "outputJSONMemory: failed");
   if (size > 0) {
     int x;
     char *indata = Data_bigarray_val(bytestream);
@@ -3118,6 +3117,71 @@ void cpdf_removeDictEntry(int pdf, char *str) {
   out = caml_callback2(fn, inpdf, instr);
   updateLastError();
   CAMLreturn0;
+}
+
+void cpdf_removeDictEntrySearch(int pdf, char *str, char *searchterm)
+{
+  CAMLparam0();
+  CAMLlocal5(fn, inpdf, instr, insearchterm, out);
+  fn = *caml_named_value("removeDictEntrySearch");
+  inpdf = Val_int(pdf);
+  instr = caml_copy_string(str);
+  insearchterm = caml_copy_string(searchterm);
+  out = caml_callback3(fn, inpdf, instr, insearchterm);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_replaceDictEntry(int pdf, char *key, char *newvalue)
+{
+  CAMLparam0();
+  CAMLlocal5(fn, inpdf, inkey, innewvalue, out);
+  fn = *caml_named_value("replaceDictEntry");
+  inpdf = Val_int(pdf);
+  inkey = caml_copy_string(key);
+  innewvalue = caml_copy_string(newvalue);
+  out = caml_callback3(fn, inpdf, inkey, innewvalue);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_replaceDictEntrySearch(int pdf, char *key, char *newvalue, char *searchterm)
+{
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 4);
+  fn_v = *caml_named_value("replaceDictEntrySearch");
+  args[0] = Val_int(pdf);
+  args[1] = caml_copy_string(key);
+  args[2] = caml_copy_string(newvalue);
+  args[3] = caml_copy_string(searchterm);
+  out_v = caml_callbackN(fn_v, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void *cpdf_getDictEntries(int pdf, char* key, int *retlen)
+{
+  CAMLparam0();
+  CAMLlocal4(fn, bytestream, pdf_v, key_v);
+  fn = *caml_named_value("getDictEntries");
+  pdf_v = Val_int(pdf);
+  key_v = caml_copy_string(key);
+  bytestream = caml_callback2(fn, pdf_v, key_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Bigarray_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "getDictEntries: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Data_bigarray_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
 }
 
 void cpdf_removeClipping(int pdf, int range) {
