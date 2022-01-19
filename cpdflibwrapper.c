@@ -1144,8 +1144,7 @@ void cpdf_endSetBookmarkInfo(int pdf) {
   CAMLreturn0;
 }
 
-void *cpdf_getBookmarksJSON(int pdf, int *retlen)
-{
+void *cpdf_getBookmarksJSON(int pdf, int *retlen) {
   CAMLparam0();
   CAMLlocal3(fn, bytestream, pdf_v);
   fn = *caml_named_value("getBookmarksJSON");
@@ -1167,8 +1166,7 @@ void *cpdf_getBookmarksJSON(int pdf, int *retlen)
   CAMLreturnT(void *, memory);
 }
 
-void cpdf_setBookmarksJSON(int pdf, void *data, int len)
-{
+void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   CAMLparam0();
   CAMLlocal4(unit, bytestream, fn, valpdf);
   bytestream =
@@ -3119,8 +3117,7 @@ void cpdf_removeDictEntry(int pdf, char *str) {
   CAMLreturn0;
 }
 
-void cpdf_removeDictEntrySearch(int pdf, char *str, char *searchterm)
-{
+void cpdf_removeDictEntrySearch(int pdf, char *str, char *searchterm) {
   CAMLparam0();
   CAMLlocal5(fn, inpdf, instr, insearchterm, out);
   fn = *caml_named_value("removeDictEntrySearch");
@@ -3132,8 +3129,7 @@ void cpdf_removeDictEntrySearch(int pdf, char *str, char *searchterm)
   CAMLreturn0;
 }
 
-void cpdf_replaceDictEntry(int pdf, char *key, char *newvalue)
-{
+void cpdf_replaceDictEntry(int pdf, char *key, char *newvalue) {
   CAMLparam0();
   CAMLlocal5(fn, inpdf, inkey, innewvalue, out);
   fn = *caml_named_value("replaceDictEntry");
@@ -3145,8 +3141,8 @@ void cpdf_replaceDictEntry(int pdf, char *key, char *newvalue)
   CAMLreturn0;
 }
 
-void cpdf_replaceDictEntrySearch(int pdf, char *key, char *newvalue, char *searchterm)
-{
+void cpdf_replaceDictEntrySearch(int pdf, char *key, char *newvalue,
+                                 char *searchterm) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 4);
@@ -3160,8 +3156,7 @@ void cpdf_replaceDictEntrySearch(int pdf, char *key, char *newvalue, char *searc
   CAMLreturn0;
 }
 
-void *cpdf_getDictEntries(int pdf, char* key, int *retlen)
-{
+void *cpdf_getDictEntries(int pdf, char *key, int *retlen) {
   CAMLparam0();
   CAMLlocal4(fn, bytestream, pdf_v, key_v);
   fn = *caml_named_value("getDictEntries");

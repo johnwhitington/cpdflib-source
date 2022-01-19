@@ -1076,7 +1076,7 @@ int main(int argc, char **argv) {
   cpdf_toFile(misc15, "testoutputs/17replacedictentrysearch.pdf", false, false);
   printf("---cpdf_getDictEntries()\n");
   int gedlength;
-  void * geddata = cpdf_getDictEntries(misc16, "/Producer", &gedlength);
+  void *geddata = cpdf_getDictEntries(misc16, "/Producer", &gedlength);
   printf("length of entries data = %i\n", gedlength);
   prerr();
   printf("---cpdf_removeClipping()\n");
