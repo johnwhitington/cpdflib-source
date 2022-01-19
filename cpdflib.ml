@@ -278,7 +278,9 @@ let new_pdf pdf =
 let lookup_pdf i =
   (*Printf.printf "lookup_pdf : %i PDFs in table" (Hashtbl.length pdfs);
   flprint "\n";*)
-  match Hashtbl.find pdfs i with (_, (pdf, _), _) -> pdf
+  match Hashtbl.find pdfs i with
+  | (_, (pdf, _), _) -> pdf
+  | exception Not_found -> failwith "lookup_pdf: not found"
 
 let number_of_encryption_status = function
   | NotEncrypted -> 0
@@ -2731,7 +2733,7 @@ let _ = Callback.register "removeId" removeId
 let _ = Callback.register "removeDictEntry" removeDictEntry
 let _ = Callback.register "removeDictEntrySearch" removeDictEntrySearch
 let _ = Callback.register "replaceDictEntry" replaceDictEntry
-let _ = Callback.register "replaceDictEntrySearch" removeDictEntry
+let _ = Callback.register "replaceDictEntrySearch" replaceDictEntrySearch
 let _ = Callback.register "getDictEntries" getDictEntries
 let _ = Callback.register "removeClipping" removeClipping
 
