@@ -102,7 +102,7 @@ int cpdf_fromMemory(void *data, int len, char *userpw) {
   CAMLparam0();
   CAMLlocal4(pdf_v, bytestream, fn, userpw_v);
   bytestream =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("fromMemory");
   userpw_v = caml_copy_string(userpw);
   pdf_v = caml_callback2(fn, bytestream, userpw_v);
@@ -114,7 +114,7 @@ int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   CAMLparam0();
   CAMLlocal4(pdf_v, bytestream, fn, userpw_v);
   bytestream =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("fromMemoryLazy");
   userpw_v = caml_copy_string(userpw);
   pdf_v = caml_callback2(fn, bytestream, userpw_v);
@@ -494,12 +494,12 @@ void *cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen) {
   bytestream = caml_callback3(fn, pdf_v, linearize_v, make_id_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "toMemory: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -1152,12 +1152,12 @@ void *cpdf_getBookmarksJSON(int pdf, int *retlen) {
   bytestream = caml_callback(fn, pdf_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "getBookmarksJSON: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -1170,7 +1170,7 @@ void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   CAMLparam0();
   CAMLlocal4(unit, bytestream, fn, valpdf);
   bytestream =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("setBookmarksJSON");
   valpdf = Val_int(pdf);
   unit = caml_callback2(fn, valpdf, bytestream);
@@ -1512,12 +1512,12 @@ void *cpdf_annotationsJSON(int pdf, int *retlen) {
   bytestream = caml_callback(fn, pdf_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "annotationsJSON: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -2329,7 +2329,7 @@ void cpdf_setMetadataFromByteArray(int pdf, void *data, int len) {
   CAMLparam0();
   CAMLlocal4(unit, bytestream, setMetadataFromByteArray, valpdf);
   bytestream =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   setMetadataFromByteArray = *caml_named_value("setMetadataFromByteArray");
   valpdf = Val_int(pdf);
   unit = caml_callback2(setMetadataFromByteArray, valpdf, bytestream);
@@ -2345,12 +2345,12 @@ void *cpdf_getMetadata(int pdf, int *retlen) {
   bytestream = caml_callback(fn, pdf_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "getMetadata: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -2525,7 +2525,7 @@ void cpdf_attachFileFromMemory(void *data, int length, char *filename,
   CAMLlocal5(unit_v, fn, filename_v, bytestream_v, pdf_v);
   fn = *caml_named_value("attachFileFromMemory");
   bytestream_v =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, length);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, length);
   filename_v = caml_copy_string(filename);
   pdf_v = Val_int(pdf);
   unit_v = caml_callback3(fn, bytestream_v, filename_v, pdf_v);
@@ -2541,7 +2541,7 @@ void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
   CAMLlocalN(args, 4);
   fn = *caml_named_value("attachFileToPageFromMemory");
   args[0] = bytestream_v =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, length);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, length);
   args[1] = filename_v = caml_copy_string(filename);
   args[2] = Val_int(pdf);
   args[3] = Val_int(page);
@@ -2608,12 +2608,12 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
   bytestream = caml_callback(fn, serial_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "getAttachmentData: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -2843,12 +2843,12 @@ void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data,
   bytestream = caml_callbackN(fn, 4, args);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "outputJSONMemory: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
@@ -2871,7 +2871,7 @@ int cpdf_fromJSONMemory(void *data, int len) {
   CAMLparam0();
   CAMLlocal3(pdf_v, bytestream, fn);
   bytestream =
-      alloc_bigarray_dims(BIGARRAY_UINT8 | BIGARRAY_C_LAYOUT, 1, data, len);
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("fromJSONMemory");
   pdf_v = caml_callback(fn, bytestream);
   updateLastError();
@@ -3165,12 +3165,12 @@ void *cpdf_getDictEntries(int pdf, char *key, int *retlen) {
   bytestream = caml_callback2(fn, pdf_v, key_v);
   updateLastError();
   char *memory = NULL;
-  int size = Bigarray_val(bytestream)->dim[0];
+  int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
   if (memory == NULL && size > 0) fprintf(stderr, "getDictEntries: failed");
   if (size > 0) {
     int x;
-    char *indata = Data_bigarray_val(bytestream);
+    char *indata = Caml_ba_data_val(bytestream);
     for (x = 0; x < size; x++) {
       memory[x] = indata[x];
     };
