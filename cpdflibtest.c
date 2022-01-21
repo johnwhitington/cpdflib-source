@@ -977,6 +977,7 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(ocg);
 
   /* CHAPTER 17. Creating New PDFs */
+  printf("***** CHAPTER 17. Creating New PDFs\n");
   printf("---cpdf_blankDocument()\n");
   int blankdoc = cpdf_blankDocument(100.0, 200.0, 20);
   prerr();
@@ -999,7 +1000,7 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(blanksized);
 
   /* CHAPTER 18. Miscellaneous */
-  printf("***** CHAPTER 17. Miscellaneous\n");
+  printf("***** CHAPTER 18. Miscellaneous\n");
   int misc = cpdf_fromFile("cpdflibmanual.pdf", "");
   int misc2 = cpdf_fromFile("cpdflibmanual.pdf", "");
   int misc3 = cpdf_fromFile("cpdflibmanual.pdf", "");
