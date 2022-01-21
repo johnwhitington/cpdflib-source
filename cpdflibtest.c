@@ -576,7 +576,7 @@ int main(int argc, char **argv) {
   printf("***** CHAPTER 10. Annotations\n");
   int annot = cpdf_fromFile("cpdflibmanual.pdf", "");
   int annotlength;
-  printf("---cpdf_annotatonsJSON()\n");
+  printf("---cpdf_annotationsJSON()\n");
   void *data = cpdf_annotationsJSON(annot, &annotlength);
   printf("Contains %i bytes of data\n", annotlength);
   cpdf_deletePdf(annot);
