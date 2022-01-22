@@ -11,7 +11,7 @@ let setSlow () = fast := false
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
 
-let version = "2.4"
+let version = "2.5"
 
 let _ = Callback.register "version" version
 
