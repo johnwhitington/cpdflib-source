@@ -3189,14 +3189,3 @@ void cpdf_removeClipping(int pdf, int range) {
   updateLastError();
   CAMLreturn0;
 }
-
-/* CHAPTER X. Internal or undocumented */
-void cpdf_setDemo(int b) {
-  CAMLparam0();
-  CAMLlocal3(setdemo_v, int_v, result_v);
-  setdemo_v = *caml_named_value("setdemo");
-  int_v = Val_int(b);
-  result_v = caml_callback(setdemo_v, int_v);
-  updateLastError();
-  CAMLreturn0;
-}

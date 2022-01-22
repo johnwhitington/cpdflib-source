@@ -1102,13 +1102,7 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc16);
   cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
-
-  /* CHAPTER X. Undocumented or Internal */
-  printf("***** CHAPTER X. Undocumented or Internal\n");
-  printf("---cpdf_setDemo()\n");
-  cpdf_setDemo(true);
-  prerr();
-
+  
   /* cpdf_onExit(); */
   return 0;
 }

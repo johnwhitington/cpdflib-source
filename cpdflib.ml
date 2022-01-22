@@ -17,12 +17,6 @@ let _ = Callback.register "version" version
 
 let ppstub f n p = (f n p, n, Pdftransform.i_matrix)
 
-(* No longer does anything *)
-let setdemo b =
-  if !dbg then flprint "Cpdflib.setdemo\n"
-
-let _ = Callback.register "setdemo" setdemo
-
 (* Error Handling *)
 exception Cpdflib_error of string
 

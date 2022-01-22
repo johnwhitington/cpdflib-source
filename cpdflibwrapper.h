@@ -1432,8 +1432,3 @@ void *cpdf_getDictEntries(int, const char[], int *retlen);
  * given range.
  */
 void cpdf_removeClipping(int, int);
-
-/* CHAPTER X. Internal or undocumented. */
-
-/* Internal. Used for demo versions of the commercial version of cpdflib. */
-void cpdf_setDemo(int);

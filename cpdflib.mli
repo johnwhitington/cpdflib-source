@@ -271,6 +271,3 @@ val replaceDictEntry : pdf -> string -> string -> unit
 val replaceDictEntrySearch : pdf -> string -> string -> string -> unit
 val getDictEntries : pdf -> string -> Pdfio.rawbytes
 val removeClipping : pdf -> range -> unit
-
-(* CHAPTER X. Undocumented or internal *)
-val setdemo : bool -> unit
