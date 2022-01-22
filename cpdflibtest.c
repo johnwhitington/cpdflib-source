@@ -1102,7 +1102,7 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc16);
   cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
-  
+
   /* cpdf_onExit(); */
   return 0;
 }
