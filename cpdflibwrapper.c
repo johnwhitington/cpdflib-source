@@ -1321,7 +1321,7 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
                         double fontsize) {
   CAMLparam0();
   char s[] = "";
-  cpdf_addText(1,
+  cpdf_addText(0,
                /* Do not collect metrics, but add text */
                pdf, range, text, pos, 1.0,
                /* Normal line spacing */
