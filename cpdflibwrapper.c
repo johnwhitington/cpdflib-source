@@ -13,6 +13,17 @@ void cpdf_startup(char **argv) {
 int cpdf_lastError = 0;
 char *cpdf_lastErrorString = "";
 
+/* For .NET, which can't access data in DLLs, only functions. */
+int cpdf_fLastError(void)
+{
+  return cpdf_lastError;
+}
+
+char *cpdf_fLastErrorString(void)
+{
+  return cpdf_lastErrorString;
+}
+
 /*
  * Get the latest error from OCaml and replicate it here in C. Also update
  * the lastErrorString, This function is not exposed in the interface
