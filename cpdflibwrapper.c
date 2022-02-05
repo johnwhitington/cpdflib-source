@@ -1389,14 +1389,14 @@ int cpdf_textWidth(int font, char *text) {
   CAMLreturnT(int, Int_val(out_v));
 }
 
-void cpdf_addContent(char *s, int before, int range, int pdf) {
+void cpdf_addContent(char *s, int before, int pdf, int range) {
   CAMLparam0();
   CAMLlocal2(fn, out);
   CAMLlocalN(args, 4);
   args[0] = caml_copy_string(s);
   args[1] = Val_int(before);
-  args[2] = Val_int(range);
-  args[3] = Val_int(pdf);
+  args[2] = Val_int(pdf);
+  args[3] = Val_int(range);
   fn = *caml_named_value("addContent");
   out = caml_callbackN(fn, 4, args);
   CAMLreturn0;

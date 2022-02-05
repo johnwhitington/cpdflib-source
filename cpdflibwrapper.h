@@ -816,7 +816,7 @@ void cpdf_removeText(int, int);
  */
 int cpdf_textWidth(enum cpdf_font, const char[]);
 
-/* cpdf_addContent(content, before, range, pdf) adds page content before (if
+/* cpdf_addContent(content, before, pdf, range) adds page content before (if
  * true) or after (if false) the existing content to pages in the given range
  * in the given PDF. */
 void cpdf_addContent(const char[], int, int, int);
