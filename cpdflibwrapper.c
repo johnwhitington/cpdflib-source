@@ -24,6 +24,12 @@ char *cpdf_fLastErrorString(void)
   return cpdf_lastErrorString;
 }
 
+/* For .NET, expose the C free function */
+void cpdf_free(void* ptr)
+{
+  free(ptr);
+}
+
 /*
  * Get the latest error from OCaml and replicate it here in C. Also update
  * the lastErrorString, This function is not exposed in the interface
