@@ -540,7 +540,7 @@ void cpdf_trimMarks(int, int);
 /* cpdf_showBoxes(pdf, range) shows the boxes on the given pages, for debug. */
 void cpdf_showBoxes(int, int);
 
-/* cpdf_hardBox make a given box a 'hard box' i.e clips it explicitly. */
+/* cpdf_hardBox makes a given box a 'hard box' i.e clips it explicitly. */
 void cpdf_hardBox(int, int, const char[]);
 
 /* CHAPTER 4. Encryption */
