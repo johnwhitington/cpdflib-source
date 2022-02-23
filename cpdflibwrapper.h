@@ -403,7 +403,7 @@ void cpdf_scalePages(int, int, double, double);
 /*
  * cpdf_scaleToFit(pdf, range, width, height, scale) scales the content to fit
  * new page dimensions (width x height) multiplied by scale (typically 1.0).
- * Other boxed (crop etc. are altered as appropriate)
+ * Other boxes (crop etc. are altered as appropriate)
  */
 void cpdf_scaleToFit(int, int, double, double, double);
 
@@ -522,13 +522,13 @@ void cpdf_crop(int, int, double, double, double, double);
 /* cpdf_removeCrop(pdf, range) removes any crop box from pages in the range. */
 void cpdf_removeCrop(int, int);
 
-/* cpdf_removeTrim(pdf, range) removes any crop box from pages in the range. */
+/* cpdf_removeTrim(pdf, range) removes any trim box from pages in the range. */
 void cpdf_removeTrim(int, int);
 
-/* cpdf_removeArt(pdf, range) removes any crop box from pages in the range. */
+/* cpdf_removeArt(pdf, range) removes any art box from pages in the range. */
 void cpdf_removeArt(int, int);
 
-/* cpdf_removeBleed(pdf, range) removes any crop box from pages in the range. */
+/* cpdf_removeBleed(pdf, range) removes any bleed box from pages in the range. */
 void cpdf_removeBleed(int, int);
 
 /*
