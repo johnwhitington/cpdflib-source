@@ -1221,13 +1221,13 @@ void cpdf_attachFileFromMemory(void *, int, const char[], int);
  */
 void cpdf_attachFileToPageFromMemory(void *, int, const char[], int, int);
 
-/* Remove all page- and document-level attachments from a document */
+/* Remove all page- and document-level attachments from a document. */
 void cpdf_removeAttachedFiles(int);
 
 /*
  * List information about attachments. Call cpdf_startGetAttachments(pdf)
  * first, then cpdf_numberGetAttachments to find out how many there are. Then
- * cpdf_getAttachmentName to return each one 0...(n - 1). Finally, call
+ * cpdf_getAttachmentName etc. to return each one 0...(n - 1). Finally, call
  * cpdf_endGetAttachments to clean up.
  */
 void cpdf_startGetAttachments(int);
@@ -1306,13 +1306,13 @@ void cpdf_copyFont(int, int, int, int, const char[]);
 void cpdf_outputJSON(const char[], int, int, int, int);
 
 /* cpdf_outputJSONMemory(parse_content, no_stream_data, pdf, &length) is like
- * outputJSON, but it write to a buffer in memory. The length is filled in. */
+ * outputJSON, but it writes to a buffer in memory. The length is filled in. */
 void *cpdf_outputJSONMemory(int, int, int, int, int *);
 
-/* Load a PDF from a JSON file given its filename */
+/* Load a PDF from a JSON file given its filename. */
 int cpdf_fromJSON(const char[]);
 
-/* Load a PDF from a JSON file in memory, given the buffer and its length */
+/* Load a PDF from a JSON file in memory, given the buffer and its length. */
 int cpdf_fromJSONMemory(void *, int);
 
 /* CHAPTER 16. Optional Content Groups */
