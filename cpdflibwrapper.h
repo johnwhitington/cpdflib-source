@@ -1366,7 +1366,7 @@ int cpdf_textToPDFPaper(int, int, double, const char[]);
 
 /*
  * cpdf_draft(pdf, range, boxes) removes images on the given pages, replacing
- * them with crossed boxes if 'boxes' is true
+ * them with crossed boxes if 'boxes' is true.
  */
 void cpdf_draft(int, int, int);
 
@@ -1415,7 +1415,7 @@ void cpdf_removeDictEntry(int, const char[]);
 void cpdf_removeDictEntrySearch(int, const char[], const char[]);
 
 /* cpdf_replaceDictEntry(pdf, key, newvalue) replaces the value associated with
- * the given key */
+ * the given key. */
 void cpdf_replaceDictEntry(int, const char[], const char[]);
 
 /* cpdf_replaceDictEntry(pdf, key, newvalue, searchterm) replaces the value
