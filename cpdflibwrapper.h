@@ -567,7 +567,7 @@ void cpdf_squeezeInMemory(int);
 /* CHAPTER 6. Bookmarks */
 
 /*
- * cpdf_startGetBookmarkInfo(pdf) start the bookmark retrieval process for a
+ * cpdf_startGetBookmarkInfo(pdf) starts the bookmark retrieval process for a
  * given PDF.
  */
 void cpdf_startGetBookmarkInfo(int);
@@ -683,7 +683,7 @@ void cpdf_stampExtended(int, int, int, int, int, struct cpdf_position, int);
  */
 int cpdf_combinePages(int, int);
 
-/* Adding text. Adds text to a PDF, if the characters exist in the font. */
+/* Adding text. */
 
 /*
  * Special codes
