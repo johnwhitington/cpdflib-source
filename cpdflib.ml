@@ -1977,7 +1977,7 @@ let setMetadataFromFile pdf filename =
 let setMetadataFromByteArray pdf bytes =
   if !dbg then flprint "Cpdflib.setMetadataFromByteArray\n";
   try
-    update_pdf (Cpdfmetadata.set_metadata_from_bytes false (Pdfio.bytes_of_raw bytes) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfmetadata.set_metadata_from_bytes false (Pdfio.copybytes (Pdfio.bytes_of_raw bytes)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataFromByteArray" e; err_unit
 
