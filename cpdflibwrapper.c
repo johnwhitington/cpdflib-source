@@ -13,7 +13,7 @@ void cpdf_startup(char **argv) {
 int cpdf_lastError = 0;
 char *cpdf_lastErrorString = "";
 
-/* For .NET, which can't access data in DLLs, only functions. */
+/* For .NET and Java, which can't access data in DLLs, only functions. */
 int cpdf_fLastError(void)
 {
   return cpdf_lastError;
