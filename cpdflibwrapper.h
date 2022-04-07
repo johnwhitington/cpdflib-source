@@ -32,6 +32,11 @@ void cpdf_setSlow();
 extern int cpdf_lastError;
 extern char *cpdf_lastErrorString;
 
+/* In some contexts, for example, .NET or JNI, constants in DLLs can be
+ * difficult or impossible to access. we provide functions in addition. */
+int cpdf_fLastError(void);
+char *cpdf_fLastErrorString(void);
+
 /* cpdf_clearError clears the current error state. */
 void cpdf_clearError(void);
 
