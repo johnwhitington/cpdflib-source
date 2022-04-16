@@ -1,4 +1,8 @@
-v2.5.1 (February 2021)
+v2.5.2 (April 2022)
+
+o Tiny changes to allow Java API to work
+
+v2.5.1 (February 2022)
 
 o Support for .NET version by adding cpdf_fLastError and cpdf_fLastErrorString
 o Fix addTextSimple (metrics was stuck on true)
