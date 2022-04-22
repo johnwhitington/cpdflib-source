@@ -173,8 +173,6 @@ val setCreatorXMP : pdf -> string -> unit
 val setProducerXMP : pdf -> string -> unit
 val setCreationDateXMP : pdf -> string -> unit
 val setModificationDateXMP : pdf -> string -> unit
-val markTrapped : pdf -> unit
-val markUntrapped : pdf -> unit
 val hasBox : pdf -> int -> string -> bool
 val getPageRotation : pdf -> int -> int
 val setPageLayout : pdf -> int -> unit
