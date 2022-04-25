@@ -37,6 +37,7 @@ val fromFileLazy : string -> string -> pdf
 val fromMemory : Pdfio.rawbytes -> string -> int
 val fromMemoryLazy : Pdfio.rawbytes -> string -> int
 val toFile : pdf -> string -> bool -> bool -> unit
+val toFileExt : pdf -> string -> bool -> bool -> bool -> bool -> bool -> unit
 val toFileMemory : int -> bool -> 'a -> Pdfio.rawbytes
 val pages : pdf -> int
 val pagesFast : string -> string -> int
