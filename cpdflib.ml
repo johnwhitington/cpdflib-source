@@ -639,7 +639,7 @@ let toFileEncrypted_inner
     in
       Pdfwrite.pdf_to_file_options linearize (Some encryption) makeid pdf filename
   with
-    e -> handle_error "toFileEncrypted" e; err_unit
+    e -> handle_error "toFileEncryptedInner" e; err_unit
 
 let toFileEncrypted i mthd perms user owner linearize makeid filename =
   try
@@ -709,7 +709,7 @@ let toFileEncryptedExt
         ~preserve_objstm ~generate_objstm ~compress_objstm
         (lookup_pdf i) mthd perms user owner linearize makeid filename
   with
-    e -> handle_error "toFileEncrypted" e; err_unit
+    e -> handle_error "toFileEncryptedExt" e; err_unit
 
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
