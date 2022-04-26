@@ -13,6 +13,7 @@ val deletePdf : int -> unit
 type range = int
 val parsePagespec : pdf -> string -> range
 val stringOfPagespec : pdf -> range -> string
+val validatePagespec : string -> bool
 val ptOfCm : float -> float
 val ptOfMm : float -> float
 val ptOfIn : float -> float
