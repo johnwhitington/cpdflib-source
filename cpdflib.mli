@@ -93,6 +93,7 @@ val showBoxes : pdf -> range -> unit
 (* CHAPTER 5. Compression *)
 val compress : pdf -> unit
 val decompress : pdf -> unit
+val squeezeInMemory : pdf -> unit
 
 (* CHAPTER 6. Bookmarks *)
 val startGetBookmarkInfo : pdf -> unit
