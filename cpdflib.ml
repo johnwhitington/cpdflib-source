@@ -2606,7 +2606,7 @@ let textToPDF width height font fontsize filename =
 let textToPDFPaper papersize font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDFPaper\n";
   try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (contents_of_file filename)) with
-    e -> handle_error "textToPDF" e; err_int
+    e -> handle_error "textToPDFPaper" e; err_int
 
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
