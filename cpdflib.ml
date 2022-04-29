@@ -821,7 +821,7 @@ let read_position f1 f2 = function
   | 10 -> Cpdfposition.Right f1
   | 11 -> Cpdfposition.Diagonal
   | 12 -> Cpdfposition.ReverseDiagonal
-  | _ -> failwith "read_position"
+  | n -> failwith ("read_position" ^ string_of_int n)
 
 let bl0_1, bl0_2, bl0_3 = 0., 0., 7
 
