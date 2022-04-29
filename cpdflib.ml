@@ -2615,6 +2615,7 @@ let _ = Callback.register "textToPDFPaper" textToPDFPaper
 
 (* CHAPTER 18. Miscellaneous *)
 let draft pdf range boxes =
+  (*Printf.printf "**********draft pdf = %i, range = %i, boxes = %b\n" pdf range boxes; *)
   if !dbg then flprint "Cpdflib.draft\n";
   try
     update_pdf (Cpdfdraft.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -2686,6 +2687,7 @@ let removeDictEntrySearch pdf key searchterm =
 
 let replaceDictEntry pdf key value =
   if !dbg then flprint "Cpdf.replaceDictEntry\n";
+  (*Printf.printf "******************ocaml: replaceDictEntry (%s) (%s)\n" key value; *)
   try
     Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) None
   with
