@@ -141,6 +141,7 @@ val annotationsJSON : pdf -> Pdfio.rawbytes
 
 (* CHAPTER 11. Document Information and Metadata *)
 val getVersion : pdf -> int
+val getMajorVersion : pdf -> int
 val isLinearized : string -> bool
 val getTitle : pdf -> string
 val getAuthor : pdf -> string
@@ -170,6 +171,8 @@ val setCreationDate : pdf -> string -> unit
 val setModificationDate : pdf -> string -> unit
 val markTrapped : pdf -> unit
 val markUntrapped : pdf -> unit
+val markTrappedXMP : pdf -> unit
+val markUntrappedXMP : pdf -> unit
 val setTitleXMP : pdf -> string -> unit
 val setAuthorXMP : pdf -> string -> unit
 val setSubjectXMP : pdf -> string -> unit
@@ -208,6 +211,8 @@ val getPageLabelStringForPage : pdf -> int -> string
 (* CHAPTER 12. File Attachments *)
 val attachFile : string -> pdf -> unit
 val attachFileToPage : string -> pdf -> int -> unit
+val attachFileFromMemory : Pdfio.rawbytes -> string -> int -> unit
+val attachFileToPageFromMemory : Pdfio.rawbytes -> string -> int -> int -> unit
 val removeAttachedFiles : pdf -> unit
 val startGetAttachments : pdf -> unit
 val endGetAttachments : unit -> unit
