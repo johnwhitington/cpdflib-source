@@ -1068,11 +1068,11 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_toFile(misc13, "testoutputs/17removedictentrysearch.pdf", false, false);
   printf("---cpdf_replaceDictEntry()\n");
-  cpdf_replaceDictEntry(misc14, "/Producer", "{\"I\" : 1}");
+  cpdf_replaceDictEntry(misc14, "/Producer", "\"NewProducer\"");
   prerr();
   cpdf_toFile(misc14, "testoutputs/17replacedictentry.pdf", false, false);
   printf("---cpdf_replaceDictEntrySearch()\n");
-  cpdf_replaceDictEntrySearch(misc15, "/Producer", "1", "2");
+  cpdf_replaceDictEntrySearch(misc15, "/Producer", "\"NewProducer2\"", "\"pdfTeX-1.40.22\"");
   prerr();
   cpdf_toFile(misc15, "testoutputs/17replacedictentrysearch.pdf", false, false);
   printf("---cpdf_getDictEntries()\n");
