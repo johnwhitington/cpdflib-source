@@ -10,6 +10,7 @@ val enumeratePDFsKey : int -> int
 val enumeratePDFsInfo : int -> string
 val endEnumeratePDFs : unit -> unit
 val deletePdf : int -> unit
+val onexit : unit -> unit
 type range = int
 val parsePagespec : pdf -> string -> range
 val stringOfPagespec : pdf -> range -> string
