@@ -5,8 +5,13 @@ let dbg = ref false
 
 let fast = ref false
 
-let setFast () = fast := true
-let setSlow () = fast := false
+let setFast () =
+  if !dbg then flprint "Cpdflib.setFast\n";
+  fast := true
+
+let setSlow () =
+  if !dbg then flprint "Cpdflib.setSlow\n";
+  fast := false
 
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
@@ -2696,12 +2701,19 @@ let replaceDictEntry pdf key value =
 let replaceDictEntrySearch pdf key value searchterm =
   if !dbg then flprint "Cpdf.replaceDictEntrySearch\n";
   try
-    Cpdftweak.replace_dict_entry
-      (lookup_pdf pdf)
-      key
-      (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value))
-      (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
-  with
+    let a = lookup_pdf pdf in
+    flprint "AAAA";
+    let b = (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) in
+    flprint "BBBB";
+    let c = (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm))) in
+    flprint "CCCC";
+
+    let r = 
+    Cpdftweak.replace_dict_entry a key b c 
+    in
+      flprint "DDDD";
+      r
+        with
     e -> handle_error "replaceDictEntrySearch" e; err_unit
 
 let getDictEntries pdf key =
