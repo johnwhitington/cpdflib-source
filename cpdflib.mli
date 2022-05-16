@@ -1,3 +1,8 @@
+(* CHAPTER 0. Preliminaries *)
+val getLastError : unit -> int
+val getLastErrorString : unit -> string
+val clearError : unit -> unit
+
 (* CHAPTER 1. Basics *)
 type pdf
 
@@ -10,6 +15,7 @@ val enumeratePDFsKey : int -> int
 val enumeratePDFsInfo : int -> string
 val endEnumeratePDFs : unit -> unit
 val deletePdf : int -> unit
+val deleterange : int -> unit
 val onexit : unit -> unit
 type range = int
 val parsePagespec : pdf -> string -> range
