@@ -57,8 +57,8 @@ val decryptPdf : pdf -> string -> unit
 val decryptPdfOwner : pdf -> string -> unit
 val toFileEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> string -> unit
 val toFileEncryptedExt : pdf -> int -> int array -> string -> string -> bool -> bool -> bool -> bool -> bool -> string -> unit
-(*val toMemoryEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> Pdfio.rawbytes
-val toMemoryEncryptedExt : pdf -> int -> int array -> string -> string -> bool -> bool -> bool -> bool -> bool -> Pdfio.rawbytes*)
+val toFileMemoryEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> Pdfio.rawbytes
+val toFileMemoryEncryptedExt : pdf -> int -> int array -> string -> string -> bool -> bool -> bool -> bool -> bool -> Pdfio.rawbytes
 val hasPermission : pdf -> int -> bool
 val encryptionKind : pdf -> int
 

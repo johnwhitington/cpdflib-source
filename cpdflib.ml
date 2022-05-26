@@ -670,75 +670,98 @@ let toFileEncrypted_inner
   with
     e -> handle_error "toFileEncryptedInner" e; err_unit
 
-let toFileEncrypted i mthd perms user owner linearize makeid filename =
+let toFileMemoryEncrypted_inner
+  ?(preserve_objstm = true) ?(generate_objstm = false)
+  ?(compress_objstm = true)
+  pdf encryption_method permissions owner_password user_password linearize makeid o
+=
+  if !dbg then flprint "Cpdflib.toFileEncrypted\n";
   try
-    let mthd =
-      match mthd with
-      | 0 -> Pdfwrite.PDF40bit
-      | 1 -> Pdfwrite.PDF128bit
-      | 2 -> Pdfwrite.AES128bit false
-      | 3 -> Pdfwrite.AES128bit true
-      | 4 -> Pdfwrite.AES256bit false
-      | 5 -> Pdfwrite.AES256bit true
-      | 6 -> Pdfwrite.AES256bitISO false
-      | 7 -> Pdfwrite.AES256bitISO true
-      | _ -> failwith "bad encryption method"
-    and perms =
-      Array.map
-        (function
-         | 0 -> Pdfcrypt.NoEdit
-         | 1 -> Pdfcrypt.NoPrint
-         | 2 -> Pdfcrypt.NoCopy
-         | 3 -> Pdfcrypt.NoAnnot
-         | 4 -> Pdfcrypt.NoForms
-         | 5 -> Pdfcrypt.NoExtract
-         | 6 -> Pdfcrypt.NoAssemble
-         | 7 -> Pdfcrypt.NoHqPrint
-         | _ -> failwith "unknown permission")
-        perms
+    let encryption =
+      {Pdfwrite.encryption_method = encryption_method;
+       Pdfwrite.permissions = Array.to_list permissions;
+       Pdfwrite.owner_password = owner_password;
+       Pdfwrite.user_password = user_password}
     in
-      Pdf.remove_unreferenced (lookup_pdf i);
-      toFileEncrypted_inner
-        (lookup_pdf i) mthd perms user owner linearize makeid filename
+      Pdfwrite.pdf_to_output linearize (Some encryption) makeid pdf o
+  with
+    e -> handle_error "toFileEncryptedInner" e; err_unit
+
+let read_method = function
+  | 0 -> Pdfwrite.PDF40bit
+  | 1 -> Pdfwrite.PDF128bit
+  | 2 -> Pdfwrite.AES128bit false
+  | 3 -> Pdfwrite.AES128bit true
+  | 4 -> Pdfwrite.AES256bit false
+  | 5 -> Pdfwrite.AES256bit true
+  | 6 -> Pdfwrite.AES256bitISO false
+  | 7 -> Pdfwrite.AES256bitISO true
+  | _ -> failwith "bad encryption method"
+
+let read_perms perms =
+  Array.map
+    (function
+     | 0 -> Pdfcrypt.NoEdit
+     | 1 -> Pdfcrypt.NoPrint
+     | 2 -> Pdfcrypt.NoCopy
+     | 3 -> Pdfcrypt.NoAnnot
+     | 4 -> Pdfcrypt.NoForms
+     | 5 -> Pdfcrypt.NoExtract
+     | 6 -> Pdfcrypt.NoAssemble
+     | 7 -> Pdfcrypt.NoHqPrint
+     | _ -> failwith "unknown permission")
+    perms
+
+let toFileEncrypted i mthd perms user owner linearize makeid filename =
+  if !dbg then flprint "Cpdflib.toFileEncrypted\n";
+  try
+    Pdf.remove_unreferenced (lookup_pdf i);
+    toFileEncrypted_inner
+      (lookup_pdf i) (read_method mthd) (read_perms perms) user owner linearize makeid filename
   with
     e -> handle_error "toFileEncrypted" e; err_unit
+
+let toFileMemoryEncrypted i mthd perms user owner linearize makeid =
+  if !dbg then flprint "Cpdflib.toFileMemoryEncrypted\n";
+  try
+    let pdf = lookup_pdf i in
+      Pdf.remove_unreferenced pdf;
+      let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
+        toFileMemoryEncrypted_inner
+          (lookup_pdf i) (read_method mthd) (read_perms perms) user owner linearize makeid o;
+        Pdfio.raw_of_bytes
+          (Pdfio.extract_bytes_from_input_output o bytes)
+  with
+    e -> handle_error "toFileMemory" e; err_data
 
 let toFileEncryptedExt
   i mthd perms user owner linearize makeid
   preserve_objstm generate_objstm compress_objstm filename
 =
   try
-    let mthd =
-      match mthd with
-      | 0 -> Pdfwrite.PDF40bit
-      | 1 -> Pdfwrite.PDF128bit
-      | 2 -> Pdfwrite.AES128bit false
-      | 3 -> Pdfwrite.AES128bit true
-      | 4 -> Pdfwrite.AES256bit false
-      | 5 -> Pdfwrite.AES256bit true
-      | 6 -> Pdfwrite.AES256bitISO false
-      | 7 -> Pdfwrite.AES256bitISO true
-      | _ -> failwith "bad encryption method"
-    and perms =
-      Array.map
-        (function
-         | 0 -> Pdfcrypt.NoEdit
-         | 1 -> Pdfcrypt.NoPrint
-         | 2 -> Pdfcrypt.NoCopy
-         | 3 -> Pdfcrypt.NoAnnot
-         | 4 -> Pdfcrypt.NoForms
-         | 5 -> Pdfcrypt.NoExtract
-         | 6 -> Pdfcrypt.NoAssemble
-         | 7 -> Pdfcrypt.NoHqPrint
-         | _ -> failwith "unknown permission")
-        perms
-    in
-      Pdf.remove_unreferenced (lookup_pdf i);
-      toFileEncrypted_inner
-        ~preserve_objstm ~generate_objstm ~compress_objstm
-        (lookup_pdf i) mthd perms user owner linearize makeid filename
+    Pdf.remove_unreferenced (lookup_pdf i);
+    toFileEncrypted_inner
+      ~preserve_objstm ~generate_objstm ~compress_objstm
+      (lookup_pdf i) (read_method mthd) (read_perms perms) user owner linearize makeid filename
   with
     e -> handle_error "toFileEncryptedExt" e; err_unit
+
+let toFileMemoryEncryptedExt
+  i mthd perms user owner linearize makeid 
+  preserve_objstm generate_objstm compress_objstm
+=
+  if !dbg then flprint "Cpdflib.toFileMemoryEncrypted\n";
+  try
+    let pdf = lookup_pdf i in
+      Pdf.remove_unreferenced pdf;
+      let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
+        toFileMemoryEncrypted_inner
+          ~preserve_objstm ~generate_objstm ~compress_objstm
+          (lookup_pdf i) (read_method mthd) (read_perms perms) user owner linearize makeid o;
+        Pdfio.raw_of_bytes
+          (Pdfio.extract_bytes_from_input_output o bytes)
+  with
+    e -> handle_error "toFileMemory" e; err_data
 
 let _ = Callback.register "fromFile" fromFile
 let _ = Callback.register "fromFileLazy" fromFileLazy
@@ -749,9 +772,12 @@ let _ = Callback.register "decryptPdfOwner" decryptPdfOwner
 let _ = Callback.register "toFile" toFile
 let _ = Callback.register "toFileExt" toFileExt
 let _ = Callback.register "toFileMemory" toFileMemory
-
+let _ = Callback.register "toFileMemoryExt" toFileMemoryExt
+let _ = Callback.register "toFileMemoryEncrypted" toFileMemoryEncrypted
+let _ = Callback.register "toFileMemoryEncryptedExt" toFileMemoryEncryptedExt
 let _ = Callback.register "pages" pages
 let _ = Callback.register "pagesFast" pagesFast
+let _ = Callback.register "pagesFastMemory" pagesFastMemory
 let _ = Callback.register "all" all
 let _ = Callback.register "isEncrypted" isEncrypted
 let _ = Callback.register "toFileEncrypted" toFileEncrypted
