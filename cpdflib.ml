@@ -512,21 +512,36 @@ let toFileExt
         ~preserve_objstm ~generate_objstm ~compress_objstm
         linearize None make_id pdf filename
   with
-    e -> handle_error "toFileOptions" e; err_unit
+    e -> handle_error "toFileExt" e; err_unit
 
-(* Write to memory. FIXME make_id does nothing *)
+(* Write to memory. *)
 let toFileMemory pdf linearize make_id =
   if !dbg then flprint "Cpdflib.toFileMemory\n";
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
       let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-        Pdfwrite.pdf_to_output linearize None pdf o;
+        Pdfwrite.pdf_to_output linearize None make_id pdf o;
         Pdfio.raw_of_bytes
           (Pdfio.extract_bytes_from_input_output o bytes)
   with
     e -> handle_error "toFileMemory" e; err_data
 
+let toFileMemoryExt
+  pdf linearize make_id preserve_objstm generate_objstm compress_objstm
+=
+  if !dbg then flprint "Cpdflib.toFileOptions\n";
+  try
+    let pdf = lookup_pdf pdf in
+      Pdf.remove_unreferenced pdf;
+      let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
+        Pdfwrite.pdf_to_output
+          ~preserve_objstm ~generate_objstm ~compress_objstm
+          linearize None make_id pdf o;
+        Pdfio.raw_of_bytes
+          (Pdfio.extract_bytes_from_input_output o bytes)
+  with
+    e -> handle_error "toFileMemoryExt" e; err_data
 
 (* Number of pages in a PDF *)
 let pages i =
@@ -546,6 +561,15 @@ let pagesFast password filename =
       let r = endpage_io (Pdfio.input_of_channel channel) (Some password) None in
         close_in channel;
         r
+  with
+    e -> handle_error "pagesfast" e; err_int
+
+let pagesFastMemory password rawbytes =
+  if !dbg then flprint "Cpdflib.pagesFastMemory\n";
+  try
+    let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes) in
+    let r = endpage_io i (Some password) None in
+      r
   with
     e -> handle_error "pagesfast" e; err_int
 

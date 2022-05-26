@@ -46,15 +46,19 @@ val fromMemory : Pdfio.rawbytes -> string -> int
 val fromMemoryLazy : Pdfio.rawbytes -> string -> int
 val toFile : pdf -> string -> bool -> bool -> unit
 val toFileExt : pdf -> string -> bool -> bool -> bool -> bool -> bool -> unit
-val toFileMemory : int -> bool -> 'a -> Pdfio.rawbytes
+val toFileMemory : pdf -> bool -> bool -> Pdfio.rawbytes
+val toFileMemoryExt : pdf -> bool -> bool -> bool -> bool -> bool -> Pdfio.rawbytes
 val pages : pdf -> int
 val pagesFast : string -> string -> int
+val pagesFastMemory : string -> Pdfio.rawbytes -> int
 val all : pdf -> int
 val isEncrypted : pdf -> bool
 val decryptPdf : pdf -> string -> unit
 val decryptPdfOwner : pdf -> string -> unit
 val toFileEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> string -> unit
 val toFileEncryptedExt : pdf -> int -> int array -> string -> string -> bool -> bool -> bool -> bool -> bool -> string -> unit
+(*val toMemoryEncrypted : pdf -> int -> int array -> string -> string -> bool -> bool -> Pdfio.rawbytes
+val toMemoryEncryptedExt : pdf -> int -> int array -> string -> string -> bool -> bool -> bool -> bool -> bool -> Pdfio.rawbytes*)
 val hasPermission : pdf -> int -> bool
 val encryptionKind : pdf -> int
 
