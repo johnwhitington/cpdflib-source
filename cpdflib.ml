@@ -1543,7 +1543,15 @@ let isLinearized string =
   with
     e -> handle_error "isLinearized" e; err_bool
 
+let isLinearizedMemory rawbytes =
+  if !dbg then flprint "Cpdflib.isLinearizedMemory\n";
+  try
+    Pdfread.is_linearized (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes))
+  with
+    e -> handle_error "isLinearizedMemory" e; err_bool
+
 let _ = Callback.register "isLinearized" isLinearized
+let _ = Callback.register "isLinearizedMemory" isLinearizedMemory
 
 let fontinfo = ref [||]
 
@@ -2663,10 +2671,22 @@ let textToPDFPaper papersize font fontsize filename =
   try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDFPaper" e; err_int
 
+let textToPDFMemory width height font fontsize rawbytes =
+  if !dbg then flprint "Cpdflib.textToPDFMemory\n";
+  try new_pdf (Cpdftexttopdf.typeset ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height) ~font ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
+    e -> handle_error "textToPDFMemory" e; err_int
+
+let textToPDFPaperMemory papersize font fontsize rawbytes =
+  if !dbg then flprint "Cpdflib.textToPDFPaperMemory\n";
+  try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
+    e -> handle_error "textToPDFPaperMemory" e; err_int
+
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
 let _ = Callback.register "textToPDF" textToPDF
 let _ = Callback.register "textToPDFPaper" textToPDFPaper
+let _ = Callback.register "textToPDFMemory" textToPDFMemory
+let _ = Callback.register "textToPDFPaperMemory" textToPDFPaperMemory
 
 (* CHAPTER 18. Miscellaneous *)
 let draft pdf range boxes =

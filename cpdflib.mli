@@ -154,6 +154,7 @@ val annotationsJSON : pdf -> Pdfio.rawbytes
 val getVersion : pdf -> int
 val getMajorVersion : pdf -> int
 val isLinearized : string -> bool
+val isLinearizedMemory : Pdfio.rawbytes -> bool
 val getTitle : pdf -> string
 val getAuthor : pdf -> string
 val getSubject : pdf -> string
@@ -272,6 +273,8 @@ val blankDocument : float -> float -> int -> pdf
 val blankDocumentPaper : int -> int -> pdf
 val textToPDF : float -> float -> Pdftext.standard_font -> float -> string -> pdf
 val textToPDFPaper : int -> Pdftext.standard_font -> float -> string -> pdf
+val textToPDFMemory : float -> float -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
+val textToPDFPaperMemory : int -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
 
 (* CHAPTER 18. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
