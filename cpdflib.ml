@@ -475,7 +475,11 @@ decryption not required at any time. *)
 let fromFileLazy filename userpw =
   if !dbg then flprint "Cpdflib.fromFileLazy\n";
   try
-    new_pdf (Pdfread.pdf_of_channel_lazy (Some userpw) None (open_in_bin filename))
+    let fh = open_in_bin filename in
+      try
+        new_pdf (Pdfread.pdf_of_channel_lazy (Some userpw) None fh)
+      with
+        _ -> close_in fh; raise Exit
   with
     e -> handle_error "fromFileLazy" e; err_int
 
@@ -558,9 +562,12 @@ let pagesFast password filename =
   if !dbg then flprint "Cpdflib.pagesFast\n";
   try
     let channel = open_in_bin filename in
-      let r = endpage_io (Pdfio.input_of_channel channel) (Some password) None in
-        close_in channel;
-        r
+      try
+        let r = endpage_io (Pdfio.input_of_channel channel) (Some password) None in
+          close_in channel;
+          r
+      with
+        _ -> close_in channel; raise Exit
   with
     e -> handle_error "pagesfast" e; err_int
 
@@ -1539,7 +1546,11 @@ let _ = Callback.register "annotationsJSON" annotationsJSON
 let isLinearized string =
   if !dbg then flprint "Cpdflib.isLinearized\n";
   try
-    Pdfread.is_linearized (Pdfio.input_of_channel (open_in_bin string))
+    let ch = open_in_bin string in
+      try
+        Pdfread.is_linearized (Pdfio.input_of_channel ch)
+      with
+        _ -> close_in ch; raise Exit
   with
     e -> handle_error "isLinearized" e; err_bool
 
@@ -2578,9 +2589,12 @@ let fromJSON filename =
   if !dbg then flprint "Cpdflib.fromJSON";
   try
     let fh = open_in_bin filename in
-      let pdf = Cpdfjson.of_input (Pdfio.input_of_channel fh) in
-      close_in fh;
-      new_pdf pdf
+      try
+        let pdf = Cpdfjson.of_input (Pdfio.input_of_channel fh) in
+          close_in fh;
+          new_pdf pdf
+      with
+        _ -> close_in fh; raise Exit
   with
     e -> handle_error "fromJSON" e; err_int
 
@@ -2663,9 +2677,12 @@ let blankDocumentPaper papersize pages =
 
 let contents_of_file filename =
   let ch = open_in_bin filename in
-    let s = really_input_string ch (in_channel_length ch) in
-      close_in ch;
-      (Pdfio.bytes_of_string s)
+    try
+      let s = really_input_string ch (in_channel_length ch) in
+        close_in ch;
+        (Pdfio.bytes_of_string s)
+    with
+      _ -> close_in ch; raise Exit
 
 let textToPDF width height font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDF\n";
