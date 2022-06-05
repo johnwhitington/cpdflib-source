@@ -2521,7 +2521,13 @@ let endGetPageLabels () =
   if !dbg then flprint "Cpdflib.endGetPageLabels\n";
   labels := [||]
 
-let getPageLabelStringForPage pdf n = ""
+let getPageLabelStringForPage pdf n =
+  if !dbg then flprint "Cpdflib.getPageLabelStringForPage\n";
+  let labels = Pdfpagelabels.read (lookup_pdf pdf) in
+  try
+    begin try Pdfpagelabels.pagelabeltext_of_pagenumber n labels with Not_found -> "" end
+  with
+    e -> handle_error "getPageLabelStringForPage\n" e; err_string
 
 let _ = Callback.register "addPageLabels" addPageLabels
 let _ = Callback.register "removePageLabels" removePageLabels
