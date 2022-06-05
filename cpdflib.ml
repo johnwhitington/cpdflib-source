@@ -267,18 +267,18 @@ let pdfs = null_hash ()
 
 let pdfkey = ref 0
 
-let new_pdf pdf =
+let new_pdf ?channel pdf =
   incr pdfkey;
   (*Printf.printf "new_pdf %i" !pdfkey;
   flprint "\n";*)
-  Hashtbl.add pdfs !pdfkey ([], (pdf, initial_encryption_status pdf), []);
+  Hashtbl.add pdfs !pdfkey ([], (pdf, initial_encryption_status pdf, channel), []);
   !pdfkey
 
 let lookup_pdf i =
   (*Printf.printf "lookup_pdf : %i PDFs in table" (Hashtbl.length pdfs);
   flprint "\n";*)
   match Hashtbl.find pdfs i with
-  | (_, (pdf, _), _) -> pdf
+  | (_, (pdf, _, _), _) -> pdf
   | exception Not_found -> failwith "lookup_pdf: not found"
 
 let number_of_encryption_status = function
@@ -288,7 +288,7 @@ let number_of_encryption_status = function
   | WasDecryptedWithOwner _ -> 3
 
 let lookup_pdf_status i =
-  match Hashtbl.find pdfs i with (_, (_, enc), _) -> enc
+  match Hashtbl.find pdfs i with (_, (_, enc, _), _) -> enc
 
 let lookupPdfStatus i =
   if !dbg then flprint "Cpdflib.lookupPdfStatus\n";
@@ -298,15 +298,23 @@ let lookupPdfStatus i =
     e -> handle_error "lookupPdfStatus" e; err_int
 
 let set_pdf_status i status =
-  let l, (pdf, _), r = Hashtbl.find pdfs i in
-    Hashtbl.replace pdfs i (l, (pdf, status), r) 
+  let l, (pdf, _, channel), r = Hashtbl.find pdfs i in
+    Hashtbl.replace pdfs i (l, (pdf, status, channel), r) 
 
 let delete_pdf i =
+  begin try
+    begin match Hashtbl.find pdfs i with
+    | (_, (_, _, Some ch), _) -> close_in ch
+    | _ -> ()
+    end
+  with
+    _ -> ()
+  end;
   Hashtbl.remove pdfs i
 
 let replace_pdf i pdf =
-  let l, (_, enc), r = Hashtbl.find pdfs i in
-    Hashtbl.replace pdfs i (l, (pdf, enc), r)
+  let l, (_, enc, channel), r = Hashtbl.find pdfs i in
+    Hashtbl.replace pdfs i (l, (pdf, enc, None), r)
 
 let enumeratePairs = ref []
 
@@ -477,7 +485,7 @@ let fromFileLazy filename userpw =
   try
     let fh = open_in_bin filename in
       try
-        new_pdf (Pdfread.pdf_of_channel_lazy (Some userpw) None fh)
+        new_pdf ~channel:fh (Pdfread.pdf_of_channel_lazy (Some userpw) None fh)
       with
         _ -> close_in fh; raise Exit
   with
