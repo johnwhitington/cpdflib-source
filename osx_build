@@ -127,5 +127,7 @@ echo ***BUILD the other examples
 cd examples
 $ocamlfind ocamlc -c merge.c
 $link -o merge$exesuffix merge.o $staticlinkflags
+$ocamlfind ocamlc -c rde.c
+$link -o rde$exesuffix rde.o $staticlinkflags
 $ocamlfind ocamlc -c squeeze.c
 $link -o squeeze$exesuffix squeeze.o $staticlinkflags

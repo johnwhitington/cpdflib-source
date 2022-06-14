@@ -2102,7 +2102,7 @@ let getPageRotation pdf pagenumber =
   if !dbg then flprint "Cpdflib.getPageRotation\n";
   try 
     let pages = Pdfpage.pages_of_pagetree (lookup_pdf pdf) in
-      Pdfpage.int_of_rotation (List.nth pages pagenumber).Pdfpage.rotate
+      Pdfpage.int_of_rotation (List.nth pages (pagenumber - 1)).Pdfpage.rotate
   with
     e -> handle_error "getPageRotation" e; err_int
 
