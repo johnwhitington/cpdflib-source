@@ -1344,29 +1344,31 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
                /* Normal line spacing */
                0,
                /* Starting bates number */
-               font, fontsize, 0,
+               font, fontsize,
+               0,
                /* r = 0 */
                0,
                /* g = 0 */
                0,
                /* b = 0 */
-               1,
+               0,
                /* Text not underneath */
-               1,
+               0,
                /* Text not relative to crop box */
-               1,
+               0,
                /* Text not outlined */
                1.0,
                /* Opaque */
-               cpdf_leftJustify, 1,
+               cpdf_leftJustify,
+               0,
                /* baseline not midline */
-               1,
+               0,
                /* baseline not topline */
                s,
                /* file name */
                0.0,
                /* line width */
-               1
+               0
                /* don't embed fonts */
   );
   CAMLreturn0;
