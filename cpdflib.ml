@@ -2803,18 +2803,10 @@ let replaceDictEntrySearch pdf key value searchterm =
   if !dbg then flprint "Cpdf.replaceDictEntrySearch\n";
   try
     let a = lookup_pdf pdf in
-    flprint "AAAA";
     let b = (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) in
-    flprint "BBBB";
     let c = (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm))) in
-    flprint "CCCC";
-
-    let r = 
     Cpdftweak.replace_dict_entry a key b c 
-    in
-      flprint "DDDD";
-      r
-        with
+  with
     e -> handle_error "replaceDictEntrySearch" e; err_unit
 
 let getDictEntries pdf key =
