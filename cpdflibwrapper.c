@@ -507,7 +507,7 @@ void *cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen) {
   fn = *caml_named_value("toFileMemory");
   pdf_v = Val_int(pdf);
   linearize_v = Val_bool(linearize);
-  make_id_v = Val_bool(make_id_v);
+  make_id_v = Val_bool(make_id);
   bytestream = caml_callback3(fn, pdf_v, linearize_v, make_id_v);
   updateLastError();
   char *memory = NULL;
