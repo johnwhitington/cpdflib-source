@@ -2126,19 +2126,19 @@ let getPageInfo pdf =
          let m_minx, m_miny, m_maxx, m_maxy =
            match page.Pdfpage.mediabox with
            | Pdf.Array [a; b; c; d] ->
-               Pdf.getnum a, Pdf.getnum b, Pdf.getnum c, Pdf.getnum d
+               Pdf.getnum pdf a, Pdf.getnum pdf b, Pdf.getnum pdf c, Pdf.getnum pdf d
            | _ -> 0., 0., 0., 0.
          in
            let c_minx, c_miny, c_maxx, c_maxy =
              match Pdf.lookup_direct pdf "/CropBox" page.Pdfpage.rest with
              | Some (Pdf.Array [a; b; c; d]) ->
-                 Pdf.getnum a, Pdf.getnum b, Pdf.getnum c, Pdf.getnum d
+                 Pdf.getnum pdf a, Pdf.getnum pdf b, Pdf.getnum pdf c, Pdf.getnum pdf d
              | _ -> m_minx, m_miny, m_maxx, m_maxy
            in
              let getotherbox name =
                match Pdf.lookup_direct pdf name page.Pdfpage.rest with
                  | Some (Pdf.Array [a; b; c; d]) ->
-                     Pdf.getnum a, Pdf.getnum b, Pdf.getnum c, Pdf.getnum d
+                     Pdf.getnum pdf a, Pdf.getnum pdf b, Pdf.getnum pdf c, Pdf.getnum pdf d
                  | _ -> c_minx, c_miny, c_maxx, c_maxy
              in
              let t_minx, t_miny, t_maxx, t_maxy = getotherbox "/TrimBox"
