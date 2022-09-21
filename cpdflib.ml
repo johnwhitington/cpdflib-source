@@ -1264,7 +1264,10 @@ let setBookmarksJSON pdf data =
 let tableOfContents pdf font fontsize title bookmark =
   if !dbg then flprint "Cpdflib.tableOfContents\n";
   try
-    update_pdf (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf
+      (Cpdftoc.typeset_table_of_contents ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+                                         ~fontsize ~title ~bookmark (lookup_pdf pdf))
+      (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
 
@@ -1343,55 +1346,17 @@ let blue = {r = 0.; g = 0.; b = 1.}
 
 let rgb r g b = {r = r; g = g; b = b}
 
-let addTextHowMany () =
-  if !dbg then flprint "Cpdflib.addTextHowMany\n";
-  try Cpdfaddtext.metrics_howmany () with
-    e -> handle_error "addTextHowMany" e; err_int
-
-let addTextReturnText i =
-  if !dbg then flprint "Cpdflib.addTextReturnText\n";
-  try Cpdfaddtext.metrics_text i with
-    e -> handle_error "addTextReturnText" e; err_string
-
-let addTextReturnX i =
-  if !dbg then flprint "Cpdflib.addTextReturnX\n";
-  try Cpdfaddtext.metrics_x i with
-    e -> handle_error "addTextReturnX" e; err_float
-
-let addTextReturnY i =
-  if !dbg then flprint "Cpdflib.addTextReturnY\n";
-  try Cpdfaddtext.metrics_y i with
-    e -> handle_error "addTextReturnY" e; err_float
-
-let addTextReturnRotation i =
-  if !dbg then flprint "Cpdflib.addTextReturnRotation\n";
-  try Cpdfaddtext.metrics_rot i with
-    e -> handle_error "addTextReturnRotation" e; err_float
-
-let addTextReturnBaselineAdjustment () =
-  if !dbg then flprint "Cpdflib.addTextReturnBaselineAdjustment\n";
-  try Cpdfaddtext.metrics_baseline_adjustment () with
-    e -> handle_error "addTextReturnBaselineAdjustment" e; err_float
-
-let _ = Callback.register "addTextHowMany" addTextHowMany
-let _ = Callback.register "addTextReturnText" addTextReturnText
-let _ = Callback.register "addTextReturnX" addTextReturnX
-let _ = Callback.register "addTextReturnY" addTextReturnY
-let _ = Callback.register "addTextReturnRotation" addTextReturnRotation
-let _ = Callback.register "addTextReturnBaselineAdjustment" addTextReturnBaselineAdjustment
-
 let addText_inner
   metrics pdf range text position linespacing bates font fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
   let fontname = Pdftext.string_of_standard_font font in
     let newpdf =
       (Cpdfaddtext.addtexts
-         metrics (* metrics *)
          linewidth (* linewidth *)
          outline (* outline *)
          !fast (* fast *)
          fontname (* font name *)
-         (Some font) (* font *)
+         (Some (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) (* font *)
          embed_fonts (* embed fonts *)
          bates (* bates number *)
          None (* pad bates *)
@@ -1402,7 +1367,7 @@ let addText_inner
          underneath (* underneath *)
          text (* text *)
          (Array.to_list range) (* page range *)
-         Cpdfposition.Horizontal (* orientation *)
+         () (* orientation *)
          cropbox (* relative to cropbox *)
          opacity (* opacity *)
          justification (* justification *)
@@ -2694,22 +2659,43 @@ let contents_of_file filename =
 
 let textToPDF width height font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDF\n";
-  try new_pdf (Cpdftexttopdf.typeset ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height) ~font ~fontsize (contents_of_file filename)) with
+  try
+    new_pdf
+      (Cpdftexttopdf.typeset
+         ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
+         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~fontsize (contents_of_file filename))
+  with
     e -> handle_error "textToPDF" e; err_int
 
 let textToPDFPaper papersize font fontsize filename =
   if !dbg then flprint "Cpdflib.textToPDFPaper\n";
-  try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (contents_of_file filename)) with
+  try
+    new_pdf
+      (Cpdftexttopdf.typeset
+         ~papersize:(papersize_of_int papersize)
+         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDFPaper" e; err_int
 
 let textToPDFMemory width height font fontsize rawbytes =
   if !dbg then flprint "Cpdflib.textToPDFMemory\n";
-  try new_pdf (Cpdftexttopdf.typeset ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height) ~font ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
+  try
+    new_pdf
+      (Cpdftexttopdf.typeset
+         ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
+         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFMemory" e; err_int
 
 let textToPDFPaperMemory papersize font fontsize rawbytes =
   if !dbg then flprint "Cpdflib.textToPDFPaperMemory\n";
-  try new_pdf (Cpdftexttopdf.typeset ~papersize:(papersize_of_int papersize) ~font ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
+  try
+    new_pdf
+      (Cpdftexttopdf.typeset
+         ~papersize:(papersize_of_int papersize)
+         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFPaperMemory" e; err_int
 
 let _ = Callback.register "blankDocument" blankDocument
