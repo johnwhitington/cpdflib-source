@@ -1264,10 +1264,10 @@ let setBookmarksJSON pdf data =
 let tableOfContents pdf font fontsize title bookmark =
   if !dbg then flprint "Cpdflib.tableOfContents\n";
   try
-    update_pdf
-      (Cpdftoc.typeset_table_of_contents ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
-                                         ~fontsize ~title ~bookmark (lookup_pdf pdf))
-      (lookup_pdf pdf)
+    let font = Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) in
+      update_pdf
+        (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf))
+        (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
 
@@ -1326,7 +1326,7 @@ let combinePages pdf pdf2 =
 let removeText pdf range =
   if !dbg then flprint "Cpdflib.removeText\n";
   try
-    update_pdf (Cpdfaddtext.removetext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfremovetext.removetext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeText" e; err_unit
 
@@ -1356,8 +1356,7 @@ let addText_inner
          outline (* outline *)
          !fast (* fast *)
          fontname (* font name *)
-         (Some (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) (* font *)
-         embed_fonts (* embed fonts *)
+         (Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding)))) (* font *)
          bates (* bates number *)
          None (* pad bates *)
          (Cpdfaddtext.RGB (color.r, color.g, color.b)) (* colour *)
@@ -1367,7 +1366,6 @@ let addText_inner
          underneath (* underneath *)
          text (* text *)
          (Array.to_list range) (* page range *)
-         () (* orientation *)
          cropbox (* relative to cropbox *)
          opacity (* opacity *)
          justification (* justification *)
@@ -1375,6 +1373,7 @@ let addText_inner
          topline (* relative to topline *)
          filename (* file name *)
          None (* extract text font size *)
+         ~raw:false (* FIXME *)
          "0 0" (* shift *)
          pdf (* pdf *))
     in
@@ -2541,7 +2540,7 @@ let outputJSON filename parse_content no_stream_data decompress_streams pdf =
   try
     let handle = open_out_bin filename in
       Cpdfjson.to_output
-        (Pdfio.output_of_channel handle) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
+        (Pdfio.output_of_channel handle) ~utf8:false (* FIXME *) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       close_out handle
   with
     e -> handle_error "outputJSON" e; err_unit
@@ -2550,7 +2549,7 @@ let outputJSONMemory parse_content no_stream_data decompress_streams pdf =
   if !dbg then flprint "Cpdflib.toJSONMemory\n";
   try
     let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-      Cpdfjson.to_output o ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
+      Cpdfjson.to_output o ~utf8:false (* FIXME *) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       Pdfio.raw_of_bytes (Pdfio.extract_bytes_from_input_output o bytes)
   with
     e -> handle_error "outputJSONMemory" e; err_data
@@ -2663,7 +2662,7 @@ let textToPDF width height font fontsize filename =
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
-         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
          ~fontsize (contents_of_file filename))
   with
     e -> handle_error "textToPDF" e; err_int
@@ -2674,7 +2673,7 @@ let textToPDFPaper papersize font fontsize filename =
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)
-         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
          ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDFPaper" e; err_int
 
@@ -2684,7 +2683,7 @@ let textToPDFMemory width height font fontsize rawbytes =
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
-         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFMemory" e; err_int
 
@@ -2694,7 +2693,7 @@ let textToPDFPaperMemory papersize font fontsize rawbytes =
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)
-         ~font:(Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))
+         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFPaperMemory" e; err_int
 
@@ -2752,7 +2751,7 @@ let copyId from_pdf to_pdf =
 let removeAllText pdf range =
   if !dbg then flprint "Cpdflib.removeAllText\n";
   try
-    update_pdf (Cpdfaddtext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
+    update_pdf (Cpdfremovetext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeAllText" e; err_unit
 
@@ -2798,7 +2797,7 @@ let replaceDictEntrySearch pdf key value searchterm =
 let getDictEntries pdf key =
   if !dbg then flprint "Cpdflib.getDictEntries\n";
   try
-    Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries (lookup_pdf pdf) key)
+    Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries ~utf8:false (* FIXME *) (lookup_pdf pdf) key)
   with
     e -> handle_error "getDictEntries" e; err_data
 
