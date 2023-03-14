@@ -13,7 +13,7 @@ echo ***EXTRACTING INFORMATION
 ranlib=`ocamlc -config 2>/dev/null | grep ranlib | sed 's/ranlib: //'`
 echo ranlib: $ranlib
 cc=`ocamlc -config 2>/dev/null | grep native_c_compiler | sed 's/native_c_compiler: //'`
-echo native_c_compiler: $native_c_compiler
+echo native_c_compiler: $cc
 native_c_libraries=`ocamlc -config 2>/dev/null | grep native_c_libraries | sed 's/native_c_libraries: //'`
 echo native_c_libraries: $native_c_libraries
 libdir=`ocamlc -where`
