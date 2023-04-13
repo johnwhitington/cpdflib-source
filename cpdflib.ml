@@ -81,38 +81,33 @@ let err_box = (0., 0., 0., 0.)
 (* Basic Types and Functions *)
 let ptOfCm x =
   if !dbg then flprint "Cpdflib.ptOfCm\n";
-  try Pdfunits.convert 0. Pdfunits.Centimetre Pdfunits.PdfPoint x with e ->
+  try Pdfunits.points x Pdfunits.Centimetre with e ->
     handle_error "ptOfCm" e; err_float
 
 let ptOfMm x =
   if !dbg then flprint "Cpdflib.ptOfMm\n";
-  try Pdfunits.convert 0. Pdfunits.Millimetre Pdfunits.PdfPoint x with e ->
+  try Pdfunits.points x Pdfunits.Millimetre with e ->
     handle_error "ptOfMm" e; err_float
 
 let ptOfIn x =
   if !dbg then flprint "Cpdflib.ptOfIn\n";
-  try Pdfunits.convert 0. Pdfunits.Inch Pdfunits.PdfPoint x with e ->
+  try Pdfunits.points x Pdfunits.Inch with e ->
     handle_error "ptOfIn" e; err_float
 
 let cmOfPt x =
   if !dbg then flprint "Cpdflib.cmOfPt\n";
-  try Pdfunits.convert 0. Pdfunits.PdfPoint Pdfunits.Centimetre x with e ->
+  try Pdfunits.centimetres x Pdfunits.PdfPoint with e ->
     handle_error "cmOfPt" e; err_float
 
 let mmOfPt x =
   if !dbg then flprint "Cpdflib.mmOfPt\n";
-  try Pdfunits.convert 0. Pdfunits.PdfPoint Pdfunits.Millimetre x with e ->
+  try Pdfunits.millimetres x Pdfunits.PdfPoint with e ->
     handle_error "mmOfPt" e; err_float
 
 let inOfPt x =
   if !dbg then flprint "Cpdflib.inOfPt\n";
-  try Pdfunits.convert 0. Pdfunits.PdfPoint Pdfunits.Inch x with e ->
+  try Pdfunits.inches x Pdfunits.PdfPoint with e ->
     handle_error "inOfPt" e; err_float
-
-let ptOfCm x =
-  if !dbg then flprint "Cpdflib.ptOfCm\n";
-  try Pdfunits.convert 0. Pdfunits.Centimetre Pdfunits.PdfPoint x with e ->
-    handle_error "ptOfCm" e; err_float
 
 let _ = Callback.register "ptOfCm" ptOfCm
 let _ = Callback.register "ptOfMm" ptOfMm
@@ -882,12 +877,12 @@ let read_position f1 f2 = function
   | 1 -> Cpdfposition.PosLeft (f1, f2)
   | 2 -> Cpdfposition.PosRight (f1, f2)
   | 3 -> Cpdfposition.Top f1
-  | 4 -> Cpdfposition.TopLeft f1
-  | 5 -> Cpdfposition.TopRight f1
+  | 4 -> Cpdfposition.TopLeft (f1, f1)
+  | 5 -> Cpdfposition.TopRight (f1, f1)
   | 6 -> Cpdfposition.Left f1
-  | 7 -> Cpdfposition.BottomLeft f1
+  | 7 -> Cpdfposition.BottomLeft (f1, f1)
   | 8 -> Cpdfposition.Bottom f1
-  | 9 -> Cpdfposition.BottomRight f1
+  | 9 -> Cpdfposition.BottomRight (f1, f1)
   | 10 -> Cpdfposition.Right f1
   | 11 -> Cpdfposition.Diagonal
   | 12 -> Cpdfposition.ReverseDiagonal
@@ -916,16 +911,15 @@ let scaleToFit i range w h scale =
   if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdfpage.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdfpage.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft (0., 0.)) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFit" e; err_unit
 
 let points_of_papersize p =
-  let u = Pdfpaper.unit p
-  and w = Pdfpaper.width p
-  and h = Pdfpaper.height p in
-    let c  = Pdfunits.convert 0. u Pdfunits.PdfPoint in
-      c w, c h
+  let u = Pdfpaper.unit p in
+  let w = Pdfunits.points (Pdfpaper.width p) u in
+  let h = Pdfunits.points (Pdfpaper.height p) u in
+    w, h
 
 let papersize_of_int = function
   | 0 -> Pdfpaper.a0
@@ -951,7 +945,7 @@ let scaleToFitPaper i range papersize scale =
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
-      update_pdf (Cpdfpage.scale_to_fit_pdf (Cpdfposition.BottomLeft 0.) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+      update_pdf (Cpdfpage.scale_to_fit_pdf (Cpdfposition.BottomLeft (0., 0.)) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "scaleToFitPaper" e; err_unit
 
