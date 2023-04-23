@@ -504,7 +504,7 @@ let toFile pdf filename linearize make_id =
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
-      Pdfwrite.pdf_to_file_options linearize None make_id pdf filename
+      Pdfwrite.pdf_to_file_options None make_id pdf filename
   with
     e -> handle_error "toFile" e; err_unit
 
@@ -517,7 +517,7 @@ let toFileExt
       Pdf.remove_unreferenced pdf;
       Pdfwrite.pdf_to_file_options
         ~preserve_objstm ~generate_objstm ~compress_objstm
-        linearize None make_id pdf filename
+        None make_id pdf filename
   with
     e -> handle_error "toFileExt" e; err_unit
 
@@ -528,7 +528,7 @@ let toFileMemory pdf linearize make_id =
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
       let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-        Pdfwrite.pdf_to_output linearize None make_id pdf o;
+        Pdfwrite.pdf_to_output None make_id pdf o;
         Pdfio.raw_of_bytes
           (Pdfio.extract_bytes_from_input_output o bytes)
   with
@@ -544,7 +544,7 @@ let toFileMemoryExt
       let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
         Pdfwrite.pdf_to_output
           ~preserve_objstm ~generate_objstm ~compress_objstm
-          linearize None make_id pdf o;
+          None make_id pdf o;
         Pdfio.raw_of_bytes
           (Pdfio.extract_bytes_from_input_output o bytes)
   with
@@ -676,7 +676,7 @@ let toFileEncrypted_inner
        Pdfwrite.owner_password = owner_password;
        Pdfwrite.user_password = user_password}
     in
-      Pdfwrite.pdf_to_file_options linearize (Some encryption) makeid pdf filename
+      Pdfwrite.pdf_to_file_options (Some encryption) makeid pdf filename
   with
     e -> handle_error "toFileEncryptedInner" e; err_unit
 
@@ -693,7 +693,7 @@ let toFileMemoryEncrypted_inner
        Pdfwrite.owner_password = owner_password;
        Pdfwrite.user_password = user_password}
     in
-      Pdfwrite.pdf_to_output linearize (Some encryption) makeid pdf o
+      Pdfwrite.pdf_to_output (Some encryption) makeid pdf o
   with
     e -> handle_error "toFileEncryptedInner" e; err_unit
 
@@ -1501,7 +1501,7 @@ let _ = Callback.register "padMultipleBefore" padMultipleBefore
 let annotationsJSON pdf =
   if !dbg then flprint "Cpdflib.annotationsJSON\n";
   try
-    Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf))
+    Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf) (Array.to_list (lookup_range (all pdf))))
   with
     e -> handle_error "annotationsJSON" e; err_data
 
