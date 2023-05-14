@@ -1,3 +1,7 @@
+v2.6
+
+o Merge Linux / Mac build processes into one Unix one
+
 v2.5.2 (April 2022)
 
 o Tiny changes to allow Java API to work

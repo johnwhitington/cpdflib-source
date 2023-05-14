@@ -1,5 +1,6 @@
 #!/bin/bash
-#Add -x in line above to print commands
+#linux: n.b we had to copy libasmrun_pic.a to libasmrun.a here
+#linux: n.b run shared with LD_LIBRARY_PATH=. ./cpdflibtest-shared
 cfiles=(cpdflibwrapper)
 finalcfile=cpdflibtest
 libname=cpdf
@@ -109,8 +110,18 @@ echo "STATIC LINKER FLAGS: "$staticlinkflags
 echo "STATIC LINKER CALL: "$link -o $finalcfile$exesuffix ${finalcfile}.o $staticlinkflags
 $link -o $finalcfile$exesuffix ${finalcfile}.o $staticlinkflags
 
+#Build the other examples
+echo ***BUILD the other examples
+cd examples
+$ocamlfind ocamlc -c merge.c
+$link -o merge$exesuffix merge.o $staticlinkflags
+$ocamlfind ocamlc -c squeeze.c
+$link -o squeeze$exesuffix squeeze.o $staticlinkflags
+cd ..
+
 #Using -output-obj for dynamic library (moved here so static build doesn't pick it up!)
 echo ***MAKING DYNAMIC LIBRARY WITH -output-obj
+echo $ocamlfind ocamlopt $camlpackages -output-obj -o lib${libname}.$dllname $wrapperos $camllibs $camlpackcmxa $camlcmx
 $ocamlfind ocamlopt $camlpackages -output-obj -o lib${libname}.$dllname $wrapperos $camllibs $camlpackcmxa $camlcmx
 
 #Build an example executable, with dynamic .so
@@ -121,13 +132,3 @@ echo "DYNAMIC LINKER: "$link
 echo "DYNAMIC LINKER FLAGS: "$linkflags
 echo "DYNAMIC LINKER CALL: "$link -o $finalcfile-withshared$exesuffix ${finalcfile}.o $linkflags
 $link -o $finalcfile-withshared$exesuffix ${finalcfile}.o $linkflags
-
-#Build the other examples
-echo ***BUILD the other examples
-cd examples
-$ocamlfind ocamlc -c merge.c
-$link -o merge$exesuffix merge.o $staticlinkflags
-$ocamlfind ocamlc -c rde.c
-$link -o rde$exesuffix rde.o $staticlinkflags
-$ocamlfind ocamlc -c squeeze.c
-$link -o squeeze$exesuffix squeeze.o $staticlinkflags
