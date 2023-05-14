@@ -14,21 +14,12 @@ int cpdf_lastError = 0;
 char *cpdf_lastErrorString = "";
 
 /* For .NET and Java, which can't access data in DLLs, only functions. */
-int cpdf_fLastError(void)
-{
-  return cpdf_lastError;
-}
+int cpdf_fLastError(void) { return cpdf_lastError; }
 
-char *cpdf_fLastErrorString(void)
-{
-  return cpdf_lastErrorString;
-}
+char *cpdf_fLastErrorString(void) { return cpdf_lastErrorString; }
 
 /* For .NET, expose the C free function */
-void cpdf_free(void* ptr)
-{
-  free(ptr);
-}
+void cpdf_free(void *ptr) { free(ptr); }
 
 /*
  * Get the latest error from OCaml and replicate it here in C. Also update
@@ -1344,8 +1335,7 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
                /* Normal line spacing */
                0,
                /* Starting bates number */
-               font, fontsize,
-               0,
+               font, fontsize, 0,
                /* r = 0 */
                0,
                /* g = 0 */
@@ -1359,8 +1349,7 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
                /* Text not outlined */
                1.0,
                /* Opaque */
-               cpdf_leftJustify,
-               0,
+               cpdf_leftJustify, 0,
                /* baseline not midline */
                0,
                /* baseline not topline */

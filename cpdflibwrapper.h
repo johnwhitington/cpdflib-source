@@ -533,7 +533,8 @@ void cpdf_removeTrim(int, int);
 /* cpdf_removeArt(pdf, range) removes any art box from pages in the range. */
 void cpdf_removeArt(int, int);
 
-/* cpdf_removeBleed(pdf, range) removes any bleed box from pages in the range. */
+/* cpdf_removeBleed(pdf, range) removes any bleed box from pages in the range.
+ */
 void cpdf_removeBleed(int, int);
 
 /*

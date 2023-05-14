@@ -13,7 +13,7 @@ stubs=(camlpdf)
 
 #Extract some information from ocamlc and set up basic parameters
 echo ***EXTRACTING INFORMATION
-ranlib=`ocamlc -config 2>/dev/null | grep ranlib | sed 's/ranlib: //'`
+ranlib="ranlib"
 native_c_libraries=`ocamlc -config 2>/dev/null | grep native_c_libraries | sed 's/native_c_libraries: //'`
 libdir=`ocamlc -where`
 uname=`uname -s`
