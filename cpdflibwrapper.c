@@ -39,6 +39,7 @@ void updateLastError(void) {
   CAMLreturn0;
 }
 
+/* future: __AUTO version unit string */
 char *cpdf_version() {
   CAMLparam0();
   CAMLlocal1(version);
@@ -47,6 +48,7 @@ char *cpdf_version() {
   CAMLreturnT(char *, str);
 }
 
+/* future: __AUTO setFast unit unit */
 void cpdf_setFast() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
