@@ -39,7 +39,7 @@ void updateLastError(void) {
   CAMLreturn0;
 }
 
-/* future: __AUTO version unit string */
+
 char *cpdf_version() {
   CAMLparam0();
   CAMLlocal1(version);
@@ -48,7 +48,22 @@ char *cpdf_version() {
   CAMLreturnT(char *, str);
 }
 
-/* future: __AUTO setFast unit unit */
+
+/*
+__AUTO setFast unit unit
+__AUTO setSlow unit unit
+__AUTO onExit unit unit
+
+void cpdf_~name~)() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("~name~");
+  unit_v = caml_callback(fn_v, Val_unit);
+  CAMLreturn0;
+}
+
+*/
+
 void cpdf_setFast() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
@@ -65,6 +80,7 @@ void cpdf_setSlow() {
   CAMLreturn0;
 }
 
+/* special */
 void cpdf_clearError(void) {
   CAMLparam0();
   CAMLlocal3(clearError_v, unit_v, result_v);
