@@ -1,7 +1,8 @@
 # Build the camlpdf library as byte code and, if available, native code
 SOURCES = auto.ml
 
-RESULT = camlpdf
+RESULT = auto
+PACKS = camlpdf
 
 CFLAGS = -o2
 OCAMLFLAGS = -bin-annot
@@ -14,6 +15,6 @@ TARGETS := native-code
 all : $(TARGETS)
 
 clean ::
-	rm -rf doc foo foo2 out.pdf out2.pdf *.ps *.cmt *.cmti *.zlib
+	rm -rf doc foo foo2 out.pdf out2.pdf *.ps *.cmt *.cmti *.zlib cpdflibwrapper.c
 
 -include OCamlMakefile

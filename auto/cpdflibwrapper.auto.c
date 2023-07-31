@@ -4,16 +4,15 @@
 #include <caml/memory.h>
 #include <stdio.h>
 
-/* We define an AUTODEF for each ordinary type of function */
-
 /* __AUTODEF unit->unit
-void cpdf_~)() {
+void cpdf_~() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
   fn_v = *caml_named_value("~");
   unit_v = caml_callback(fn_v, Val_unit);
   CAMLreturn0;
-} */
+}
+*/
 
 /* __AUTODEF string->string->int
 int cpdf_~(char *one, char *two) {
@@ -25,11 +24,10 @@ int cpdf_~(char *one, char *two) {
   result_v = caml_callback2(fn_v, one_v, two_v);
   updateLastError();
   CAMLreturnT(int, Int_val(result_v));
-} */
+}
+*/
 
 /* CHAPTER 0. Preliminaries */
-
-/* Functions which can't be created by AUTO are given explicitly, and simply copied. */
 
 void cpdf_startup(char **argv) {
   caml_startup(argv);
@@ -84,9 +82,6 @@ void cpdf_clearError(void) {
   CAMLreturn0;
 }
 
-/* Now, we put an AUTO in for each function we want to create. */
-
-/* __AUTO version unit->string */
 /* __AUTO setFast unit->unit */
 /* __AUTO setSlow unit->unit */
 /* __AUTO onExit unit->unit */
