@@ -10,6 +10,7 @@ void cpdf_~() {
   CAMLlocal2(fn_v, unit_v);
   fn_v = *caml_named_value("~");
   unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
   CAMLreturn0;
 }
 */
@@ -90,3 +91,45 @@ void cpdf_clearError(void) {
 
 /* __AUTO fromFile string->string->int */
 /* __AUTO fromFileLazy string->string->int */
+/* -__AUTO fromMemory data->int->string->int */
+/* -__AUTO fromMemoryLazy data->int->string->int */
+/* -__AUTO deletePdf int->unit */
+/* -__AUTO replacePdf int->int->unit */
+/* -__AUTO startEnumeratePDFs unit->int */
+/* -__AUTO enumeratePDFsKey int->int */
+/* -__AUTO enumeratePDFsInfo int->string */
+/* __AUTO endEnumeratePDFs unit->unit */
+/* -__AUTO ptOfCm float->float */
+/* -__AUTO ptOfMm float->float */
+/* -__AUTO ptOfIn float->float */
+/* -__AUTO cmOfPt float->float */
+/* -__AUTO mmOfPt float->float */
+/* -__AUTO inOfPt float->float */
+/* -__AUTO parsePagespec int->string->int */
+/* -__AUTO validatePagespec string->int */
+/* -__AUTO stringOfPagespec int->int->string */
+/* -__AUTO blankRange void->int */
+/* __AUTO deleteRange unit->unit */
+/* -__AUTO range int->int->int */
+/* -__AUTO all int->int */
+/* -__AUTO even int->int */
+/* -__AUTO odd int->int */
+/* -__AUTO rangeUnion int->int */
+/* -__AUTO difference int->int->int */
+/* -__AUTO removeDuplicates int->int */
+/* -__AUTO rangeLength int->int */
+/* -__AUTO rangeGet int->int->int */
+/* -__AUTO rangeAdd int->int->int */
+/* -__AUTO isInrange int->int->int */
+/* -__AUTO pages int->int */
+/* __AUTO pagesFast string->string->int */
+/* -__AUTO toFile int->string->int->int->void */
+/* toFileExt special */
+/* -__AUTO toMemory int->int->int->int*->void* */
+/* -__AUTO isEncrypted int->int */
+/* -__AUTO decryptPdf int->string->unit */
+/* -__AUTO decryptPdfOwner int->string->unit */
+/* toFileEncrypted special */
+/* toFileEncryptedExt special */
+/* -__AUTO hasPermission int->int->int */
+/* -__AUTO encryptionKind int->int */
