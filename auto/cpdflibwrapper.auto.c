@@ -1081,3 +1081,132 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
 /* -__AUTO getImageResolutionXRes int->float */
 /* -__AUTO getImageResolutionYRes int->float */
 /* __AUTO endGetImageResolution unit->unit */
+
+/* CHAPTER 14. Fonts */
+
+/* __AUTO startGetFontInfo int->unit */
+/* __AUTO numberFonts unit->int */
+/* __AUTO getFontPage int->int */
+/* __AUTO getFontName int->string */
+/* __AUTO getFontType int->string */
+/* __AUTO getFontEncoding int->string */
+/* __AUTO endGetFontInfo unit->unit */
+/* __AUTO removeFonts int->unit */
+/* -__AUTO copyFont int->int->int->int->string->unit */
+
+/* CHAPTER 15. PDF and JSON */
+
+void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
+                     int decompress_streams, int pdf) {
+  CAMLparam0();
+  CAMLlocal2(fn, out);
+  CAMLlocalN(args, 5);
+  args[0] = caml_copy_string(filename);
+  args[1] = Val_int(parse_content);
+  args[2] = Val_int(no_stream_data);
+  args[3] = Val_int(decompress_streams);
+  args[4] = Val_int(pdf);
+  fn = *caml_named_value("outputJSON");
+  out = caml_callbackN(fn, 5, args);
+  CAMLreturn0;
+}
+
+void *cpdf_outputJSONMemory(int pdf, int parse_content, int no_stream_data,
+                            int decompress_streams, int *retlen) {
+  CAMLparam0();
+  CAMLlocal2(fn, bytestream);
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(parse_content);
+  args[1] = Val_int(no_stream_data);
+  args[2] = Val_int(decompress_streams);
+  args[3] = Val_int(pdf);
+  fn = *caml_named_value("outputJSONMemory");
+  bytestream = caml_callbackN(fn, 4, args);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "outputJSONMemory: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+
+/* __AUTO fromJSON string->int */
+
+int cpdf_fromJSONMemory(void *data, int len) {
+  CAMLparam0();
+  CAMLlocal3(pdf_v, bytestream, fn);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromJSONMemory");
+  pdf_v = caml_callback(fn, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
+/* CHAPTER 16. Optional Content Groups */
+
+/* __AUTO startGetOCGList int->int */
+/* __AUTO OCGListEntry int->string */
+/* __AUTO endOCGList unit->unit */
+/* __AUTO OCGCoalesce int->int */
+/* -__AUTO OCGRename int->string->string->unit */
+/* __AUTO OCGOrderAll int->unit */
+
+
+/* CHAPTER 17. Creating New PDFs */
+
+/* -__AUTO blankDocument float->float->int->int */
+/* __AUTO blankDocumentPaper int->int->int */
+/* -__AUTO textToPDF float->float->int->float->string->int */
+/* -__AUTO textToPDFPaper int->int->float->string->int */
+
+
+/* CHAPTER 18. Miscellaneous */
+
+/* -__AUTO draft int->int->int->unit */
+/* __AUTO removeAllText int->int->unit */
+/* __AUTO blackText int->int->unit */
+/* __AUTO blackLines int->int->unit */
+/* __AUTO blackFills int->int->unit */
+/* -__AUTO thinLines int->int->float->unit */
+/* __AUTO copyId int->int->unit */
+/* __AUTO removeId int->unit */
+/* __AUTO setVersion int->int->unit */
+/* -__AUTO setFullVersion int->int->int->unit */
+/* __AUTO removeDictEntry int->string->unit */
+/* -__AUTO removeDictEntrySearch int->string->string->unit */
+/* -__AUTO replaceDictEntry int->string->string->unit */
+/* -__AUTO replaceDictEntrySearch int->string->string->string->unit */
+
+void *cpdf_getDictEntries(int pdf, char *key, int *retlen) {
+  CAMLparam0();
+  CAMLlocal4(fn, bytestream, pdf_v, key_v);
+  fn = *caml_named_value("getDictEntries");
+  pdf_v = Val_int(pdf);
+  key_v = caml_copy_string(key);
+  bytestream = caml_callback2(fn, pdf_v, key_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "getDictEntries: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+
+/* __AUTO removeClipping int->int->unit */
