@@ -35,7 +35,9 @@ let use_auto h =
     let typ, _ = cleavewhile (neq ' ') (tl more) in
       implode name, implode typ
   in
-    map (string_replace_all "~" name) (Hashtbl.find autos typ)
+    map
+      (string_replace_all "~" name)
+      (try Hashtbl.find autos typ with Not_found -> prerr_endline typ; exit 1)
 
 let rec process a = function
   | [] -> rev (map (fun x -> x ^ "\n") a)
