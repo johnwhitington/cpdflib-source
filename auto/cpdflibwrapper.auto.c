@@ -165,6 +165,32 @@ char *cpdf_~(int a, int b) {
 }
 */
 
+/* __AUTODEF int->int->int->unit
+void cpdf_~(int pdf, int range, int angle) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, pdf_v, range_v, angle_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  angle_v = Val_int(angle);
+  unit = caml_callback3(fn, pdf_v, range_v, angle_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->float
+double cpdf_~(int serial) {
+  CAMLparam0();
+  CAMLlocal3(fn, serial_v, out_v);
+  fn = *caml_named_value("~");
+  serial_v = Val_int(serial);
+  out_v = caml_callback(fn, serial_v);
+  updateLastError();
+  CAMLreturnT(int, Double_val(out_v));
+}
+*/
+
 /* CHAPTER 0. Preliminaries */
 
 void cpdf_startup(char **argv) {
@@ -551,8 +577,8 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
 }
 
 /* -__AUTO shiftContents int->int->float->float->unit */
-/* -__AUTO rotate int->int->int->unit */
-/* -__AUTO rotateBy int->int->int-unit */
+/* __AUTO rotate int->int->int->unit */
+/* __AUTO rotateBy int->int->int->unit */
 /* -__AUTO roateContents int->int->int->float->unit */
 /* __AUTO upright int->int->unit */
 /* __AUTO hFlip int->int->unit */
@@ -583,7 +609,7 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
 /* __AUTO endGetBookmarkInfo unit->unit */
 /* __AUTO startSetBookmarkInfo int->unit */
 /* __AUTO setBookmarkLevel int->int->unit */
-/* -__AUTO setBookmarkPage int->int->int->unit */
+/* __AUTO setBookmarkPage int->int->int->unit */
 /* __AUTO setBookmarkOpenStatus int->int->unit */
 /* __AUTO setBookmarkText int->string->unit */
 /* __AUTO endSetBookmarkInfo int->unit */
@@ -630,8 +656,8 @@ void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
 
 /* CHAPTER 8. Logos, Watermarks and Stamps */
 
-/* -__AUTO stampOn int->int->int->unit */
-/* -__AUTO stampUnder int->int->int->unit */
+/* __AUTO stampOn int->int->int->unit */
+/* __AUTO stampUnder int->int->int->unit */
 
 void cpdf_stampExtended(int pdf, int pdf2, int range, int isover,
                         int scale_stamp_to_fit, struct cpdf_position pos,
@@ -947,7 +973,7 @@ enum cpdf_pageMode {
 /* __AUTO fitWindow int->int->unit */
 /* __AUTO centerWindow int->int->unit */
 /* __AUTO displayDocTitle int->int->unit */
-/* -__AUTO openAtPage int->int->int->unit */
+/* __AUTO openAtPage int->int->int->unit */
 /* __AUTO setMetadataFromFile int->string->unit */
 void cpdf_setMetadataFromByteArray(int pdf, void *data, int len) {
   CAMLparam0();
@@ -1078,8 +1104,8 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
 /* __AUTO getImageResolutionImageName int->string */
 /* __AUTO getImageResolutionXPixels int->int */
 /* __AUTO getImageResolutionYPixels int->int */
-/* -__AUTO getImageResolutionXRes int->float */
-/* -__AUTO getImageResolutionYRes int->float */
+/* __AUTO getImageResolutionXRes int->float */
+/* __AUTO getImageResolutionYRes int->float */
 /* __AUTO endGetImageResolution unit->unit */
 
 /* CHAPTER 14. Fonts */
@@ -1171,7 +1197,7 @@ int cpdf_fromJSONMemory(void *data, int len) {
 
 /* CHAPTER 18. Miscellaneous */
 
-/* -__AUTO draft int->int->int->unit */
+/* __AUTO draft int->int->int->unit */
 /* __AUTO removeAllText int->int->unit */
 /* __AUTO blackText int->int->unit */
 /* __AUTO blackLines int->int->unit */
@@ -1180,7 +1206,7 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO copyId int->int->unit */
 /* __AUTO removeId int->unit */
 /* __AUTO setVersion int->int->unit */
-/* -__AUTO setFullVersion int->int->int->unit */
+/* __AUTO setFullVersion int->int->int->unit */
 /* __AUTO removeDictEntry int->string->unit */
 /* -__AUTO removeDictEntrySearch int->string->string->unit */
 /* -__AUTO replaceDictEntry int->string->string->unit */
