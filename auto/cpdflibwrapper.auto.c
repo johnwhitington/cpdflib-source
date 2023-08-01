@@ -1007,3 +1007,77 @@ enum cpdf_pageLabelStyle {
 
 /* CHAPTER 12. File Attachments */
 
+/* -__AUTO attachFile string->int->unit */
+/* -__AUTO attachFile string->int->int->unit */
+
+void cpdf_attachFileFromMemory(void *data, int length, char *filename,
+                               int pdf) {
+  CAMLparam0();
+  CAMLlocal5(unit_v, fn, filename_v, bytestream_v, pdf_v);
+  fn = *caml_named_value("attachFileFromMemory");
+  bytestream_v =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, length);
+  filename_v = caml_copy_string(filename);
+  pdf_v = Val_int(pdf);
+  unit_v = caml_callback3(fn, bytestream_v, filename_v, pdf_v);
+  updateLastError();
+  CAMLreturn0;
+}
+
+void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
+                                     int pdf, int page) {
+  CAMLparam0();
+  CAMLlocal3(unit_v, fn, filename_v);
+  CAMLlocal3(bytestream_v, pdf_v, page_v);
+  CAMLlocalN(args, 4);
+  fn = *caml_named_value("attachFileToPageFromMemory");
+  args[0] = bytestream_v =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, length);
+  args[1] = filename_v = caml_copy_string(filename);
+  args[2] = Val_int(pdf);
+  args[3] = Val_int(page);
+  unit_v = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+
+/* __AUTO removeAttachedFiles int->unit */
+/* __AUTO startGetAttachments int->unit */
+/* __AUTO numberGetAttachments unit->int */
+/* __AUTO getAttachmentName int->string */
+/* __AUTO getAttachmentPage int->int */
+
+void *cpdf_getAttachmentData(int serial, int *retlen) {
+  CAMLparam0();
+  CAMLlocal4(fn, bytestream, pdf_v, serial_v);
+  fn = *caml_named_value("getAttachmentData");
+  serial_v = Val_int(serial);
+  bytestream = caml_callback(fn, serial_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "getAttachmentData: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+
+/* __AUTO endGetAttachments unit->unit */
+
+/* CHAPTER 13. Images */
+
+/* -__AUTO startGetImageResolution int->float->int */
+/* __AUTO getImageResolutionPageNumber int->int */
+/* __AUTO getImageResolutionImageName int->string */
+/* __AUTO getImageResolutionXPixels int->int */
+/* __AUTO getImageResolutionYPixels int->int */
+/* -__AUTO getImageResolutionXRes int->float */
+/* -__AUTO getImageResolutionYRes int->float */
+/* __AUTO endGetImageResolution unit->unit */
