@@ -39,7 +39,6 @@ void updateLastError(void) {
   CAMLreturn0;
 }
 
-
 char *cpdf_version() {
   CAMLparam0();
   CAMLlocal1(version);
@@ -47,39 +46,6 @@ char *cpdf_version() {
   char *str = (char *)String_val(version);
   CAMLreturnT(char *, str);
 }
-
-
-/*
-
-__AUTODEF unit->unit
-void cpdf_~)() {
-  CAMLparam0();
-  CAMLlocal2(fn_v, unit_v);
-  fn_v = *caml_named_value("~");
-  unit_v = caml_callback(fn_v, Val_unit);
-  CAMLreturn0;
-}
-
-__AUTODEF string->string->int
-int cpdf_~(char *one, char *two) {
-  CAMLparam0();
-  CAMLlocal4(fn_v, one_v, two_v, result_v);
-  fn_v = *caml_named_value("~");
-  one_v = caml_copy_string(one);
-  two_v = caml_copy_string(two);
-  result_v = caml_callback2(fn_v, one_v, two_v);
-  updateLastError();
-  CAMLreturnT(int, Int_val(result_v));
-}
-
-__AUTO setFast unit->unit
-__AUTO setSlow unit->unit
-__AUTO onExit unit->unit
-
-__AUTO fromFile string->string->int
-__AUTO fromFileLazy string->string->int
-
-*/
 
 void cpdf_setFast() {
   CAMLparam0();

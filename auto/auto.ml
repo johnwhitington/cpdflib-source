@@ -31,9 +31,9 @@ let store_auto h t =
 let use_auto h =
   let name, typ =
     let both = drop (explode h) 10 in
-      let name, more = cleavewhile (neq ' ') both in
-        let typ, _ = cleavewhile (neq ' ') (tl more) in
-          implode name, implode typ
+    let name, more = cleavewhile (neq ' ') both in
+    let typ, _ = cleavewhile (neq ' ') (tl more) in
+      implode name, implode typ
   in
     map (string_replace_all "~" name) (Hashtbl.find autos typ)
 
