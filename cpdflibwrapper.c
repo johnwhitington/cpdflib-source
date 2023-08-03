@@ -341,12 +341,13 @@ int cpdf_odd(int pdf) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
-int cpdf_rangeUnion(int pdf) {
+int cpdf_rangeUnion(int a, int b) {
   CAMLparam0();
-  CAMLlocal3(fn, in_v, out_v);
+  CAMLlocal4(fn, out_v, av, bv);
+  av = Val_int(a);
+  bv = Val_int(b);
   fn = *caml_named_value("rangeUnion");
-  in_v = Val_int(pdf);
-  out_v = caml_callback(fn, in_v);
+  out_v = caml_callback2(fn, av, bv);
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }

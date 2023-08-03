@@ -671,7 +671,7 @@ enum cpdf_papersize {
 /* __AUTO all int->int */
 /* __AUTO even int->int */
 /* __AUTO odd int->int */
-/* __AUTO rangeUnion int->int */
+/* __AUTO rangeUnion int->int->int */
 /* __AUTO difference int->int->int */
 /* __AUTO removeDuplicates int->int */
 /* __AUTO rangeLength int->int */
