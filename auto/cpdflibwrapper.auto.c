@@ -4,6 +4,115 @@
 #include <caml/memory.h>
 #include <stdio.h>
 
+enum cpdf_papersize {
+  cpdf_a0portrait,
+  cpdf_a1portrait,
+  cpdf_a2portrait,
+  cpdf_a3portrait,
+  cpdf_a4portrait,
+  cpdf_a5portrait,
+  cpdf_a0landscape,
+  cpdf_a1landscape,
+  cpdf_a2landscape,
+  cpdf_a3landscape,
+  cpdf_a4landscape,
+  cpdf_a5landscape,
+  cpdf_usletterportrait,
+  cpdf_usletterlandscape,
+  cpdf_uslegalportrait,
+  cpdf_uslegallandscape
+};
+
+enum cpdf_permission {
+  cpdf_noEdit,
+  cpdf_noPrint,
+  cpdf_noCopy,
+  cpdf_noAnnot,
+  cpdf_noForms,
+  cpdf_noExtract,
+  cpdf_noAssemble,
+  cpdf_noHqPrint
+};
+
+enum cpdf_encryptionMethod {
+  cpdf_pdf40bit,
+  cpdf_pdf218bit,
+  cpdf_aes128bitfalse,
+  cpdf_aes128bittrue,
+  cpdf_aes256bitfalse,
+  cpdf_aes256bittrue,
+  cpdf_aes256bitisofalse,
+  cpdf_aes256bitisotrue
+};
+
+enum cpdf_anchor {
+  cpdf_posCentre,
+  cpdf_posLeft,
+  cpdf_posRight,
+  cpdf_top,
+  cpdf_topLeft,
+  cpdf_topRight,
+  cpdf_left,
+  cpdf_bottomLeft,
+  cpdf_bottom,
+  cpdf_bottomRight,
+  cpdf_right,
+  cpdf_diagonal,
+  cpdf_reversediagonal
+};
+
+struct cpdf_position {
+  int cpdf_anchor;
+  double cpdf_coord1;
+  double cpdf_coord2;
+};
+
+enum cpdf_font {
+  cpdf_timesRoman,
+  cpdf_timesBold,
+  cpdf_timesItalic,
+  cpdf_timesBoldItalic,
+  cpdf_helvetica,
+  cpdf_helveticaBold,
+  cpdf_helveticaOblique,
+  cpdf_helveticaBoldOblique,
+  cpdf_courier,
+  cpdf_courierBold,
+  cpdf_courierOblique,
+  cpdf_courierBoldOblique
+};
+
+enum cpdf_justification {
+  cpdf_leftJustify,
+  cpdf_CentreJustify,
+  cpdf_RightJustify
+};
+
+enum cpdf_pageLabelStyle {
+  cpdf_decimalArabic,
+  cpdf_uppercaseRoman,
+  cpdf_lowercaseRoman,
+  cpdf_uppercaseLetters,
+  cpdf_lowercaseLetters
+};
+
+enum cpdf_layout {
+  cpdf_singlePage,
+  cpdf_oneColumn,
+  cpdf_twoColumnLeft,
+  cpdf_twoColumnRight,
+  cpdf_twoPageLeft,
+  cpdf_twoPageRight
+};
+
+enum cpdf_pageMode {
+  cpdf_useNone,
+  cpdf_useOutlines,
+  cpdf_useThumbs,
+  cpdf_useOC,
+  cpdf_useAttachments
+};
+
 /* __AUTODEF unit->unit
 void cpdf_~() {
   CAMLparam0();
@@ -333,7 +442,6 @@ int cpdf_~(int pdf, int pagenumber, char *boxname) {
 }
 */
 
-
 /* __AUTODEF int->int->float*->float*->float*->float*->unit
 void cpdf_~(int pdf, int pagenumber, double *minx, double *maxx,
                       double *miny, double *maxy) {
@@ -632,24 +740,6 @@ int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   CAMLreturnT(int, Int_val(pdf_v));
 }
 
-enum cpdf_papersize {
-  cpdf_a0portrait,
-  cpdf_a1portrait,
-  cpdf_a2portrait,
-  cpdf_a3portrait,
-  cpdf_a4portrait,
-  cpdf_a5portrait,
-  cpdf_a0landscape,
-  cpdf_a1landscape,
-  cpdf_a2landscape,
-  cpdf_a3landscape,
-  cpdf_a4landscape,
-  cpdf_a5landscape,
-  cpdf_usletterportrait,
-  cpdf_usletterlandscape,
-  cpdf_uslegalportrait,
-  cpdf_uslegallandscape
-};
 /* __AUTO deletePdf int->unit */
 /* __AUTO replacePdf int->int->unit */
 /* __AUTO startEnumeratePDFs unit->int */
@@ -680,6 +770,7 @@ enum cpdf_papersize {
 /* __AUTO isInRange int->int->int */
 /* __AUTO pages int->int */
 /* __AUTO pagesFast string->string->int */
+
 void cpdf_toFile(int pdf, char *filename, int linearize, int make_id) {
   CAMLparam0();
   CAMLlocal2(fn, unit);
@@ -736,30 +827,10 @@ void *cpdf_toMemory(int pdf, int linearize, int make_id, int *retlen) {
   *retlen = size;
   CAMLreturnT(void *, memory);
 }
+
 /* __AUTO isEncrypted int->int */
 /* __AUTO decryptPdf int->string->unit */
 /* __AUTO decryptPdfOwner int->string->unit */
-enum cpdf_permission {
-  cpdf_noEdit,
-  cpdf_noPrint,
-  cpdf_noCopy,
-  cpdf_noAnnot,
-  cpdf_noForms,
-  cpdf_noExtract,
-  cpdf_noAssemble,
-  cpdf_noHqPrint
-};
-
-enum cpdf_encryptionMethod {
-  cpdf_pdf40bit,
-  cpdf_pdf218bit,
-  cpdf_aes128bitfalse,
-  cpdf_aes128bittrue,
-  cpdf_aes256bitfalse,
-  cpdf_aes256bittrue,
-  cpdf_aes256bitisofalse,
-  cpdf_aes256bitisotrue
-};
 
 void cpdf_toFileEncrypted(int pdf, int e, int *ps, int len, char *owner,
                           char *user, int linearize, int makeid,
@@ -817,6 +888,7 @@ void cpdf_toFileEncryptedExt(int pdf, int e, int *ps, int len, char *owner,
   updateLastError();
   CAMLreturn0;
 }
+
 /* __AUTO hasPermission int->int->int */
 /* __AUTO encryptionKind int->int */
 
@@ -890,27 +962,6 @@ int cpdf_mergeSame(int *pdfs, int len, int retain_numbering,
 /* __AUTO scalePages int->int->float->float->unit */
 /* __AUTO scaleToFit int->int->float->float->float->unit */
 /* __AUTO scaleToFitPaper int->int->int->float->unit */
-enum cpdf_anchor {
-  cpdf_posCentre,
-  cpdf_posLeft,
-  cpdf_posRight,
-  cpdf_top,
-  cpdf_topLeft,
-  cpdf_topRight,
-  cpdf_left,
-  cpdf_bottomLeft,
-  cpdf_bottom,
-  cpdf_bottomRight,
-  cpdf_right,
-  cpdf_diagonal,
-  cpdf_reversediagonal
-};
-
-struct cpdf_position {
-  int cpdf_anchor;
-  double cpdf_coord1;
-  double cpdf_coord2;
-};
 
 void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
                         double scale) {
@@ -1034,27 +1085,6 @@ void cpdf_stampExtended(int pdf, int pdf2, int range, int isover,
 }
 
 /* __AUTO combinePages int->int->int */
-
-enum cpdf_font {
-  cpdf_timesRoman,
-  cpdf_timesBold,
-  cpdf_timesItalic,
-  cpdf_timesBoldItalic,
-  cpdf_helvetica,
-  cpdf_helveticaBold,
-  cpdf_helveticaOblique,
-  cpdf_helveticaBoldOblique,
-  cpdf_courier,
-  cpdf_courierBold,
-  cpdf_courierOblique,
-  cpdf_courierBoldOblique
-};
-
-enum cpdf_justification {
-  cpdf_leftJustify,
-  cpdf_CentreJustify,
-  cpdf_RightJustify
-};
 
 void cpdf_addText(int metrics, int pdf, int range, char *text,
                   struct cpdf_position pos, double linespacing, int bates,
@@ -1233,6 +1263,7 @@ void *cpdf_annotationsJSON(int pdf, int *retlen) {
 /* __AUTO setProducerXMP int->string->unit */
 /* __AUTO setCreationDateXMP int->string->unit */
 /* __AUTO setModificationDateXMP int->string->unit */
+
 void cpdf_getDateComponents(char *date, int *year, int *month, int *day,
                             int *hour, int *minute, int *second,
                             int *hour_offset, int *minute_offset) {
@@ -1299,26 +1330,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO markUntrapped int->unit */
 /* __AUTO markTrappedXMP int->unit */
 /* __AUTO markUntrappedXMP int->unit */
-
-enum cpdf_layout {
-  cpdf_singlePage,
-  cpdf_oneColumn,
-  cpdf_twoColumnLeft,
-  cpdf_twoColumnRight,
-  cpdf_twoPageLeft,
-  cpdf_twoPageRight
-};
-
 /* __AUTO setPageLayout int->int->unit */
-
-enum cpdf_pageMode {
-  cpdf_useNone,
-  cpdf_useOutlines,
-  cpdf_useThumbs,
-  cpdf_useOC,
-  cpdf_useAttachments
-};
-
 /* __AUTO setPageMode int->int->unit */
 /* __AUTO hideToolbar int->int->unit */
 /* __AUTO hideMenubar int->int->unit */
@@ -1328,6 +1340,7 @@ enum cpdf_pageMode {
 /* __AUTO displayDocTitle int->int->unit */
 /* __AUTO openAtPage int->int->int->unit */
 /* __AUTO setMetadataFromFile int->string->unit */
+
 void cpdf_setMetadataFromByteArray(int pdf, void *data, int len) {
   CAMLparam0();
   CAMLlocal4(unit, bytestream, setMetadataFromByteArray, valpdf);
@@ -1365,15 +1378,6 @@ void *cpdf_getMetadata(int pdf, int *retlen) {
 /* __AUTO removeMetadata int->unit */
 /* __AUTO createMetadata int->unit */
 /* __AUTO setMetadataDate int->string->unit */
-
-enum cpdf_pageLabelStyle {
-  cpdf_decimalArabic,
-  cpdf_uppercaseRoman,
-  cpdf_lowercaseRoman,
-  cpdf_uppercaseLetters,
-  cpdf_lowercaseLetters
-};
-
 /* __AUTO addPageLabels int->int->string->int->int->int->unit */
 /* __AUTO removePageLabels int->unit */
 /* __AUTO startGetPageLabels int->int */
