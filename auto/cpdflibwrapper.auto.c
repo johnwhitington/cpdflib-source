@@ -119,7 +119,7 @@ int cpdf_~(void) {
 char *cpdf_~(int key) {
   CAMLparam0();
   CAMLlocal3(f, key_v, out_v);
-  enumeratePDFsInfo = *caml_named_value("~");
+  f = *caml_named_value("~");
   key_v = Val_int(key);
   out_v = caml_callback(f, key_v);
   updateLastError();
@@ -677,7 +677,7 @@ enum cpdf_papersize {
 /* __AUTO rangeLength int->int */
 /* __AUTO rangeGet int->int->int */
 /* __AUTO rangeAdd int->int->int */
-/* __AUTO isInrange int->int->int */
+/* __AUTO isInRange int->int->int */
 /* __AUTO pages int->int */
 /* __AUTO pagesFast string->string->int */
 void cpdf_toFile(int pdf, char *filename, int linearize, int make_id) {
@@ -932,7 +932,7 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
 /* __AUTO shiftContents int->int->float->float->unit */
 /* __AUTO rotate int->int->int->unit */
 /* __AUTO rotateBy int->int->int->unit */
-/* __AUTO roateContents int->int->int->float->unit */
+/* __AUTO rotateContents int->int->int->float->unit */
 /* __AUTO upright int->int->unit */
 /* __AUTO hFlip int->int->unit */
 /* __AUTO vFlip int->int->unit */
@@ -1290,7 +1290,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO getTrimBox int->int->float*->float*->float*->float*->unit */
 /* __AUTO getArtBox int->int->float*->float*->float*->float*->unit */
 /* __AUTO getBleedBox int->int->float*->float*->float*->float*->unit */
-/* __AUTO setMediaBox int->int->float->float->float->float->unit */
+/* __AUTO setMediabox int->int->float->float->float->float->unit */
 /* __AUTO setCropBox int->int->float->float->float->float->unit */
 /* __AUTO setTrimBox int->int->float->float->float->float->unit */
 /* __AUTO setArtBox int->int->float->float->float->float->unit */
@@ -1534,7 +1534,7 @@ int cpdf_fromJSONMemory(void *data, int len) {
 
 /* __AUTO startGetOCGList int->int */
 /* __AUTO OCGListEntry int->string */
-/* __AUTO endOCGList unit->unit */
+/* __AUTO endGetOCGList unit->unit */
 /* __AUTO OCGCoalesce int->int */
 /* __AUTO OCGRename int->string->string->unit */
 /* __AUTO OCGOrderAll int->unit */
