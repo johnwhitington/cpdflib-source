@@ -191,6 +191,359 @@ double cpdf_~(int serial) {
 }
 */
 
+/* __AUTODEF int->int->float->float->unit
+void cpdf_~(int pdf, int range, double sx, double sy) {
+  CAMLparam0();
+  CAMLlocal2(fn, unit);
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = caml_copy_double(sx);
+  args[3] = caml_copy_double(sy);
+  fn = *caml_named_value("~");
+  unit = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->float->float->float->unit
+void cpdf_~(int pdf, int range, double w, double h, double scale) {
+  CAMLparam0();
+  CAMLlocalN(args, 5);
+  CAMLlocal2(fn, unit);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = caml_copy_double(w);
+  args[3] = caml_copy_double(h);
+  args[4] = caml_copy_double(scale);
+  fn = *caml_named_value("~");
+  unit = caml_callbackN(fn, 5, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->int->float->unit
+void cpdf_~(int pdf, int range, int papersize, double scale) {
+  CAMLparam0();
+  CAMLlocalN(args, 4);
+  CAMLlocal2(unit, fn);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = Val_int(papersize);
+  args[3] = caml_copy_double(scale);
+  fn = *caml_named_value("~");
+  unit = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->float->float->float->float->unit
+void cpdf_~(int pdf, int range, double x, double y, double w, double h) {
+  CAMLparam0();
+  CAMLlocalN(args, 6);
+  CAMLlocal2(unit, fn);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = caml_copy_double(x);
+  args[3] = caml_copy_double(y);
+  args[4] = caml_copy_double(w);
+  args[5] = caml_copy_double(h);
+  fn = *caml_named_value("~");
+  unit = caml_callbackN(fn, 6, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->string->unit
+void cpdf_hardBox(int pdf, int range, char *box) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, pdf_v, range_v, box_v);
+  fn = *caml_named_value("hardBox");
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  box_v = caml_copy_string(box);
+  unit = caml_callback3(fn, pdf_v, range_v, box_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->float->string->int->unit
+void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
+                          int bookmark) {
+  CAMLparam0();
+  CAMLlocalN(args, 5);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(font);
+  args[2] = caml_copy_double(fontsize);
+  args[3] = caml_copy_string(title);
+  args[4] = Val_int(bookmark);
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("tableOfContents");
+  out_v = caml_callbackN(fn_v, 5, args);
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF string->int->int->int->unit
+void cpdf_addContent(char *s, int before, int pdf, int range) {
+  CAMLparam0();
+  CAMLlocal2(fn, out);
+  CAMLlocalN(args, 4);
+  args[0] = caml_copy_string(s);
+  args[1] = Val_int(before);
+  args[2] = Val_int(pdf);
+  args[3] = Val_int(range);
+  fn = *caml_named_value("addContent");
+  out = caml_callbackN(fn, 4, args);
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->int->string
+char *cpdf_~(int pdf, int range, int stamp_pdf) {
+  CAMLparam0();
+  CAMLlocal5(pdf_v, range_v, stamp_pdf_v, fn, name_v);
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  stamp_pdf_v = Val_int(stamp_pdf);
+  fn = *caml_named_value("~");
+  name_v = caml_callback3(fn, pdf_v, range_v, stamp_pdf_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(name_v));
+}
+*/
+
+/* __AUTODEF int->int->string->int
+int cpdf_~(int pdf, int pagenumber, char *boxname) {
+  CAMLparam0();
+  CAMLlocal4(fn, pdf_v, pagenumber_v, boxname_v);
+  CAMLlocal1(out_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  pagenumber_v = Val_int(pagenumber);
+  boxname_v = caml_copy_string(boxname);
+  out_v = caml_callback3(fn, pdf_v, pagenumber_v, boxname_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+*/
+
+
+/* __AUTODEF int->int->float*->float*->float*->float*->unit
+void cpdf_~(int pdf, int pagenumber, double *minx, double *maxx,
+                      double *miny, double *maxy) {
+  CAMLparam0();
+  CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
+  CAMLlocal3(maxx_v, miny_v, maxy_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  pagenumber_v = Val_int(pagenumber);
+  tuple_v = caml_callback2(fn, pdf_v, pagenumber_v);
+  updateLastError();
+  minx_v = Field(tuple_v, 0);
+  maxx_v = Field(tuple_v, 1);
+  miny_v = Field(tuple_v, 2);
+  maxy_v = Field(tuple_v, 3);
+  *minx = Double_val(minx_v);
+  *maxx = Double_val(maxx_v);
+  *miny = Double_val(miny_v);
+  *maxy = Double_val(maxy_v);
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->float->float->float->float->unit
+void cpdf_~(int pdf, int range, double minx, double maxx, double miny,
+                      double maxy) {
+  CAMLparam0();
+  CAMLlocalN(args, 6);
+  CAMLlocal2(unit, fn);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = caml_copy_double(minx);
+  args[3] = caml_copy_double(maxx);
+  args[4] = caml_copy_double(miny);
+  args[5] = caml_copy_double(maxy);
+  fn = *caml_named_value("~");
+  unit = caml_callbackN(fn, 6, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->int->string->int->int->int->unit
+void cpdf_~(int pdf, enum cpdf_pageLabelStyle style, char *prefix,
+                        int offset, int range, int progress) {
+  CAMLparam0();
+  CAMLlocal2(fn, out_v);
+  fn = *caml_named_value("~");
+  CAMLlocalN(args, 6);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(style);
+  args[2] = caml_copy_string(prefix);
+  args[3] = Val_int(offset);
+  args[4] = Val_int(range);
+  args[5] = Val_int(progress);
+  out_v = caml_callbackN(fn, 6, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF string->int->unit
+void cpdf_~(char *filename, int pdf) {
+  CAMLparam0();
+  CAMLlocal4(unit, fn, filename_v, pdf_v);
+  fn = *caml_named_value("~");
+  filename_v = caml_copy_string(filename);
+  pdf_v = Val_int(pdf);
+  unit = caml_callback2(fn, filename_v, pdf_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF string->int->int->unit
+void cpdf_~(char *filename, int pdf, int pagenumber) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, filename_v, pdf_v, pagenumber_v);
+  fn = *caml_named_value("~");
+  filename_v = caml_copy_string(filename);
+  pdf_v = Val_int(pdf);
+  pagenumber_v = Val_int(pagenumber);
+  unit = caml_callback3(fn, filename_v, pdf_v, pagenumber_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->float->int
+int cpdf_~(int pdf, double res) {
+  CAMLparam0();
+  CAMLlocal4(fn, pdf_v, out_v, res_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  res_v = caml_copy_double(res);
+  out_v = caml_callback2(fn, pdf_v, res_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+*/
+
+/* __AUTODEF int->int->int->int->string->unit
+void cpdf_~(int from_pdf, int to_pdf, int range, int pagenumber,
+                   char *fontname) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("~");
+  CAMLlocalN(args, 5);
+  args[0] = Val_int(from_pdf);
+  args[1] = Val_int(to_pdf);
+  args[2] = Val_int(range);
+  args[3] = Val_int(pagenumber);
+  args[4] = caml_copy_string(fontname);
+  out_v = caml_callbackN(fn_v, 5, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->string->string->unit
+void cpdf_~(int pdf, char *f, char *t) {
+  CAMLparam0();
+  CAMLlocal5(pdf_v, unit_v, fn, f_v, t_v);
+  pdf_v = Val_int(pdf);
+  fn = *caml_named_value("~");
+  f_v = caml_copy_string(f);
+  t_v = caml_copy_string(t);
+  unit_v = caml_callback3(fn, pdf_v, f_v, t_v);
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF float->float->int->int
+int cpdf_~(double width, double height, int pages) {
+  CAMLparam0();
+  CAMLlocal5(fn, width_v, height_v, pages_v, out);
+  fn = *caml_named_value("~");
+  width_v = caml_copy_double(width);
+  height_v = caml_copy_double(height);
+  pages_v = Val_int(pages);
+  out = caml_callback3(fn, width_v, height_v, pages_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out));
+}
+*/
+
+/* __AUTODEF float->float->int->float->string->int
+int cpdf_~(double w, double h, int font, double fontsize,
+                   char *filename) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 5);
+  args[0] = caml_copy_double(w);
+  args[1] = caml_copy_double(h);
+  args[2] = Val_int(font);
+  args[3] = caml_copy_double(fontsize);
+  args[4] = caml_copy_string(filename);
+  fn_v = *caml_named_value("~");
+  out_v = caml_callbackN(fn_v, 5, args);
+  CAMLreturnT(int, Int_val(out_v));
+}
+*/
+
+/* __AUTODEF int->int->float->string->int
+int cpdf_~(int papersize, int font, double fontsize,
+                        char *filename) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 4);
+  fn_v = *caml_named_value("~");
+  args[0] = Val_int(papersize);
+  args[1] = Val_int(font);
+  args[2] = caml_copy_double(fontsize);
+  args[3] = caml_copy_string(filename);
+  out_v = caml_callbackN(fn_v, 4, args);
+  CAMLreturnT(int, Int_val(out_v));
+}
+*/
+
+/* __AUTODEF int->int->float->unit
+void cpdf_~(int pdf, int range, double minwidth) {
+  CAMLparam0();
+  CAMLlocal5(unit, fn, pdf_v, range_v, minwidth_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  minwidth_v = caml_copy_double(minwidth);
+  unit = caml_callback3(fn, pdf_v, range_v, minwidth_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF int->string->string->string->unit
+void cpdf_~(int pdf, char *key, char *newvalue,
+                                 char *searchterm) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  CAMLlocalN(args, 4);
+  fn_v = *caml_named_value("~");
+  args[0] = Val_int(pdf);
+  args[1] = caml_copy_string(key);
+  args[2] = caml_copy_string(newvalue);
+  args[3] = caml_copy_string(searchterm);
+  out_v = caml_callbackN(fn_v, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
 /* CHAPTER 0. Preliminaries */
 
 void cpdf_startup(char **argv) {
@@ -534,9 +887,9 @@ int cpdf_mergeSame(int *pdfs, int len, int retain_numbering,
 
 /* CHAPTER 3. Pages */
 
-/* -__AUTO scalePages int->int->float->float->unit */
-/* -__AUTO scaleToFit int->int->float->float->float->unit */
-/* -__AUTO scaleToFitPaper int->int->int->float->unit */
+/* __AUTO scalePages int->int->float->float->unit */
+/* __AUTO scaleToFit int->int->float->float->float->unit */
+/* __AUTO scaleToFitPaper int->int->int->float->unit */
 enum cpdf_anchor {
   cpdf_posCentre,
   cpdf_posLeft,
@@ -576,21 +929,21 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
   CAMLreturn0;
 }
 
-/* -__AUTO shiftContents int->int->float->float->unit */
+/* __AUTO shiftContents int->int->float->float->unit */
 /* __AUTO rotate int->int->int->unit */
 /* __AUTO rotateBy int->int->int->unit */
-/* -__AUTO roateContents int->int->int->float->unit */
+/* __AUTO roateContents int->int->int->float->unit */
 /* __AUTO upright int->int->unit */
 /* __AUTO hFlip int->int->unit */
 /* __AUTO vFlip int->int->unit */
-/* -__AUTO crop int->int->float->float->float->float->unit */
+/* __AUTO crop int->int->float->float->float->float->unit */
 /* __AUTO removeCrop int->int->unit */
 /* __AUTO removeTrim int->int->unit */
 /* __AUTO removeArt int->int->unit */
 /* __AUTO removeBleed int->int->unit */
 /* __AUTO trimMarks int->int->unit */
 /* __AUTO showBoxes int->int->unit */
-/* -__AUTO hardBox int->int->string->unit */
+/* __AUTO hardBox int->int->string->unit */
 
 /* CHAPTER 5. Compression */
 
@@ -648,7 +1001,7 @@ void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   CAMLreturn0;
 }
 
-/* -__AUTO tableOfContents int->int->double->string->int->unit */
+/* __AUTO tableOfContents int->int->float->string->int->unit */
 
 /* CHAPTER 7. Presentations */
 
@@ -784,8 +1137,8 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
 
 /* __AUTO removeText int->int->int */
 /* __AUTO textWidth int->string->int */
-/* -__AUTO addContent string->int->int->int->unit */
-/* -__AUTO stampAsXObject int->int->int->string */
+/* __AUTO addContent string->int->int->int->unit */
+/* __AUTO stampAsXObject int->int->int->string */
 
 /* CHAPTER 9. Multipage facilities */
 
@@ -931,17 +1284,17 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 }
 
 /* __AUTO getPageRotation int->int->int */
-/* -__AUTO hasBox int->int->string->int */
-/* -__AUTO getMediaBox int->int->float*->float*->float*->float*->unit */
-/* -__AUTO getCropBox int->int->float*->float*->float*->float*->unit */
-/* -__AUTO getTrimBox int->int->float*->float*->float*->float*->unit */
-/* -__AUTO getArtBox int->int->float*->float*->float*->float*->unit */
-/* -__AUTO getBleedBox int->int->float*->float*->float*->float*->unit */
-/* -__AUTO setMediaBox int->int->float->float->float->float->unit */
-/* -__AUTO setCropBox int->int->float->float->float->float->unit */
-/* -__AUTO setTrimBox int->int->float->float->float->float->unit */
-/* -__AUTO setArtBox int->int->float->float->float->float->unit */
-/* -__AUTO setBleedBox int->int->float->float->float->float->unit */
+/* __AUTO hasBox int->int->string->int */
+/* __AUTO getMediaBox int->int->float*->float*->float*->float*->unit */
+/* __AUTO getCropBox int->int->float*->float*->float*->float*->unit */
+/* __AUTO getTrimBox int->int->float*->float*->float*->float*->unit */
+/* __AUTO getArtBox int->int->float*->float*->float*->float*->unit */
+/* __AUTO getBleedBox int->int->float*->float*->float*->float*->unit */
+/* __AUTO setMediaBox int->int->float->float->float->float->unit */
+/* __AUTO setCropBox int->int->float->float->float->float->unit */
+/* __AUTO setTrimBox int->int->float->float->float->float->unit */
+/* __AUTO setArtBox int->int->float->float->float->float->unit */
+/* __AUTO setBleedBox int->int->float->float->float->float->unit */
 /* __AUTO markTrapped int->unit */
 /* __AUTO markUntrapped int->unit */
 /* __AUTO markTrappedXMP int->unit */
@@ -1021,7 +1374,7 @@ enum cpdf_pageLabelStyle {
   cpdf_lowercaseLetters
 };
 
-/* -__AUTO addPageLabels int->int->string->int->int->int->unit */
+/* __AUTO addPageLabels int->int->string->int->int->int->unit */
 /* __AUTO removePageLabels int->unit */
 /* __AUTO startGetPageLabels int->int */
 /* __AUTO endGetPageLabels unit->unit */
@@ -1033,8 +1386,8 @@ enum cpdf_pageLabelStyle {
 
 /* CHAPTER 12. File Attachments */
 
-/* -__AUTO attachFile string->int->unit */
-/* -__AUTO attachFile string->int->int->unit */
+/* __AUTO attachFile string->int->unit */
+/* __AUTO attachFileToPage string->int->int->unit */
 
 void cpdf_attachFileFromMemory(void *data, int length, char *filename,
                                int pdf) {
@@ -1099,7 +1452,7 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
 
 /* CHAPTER 13. Images */
 
-/* -__AUTO startGetImageResolution int->float->int */
+/* __AUTO startGetImageResolution int->float->int */
 /* __AUTO getImageResolutionPageNumber int->int */
 /* __AUTO getImageResolutionImageName int->string */
 /* __AUTO getImageResolutionXPixels int->int */
@@ -1118,7 +1471,7 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
 /* __AUTO getFontEncoding int->string */
 /* __AUTO endGetFontInfo unit->unit */
 /* __AUTO removeFonts int->unit */
-/* -__AUTO copyFont int->int->int->int->string->unit */
+/* __AUTO copyFont int->int->int->int->string->unit */
 
 /* CHAPTER 15. PDF and JSON */
 
@@ -1183,16 +1536,16 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO OCGListEntry int->string */
 /* __AUTO endOCGList unit->unit */
 /* __AUTO OCGCoalesce int->int */
-/* -__AUTO OCGRename int->string->string->unit */
+/* __AUTO OCGRename int->string->string->unit */
 /* __AUTO OCGOrderAll int->unit */
 
 
 /* CHAPTER 17. Creating New PDFs */
 
-/* -__AUTO blankDocument float->float->int->int */
+/* __AUTO blankDocument float->float->int->int */
 /* __AUTO blankDocumentPaper int->int->int */
-/* -__AUTO textToPDF float->float->int->float->string->int */
-/* -__AUTO textToPDFPaper int->int->float->string->int */
+/* __AUTO textToPDF float->float->int->float->string->int */
+/* __AUTO textToPDFPaper int->int->float->string->int */
 
 
 /* CHAPTER 18. Miscellaneous */
@@ -1202,15 +1555,15 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO blackText int->int->unit */
 /* __AUTO blackLines int->int->unit */
 /* __AUTO blackFills int->int->unit */
-/* -__AUTO thinLines int->int->float->unit */
+/* __AUTO thinLines int->int->float->unit */
 /* __AUTO copyId int->int->unit */
 /* __AUTO removeId int->unit */
 /* __AUTO setVersion int->int->unit */
 /* __AUTO setFullVersion int->int->int->unit */
 /* __AUTO removeDictEntry int->string->unit */
-/* -__AUTO removeDictEntrySearch int->string->string->unit */
-/* -__AUTO replaceDictEntry int->string->string->unit */
-/* -__AUTO replaceDictEntrySearch int->string->string->string->unit */
+/* __AUTO removeDictEntrySearch int->string->string->unit */
+/* __AUTO replaceDictEntry int->string->string->unit */
+/* __AUTO replaceDictEntrySearch int->string->string->string->unit */
 
 void *cpdf_getDictEntries(int pdf, char *key, int *retlen) {
   CAMLparam0();
