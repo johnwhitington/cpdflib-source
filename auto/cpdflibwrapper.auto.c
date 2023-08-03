@@ -932,7 +932,7 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
 /* __AUTO shiftContents int->int->float->float->unit */
 /* __AUTO rotate int->int->int->unit */
 /* __AUTO rotateBy int->int->int->unit */
-/* __AUTO rotateContents int->int->int->float->unit */
+/* __AUTO rotateContents int->int->float->unit */
 /* __AUTO upright int->int->unit */
 /* __AUTO hFlip int->int->unit */
 /* __AUTO vFlip int->int->unit */

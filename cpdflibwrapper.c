@@ -802,16 +802,14 @@ void cpdf_rotateBy(int pdf, int range, int angle) {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_rotateContents(int pdf, int range, int papersize, double scale) {
+void cpdf_rotateContents(int pdf, int range, double minwidth) {
   CAMLparam0();
-  CAMLlocalN(args, 4);
-  CAMLlocal2(unit, fn);
-  args[0] = Val_int(pdf);
-  args[1] = Val_int(range);
-  args[2] = Val_int(papersize);
-  args[3] = caml_copy_double(scale);
+  CAMLlocal5(unit, fn, pdf_v, range_v, minwidth_v);
   fn = *caml_named_value("rotateContents");
-  unit = caml_callbackN(fn, 4, args);
+  pdf_v = Val_int(pdf);
+  range_v = Val_int(range);
+  minwidth_v = caml_copy_double(minwidth);
+  unit = caml_callback3(fn, pdf_v, range_v, minwidth_v);
   updateLastError();
   CAMLreturn0;
 }

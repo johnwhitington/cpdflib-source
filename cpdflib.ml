@@ -167,12 +167,10 @@ let deleterange r =
   try Hashtbl.remove ranges r with e -> handle_error "deleterange" e; err_unit
 
 let _ = Callback.register "blankRange" blankrange
-let _ = Callback.register "writerange" writerange
-let _ = Callback.register "makerange" makerange
 let _ = Callback.register "rangeLength" lengthrange
 let _ = Callback.register "rangeGet" readrange
 let _ = Callback.register "rangeAdd" addtorange
-let _ = Callback.register "deleterange" deleterange
+let _ = Callback.register "deleteRange" deleterange
  
 type pdfdoc = Pdf.t
 
@@ -2600,7 +2598,7 @@ let endGetOCGList () =
     e -> handle_error "endGetOCGList" e; err_unit
 
 let _ = Callback.register "startGetOCGList" startGetOCGList
-let _ = Callback.register "ocgListEntry" ocgListEntry
+let _ = Callback.register "OCGListEntry" ocgListEntry
 let _ = Callback.register "endGetOCGList" endGetOCGList
 
 let ocgCoalesce pdf =
@@ -2610,7 +2608,7 @@ let ocgCoalesce pdf =
   with
     e -> handle_error "ocgCoalesce" e; err_unit
 
-let _ = Callback.register "ocgCoalesce" ocgCoalesce
+let _ = Callback.register "OCGCoalesce" ocgCoalesce
 
 let ocgRename pdf f t =
   if !dbg then flprint "Cpdflib.ocgRename";
@@ -2619,7 +2617,7 @@ let ocgRename pdf f t =
   with
     e -> handle_error "ocgRename" e; err_unit
 
-let _ = Callback.register "ocgRename" ocgRename
+let _ = Callback.register "OCGRename" ocgRename
 
 let ocgOrderAll pdf =
   if !dbg then flprint "Cpdflib.ocgOrderAll";
@@ -2628,7 +2626,7 @@ let ocgOrderAll pdf =
   with
     e -> handle_error "ocgOrderAll" e; err_unit
 
-let _ = Callback.register "ocgOrderAll" ocgOrderAll
+let _ = Callback.register "OCGOrderAll" ocgOrderAll
 
 (* CHAPTER 17. Creating new PDFs *)
 let blankDocument width height pages =
