@@ -177,6 +177,7 @@ int main(int argc, char **argv) {
   int pdfenc3 = cpdf_fromFile("testoutputs/01encrypted.pdf", "");
   cpdf_decryptPdfOwner(pdfenc3, "owner");
   prerr();
+  printf("---cleaning up");
   cpdf_deletePdf(frommemlazy);
   cpdf_deletePdf(pdfenc);
   cpdf_deletePdf(pdfenc3);

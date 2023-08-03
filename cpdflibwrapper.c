@@ -296,11 +296,12 @@ int cpdf_blankRange(void) {
   updateLastError();
   CAMLreturnT(int, Int_val(int_v));
 }
-void cpdf_deleteRange() {
+void cpdf_deleteRange(int pdf) {
   CAMLparam0();
-  CAMLlocal2(fn_v, unit_v);
-  fn_v = *caml_named_value("deleteRange");
-  unit_v = caml_callback(fn_v, Val_unit);
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("deleteRange");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
   updateLastError();
   CAMLreturn0;
 }

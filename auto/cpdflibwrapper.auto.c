@@ -666,7 +666,7 @@ enum cpdf_papersize {
 /* __AUTO validatePagespec string->int */
 /* __AUTO stringOfPagespec int->int->string */
 /* __AUTO blankRange unit->int */
-/* __AUTO deleteRange unit->unit */
+/* __AUTO deleteRange int->unit */
 /* __AUTO range int->int->int */
 /* __AUTO all int->int */
 /* __AUTO even int->int */
