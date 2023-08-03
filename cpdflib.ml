@@ -166,12 +166,12 @@ let deleterange r =
   if !dbg then flprint "Cpdflib.deleterange\n";
   try Hashtbl.remove ranges r with e -> handle_error "deleterange" e; err_unit
 
-let _ = Callback.register "blankrange" blankrange
+let _ = Callback.register "blankRange" blankrange
 let _ = Callback.register "writerange" writerange
 let _ = Callback.register "makerange" makerange
-let _ = Callback.register "lengthrange" lengthrange
-let _ = Callback.register "readrange" readrange
-let _ = Callback.register "addtorange" addtorange
+let _ = Callback.register "rangeLength" lengthrange
+let _ = Callback.register "rangeGet" readrange
+let _ = Callback.register "rangeAdd" addtorange
 let _ = Callback.register "deleterange" deleterange
  
 type pdfdoc = Pdf.t
@@ -234,7 +234,7 @@ let isInRange r i =
 let _ = Callback.register "range" range
 let _ = Callback.register "even" even
 let _ = Callback.register "odd" odd
-let _ = Callback.register "range_union" union
+let _ = Callback.register "rangeUnion" union
 let _ = Callback.register "difference" difference
 let _ = Callback.register "removeDuplicates" removeDuplicates
 let _ = Callback.register "isInRange" isInRange
