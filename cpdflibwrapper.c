@@ -215,7 +215,6 @@ int cpdf_fromFileLazy(char *one, char *two) {
   updateLastError();
   CAMLreturnT(int, Int_val(result_v));
 }
-
 int cpdf_fromMemory(void *data, int len, char *userpw) {
   CAMLparam0();
   CAMLlocal4(pdf_v, bytestream, fn, userpw_v);
@@ -227,7 +226,6 @@ int cpdf_fromMemory(void *data, int len, char *userpw) {
   updateLastError();
   CAMLreturnT(int, Int_val(pdf_v));
 }
-
 int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   CAMLparam0();
   CAMLlocal4(pdf_v, bytestream, fn, userpw_v);
@@ -239,7 +237,6 @@ int cpdf_fromMemoryLazy(void *data, int len, char *userpw) {
   updateLastError();
   CAMLreturnT(int, Int_val(pdf_v));
 }
-
 void cpdf_deletePdf(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, int_in, unit_out);
@@ -1136,7 +1133,6 @@ void cpdf_endSetBookmarkInfo(int pdf) {
   updateLastError();
   CAMLreturn0;
 }
-
 void *cpdf_getBookmarksJSON(int pdf, int *retlen) {
   CAMLparam0();
   CAMLlocal3(fn, bytestream, pdf_v);
@@ -1158,7 +1154,6 @@ void *cpdf_getBookmarksJSON(int pdf, int *retlen) {
   *retlen = size;
   CAMLreturnT(void *, memory);
 }
-
 void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   CAMLparam0();
   CAMLlocal4(unit, bytestream, fn, valpdf);
@@ -1170,7 +1165,6 @@ void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   updateLastError();
   CAMLreturn0;
 }
-
 void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
                           int bookmark) {
   CAMLparam0();
@@ -2210,19 +2204,17 @@ void cpdf_setMetadataFromFile(int pdf, char *s) {
   updateLastError();
   CAMLreturn0;
 }
-
 void cpdf_setMetadataFromByteArray(int pdf, void *data, int len) {
   CAMLparam0();
-  CAMLlocal4(unit, bytestream, setMetadataFromByteArray, valpdf);
+  CAMLlocal4(unit, bytestream, fn, valpdf);
   bytestream =
       caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
-  setMetadataFromByteArray = *caml_named_value("setMetadataFromByteArray");
+  fn = *caml_named_value("setMetadataFromByteArray");
   valpdf = Val_int(pdf);
-  unit = caml_callback2(setMetadataFromByteArray, valpdf, bytestream);
+  unit = caml_callback2(fn, valpdf, bytestream);
   updateLastError();
   CAMLreturn0;
 }
-
 void *cpdf_getMetadata(int pdf, int *retlen) {
   CAMLparam0();
   CAMLlocal3(fn, bytestream, pdf_v);
@@ -2244,7 +2236,6 @@ void *cpdf_getMetadata(int pdf, int *retlen) {
   *retlen = size;
   CAMLreturnT(void *, memory);
 }
-
 void cpdf_removeMetadata(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, int_in, unit_out);
@@ -2462,13 +2453,12 @@ int cpdf_getAttachmentPage(int pdf) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
-
-void *cpdf_getAttachmentData(int serial, int *retlen) {
+void *cpdf_getAttachmentData(int pdf, int *retlen) {
   CAMLparam0();
-  CAMLlocal4(fn, bytestream, pdf_v, serial_v);
+  CAMLlocal3(fn, bytestream, pdf_v);
   fn = *caml_named_value("getAttachmentData");
-  serial_v = Val_int(serial);
-  bytestream = caml_callback(fn, serial_v);
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
   updateLastError();
   char *memory = NULL;
   int size = Caml_ba_array_val(bytestream)->dim[0];
@@ -2484,7 +2474,6 @@ void *cpdf_getAttachmentData(int serial, int *retlen) {
   *retlen = size;
   CAMLreturnT(void *, memory);
 }
-
 void cpdf_endGetAttachments() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
