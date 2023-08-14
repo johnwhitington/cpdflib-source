@@ -150,7 +150,7 @@ val padMultipleBefore : pdf -> int -> unit
 (* CHAPTER 10. Annotations *)
 val annotationsJSON : pdf -> Pdfio.rawbytes
 val removeAnnotations : pdf -> range -> unit
-(*val setAnnotationsJSON : pdf -> Pdfio.rawbytes -> unit*)
+val setAnnotationsJSON : pdf -> Pdfio.rawbytes -> unit
 
 (* CHAPTER 11. Document Information and Metadata *)
 val getVersion : pdf -> int

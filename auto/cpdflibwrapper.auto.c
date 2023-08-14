@@ -1200,8 +1200,10 @@ void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl,
 /* __AUTO padMultipleBefore int->int->unit */
 
 /* CHAPTER 10. Annotations */
+
 /* __AUTO annotationsJSON int->int*->void* */
 /* __AUTO removeAnnotations int->int->unit */
+/* __AUTO setAnnotationsJSON int->void*->int->unit */
 
 /* CHAPTER 11. Document Information and Metadata */
 

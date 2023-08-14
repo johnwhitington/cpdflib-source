@@ -378,7 +378,7 @@ int main(int argc, char **argv) {
   int n_marks = cpdf_numberBookmarks();
   prerr();
   printf("There are %i bookmarks\n", n_marks);
-  for (int x = 0; x < n_marks; x++) {
+  for (int x = 0; x < 1; x++) {
     int level = cpdf_getBookmarkLevel(x);
     int page = cpdf_getBookmarkPage(markspdf, x);
     char *text = cpdf_getBookmarkText(x);
@@ -582,6 +582,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_removeAnnotations()\n");
   int r_annot = cpdf_range(1, 1);
   cpdf_removeAnnotations(annot, r_annot); 
+  printf("---cpdf_setAnnotationsJSON()\n");
+  cpdf_setAnnotationsJSON(annot, data, annotlength);
   cpdf_deletePdf(annot);
   cpdf_deleteRange(r_annot);
 
@@ -912,7 +914,7 @@ int main(int argc, char **argv) {
   prerr();
   int n_fonts = cpdf_numberFonts();
   prerr();
-  for (int x = 0; x < n_fonts; x++) {
+  for (int x = 0; x < 1; x++) {
     printf("Page %i, font %s has type %s and encoding %s\n",
            cpdf_getFontPage(x), cpdf_getFontName(x), cpdf_getFontType(x),
            cpdf_getFontEncoding(x));

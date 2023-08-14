@@ -1510,9 +1510,17 @@ let removeAnnotations pdf range =
   with
     e -> handle_error "removeAnnotations" e; err_unit
 
+let setAnnotationsJSON pdf data =
+  if !dbg then flprint "Cpdflib.setAnnotationsJSON()\n";
+  try
+    let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw data) in
+      Cpdfannot.set_annotations_json (lookup_pdf pdf) i
+  with
+    e -> handle_error "setAnnotationsJSON" e; err_unit
+
 let _ = Callback.register "annotationsJSON" annotationsJSON
 let _ = Callback.register "removeAnnotations" removeAnnotations
-(*let _ = Callback.register "setAnnotationsJSON" setAnnotationsJSON*)
+let _ = Callback.register "setAnnotationsJSON" setAnnotationsJSON
 
 (* CHAPTER 11. Document Information and Metadata *)
 

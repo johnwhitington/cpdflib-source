@@ -1490,6 +1490,17 @@ void cpdf_removeAnnotations(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_setAnnotationsJSON(int pdf, void *data, int len) {
+  CAMLparam0();
+  CAMLlocal4(unit, bytestream, fn, valpdf);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("setAnnotationsJSON");
+  valpdf = Val_int(pdf);
+  unit = caml_callback2(fn, valpdf, bytestream);
+  updateLastError();
+  CAMLreturn0;
+}
 
 /* CHAPTER 11. Document Information and Metadata */
 
