@@ -579,7 +579,11 @@ int main(int argc, char **argv) {
   printf("---cpdf_annotationsJSON()\n");
   void *data = cpdf_annotationsJSON(annot, &annotlength);
   printf("Contains %i bytes of data\n", annotlength);
+  printf("---cpdf_removeAnnotations()\n");
+  int r_annot = cpdf_range(1, 1);
+  cpdf_removeAnnotations(annot, r_annot); 
   cpdf_deletePdf(annot);
+  cpdf_deleteRange(r_annot);
 
   /* CHAPTER 11. Document Information and Metadata */
   printf("***** CHAPTER 11. Document Information and Metadata\n");

@@ -1201,6 +1201,7 @@ void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl,
 
 /* CHAPTER 10. Annotations */
 /* __AUTO annotationsJSON int->int*->void* */
+/* __AUTO removeAnnotations int->int->unit */
 
 /* CHAPTER 11. Document Information and Metadata */
 

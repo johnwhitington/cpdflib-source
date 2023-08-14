@@ -1480,6 +1480,16 @@ void *cpdf_annotationsJSON(int pdf, int *retlen) {
   *retlen = size;
   CAMLreturnT(void *, memory);
 }
+void cpdf_removeAnnotations(int o, int n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("removeAnnotations");
+  o_v = Val_int(o);
+  n_v = Val_int(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
 
 /* CHAPTER 11. Document Information and Metadata */
 

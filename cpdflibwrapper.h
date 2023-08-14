@@ -884,6 +884,8 @@ void cpdf_padMultipleBefore(int, int);
  */
 void *cpdf_annotationsJSON(int, int *);
 
+void cpdf_removeAnnotations(int, int);
+
 /* CHAPTER 11. Document Information and Metadata */
 
 /*
