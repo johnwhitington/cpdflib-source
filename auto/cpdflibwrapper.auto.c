@@ -1333,6 +1333,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO getPageLabelRange int->int */
 /* __AUTO getPageLabelPrefix int->string */
 /* __AUTO getPageLabelStringForPage int->int->string */
+/* __AUTO compositionJSON int->int*->void* */
 
 /* CHAPTER 12. File Attachments */
 

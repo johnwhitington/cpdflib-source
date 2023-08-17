@@ -55,4 +55,4 @@ let go infile outfile =
   let processed = process [] indata in
     contents_to_file outfile (fold_left ( ^ ) "" processed)
 
-let () = go "cpdflibwrapper.auto.c" "cpdflibwrapper.c"
+let () = go "cpdflibwrapper.auto.c" "../cpdflibwrapper.c"
