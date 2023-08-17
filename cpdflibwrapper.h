@@ -1205,6 +1205,8 @@ int cpdf_getPageLabelOffset(int);
 int cpdf_getPageLabelRange(int);
 void cpdf_endGetPageLabels();
 
+void *cpdf_compositionJSON(int, int, int*);
+
 /* CHAPTER 12. File Attachments */
 
 /*

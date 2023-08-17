@@ -2204,6 +2204,13 @@ let setCropBox pdf range minx maxx miny maxy =
   with
     e -> handle_error "setCropBox" e; err_unit
 
+let compositionJSON filesize pdf =
+  if !dbg then flprint "Cpdflib.compositionJSON()\n";
+  try
+    Pdfio.raw_of_bytes (Cpdfcomposition.show_composition_json_blob filesize (lookup_pdf pdf))
+  with
+    e -> handle_error "compositionJSON" e; err_data
+
 let _ = Callback.register "getVersion" getVersion
 let _ = Callback.register "getMajorVersion" getMajorVersion
 let _ = Callback.register "getTitle" getTitle
@@ -2273,6 +2280,7 @@ let _ = Callback.register "createMetadata" createMetadata
 let _ = Callback.register "setMetadataDate" setMetadataDate
 let _ = Callback.register "setMetadataFromByteArray" setMetadataFromByteArray
 let _ = Callback.register "getMetadata" getMetadata
+let _ = Callback.register "compositionJSON" compositionJSON
 
 (* CHAPTER 12. File Attachments *)
 let attachFile filename pdf =

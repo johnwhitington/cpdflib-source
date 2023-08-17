@@ -2374,12 +2374,13 @@ char *cpdf_getPageLabelStringForPage(int a, int b) {
   updateLastError();
   CAMLreturnT(char *, (char *)String_val(out));
 }
-void *cpdf_compositionJSON(int pdf, int *retlen) {
+void *cpdf_compositionJSON(int filesize, int pdf, int *retlen) {
   CAMLparam0();
-  CAMLlocal3(fn, bytestream, pdf_v);
+  CAMLlocal4(fn, filesize_v, bytestream, pdf_v);
   fn = *caml_named_value("compositionJSON");
   pdf_v = Val_int(pdf);
-  bytestream = caml_callback(fn, pdf_v);
+  filesize_v = Val_int(filesize);
+  bytestream = caml_callback2(fn, filesize_v, pdf_v);
   updateLastError();
   char *memory = NULL;
   int size = Caml_ba_array_val(bytestream)->dim[0];

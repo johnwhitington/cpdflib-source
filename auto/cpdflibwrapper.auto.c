@@ -690,6 +690,31 @@ void *cpdf_~(int pdf, int *retlen) {
 }
 */
 
+/* __AUTODEF int->int->int*->void*
+void *cpdf_~(int filesize, int pdf, int *retlen) {
+  CAMLparam0();
+  CAMLlocal4(fn, filesize_v, bytestream, pdf_v);
+  fn = *caml_named_value("~");
+  pdf_v = Val_int(pdf);
+  filesize_v = Val_int(filesize);
+  bytestream = caml_callback2(fn, filesize_v, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "~: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
+*/
+
 /* __AUTODEF int->void*->int->unit
 void cpdf_~(int pdf, void *data, int len) {
   CAMLparam0();
@@ -1333,7 +1358,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO getPageLabelRange int->int */
 /* __AUTO getPageLabelPrefix int->string */
 /* __AUTO getPageLabelStringForPage int->int->string */
-/* __AUTO compositionJSON int->int*->void* */
+/* __AUTO compositionJSON int->int->int*->void* */
 
 /* CHAPTER 12. File Attachments */
 

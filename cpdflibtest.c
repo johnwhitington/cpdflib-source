@@ -843,6 +843,12 @@ int main(int argc, char **argv) {
   char *pllabel = cpdf_getPageLabelStringForPage(info, 1);
   prerr();
   printf("Label string is %s\n", pllabel);
+  printf("---cpdf_compositionJSON()\n");
+  int compjson = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int complength;
+  void *compdata = cpdf_compositionJSON(1000000, compjson, &complength);
+  printf("Contains %i bytes of data\n", complength);
+  cpdf_deletePdf(compjson);
   cpdf_deletePdf(info);
   cpdf_deleteRange(r_info);
 
