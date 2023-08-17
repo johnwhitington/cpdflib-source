@@ -2706,12 +2706,44 @@ let textToPDFPaperMemory papersize font fontsize rawbytes =
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFPaperMemory" e; err_int
 
+let fromJPEGMemory rawbytes =
+  try
+    new_pdf
+      (Cpdfimage.image_of_input Cpdfimage.obj_of_jpeg_data (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+  with
+    e -> handle_error "fromJPEGMemory" e; err_int
+
+let fromPNGMemory rawbytes =
+  try
+    new_pdf
+      (Cpdfimage.image_of_input Cpdfimage.obj_of_png_data (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+  with
+    e -> handle_error "fromPNGMemory" e; err_int
+
+let fromJPEG filename =
+  try
+    let input = Pdfio.input_of_bytes (contents_of_file filename) in
+      new_pdf (Cpdfimage.image_of_input Cpdfimage.obj_of_jpeg_data input)
+  with
+    e -> handle_error "fromJPEG" e; err_int
+
+let fromPNG filename =
+  try
+    let input = Pdfio.input_of_bytes (contents_of_file filename) in
+      new_pdf (Cpdfimage.image_of_input Cpdfimage.obj_of_png_data input)
+  with
+    e -> handle_error "fromPNG" e; err_int
+
 let _ = Callback.register "blankDocument" blankDocument
 let _ = Callback.register "blankDocumentPaper" blankDocumentPaper
 let _ = Callback.register "textToPDF" textToPDF
 let _ = Callback.register "textToPDFPaper" textToPDFPaper
 let _ = Callback.register "textToPDFMemory" textToPDFMemory
 let _ = Callback.register "textToPDFPaperMemory" textToPDFPaperMemory
+let _ = Callback.register "fromJPEG" fromJPEG
+let _ = Callback.register "fromPNG" fromPNG
+let _ = Callback.register "fromJPEGMemory" fromJPEGMemory
+let _ = Callback.register "fromPNGMemory" fromPNGMemory
 
 (* CHAPTER 18. Miscellaneous *)
 let draft pdf range boxes =

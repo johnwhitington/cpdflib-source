@@ -277,6 +277,10 @@ val textToPDF : float -> float -> Pdftext.standard_font -> float -> string -> pd
 val textToPDFPaper : int -> Pdftext.standard_font -> float -> string -> pdf
 val textToPDFMemory : float -> float -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
 val textToPDFPaperMemory : int -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
+val fromPNG : string -> pdf
+val fromJPEG : string -> pdf
+val fromPNGMemory : Pdfio.rawbytes -> pdf
+val fromJPEGMemory : Pdfio.rawbytes -> pdf
 
 (* CHAPTER 18. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit

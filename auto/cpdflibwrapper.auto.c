@@ -1474,7 +1474,8 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO blankDocumentPaper int->int->int */
 /* __AUTO textToPDF float->float->int->float->string->int */
 /* __AUTO textToPDFPaper int->int->float->string->int */
-
+/* __AUTO fromPNG string->int */
+/* __AUTO fromJPEG string->int */
 
 /* CHAPTER 18. Miscellaneous */
 

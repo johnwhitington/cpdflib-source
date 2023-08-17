@@ -1372,6 +1372,9 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 
+int cpdf_fromPNG(const char[]);
+int cpdf_fromJPEG(const char[]);
+
 /* CHAPTER 18. Miscellaneous */
 
 /*

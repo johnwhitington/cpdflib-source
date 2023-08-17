@@ -1459,6 +1459,7 @@ void cpdf_padMultipleBefore(int o, int n) {
 }
 
 /* CHAPTER 10. Annotations */
+
 void *cpdf_annotationsJSON(int pdf, int *retlen) {
   CAMLparam0();
   CAMLlocal3(fn, bytestream, pdf_v);
@@ -2841,7 +2842,24 @@ int cpdf_textToPDFPaper(int papersize, int font, double fontsize,
   out_v = caml_callbackN(fn_v, 4, args);
   CAMLreturnT(int, Int_val(out_v));
 }
-
+int cpdf_fromPNG(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("fromPNG");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out));
+}
+int cpdf_fromJPEG(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("fromJPEG");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out));
+}
 
 /* CHAPTER 18. Miscellaneous */
 
