@@ -1082,6 +1082,8 @@ enum cpdf_layout {
 /* cpdf_setPageLayout(pdf, layout) sets the page layout for a document. */
 void cpdf_setPageLayout(int, enum cpdf_layout);
 
+enum cpdf_layout cpdf_getPageLayout(int);
+
 /* Document page modes. */
 enum cpdf_pageMode {
   cpdf_useNone,
@@ -1094,23 +1096,41 @@ enum cpdf_pageMode {
 /* cpdf_setPageMode(pdf, mode) sets the page mode for a document. */
 void cpdf_setPageMode(int, enum cpdf_pageMode);
 
+enum cpdf_pageMode cpdf_getPageMode(int);
+
 /* cpdf_hideToolbar(pdf, flag) sets the hide toolbar flag. */
 void cpdf_hideToolbar(int, int);
+
+int cpdf_getHideToolbar(int);
 
 /* cpdf_hideMenubar(pdf, flag) sets the hide menu bar flag. */
 void cpdf_hideMenubar(int, int);
 
+int cpdf_getHideMenubar(int);
+
 /* cpdf_hideWindowUi(pdf, flag) sets the hide window UI flag. */
 void cpdf_hideWindowUi(int, int);
+
+int cpdf_getHideWindowUi(int);
 
 /* cpdf_fitWindow(pdf, flag) sets the fit window flag. */
 void cpdf_fitWindow(int, int);
 
+int cpdf_getFitWindow(int);
+
 /* cpdf_centerWindow(pdf, flag) sets the center window flag. */
 void cpdf_centerWindow(int, int);
 
+int cpdf_getCenterWindow(int);
+
 /* cpdf_displayDocTitle(pdf, flag) sets the display doc title flag. */
 void cpdf_displayDocTitle(int, int);
+
+int cpdf_getDisplayDocTitle(int);
+
+void cpdf_nonFullScreenPageMode(int, int);
+
+int cpdf_getNonFullScreenPageMode(int);
 
 /* cpdf_openAtPage(pdf, fit, pagenumber) sets the PDF to open, possibly with
  * zoom-to-fit, at the given page number. */

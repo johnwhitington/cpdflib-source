@@ -2135,6 +2135,15 @@ void cpdf_setPageLayout(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+int cpdf_getPageLayout(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getPageLayout");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 void cpdf_setPageMode(int o, int n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);
@@ -2144,6 +2153,24 @@ void cpdf_setPageMode(int o, int n) {
   unit_out = caml_callback2(fn, o_v, n_v);
   updateLastError();
   CAMLreturn0;
+}
+int cpdf_getPageMode(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getPageMode");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_getHideToolbar(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getHideToolbar");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
 }
 void cpdf_hideToolbar(int o, int n) {
   CAMLparam0();
@@ -2155,6 +2182,15 @@ void cpdf_hideToolbar(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+int cpdf_getHideMenubar(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getHideMenubar");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 void cpdf_hideMenubar(int o, int n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);
@@ -2164,6 +2200,15 @@ void cpdf_hideMenubar(int o, int n) {
   unit_out = caml_callback2(fn, o_v, n_v);
   updateLastError();
   CAMLreturn0;
+}
+int cpdf_getHideWindowUi(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getHideWindowUi");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
 }
 void cpdf_hideWindowUi(int o, int n) {
   CAMLparam0();
@@ -2175,6 +2220,15 @@ void cpdf_hideWindowUi(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+int cpdf_getFitWindow(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getFitWindow");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 void cpdf_fitWindow(int o, int n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);
@@ -2185,6 +2239,15 @@ void cpdf_fitWindow(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+int cpdf_getCenterWindow(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getCenterWindow");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 void cpdf_centerWindow(int o, int n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);
@@ -2194,6 +2257,15 @@ void cpdf_centerWindow(int o, int n) {
   unit_out = caml_callback2(fn, o_v, n_v);
   updateLastError();
   CAMLreturn0;
+}
+int cpdf_getDisplayDocTitle(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getDisplayDocTitle");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
 }
 void cpdf_displayDocTitle(int o, int n) {
   CAMLparam0();
@@ -2213,6 +2285,25 @@ void cpdf_openAtPage(int pdf, int range, int angle) {
   range_v = Val_int(range);
   angle_v = Val_int(angle);
   unit = caml_callback3(fn, pdf_v, range_v, angle_v);
+  updateLastError();
+  CAMLreturn0;
+}
+int cpdf_getNonFullScreenPageMode(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getNonFullScreenPageMode");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+void cpdf_nonFullScreenPageMode(int o, int n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("nonFullScreenPageMode");
+  o_v = Val_int(o);
+  n_v = Val_int(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
   updateLastError();
   CAMLreturn0;
 }

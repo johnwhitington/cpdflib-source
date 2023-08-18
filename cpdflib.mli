@@ -197,14 +197,24 @@ val setCreationDateXMP : pdf -> string -> unit
 val setModificationDateXMP : pdf -> string -> unit
 val hasBox : pdf -> int -> string -> bool
 val getPageRotation : pdf -> int -> int
+val getPageLayout : pdf -> int
 val setPageLayout : pdf -> int -> unit
+val getPageMode : pdf -> int 
 val setPageMode : pdf -> int -> unit
 val hideToolbar : pdf -> bool -> unit
+val getHideToolbar : pdf -> bool
 val hideMenubar : pdf -> bool -> unit
+val getHideMenubar : pdf -> bool
 val hideWindowUi : pdf -> bool -> unit
+val getHideWindowUi : pdf -> bool
 val fitWindow : pdf -> bool -> unit
+val getFitWindow : pdf -> bool
 val centerWindow : pdf -> bool -> unit
+val getCenterWindow : pdf -> bool
 val displayDocTitle : pdf -> bool -> unit
+val getDisplayDocTitle : pdf -> bool
+val getNonFullScreenPageMode : pdf -> int
+val nonFullScreenPageMode : pdf -> int -> unit
 val openAtPage : pdf -> bool -> int -> unit
 val setMetadataFromFile : pdf -> string -> unit
 val setMetadataFromByteArray : pdf -> Pdfio.rawbytes -> unit

@@ -1922,6 +1922,20 @@ let string_of_layout = function
   | TwoPageLeft -> "TwoPageLeft"
   | TwoPageRight -> "TwoPageRight"
 
+let getPageLayout pdf =
+  if !dbg then flprint "Cpdflib.getPageLayout\n";
+  try
+    match Cpdfmetadata.get_catalog_item "/PageLayout" (lookup_pdf pdf) with
+    | "SinglePage" -> 0
+    | "OneColumn" -> 1
+    | "TwoColumnLeft" -> 2
+    | "TwoColumnRight" -> 3
+    | "TwoPageLeft" -> 4
+    | "TwoPageRight" -> 5
+    | _ -> 0
+  with
+    e -> handle_error "getPageLayout" e; err_int
+
 let setPageLayout pdf layout =
   if !dbg then flprint "Cpdflib.setPageLayout\n";
   try
@@ -1955,6 +1969,20 @@ let string_of_mode = function
   | UseOC -> "UseOC"
   | UseAttachments -> "UseAttachments"
 
+let getPageMode pdf =
+  if !dbg then flprint "Cpdflib.getPageMode\n";
+  try
+    match Cpdfmetadata.get_catalog_item "/PageMode" (lookup_pdf pdf) with
+    | "UseNone" -> 0
+    | "UseOutlines" -> 1
+    | "UseThumbs" -> 2
+    | "FullScreen" -> 3
+    | "UseOC" -> 4
+    | "UseAttachments" -> 5
+    | _ -> 0
+  with
+    e -> handle_error "getPageMode" e; err_int
+
 let setPageMode pdf mode =
   if !dbg then flprint "Cpdflib.setPageMode\n";
   try
@@ -1979,12 +2007,30 @@ let hideToolbar pdf b =
   with
     e -> handle_error "hideToolbar" e; err_unit
 
+let getHideToolbar pdf =
+  if !dbg then flprint "Cpdflib.getHideToolbar";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/HideToolbar" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getHideToolbar" e; err_bool
+
 let hideMenubar pdf b =
   if !dbg then flprint "Cpdflib.hideMenubar\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/HideMenubar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideMenubar" e; err_unit
+
+let getHideMenubar pdf =
+  if !dbg then flprint "Cpdflib.getHideMenubar";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/HideMenubar" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getHideMenubar" e; err_bool
 
 let hideWindowUi pdf b =
   if !dbg then flprint "Cpdflib.hideWindowUi\n";
@@ -1993,12 +2039,30 @@ let hideWindowUi pdf b =
   with
     e -> handle_error "hideWindowUi" e; err_unit
 
+let getHideWindowUi pdf =
+  if !dbg then flprint "Cpdflib.getHideWindowUi";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/HideWindowUI" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getHideWindowUi" e; err_bool
+
 let fitWindow pdf b =
   if !dbg then flprint "Cpdflib.fitWindow\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/FitWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "fitWindow" e; err_unit
+
+let getFitWindow pdf =
+  if !dbg then flprint "Cpdflib.getFitWindow";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/FitWindow" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getFitWindow" e; err_bool
 
 let centerWindow pdf b =
   if !dbg then flprint "Cpdflib.centerWindow\n";
@@ -2007,6 +2071,15 @@ let centerWindow pdf b =
   with
     e -> handle_error "centerWindow" e; err_unit
 
+let getCenterWindow pdf =
+  if !dbg then flprint "Cpdflib.getCenterWindow\n";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/CenterWindow" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getCenterWindow" e; err_bool
+
 let displayDocTitle pdf b =
   if !dbg then flprint "Cpdflib.displayDocTitle\n";
   try
@@ -2014,6 +2087,44 @@ let displayDocTitle pdf b =
   with
     e -> handle_error "displayDocTitle" e; err_unit
 
+let getDisplayDocTitle pdf =
+  if !dbg then flprint "Cpdflib.getDisplayDocTitle\n";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/DisplayDocTitle" (lookup_pdf pdf) with
+    | "true" -> true
+    | _ -> false
+  with
+    e -> handle_error "getDisplayDocTitle" e; err_bool
+
+let getNonFullScreenPageMode pdf =
+  if !dbg then flprint "Cpdflib.getNonFullScreenPageMode\n";
+  try
+    match Cpdfmetadata.get_viewer_pref_item "/NonFullScreenPageMode" (lookup_pdf pdf) with
+    | "UseNone" -> 0
+    | "UseOutlines" -> 1
+    | "UseThumbs" -> 2
+    | "UseOC" -> 4
+    | "UseAttachments" -> 5
+    | _ -> 0
+  with
+    e -> handle_error "getNonFullScreenPageMode" e; err_int
+
+let nonFullScreenPageMode pdf mode =
+  if !dbg then flprint "Cpdflib.nonFullScreenPageMode\n";
+  try
+    let mode =
+      match mode with
+      | 0 -> UseNone
+      | 1 -> UseOutlines
+      | 2 -> UseThumbs
+      | 3 -> FullScreen
+      | 4 -> UseOC
+      | 5 -> UseAttachments
+      | _ -> UseNone
+    in
+      update_pdf (Cpdfmetadata.set_non_full_screen_page_mode (lookup_pdf pdf) (string_of_mode mode)) (lookup_pdf pdf)
+  with
+    e -> handle_error "nonFullScreenPageMode" e; err_unit
 
 let openAtPage pdf fit pagenum =
   if !dbg then flprint "Cpdflib.openAtPage\n";
@@ -2254,7 +2365,9 @@ let _ = Callback.register "setCreationDateXMP" setCreationDateXMP
 let _ = Callback.register "setModificationDateXMP" setModificationDateXMP
 let _ = Callback.register "markTrappedXMP" markTrappedXMP
 let _ = Callback.register "markUntrappedXMP" markUntrappedXMP
+let _ = Callback.register "getPageMode" getPageMode
 let _ = Callback.register "setPageMode" setPageMode
+let _ = Callback.register "getPageLayout" getPageLayout
 let _ = Callback.register "setPageLayout" setPageLayout
 let _ = Callback.register "hasBox" hasBox
 let _ = Callback.register "getPageRotation" getPageRotation
@@ -2267,12 +2380,20 @@ let _ = Callback.register "setArtBox" setArtBox
 let _ = Callback.register "setCropBox" setCropBox
 let _ = Callback.register "setTrimBox" setTrimBox
 let _ = Callback.register "setBleedBox" setBleedBox
-let _ = Callback.register "hideToolbar" hideToolbar 
+let _ = Callback.register "hideToolbar" hideToolbar
+let _ = Callback.register "getHideToolbar" getHideToolbar
 let _ = Callback.register "hideMenubar" hideMenubar
+let _ = Callback.register "getHideMenubar" getHideMenubar
 let _ = Callback.register "hideWindowUi" hideWindowUi
+let _ = Callback.register "getHideWindowUi" getHideWindowUi
 let _ = Callback.register "fitWindow" fitWindow
+let _ = Callback.register "getFitWindow" getFitWindow
 let _ = Callback.register "centerWindow" centerWindow
+let _ = Callback.register "getCenterWindow" getCenterWindow
 let _ = Callback.register "displayDocTitle" displayDocTitle
+let _ = Callback.register "getDisplayDocTitle" getDisplayDocTitle
+let _ = Callback.register "nonFullScreenPageMode" nonFullScreenPageMode
+let _ = Callback.register "getNonFullScreenPageMode" getNonFullScreenPageMode
 let _ = Callback.register "openAtPage" openAtPage
 let _ = Callback.register "setMetadataFromFile" setMetadataFromFile
 let _ = Callback.register "removeMetadata" removeMetadata
