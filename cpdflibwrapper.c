@@ -2812,6 +2812,16 @@ void cpdf_copyFont(int from_pdf, int to_pdf, int range, int pagenumber,
 
 /* CHAPTER 15. PDF and JSON */
 
+void cpdf_JSONUTF8(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("JSONUTF8");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
+  updateLastError();
+  CAMLreturn0;
+}
+
 void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
                      int decompress_streams, int pdf) {
   CAMLparam0();

@@ -1454,6 +1454,8 @@ void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
 
 /* CHAPTER 15. PDF and JSON */
 
+/* __AUTO JSONUTF8 int->unit */
+
 void cpdf_outputJSON(char *filename, int parse_content, int no_stream_data,
                      int decompress_streams, int pdf) {
   CAMLparam0();

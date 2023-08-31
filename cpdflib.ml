@@ -8,6 +8,8 @@ let fast = ref false
 let embed_std14 = ref false
 let embed_std14_dir = ref ""
 
+let json_utf8 = ref false
+
 let setFast () =
   if !dbg then flprint "Cpdflib.setFast\n";
   fast := true
@@ -24,10 +26,15 @@ let embedStd14Dir dir =
   if !dbg then flprint "Cpdflib.embedStd14Dir\n";
   embed_std14_dir := dir
 
+let jsonUTF8 b =
+  if !dbg then flprint "Cpdflib.jsonUTF8\n";
+  json_utf8 := b
+
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
 let _ = Callback.register "embedStd14" embedStd14
 let _ = Callback.register "embedStd14Dir" embedStd14Dir
+let _ = Callback.register "JSONUTF8" jsonUTF8
 
 let version = "2.6.1"
 
@@ -2699,7 +2706,7 @@ let outputJSON filename parse_content no_stream_data decompress_streams pdf =
   try
     let handle = open_out_bin filename in
       Cpdfjson.to_output
-        (Pdfio.output_of_channel handle) ~utf8:false (* FIXME *) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
+        (Pdfio.output_of_channel handle) ~utf8:!json_utf8 ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       close_out handle
   with
     e -> handle_error "outputJSON" e; err_unit
@@ -2708,7 +2715,7 @@ let outputJSONMemory parse_content no_stream_data decompress_streams pdf =
   if !dbg then flprint "Cpdflib.toJSONMemory\n";
   try
     let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
-      Cpdfjson.to_output o ~utf8:false (* FIXME *) ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
+      Cpdfjson.to_output o ~utf8:!json_utf8 ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
       Pdfio.raw_of_bytes (Pdfio.extract_bytes_from_input_output o bytes)
   with
     e -> handle_error "outputJSONMemory" e; err_data
@@ -2988,7 +2995,7 @@ let replaceDictEntrySearch pdf key value searchterm =
 let getDictEntries pdf key =
   if !dbg then flprint "Cpdflib.getDictEntries\n";
   try
-    Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries ~utf8:false (* FIXME *) (lookup_pdf pdf) key)
+    Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries ~utf8:!json_utf8 (lookup_pdf pdf) key)
   with
     e -> handle_error "getDictEntries" e; err_data
 
