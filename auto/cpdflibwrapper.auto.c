@@ -368,10 +368,10 @@ void cpdf_~(int pdf, int range, double x, double y, double w, double h) {
 */
 
 /* __AUTODEF int->int->string->unit
-void cpdf_hardBox(int pdf, int range, char *box) {
+void cpdf_~(int pdf, int range, char *box) {
   CAMLparam0();
   CAMLlocal5(unit, fn, pdf_v, range_v, box_v);
-  fn = *caml_named_value("hardBox");
+  fn = *caml_named_value("~");
   pdf_v = Val_int(pdf);
   range_v = Val_int(range);
   box_v = caml_copy_string(box);
@@ -1351,6 +1351,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO getDisplayDocTitle int->int */
 /* __AUTO displayDocTitle int->int->unit */
 /* __AUTO openAtPage int->int->int->unit */
+/* __AUTO openAtPageCustom int->string->unit */
 /* __AUTO getNonFullScreenPageMode int->int */
 /* __AUTO nonFullScreenPageMode int->int->unit */
 /* __AUTO setMetadataFromFile int->string->unit */

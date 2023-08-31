@@ -822,6 +822,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_openAtPage()\n");
   cpdf_openAtPage(info, true, 4);
   prerr();
+  printf("---cpdf_openAtPageCustom()\n");
+  cpdf_openAtPageCustom(info, "[4 /FitR 100 100 300 300]");
+  prerr();
   cpdf_toFile(info, "testoutputs/11open.pdf", false, false);
   printf("---cpdf_setMetadataFromFile()\n");
   cpdf_setMetadataFromFile(info, "cpdflibmanual.pdf");

@@ -2288,6 +2288,16 @@ void cpdf_openAtPage(int pdf, int range, int angle) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_openAtPageCustom(int pdf, char *s) {
+  CAMLparam0();
+  CAMLlocal4(unit, fn, pdf_v, s_v);
+  fn = *caml_named_value("openAtPageCustom");
+  pdf_v = Val_int(pdf);
+  s_v = caml_copy_string(s);
+  unit = caml_callback2(fn, pdf_v, s_v);
+  updateLastError();
+  CAMLreturn0;
+}
 int cpdf_getNonFullScreenPageMode(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, in_v, out_v);

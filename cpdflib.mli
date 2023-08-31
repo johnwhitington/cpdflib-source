@@ -216,6 +216,7 @@ val getDisplayDocTitle : pdf -> bool
 val getNonFullScreenPageMode : pdf -> int
 val nonFullScreenPageMode : pdf -> int -> unit
 val openAtPage : pdf -> bool -> int -> unit
+val openAtPageCustom : pdf -> string -> unit
 val setMetadataFromFile : pdf -> string -> unit
 val setMetadataFromByteArray : pdf -> Pdfio.rawbytes -> unit
 val getMetadata : pdf -> Pdfio.rawbytes

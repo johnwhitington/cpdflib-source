@@ -2133,6 +2133,13 @@ let openAtPage pdf fit pagenum =
   with
     e -> handle_error "openAtPage" e; err_unit
 
+let openAtPageCustom pdf dest =
+  if !dbg then flprint "Cpdflib.openAtPageCustom\n";
+  try
+    update_pdf (Cpdfmetadata.set_open_action ~dest (lookup_pdf pdf) false 1) (lookup_pdf pdf)
+  with
+    e -> handle_error "openAtPageCustom" e; err_unit
+
 let setMetadataFromFile pdf filename =
   if !dbg then flprint "Cpdflib.setMetadataFromFile\n";
   try
@@ -2340,7 +2347,6 @@ let _ = Callback.register "getCreatorXMP" getCreatorXMP
 let _ = Callback.register "getProducerXMP" getProducerXMP
 let _ = Callback.register "getCreationDateXMP" getCreationDateXMP
 let _ = Callback.register "getModificationDateXMP" getModificationDateXMP
-
 let _ = Callback.register "getDateComponents" getDateComponents
 let _ = Callback.register "dateStringOfComponents" dateStringOfComponents
 let _ = Callback.register "setVersion" setVersion
@@ -2395,6 +2401,7 @@ let _ = Callback.register "getDisplayDocTitle" getDisplayDocTitle
 let _ = Callback.register "nonFullScreenPageMode" nonFullScreenPageMode
 let _ = Callback.register "getNonFullScreenPageMode" getNonFullScreenPageMode
 let _ = Callback.register "openAtPage" openAtPage
+let _ = Callback.register "openAtPageCustom" openAtPageCustom
 let _ = Callback.register "setMetadataFromFile" setMetadataFromFile
 let _ = Callback.register "removeMetadata" removeMetadata
 let _ = Callback.register "createMetadata" createMetadata

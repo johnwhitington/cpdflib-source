@@ -1136,6 +1136,8 @@ int cpdf_getNonFullScreenPageMode(int);
  * zoom-to-fit, at the given page number. */
 void cpdf_openAtPage(int, int, int);
 
+void cpdf_openAtPageCustom(int, char*);
+
 /*
  * cpdf_setMetadataFromFile(pdf, filename) set the XMP metadata of a
  * document, given a file name.
