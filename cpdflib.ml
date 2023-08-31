@@ -5,6 +5,8 @@ let dbg = ref false
 
 let fast = ref false
 
+let embed_std14 = ref false
+
 let setFast () =
   if !dbg then flprint "Cpdflib.setFast\n";
   fast := true
@@ -13,8 +15,13 @@ let setSlow () =
   if !dbg then flprint "Cpdflib.setSlow\n";
   fast := false
 
+let embedStd14 b =
+  if !dbg then flprint "Cpdflib.setEmbedStd14\n";
+  embed_std14 := b
+
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
+let _ = Callback.register "embedStd14" embedStd14
 
 let version = "2.5.2"
 

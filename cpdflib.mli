@@ -9,6 +9,7 @@ type pdf
 val fast : bool ref
 val setFast : unit -> unit
 val setSlow : unit -> unit
+val embedStd14 : bool -> unit
 val version : string
 val startEnumeratePDFs : unit -> int
 val enumeratePDFsKey : int -> int

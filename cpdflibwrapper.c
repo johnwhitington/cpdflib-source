@@ -184,6 +184,15 @@ void cpdf_setSlow() {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_embedStd14(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("embedStd14");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_onExit() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);

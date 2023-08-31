@@ -25,6 +25,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_setSlow()\n");
   cpdf_setSlow();
   prerr();
+  printf("---cpdf_embedStd14()\n");
+  cpdf_embedStd14(true);
+  prerr();
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();

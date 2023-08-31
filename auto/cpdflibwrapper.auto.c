@@ -786,6 +786,7 @@ void cpdf_clearError(void) {
 
 /* __AUTO setFast unit->unit */
 /* __AUTO setSlow unit->unit */
+/* __AUTO embedStd14 int->unit */
 /* __AUTO onExit unit->unit */
 
 /* CHAPTER 1. Basics */

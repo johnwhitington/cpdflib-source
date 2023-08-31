@@ -22,6 +22,8 @@ char *cpdf_version();
 void cpdf_setFast();
 void cpdf_setSlow();
 
+void cpdf_embedStd14(int);
+
 /*
  * Errors. cpdf_lastError and cpdf_lastErrorString hold information about the
  * last error to have occurred. They should be consulted after each call. If
