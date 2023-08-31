@@ -248,6 +248,18 @@ int cpdf_~(char *str) {
 }
 */
 
+/* __AUTODEF string->unit
+void cpdf_~(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("~");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
 /* __AUTODEF int->string->int
 int cpdf_~(int i, char *str) {
   CAMLparam0();
@@ -787,6 +799,7 @@ void cpdf_clearError(void) {
 /* __AUTO setFast unit->unit */
 /* __AUTO setSlow unit->unit */
 /* __AUTO embedStd14 int->unit */
+/* __AUTO embedStd14Dir string->unit */
 /* __AUTO onExit unit->unit */
 
 /* CHAPTER 1. Basics */

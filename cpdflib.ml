@@ -6,6 +6,7 @@ let dbg = ref false
 let fast = ref false
 
 let embed_std14 = ref false
+let embed_std14_dir = ref ""
 
 let setFast () =
   if !dbg then flprint "Cpdflib.setFast\n";
@@ -16,14 +17,19 @@ let setSlow () =
   fast := false
 
 let embedStd14 b =
-  if !dbg then flprint "Cpdflib.setEmbedStd14\n";
+  if !dbg then flprint "Cpdflib.embedStd14\n";
   embed_std14 := b
+
+let embedStd14Dir dir =
+  if !dbg then flprint "Cpdflib.embedStd14Dir\n";
+  embed_std14_dir := dir
 
 let _ = Callback.register "setFast" setFast
 let _ = Callback.register "setSlow" setSlow
 let _ = Callback.register "embedStd14" embedStd14
+let _ = Callback.register "embedStd14Dir" embedStd14Dir
 
-let version = "2.5.2"
+let version = "2.6.1"
 
 let _ = Callback.register "version" version
 
@@ -1355,6 +1361,7 @@ let addText_inner
          outline (* outline *)
          !fast (* fast *)
          fontname (* font name *)
+         (* FIXME Implement embedStd14 here once loadttf is done - need dir for embedStd14 too *)
          (Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding)))) (* font *)
          bates (* bates number *)
          None (* pad bates *)

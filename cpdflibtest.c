@@ -28,6 +28,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_embedStd14()\n");
   cpdf_embedStd14(true);
   prerr();
+  printf("---cpdf_embedStd14Dir()\n");
+  cpdf_embedStd14Dir(".");
+  prerr();
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();

@@ -23,6 +23,7 @@ void cpdf_setFast();
 void cpdf_setSlow();
 
 void cpdf_embedStd14(int);
+void cpdf_embedStd14Dir(char*);
 
 /*
  * Errors. cpdf_lastError and cpdf_lastErrorString hold information about the

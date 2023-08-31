@@ -193,6 +193,15 @@ void cpdf_embedStd14(int pdf) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_embedStd14Dir(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("embedStd14Dir");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_onExit() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
