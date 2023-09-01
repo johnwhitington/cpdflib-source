@@ -3012,7 +3012,56 @@ int cpdf_fromJPEG(char *str) {
   CAMLreturnT(int, Int_val(out));
 }
 
-/* CHAPTER 18. Miscellaneous */
+/* CHAPTER 18. Drawing on PDFs */
+
+void cpdf_drawBegin(int o, int n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("drawBegin");
+  o_v = Val_int(o);
+  n_v = Val_int(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawEnd() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawEnd");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawTo(double o, double n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("drawTo");
+  o_v = caml_copy_double(o);
+  n_v = caml_copy_double(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawLine(double o, double n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("drawLine");
+  o_v = caml_copy_double(o);
+  n_v = caml_copy_double(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawStroke() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawStroke");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+
+/* CHAPTER 19. Miscellaneous */
 
 void cpdf_draft(int pdf, int range, int angle) {
   CAMLparam0();

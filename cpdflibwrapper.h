@@ -1404,7 +1404,15 @@ int cpdf_textToPDFPaper(int, int, double, const char[]);
 int cpdf_fromPNG(const char[]);
 int cpdf_fromJPEG(const char[]);
 
-/* CHAPTER 18. Miscellaneous */
+
+/* CHAPTER 18. Drawing on PDFs */
+void cpdf_drawBegin(int, int);
+void cpdf_drawEnd(void);
+void cpdf_drawTo(double, double);
+void cpdf_drawLine(double, double);
+void cpdf_drawStroke(void);
+
+/* CHAPTER 19. Miscellaneous */
 
 /*
  * cpdf_draft(pdf, range, boxes) removes images on the given pages, replacing

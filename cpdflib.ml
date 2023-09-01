@@ -2902,7 +2902,44 @@ let _ = Callback.register "fromPNG" fromPNG
 let _ = Callback.register "fromJPEGMemory" fromJPEGMemory
 let _ = Callback.register "fromPNGMemory" fromPNGMemory
 
-(* CHAPTER 18. Miscellaneous *)
+(* CHAPTER 18. Drawing on PDFs *)
+let drawBegin pdf range =
+  try
+    err_unit
+  with
+    e -> handle_error "drawBegin" e; err_unit
+
+let drawEnd () =
+  try
+    err_unit
+  with
+    e -> handle_error "drawEnd" e; err_unit
+
+let drawTo a b =
+  try
+    err_unit
+  with
+    e -> handle_error "drawTo" e; err_unit
+
+let drawLine a b =
+  try
+    err_unit
+  with
+    e -> handle_error "drawLine" e; err_unit
+
+let drawStroke () =
+  try
+    err_unit
+  with
+    e -> handle_error "drawStroke" e; err_unit
+
+let _ = Callback.register "drawBegin" drawBegin
+let _ = Callback.register "drawEnd" drawEnd
+let _ = Callback.register "drawTo" drawTo
+let _ = Callback.register "drawLine" drawLine
+let _ = Callback.register "drawStroke" drawStroke
+
+(* CHAPTER 19. Miscellaneous *)
 let draft pdf range boxes =
   (*Printf.printf "**********draft pdf = %i, range = %i, boxes = %b\n" pdf range boxes; *)
   if !dbg then flprint "Cpdflib.draft\n";

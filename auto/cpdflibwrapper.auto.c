@@ -212,6 +212,19 @@ void cpdf_~(int o, int n) {
 }
 */
 
+/* __AUTODEF float->float->unit
+void cpdf_~(double o, double n) {
+  CAMLparam0();
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("~");
+  o_v = caml_copy_double(o);
+  n_v = caml_copy_double(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
 /* __AUTODEF unit->int
 int cpdf_~(void) {
   CAMLparam0();
@@ -1530,7 +1543,15 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO fromPNG string->int */
 /* __AUTO fromJPEG string->int */
 
-/* CHAPTER 18. Miscellaneous */
+/* CHAPTER 18. Drawing on PDFs */
+
+/* __AUTO drawBegin int->int->unit */
+/* __AUTO drawEnd unit->unit */
+/* __AUTO drawTo float->float->unit */
+/* __AUTO drawLine float->float->unit */
+/* __AUTO drawStroke unit->unit */
+
+/* CHAPTER 19. Miscellaneous */
 
 /* __AUTO draft int->int->int->unit */
 /* __AUTO removeAllText int->int->unit */

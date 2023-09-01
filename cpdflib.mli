@@ -296,7 +296,14 @@ val fromJPEG : string -> pdf
 val fromPNGMemory : Pdfio.rawbytes -> pdf
 val fromJPEGMemory : Pdfio.rawbytes -> pdf
 
-(* CHAPTER 18. Miscellaneous *)
+(* CHAPTER 18. Drawing on PDFs *)
+val drawBegin : pdf -> range -> unit
+val drawEnd : unit -> unit
+val drawTo : float -> float -> unit
+val drawLine : float -> float -> unit
+val drawStroke : unit -> unit
+
+(* CHAPTER 19. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit
 val removeAllText : pdf -> range -> unit
 val blackText : pdf -> range -> unit

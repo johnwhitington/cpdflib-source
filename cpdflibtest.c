@@ -1061,8 +1061,31 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(png);
   cpdf_deletePdf(jpg);
 
-  /* CHAPTER 18. Miscellaneous */
+  /* CHAPTER 18. Drawing on PDFs */
   printf("***** CHAPTER 18. Miscellaneous\n");
+  int draw = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int drawall = cpdf_all(draw);
+  printf("---cpdf_drawBegin\n");
+  cpdf_drawBegin(draw, drawall);
+  prerr();
+  printf("---cpdf_drawTo\n");
+  cpdf_drawTo(0, 0);
+  prerr();
+  printf("---cpdf_drawLine\n");
+  cpdf_drawLine(100, 100);
+  prerr();
+  printf("---cpdf_drawStroke\n");
+  cpdf_drawStroke();
+  prerr();
+  printf("---cpdf_drawEnd\n");
+  cpdf_drawEnd();
+  prerr();
+  cpdf_toFile(draw, "testoutputs/drawn.pdf", false, false);
+  cpdf_deletePdf(draw);
+  cpdf_deleteRange(drawall);
+
+  /* CHAPTER 19. Miscellaneous */
+  printf("***** CHAPTER 19. Miscellaneous\n");
   int misc = cpdf_fromFile("cpdflibmanual.pdf", "");
   int misc2 = cpdf_fromFile("cpdflibmanual.pdf", "");
   int misc3 = cpdf_fromFile("cpdflibmanual.pdf", "");
