@@ -1408,9 +1408,65 @@ int cpdf_fromJPEG(const char[]);
 /* CHAPTER 18. Drawing on PDFs */
 void cpdf_drawBegin(int, int);
 void cpdf_drawEnd(void);
+void cpdf_drawRect(double, double, double, double);
 void cpdf_drawTo(double, double);
 void cpdf_drawLine(double, double);
+void cpdf_drawBez(double, double, double, double, double, double);
+void cpdf_drawBez23(double, double, double, double);
+void cpdf_drawBez13(double, double, double, double);
+void cpdf_drawCircle(double, double, double);
+void cpdf_drawStrokecol(int, int, int, int);
+void cpdf_drawFillcol(int, int, int, int);
 void cpdf_drawStroke(void);
+void cpdf_drawFill(void);
+void cpdf_drawFillEo(void);
+void cpdf_drawStrokeFill(void);
+void cpdf_drawStrokeFillEo(void);
+void cpdf_drawClose(void);
+void cpdf_drawThick(float);
+enum cpdf_cap {
+  cpdf_capButt,
+  cpdf_capRound,
+  cpdf_capSquare
+};
+enum cpdf_join {
+  cpdf_joinMiter,
+  cpdf_joinRound,
+  cpdf_joinBevel
+};
+void cpdf_drawCap(enum cpdf_cap);
+void cpdf_drawJoin(enum cpdf_join);
+void cpdf_drawMiter(double);
+void cpdf_drawDash(char*);
+void cpdf_drawPush(void);
+void cpdf_drawPop(void);
+void cpdf_drawMatrix(double, double, double, double, double, double);
+void cpdf_drawMTrans(double, double);
+void cpdf_drawMRot(double, double, double);
+void cpdf_drawMScale(double, double, double, double);
+void cpdf_drawMShearX(double, double, double);
+void cpdf_drawMShearY(double, double, double);
+void cpdf_drawXObjBBox(double, double, double, double);
+void cpdf_drawXObj(char*);
+void cpdf_drawEndXObj(void);
+void cpdf_drawUse(char*);
+void cpdf_drawJPEG(char*, char*);
+void cpdf_drawPNG(char*, char*);
+void cpdf_drawImage(char*);
+void cpdf_drawFillOpacity(double);
+void cpdf_drawStrokeOpacity(double);
+void cpdf_drawBT(void);
+void cpdf_drawET(void);
+void cpdf_drawText(char*);
+void cpdf_drawSText(char*);
+void cpdf_drawLeading(double);
+void cpdf_drawCharSpace(double);
+void cpdf_drawWordSpace(double);
+void cpdf_drawTextScale(double);
+void cpdf_drawRenderMode(int);
+void cpdf_drawRise(double);
+void cpdf_drawNL(void);
+void cpdf_drawNewPage(void);
 
 /* CHAPTER 19. Miscellaneous */
 
