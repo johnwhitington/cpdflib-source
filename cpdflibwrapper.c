@@ -3064,10 +3064,215 @@ void cpdf_drawLine(double o, double n) {
   updateLastError();
   CAMLreturn0;
 }
+/* -__AUTO drawBez float->float->float->float->float->float->unit */
+/* -__AUTO drawBez23 float->float->float->float->unit */
+/* -__AUTO drawBez13 float->float->float->float->unit */
+/* -__AUTO drawCircle float->float->float->unit */
+/* -__AUTO drawStrokeColGrey float->unit */
+/* -__AUTO drawStrokeColRGB float->float->float->unit */
+/* -__AUTO drawStrokeColCYMK float->float->float->float->unit */
+/* -__AUTO drawFillColGrey float->unit */
+/* -__AUTO drawFillColRGB float->float->float->unit */
+/* -__AUTO drawFillColCYMK float->float->float->float->unit */
 void cpdf_drawStroke() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);
   fn_v = *caml_named_value("drawStroke");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawFill() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawFill");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawFillEo() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawFillEo");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawStrokeFill() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawStrokeFill");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawStrokeFillEo() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawStrokeFillEo");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawClose() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawClose");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawThick float->unit */
+void cpdf_drawCap(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("drawCap");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawJoin(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("drawJoin");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawMiter float->unit */
+void cpdf_drawDash(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawDash");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawPush() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawPush");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawPop() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawPop");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawMatrix float->float->float->float->float->float->unit */
+/* -__AUTO drawMTrans float->float->unit */
+/* -__AUTO drawMRot float->float->float->unit */
+/* -__AUTO drawMScale float->float->float->float->unit */
+/* -__AUTO drawMShearX float->float->float->unit */
+/* -__AUTO drawMShearY float->float->float->unit */
+/* -__AUTO drawXObjBBox float->float->float->float->unit */
+void cpdf_drawXObj(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawXObj");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawEndXObj() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawEndXObj");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawUse(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawUse");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawJPEG string->string->unit */
+/* -__AUTO drawPNG string->string->unit */
+void cpdf_drawImage(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawImage");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawFillOpacity float->unit */
+/* -__AUTO drawStrokeOpacity float->unit */
+void cpdf_drawBT() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawBT");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawET() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawET");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawText(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawText");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawSText(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawSText");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawLeading float->unit */
+/* -__AUTO drawCharSpace float->unit */
+/* -__AUTO drawWordSpace float->unit */
+/* -__AUTO drawTextScale float->unit */
+void cpdf_drawRenderMode(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, int_in, unit_out);
+  fn = *caml_named_value("drawRenderMode");
+  int_in = Val_int(pdf);
+  unit_out = caml_callback(fn, int_in);
+  updateLastError();
+  CAMLreturn0;
+}
+/* -__AUTO drawRise float->unit */
+void cpdf_drawNL() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawNL");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawNewPage() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawNewPage");
   unit_v = caml_callback(fn_v, Val_unit);
   updateLastError();
   CAMLreturn0;
