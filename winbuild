@@ -1,4 +1,6 @@
 #!/bin/bash
+make
+./auto
 cfiles=(cpdflibwrapper)
 finalcfile=cpdflibtest
 libname=cpdf
