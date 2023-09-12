@@ -113,6 +113,18 @@ enum cpdf_pageMode {
   cpdf_useAttachments
 };
 
+enum cpdf_cap {
+  cpdf_capButt,
+  cpdf_capRound,
+  cpdf_capSquare
+};
+
+enum cpdf_join {
+  cpdf_joinMiter,
+  cpdf_joinRound,
+  cpdf_joinBevel
+};
+
 /* CHAPTER 0. Preliminaries */
 
 void cpdf_startup(char **argv) {

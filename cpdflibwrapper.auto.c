@@ -113,6 +113,18 @@ enum cpdf_pageMode {
   cpdf_useAttachments
 };
 
+enum cpdf_cap {
+  cpdf_capButt,
+  cpdf_capRound,
+  cpdf_capSquare
+};
+
+enum cpdf_join {
+  cpdf_joinMiter,
+  cpdf_joinRound,
+  cpdf_joinBevel
+};
+
 /* __AUTODEF unit->unit
 void cpdf_~() {
   CAMLparam0();
@@ -1549,7 +1561,56 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO drawEnd unit->unit */
 /* __AUTO drawTo float->float->unit */
 /* __AUTO drawLine float->float->unit */
+/* __AUTO drawBez float->float->float->float->float->float->unit */
+/* __AUTO drawBez23 float->float->float->float->unit */
+/* __AUTO drawBez13 float->float->float->float->unit */
+/* __AUTO drawCircle float->float->float->unit */
+/* __AUTO drawStrokeColGrey float->unit */
+/* __AUTO drawStrokeColRGB float->float->float->unit */
+/* __AUTO drawStrokeColCYMK float->float->float->float->unit */
+/* __AUTO drawFillColGrey float->unit */
+/* __AUTO drawFillColRGB float->float->float->unit */
+/* __AUTO drawFillColCYMK float->float->float->float->unit */
 /* __AUTO drawStroke unit->unit */
+/* __AUTO drawFill unit->unit */
+/* __AUTO drawFillEo unit->unit */
+/* __AUTO drawStrokeFill unit->unit */
+/* __AUTO drawStrokeFillEo unit->unit */
+/* __AUTO drawClose unit->unit */
+/* __AUTO drawThick float->unit */
+/* __AUTO drawCap int->unit */
+/* __AUTO drawJoin int->unit */
+/* __AUTO drawMiter float->unit */
+/* __AUTO drawDash string->unit */
+/* __AUTO drawPush unit->unit */
+/* __AUTO drawPop unit->unit */
+/* __AUTO drawMatrix float->float->float->float->float->float->unit */
+/* __AUTO drawMTrans float->float->unit */
+/* __AUTO drawMRot float->float->float->unit */
+/* __AUTO drawMScale float->float->float->float->unit */
+/* __AUTO drawMShearX float->float->float->unit */
+/* __AUTO drawMShearY float->float->float->unit */
+/* __AUTO drawXObjBBox float->float->float->float->unit */
+/* __AUTO drawXObj string->unit */
+/* __AUTO drawEndXObj unit->unit */
+/* __AUTO drawUse string->unit */
+/* __AUTO drawJPEG string->string->unit */
+/* __AUTO drawPNG string->string->unit */
+/* __AUTO drawImage string->unit */
+/* __AUTO drawFillOpacity float->unit */
+/* __AUTO drawStrokeOpacity float->unit */
+/* __AUTO drawBT unit->unit */
+/* __AUTO drawET unit->unit */
+/* __AUTO drawText string->unit */
+/* __AUTO drawSText string->unit */
+/* __AUTO drawLeading float->unit */
+/* __AUTO drawCharSpace float->unit */
+/* __AUTO drawWordSpace float->unit */
+/* __AUTO drawTextScale float->unit */
+/* __AUTO drawRenderMode int->unit */
+/* __AUTO drawRise float->unit */
+/* __AUTO drawNL unit->unit */
+/* __AUTO drawNewPage unit->unit */
 
 /* CHAPTER 19. Miscellaneous */
 
