@@ -7,4 +7,4 @@ rm -f examples/squeezed.pdf examples/squeeze examples/squeeze.o
 rm -f examples/rde.pdf examples/rde examples/rde.o
 rm -f examples/libcpdf.dll
 rm -f *.aux *.idx *.log *.out *.toc
-cd auto; make clean
+make clean

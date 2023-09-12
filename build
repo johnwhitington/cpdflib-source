@@ -1,4 +1,6 @@
 #!/bin/bash
+make
+./auto
 #linux: n.b we had to copy libasmrun_pic.a to libasmrun.a here
 #linux: n.b run shared with LD_LIBRARY_PATH=. ./cpdflibtest-shared
 cfiles=(cpdflibwrapper)

@@ -15,6 +15,6 @@ TARGETS := native-code
 all : $(TARGETS)
 
 clean ::
-	rm -rf doc foo foo2 out.pdf out2.pdf *.ps *.cmt *.cmti *.zlib cpdflibwrapper.c
+	rm -rf doc foo foo2 out.pdf out2.pdf *.ps *.cmt *.cmti *.zlib
 
 -include OCamlMakefile
