@@ -302,6 +302,57 @@ val drawEnd : unit -> unit
 val drawTo : float -> float -> unit
 val drawLine : float -> float -> unit
 val drawStroke : unit -> unit
+val drawRect : float -> float -> float -> float -> unit
+val drawBez : float -> float -> float -> float -> float -> float -> unit
+val drawBez23 : float -> float -> float -> float -> unit
+val drawBez13 : float -> float -> float -> float -> unit
+val drawCircle : float -> float -> float -> unit
+val drawStrokeColGrey : float -> unit
+val drawStrokeColRGB : float -> float -> float -> unit
+val drawStrokeColCYMK : float -> float -> float -> float -> unit
+val drawFillColGrey : float -> unit
+val drawFillColRGB : float -> float -> float -> unit
+val drawFillColCYMK : float -> float -> float -> float -> unit
+val drawStroke : unit -> unit
+val drawFill : unit -> unit
+val drawFillEo : unit -> unit
+val drawStrokeFill : unit -> unit
+val drawStrokeFillEo : unit -> unit
+val drawClose : unit -> unit
+val drawThick : float -> unit
+val drawCap : int -> unit
+val drawJoin : int -> unit
+val drawMiter : float -> unit
+val drawDash : string -> unit
+val drawPush : unit -> unit
+val drawPop : unit -> unit
+val drawMatrix : float -> float -> float -> float -> float -> float -> unit
+val drawMTrans : float -> float -> unit
+val drawMRot : float -> float -> float -> unit
+val drawMScale : float -> float -> float -> float -> unit
+val drawMShearX : float -> float -> float -> unit
+val drawMShearY : float -> float -> float -> unit
+val drawXObjBBox : float -> float -> float -> float -> unit
+val drawXObj : string -> unit
+val drawEndXObj : unit -> unit
+val drawUse : string -> unit
+val drawJPEG : string -> string -> unit
+val drawPNG : string -> string -> unit
+val drawImage : string -> unit
+val drawFillOpacity : float -> unit
+val drawStrokeOpacity : float -> unit
+val drawBT : unit -> unit
+val drawET : unit -> unit
+val drawText : string -> unit
+val drawSText : string -> unit
+val drawLeading : float -> unit
+val drawCharSpace : float -> unit
+val drawWordSpace : float -> unit
+val drawTextScale : float -> unit
+val drawRenderMode : int -> unit
+val drawRise : float -> unit
+val drawNL : unit -> unit
+val drawNewPage : unit -> unit
 
 (* CHAPTER 19. Miscellaneous *)
 val draft : pdf -> range -> bool -> unit

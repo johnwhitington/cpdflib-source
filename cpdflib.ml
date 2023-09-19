@@ -2933,11 +2933,15 @@ let drawStroke () =
   with
     e -> handle_error "drawStroke" e; err_unit
 
+let drawRect a b c d =
+  try err_unit with e -> handle_error "drawRect" e; err_unit
+
 let _ = Callback.register "drawBegin" drawBegin
 let _ = Callback.register "drawEnd" drawEnd
 let _ = Callback.register "drawTo" drawTo
 let _ = Callback.register "drawLine" drawLine
 let _ = Callback.register "drawStroke" drawStroke
+let _ = Callback.register "drawRect" drawRect
 
 (* CHAPTER 19. Miscellaneous *)
 let draft pdf range boxes =
