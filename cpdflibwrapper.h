@@ -1298,7 +1298,7 @@ void cpdf_endGetAttachments(void);
  * serial number 0..<total number> - 1, to retrieve the data. Finally, call
  * cpdf_endGetImageResolution to clean up.
  */
-int cpdf_startGetImageResolution(int, float);
+int cpdf_startGetImageResolution(int, double);
 int cpdf_getImageResolutionPageNumber(int);
 char *cpdf_getImageResolutionImageName(int);
 int cpdf_getImageResolutionXPixels(int);
@@ -1420,14 +1420,14 @@ void cpdf_drawStrokeColRGB(double, double, double);
 void cpdf_drawStrokeColCYMK(double, double, double, double);
 void cpdf_drawFillColGrey(double);
 void cpdf_drawFillColRGB(double, double, double);
-void cpdf_drawFillCol(double, double, double, double);
+void cpdf_drawFillColCYMK(double, double, double, double);
 void cpdf_drawStroke(void);
 void cpdf_drawFill(void);
 void cpdf_drawFillEo(void);
 void cpdf_drawStrokeFill(void);
 void cpdf_drawStrokeFillEo(void);
 void cpdf_drawClose(void);
-void cpdf_drawThick(float);
+void cpdf_drawThick(double);
 enum cpdf_cap {
   cpdf_capButt,
   cpdf_capRound,

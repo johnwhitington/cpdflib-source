@@ -3045,6 +3045,19 @@ void cpdf_drawEnd() {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_drawRect(double o, double n, double m, double p) {
+  CAMLparam0();
+  CAMLlocal2(fn, unit_out);
+  CAMLlocalN(args, 4);
+  fn = *caml_named_value("drawRect");
+  args[0] = caml_copy_double(o);
+  args[1] = caml_copy_double(n);
+  args[2] = caml_copy_double(m);
+  args[3] = caml_copy_double(p);
+  unit_out = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_drawTo(double o, double n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);
