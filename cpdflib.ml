@@ -2936,12 +2936,212 @@ let drawStroke () =
 let drawRect a b c d =
   try err_unit with e -> handle_error "drawRect" e; err_unit
 
+let drawBez a b c d e f =
+  try err_unit with e -> handle_error "drawBez" e; err_unit
+
+let drawBez23 a b c d =
+  try err_unit with e -> handle_error "drawBez23" e; err_unit
+
+let drawBez13 a b c d =
+  try err_unit with e -> handle_error "drawBez13" e; err_unit
+
+let drawCircle a b c =
+  try err_unit with e -> handle_error "drawCircle" e; err_unit
+
+let drawStrokeColGrey a =
+  try err_unit with e -> handle_error "drawStrokeColGrey" e; err_unit
+
+let drawStrokeColRGB a b c =
+  try err_unit with e -> handle_error "drawStrokeColRGB" e; err_unit
+
+let drawStrokeColCYMK a b c d =
+  try err_unit with e -> handle_error "drawStrokeColCYMK" e; err_unit
+
+let drawFillColGrey a =
+  try err_unit with e -> handle_error "drawFillColGrey" e; err_unit
+
+let drawFillColRGB a b c =
+  try err_unit with e -> handle_error "drawFillColRGB" e; err_unit
+
+let drawFillColCYMK a b c d =
+  try err_unit with e -> handle_error "drawFillColCYMK" e; err_unit
+
+let drawStroke a =
+  try err_unit with e -> handle_error "drawStroke" e; err_unit
+
+let drawFill a =
+  try err_unit with e -> handle_error "drawFill" e; err_unit
+
+let drawFillEo a =
+  try err_unit with e -> handle_error "drawFillEo" e; err_unit
+
+let drawStrokeFill a =
+  try err_unit with e -> handle_error "drawStrokeFill" e; err_unit
+
+let drawStrokeFillEo a =
+  try err_unit with e -> handle_error "drawStrokeFillEo" e; err_unit
+
+let drawClose a =
+  try err_unit with e -> handle_error "drawClose" e; err_unit
+
+let drawThick a =
+  try err_unit with e -> handle_error "drawThick" e; err_unit
+
+let drawCap a =
+  try err_unit with e -> handle_error "drawCap" e; err_unit
+
+let drawJoin a =
+  try err_unit with e -> handle_error "drawJoin" e; err_unit
+
+let drawMiter a =
+  try err_unit with e -> handle_error "drawMiter" e; err_unit
+
+let drawDash a =
+  try err_unit with e -> handle_error "drawDash" e; err_unit
+
+let drawPush a =
+  try err_unit with e -> handle_error "drawPush" e; err_unit
+
+let drawPop a =
+  try err_unit with e -> handle_error "drawPop" e; err_unit
+
+let drawMatrix a b c d e f =
+  try err_unit with e -> handle_error "drawMatrix" e; err_unit
+
+let drawMTrans a b =
+  try err_unit with e -> handle_error "drawMTrans" e; err_unit
+
+let drawMRot a b c =
+  try err_unit with e -> handle_error "drawMRot" e; err_unit
+
+let drawMScale a b c d =
+  try err_unit with e -> handle_error "drawMScale" e; err_unit
+
+let drawMShearX a b c =
+  try err_unit with e -> handle_error "drawMShearX" e; err_unit
+
+let drawMShearY a b c =
+  try err_unit with e -> handle_error "drawMShearY" e; err_unit
+
+let drawXObjBBox a b c d = 
+  try err_unit with e -> handle_error "drawXObjBBox" e; err_unit
+
+let drawXObj a =
+  try err_unit with e -> handle_error "drawXObj" e; err_unit
+
+let drawEndXObj a =
+  try err_unit with e -> handle_error "drawEndXObj" e; err_unit
+
+let drawUse a =
+  try err_unit with e -> handle_error "drawUse" e; err_unit
+
+let drawJPEG a b =
+  try err_unit with e -> handle_error "drawJPEG" e; err_unit
+
+let drawPNG a b =
+  try err_unit with e -> handle_error "drawPNG" e; err_unit
+
+let drawImage a =
+  try err_unit with e -> handle_error "drawImage" e; err_unit
+
+let drawFillOpacity a =
+  try err_unit with e -> handle_error "drawFillOpacity" e; err_unit
+
+let drawStrokeOpacity a =
+  try err_unit with e -> handle_error "drawStrokeOpacity" e; err_unit
+
+let drawBT a =
+  try err_unit with e -> handle_error "drawBT" e; err_unit
+
+let drawET a =
+  try err_unit with e -> handle_error "drawET" e; err_unit
+
+let drawText a =
+  try err_unit with e -> handle_error "drawText" e; err_unit
+
+let drawSText a =
+  try err_unit with e -> handle_error "drawSText" e; err_unit
+
+let drawLeading a =
+  try err_unit with e -> handle_error "drawLeading" e; err_unit
+
+let drawCharSpace a =
+  try err_unit with e -> handle_error "drawCharSpace" e; err_unit
+
+let drawWordSpace a =
+  try err_unit with e -> handle_error "drawWordSpace" e; err_unit
+
+let drawTextScale a =
+  try err_unit with e -> handle_error "drawTextScale" e; err_unit
+
+let drawRenderMode a =
+  try err_unit with e -> handle_error "drawRenderMode" e; err_unit
+
+let drawRise a = 
+  try err_unit with e -> handle_error "drawRise" e; err_unit
+
+let drawNL a =
+  try err_unit with e -> handle_error "drawNL" e; err_unit
+
+let drawNewPage a =
+  try err_unit with e -> handle_error "drawNewPage" e; err_unit
+
 let _ = Callback.register "drawBegin" drawBegin
 let _ = Callback.register "drawEnd" drawEnd
 let _ = Callback.register "drawTo" drawTo
 let _ = Callback.register "drawLine" drawLine
 let _ = Callback.register "drawStroke" drawStroke
 let _ = Callback.register "drawRect" drawRect
+let _ = Callback.register "drawBez" drawBez
+let _ = Callback.register "drawBez23" drawBez23
+let _ = Callback.register "drawBez13" drawBez13
+let _ = Callback.register "drawCircle" drawCircle
+let _ = Callback.register "drawStrokeColGrey" drawStrokeColGrey
+let _ = Callback.register "drawStrokeColRGB" drawStrokeColRGB
+let _ = Callback.register "drawStrokeColCYMK" drawStrokeColCYMK
+let _ = Callback.register "drawFillColGrey" drawFillColGrey
+let _ = Callback.register "drawFillColRGB" drawFillColRGB
+let _ = Callback.register "drawFillColCYMK" drawFillColCYMK
+let _ = Callback.register "drawStroke" drawStroke
+let _ = Callback.register "drawFill" drawFill
+let _ = Callback.register "drawFillEo" drawFillEo
+let _ = Callback.register "drawStrokeFill" drawStrokeFill
+let _ = Callback.register "drawStrokeFillEo" drawStrokeFillEo
+let _ = Callback.register "drawClose" drawClose
+let _ = Callback.register "drawThick" drawThick
+let _ = Callback.register "drawCap" drawCap
+let _ = Callback.register "drawJoin" drawJoin
+let _ = Callback.register "drawMiter" drawMiter
+let _ = Callback.register "drawDash" drawDash
+let _ = Callback.register "drawPush" drawPush
+let _ = Callback.register "drawPop" drawPop
+let _ = Callback.register "drawMatrix" drawMatrix
+let _ = Callback.register "drawMTrans" drawMTrans
+let _ = Callback.register "drawMRot" drawMRot
+let _ = Callback.register "drawMScale" drawMScale
+let _ = Callback.register "drawMShearX" drawMShearX
+let _ = Callback.register "drawMShearY" drawMShearY
+let _ = Callback.register "drawXObjBBox" drawXObjBBox
+let _ = Callback.register "drawXObj" drawXObj
+let _ = Callback.register "drawEndXObj" drawEndXObj
+let _ = Callback.register "drawUse" drawUse
+let _ = Callback.register "drawJPEG" drawJPEG
+let _ = Callback.register "drawPNG" drawPNG
+let _ = Callback.register "drawImage" drawImage
+let _ = Callback.register "drawFillOpacity" drawFillOpacity
+let _ = Callback.register "drawStrokeOpacity" drawStrokeOpacity
+let _ = Callback.register "drawBT" drawBT
+let _ = Callback.register "drawET" drawET
+let _ = Callback.register "drawText" drawText
+let _ = Callback.register "drawSText" drawSText
+let _ = Callback.register "drawLeading" drawLeading
+let _ = Callback.register "drawCharSpace" drawCharSpace
+let _ = Callback.register "drawWordSpace" drawWordSpace  
+let _ = Callback.register "drawTextScale" drawTextScale
+let _ = Callback.register "drawRenderMode" drawRenderMode
+let _ = Callback.register "drawRise" drawRise
+let _ = Callback.register "drawNL" drawNL
+let _ = Callback.register "drawNewPage" drawNewPage
 
 (* CHAPTER 19. Miscellaneous *)
 let draft pdf range boxes =
