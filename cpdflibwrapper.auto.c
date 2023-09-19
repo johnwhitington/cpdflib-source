@@ -4,126 +4,6 @@
 #include <caml/memory.h>
 #include <stdio.h>
 
-enum cpdf_papersize {
-  cpdf_a0portrait,
-  cpdf_a1portrait,
-  cpdf_a2portrait,
-  cpdf_a3portrait,
-  cpdf_a4portrait,
-  cpdf_a5portrait,
-  cpdf_a0landscape,
-  cpdf_a1landscape,
-  cpdf_a2landscape,
-  cpdf_a3landscape,
-  cpdf_a4landscape,
-  cpdf_a5landscape,
-  cpdf_usletterportrait,
-  cpdf_usletterlandscape,
-  cpdf_uslegalportrait,
-  cpdf_uslegallandscape
-};
-
-enum cpdf_permission {
-  cpdf_noEdit,
-  cpdf_noPrint,
-  cpdf_noCopy,
-  cpdf_noAnnot,
-  cpdf_noForms,
-  cpdf_noExtract,
-  cpdf_noAssemble,
-  cpdf_noHqPrint
-};
-
-enum cpdf_encryptionMethod {
-  cpdf_pdf40bit,
-  cpdf_pdf218bit,
-  cpdf_aes128bitfalse,
-  cpdf_aes128bittrue,
-  cpdf_aes256bitfalse,
-  cpdf_aes256bittrue,
-  cpdf_aes256bitisofalse,
-  cpdf_aes256bitisotrue
-};
-
-enum cpdf_anchor {
-  cpdf_posCentre,
-  cpdf_posLeft,
-  cpdf_posRight,
-  cpdf_top,
-  cpdf_topLeft,
-  cpdf_topRight,
-  cpdf_left,
-  cpdf_bottomLeft,
-  cpdf_bottom,
-  cpdf_bottomRight,
-  cpdf_right,
-  cpdf_diagonal,
-  cpdf_reversediagonal
-};
-
-struct cpdf_position {
-  int cpdf_anchor;
-  double cpdf_coord1;
-  double cpdf_coord2;
-};
-
-enum cpdf_font {
-  cpdf_timesRoman,
-  cpdf_timesBold,
-  cpdf_timesItalic,
-  cpdf_timesBoldItalic,
-  cpdf_helvetica,
-  cpdf_helveticaBold,
-  cpdf_helveticaOblique,
-  cpdf_helveticaBoldOblique,
-  cpdf_courier,
-  cpdf_courierBold,
-  cpdf_courierOblique,
-  cpdf_courierBoldOblique
-};
-
-enum cpdf_justification {
-  cpdf_leftJustify,
-  cpdf_CentreJustify,
-  cpdf_RightJustify
-};
-
-enum cpdf_pageLabelStyle {
-  cpdf_decimalArabic,
-  cpdf_uppercaseRoman,
-  cpdf_lowercaseRoman,
-  cpdf_uppercaseLetters,
-  cpdf_lowercaseLetters
-};
-
-enum cpdf_layout {
-  cpdf_singlePage,
-  cpdf_oneColumn,
-  cpdf_twoColumnLeft,
-  cpdf_twoColumnRight,
-  cpdf_twoPageLeft,
-  cpdf_twoPageRight
-};
-
-enum cpdf_pageMode {
-  cpdf_useNone,
-  cpdf_useOutlines,
-  cpdf_useThumbs,
-  cpdf_useOC,
-  cpdf_useAttachments
-};
-
-enum cpdf_cap {
-  cpdf_capButt,
-  cpdf_capRound,
-  cpdf_capSquare
-};
-
-enum cpdf_join {
-  cpdf_joinMiter,
-  cpdf_joinRound,
-  cpdf_joinBevel
-};
 
 /* __AUTODEF unit->unit
 void cpdf_~() {
@@ -224,6 +104,18 @@ void cpdf_~(int o, int n) {
 }
 */
 
+/* __AUTODEF float->unit
+void cpdf_~(double o) {
+  CAMLparam0();
+  CAMLlocal3(fn, o_v, unit_out);
+  fn = *caml_named_value("~");
+  o_v = caml_copy_double(o);
+  unit_out = caml_callback(fn, o_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
 /* __AUTODEF float->float->unit
 void cpdf_~(double o, double n) {
   CAMLparam0();
@@ -232,6 +124,54 @@ void cpdf_~(double o, double n) {
   o_v = caml_copy_double(o);
   n_v = caml_copy_double(n);
   unit_out = caml_callback2(fn, o_v, n_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF float->float->float->unit
+void cpdf_~(double o, double n, double m) {
+  CAMLparam0();
+  CAMLlocal5(fn, o_v, n_v, m_v, unit_out);
+  fn = *caml_named_value("~");
+  o_v = caml_copy_double(o);
+  n_v = caml_copy_double(n);
+  m_v = caml_copy_double(m);
+  unit_out = caml_callback3(fn, o_v, n_v, m_v);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF float->float->float->float->unit
+void cpdf_~(double o, double n, double m, double p) {
+  CAMLparam0();
+  CAMLlocal2(fn, unit_out);
+  CAMLlocalN(args, 4);
+  fn = *caml_named_value("~");
+  args[0] = caml_copy_double(o);
+  args[1] = caml_copy_double(n);
+  args[2] = caml_copy_double(m);
+  args[3] = caml_copy_double(p);
+  unit_out = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF float->float->float->float->float->float->unit
+void cpdf_~(double o, double n, double m, double p, double q, double r) {
+  CAMLparam0();
+  CAMLlocal2(fn, unit_out);
+  CAMLlocalN(args, 6);
+  fn = *caml_named_value("~");
+  args[0] = caml_copy_double(o);
+  args[1] = caml_copy_double(n);
+  args[2] = caml_copy_double(m);
+  args[3] = caml_copy_double(p);
+  args[4] = caml_copy_double(q);
+  args[5] = caml_copy_double(r);
+  unit_out = caml_callbackN(fn, 6, args);
   updateLastError();
   CAMLreturn0;
 }
@@ -280,6 +220,19 @@ void cpdf_~(char *str) {
   fn = *caml_named_value("~");
   instr = caml_copy_string(str);
   out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
+/* __AUTODEF string->string->unit
+void cpdf_~(char *str, char* str2) {
+  CAMLparam0();
+  CAMLlocal4(fn, instr, instr2, out);
+  fn = *caml_named_value("~");
+  instr = caml_copy_string(str);
+  instr2 = caml_copy_string(str2);
+  out = caml_callback2(fn, instr, instr2);
   updateLastError();
   CAMLreturn0;
 }
@@ -765,6 +718,127 @@ void cpdf_~(int pdf, void *data, int len) {
   CAMLreturn0;
 }
 */
+
+enum cpdf_papersize {
+  cpdf_a0portrait,
+  cpdf_a1portrait,
+  cpdf_a2portrait,
+  cpdf_a3portrait,
+  cpdf_a4portrait,
+  cpdf_a5portrait,
+  cpdf_a0landscape,
+  cpdf_a1landscape,
+  cpdf_a2landscape,
+  cpdf_a3landscape,
+  cpdf_a4landscape,
+  cpdf_a5landscape,
+  cpdf_usletterportrait,
+  cpdf_usletterlandscape,
+  cpdf_uslegalportrait,
+  cpdf_uslegallandscape
+};
+
+enum cpdf_permission {
+  cpdf_noEdit,
+  cpdf_noPrint,
+  cpdf_noCopy,
+  cpdf_noAnnot,
+  cpdf_noForms,
+  cpdf_noExtract,
+  cpdf_noAssemble,
+  cpdf_noHqPrint
+};
+
+enum cpdf_encryptionMethod {
+  cpdf_pdf40bit,
+  cpdf_pdf218bit,
+  cpdf_aes128bitfalse,
+  cpdf_aes128bittrue,
+  cpdf_aes256bitfalse,
+  cpdf_aes256bittrue,
+  cpdf_aes256bitisofalse,
+  cpdf_aes256bitisotrue
+};
+
+enum cpdf_anchor {
+  cpdf_posCentre,
+  cpdf_posLeft,
+  cpdf_posRight,
+  cpdf_top,
+  cpdf_topLeft,
+  cpdf_topRight,
+  cpdf_left,
+  cpdf_bottomLeft,
+  cpdf_bottom,
+  cpdf_bottomRight,
+  cpdf_right,
+  cpdf_diagonal,
+  cpdf_reversediagonal
+};
+
+struct cpdf_position {
+  int cpdf_anchor;
+  double cpdf_coord1;
+  double cpdf_coord2;
+};
+
+enum cpdf_font {
+  cpdf_timesRoman,
+  cpdf_timesBold,
+  cpdf_timesItalic,
+  cpdf_timesBoldItalic,
+  cpdf_helvetica,
+  cpdf_helveticaBold,
+  cpdf_helveticaOblique,
+  cpdf_helveticaBoldOblique,
+  cpdf_courier,
+  cpdf_courierBold,
+  cpdf_courierOblique,
+  cpdf_courierBoldOblique
+};
+
+enum cpdf_justification {
+  cpdf_leftJustify,
+  cpdf_CentreJustify,
+  cpdf_RightJustify
+};
+
+enum cpdf_pageLabelStyle {
+  cpdf_decimalArabic,
+  cpdf_uppercaseRoman,
+  cpdf_lowercaseRoman,
+  cpdf_uppercaseLetters,
+  cpdf_lowercaseLetters
+};
+
+enum cpdf_layout {
+  cpdf_singlePage,
+  cpdf_oneColumn,
+  cpdf_twoColumnLeft,
+  cpdf_twoColumnRight,
+  cpdf_twoPageLeft,
+  cpdf_twoPageRight
+};
+
+enum cpdf_pageMode {
+  cpdf_useNone,
+  cpdf_useOutlines,
+  cpdf_useThumbs,
+  cpdf_useOC,
+  cpdf_useAttachments
+};
+
+enum cpdf_cap {
+  cpdf_capButt,
+  cpdf_capRound,
+  cpdf_capSquare
+};
+
+enum cpdf_join {
+  cpdf_joinMiter,
+  cpdf_joinRound,
+  cpdf_joinBevel
+};
 
 /* CHAPTER 0. Preliminaries */
 
@@ -1561,54 +1635,54 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO drawEnd unit->unit */
 /* __AUTO drawTo float->float->unit */
 /* __AUTO drawLine float->float->unit */
-/* -__AUTO drawBez float->float->float->float->float->float->unit */
-/* -__AUTO drawBez23 float->float->float->float->unit */
-/* -__AUTO drawBez13 float->float->float->float->unit */
-/* -__AUTO drawCircle float->float->float->unit */
-/* -__AUTO drawStrokeColGrey float->unit */
-/* -__AUTO drawStrokeColRGB float->float->float->unit */
-/* -__AUTO drawStrokeColCYMK float->float->float->float->unit */
-/* -__AUTO drawFillColGrey float->unit */
-/* -__AUTO drawFillColRGB float->float->float->unit */
-/* -__AUTO drawFillColCYMK float->float->float->float->unit */
+/* __AUTO drawBez float->float->float->float->float->float->unit */
+/* __AUTO drawBez23 float->float->float->float->unit */
+/* __AUTO drawBez13 float->float->float->float->unit */
+/* __AUTO drawCircle float->float->float->unit */
+/* __AUTO drawStrokeColGrey float->unit */
+/* __AUTO drawStrokeColRGB float->float->float->unit */
+/* __AUTO drawStrokeColCYMK float->float->float->float->unit */
+/* __AUTO drawFillColGrey float->unit */
+/* __AUTO drawFillColRGB float->float->float->unit */
+/* __AUTO drawFillColCYMK float->float->float->float->unit */
 /* __AUTO drawStroke unit->unit */
 /* __AUTO drawFill unit->unit */
 /* __AUTO drawFillEo unit->unit */
 /* __AUTO drawStrokeFill unit->unit */
 /* __AUTO drawStrokeFillEo unit->unit */
 /* __AUTO drawClose unit->unit */
-/* -__AUTO drawThick float->unit */
+/* __AUTO drawThick float->unit */
 /* __AUTO drawCap int->unit */
 /* __AUTO drawJoin int->unit */
-/* -__AUTO drawMiter float->unit */
+/* __AUTO drawMiter float->unit */
 /* __AUTO drawDash string->unit */
 /* __AUTO drawPush unit->unit */
 /* __AUTO drawPop unit->unit */
-/* -__AUTO drawMatrix float->float->float->float->float->float->unit */
-/* -__AUTO drawMTrans float->float->unit */
-/* -__AUTO drawMRot float->float->float->unit */
-/* -__AUTO drawMScale float->float->float->float->unit */
-/* -__AUTO drawMShearX float->float->float->unit */
-/* -__AUTO drawMShearY float->float->float->unit */
-/* -__AUTO drawXObjBBox float->float->float->float->unit */
+/* __AUTO drawMatrix float->float->float->float->float->float->unit */
+/* __AUTO drawMTrans float->float->unit */
+/* __AUTO drawMRot float->float->float->unit */
+/* __AUTO drawMScale float->float->float->float->unit */
+/* __AUTO drawMShearX float->float->float->unit */
+/* __AUTO drawMShearY float->float->float->unit */
+/* __AUTO drawXObjBBox float->float->float->float->unit */
 /* __AUTO drawXObj string->unit */
 /* __AUTO drawEndXObj unit->unit */
 /* __AUTO drawUse string->unit */
-/* -__AUTO drawJPEG string->string->unit */
-/* -__AUTO drawPNG string->string->unit */
+/* __AUTO drawJPEG string->string->unit */
+/* __AUTO drawPNG string->string->unit */
 /* __AUTO drawImage string->unit */
-/* -__AUTO drawFillOpacity float->unit */
-/* -__AUTO drawStrokeOpacity float->unit */
+/* __AUTO drawFillOpacity float->unit */
+/* __AUTO drawStrokeOpacity float->unit */
 /* __AUTO drawBT unit->unit */
 /* __AUTO drawET unit->unit */
 /* __AUTO drawText string->unit */
 /* __AUTO drawSText string->unit */
-/* -__AUTO drawLeading float->unit */
-/* -__AUTO drawCharSpace float->unit */
-/* -__AUTO drawWordSpace float->unit */
-/* -__AUTO drawTextScale float->unit */
+/* __AUTO drawLeading float->unit */
+/* __AUTO drawCharSpace float->unit */
+/* __AUTO drawWordSpace float->unit */
+/* __AUTO drawTextScale float->unit */
 /* __AUTO drawRenderMode int->unit */
-/* -__AUTO drawRise float->unit */
+/* __AUTO drawRise float->unit */
 /* __AUTO drawNL unit->unit */
 /* __AUTO drawNewPage unit->unit */
 

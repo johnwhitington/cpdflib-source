@@ -37,7 +37,7 @@ let use_auto h =
   in
     map
       (string_replace_all "~" name)
-      (try Hashtbl.find autos typ with Not_found -> prerr_endline typ; exit 1)
+      (try Hashtbl.find autos typ with Not_found -> prerr_endline ("Missing auto: " ^ typ); exit 1)
 
 let rec process a = function
   | [] -> rev (map (fun x -> x ^ "\n") a)
