@@ -3027,21 +3027,21 @@ int cpdf_fromJPEG(char *str) {
 
 /* CHAPTER 18. Drawing on PDFs */
 
-void cpdf_drawBegin(int o, int n) {
+void cpdf_drawBegin() {
   CAMLparam0();
-  CAMLlocal4(fn, o_v, n_v, unit_out);
-  fn = *caml_named_value("drawBegin");
-  o_v = Val_int(o);
-  n_v = Val_int(n);
-  unit_out = caml_callback2(fn, o_v, n_v);
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawBegin");
+  unit_v = caml_callback(fn_v, Val_unit);
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_drawEnd() {
+void cpdf_drawEnd(int o, int n) {
   CAMLparam0();
-  CAMLlocal2(fn_v, unit_v);
-  fn_v = *caml_named_value("drawEnd");
-  unit_v = caml_callback(fn_v, Val_unit);
+  CAMLlocal4(fn, o_v, n_v, unit_out);
+  fn = *caml_named_value("drawEnd");
+  o_v = Val_int(o);
+  n_v = Val_int(n);
+  unit_out = caml_callback2(fn, o_v, n_v);
   updateLastError();
   CAMLreturn0;
 }

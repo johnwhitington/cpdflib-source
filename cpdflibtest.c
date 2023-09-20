@@ -1063,13 +1063,13 @@ int main(int argc, char **argv) {
 
   /* CHAPTER 18. Drawing on PDFs */
   printf("***** CHAPTER 18. Miscellaneous\n");
-  int draw = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int draw = cpdf_fromFile("hello.pdf", "");
   int drawall = cpdf_all(draw);
   printf("---cpdf_drawBegin\n");
-  cpdf_drawBegin(draw, drawall);
+  cpdf_drawBegin();
   prerr();
   printf("---cpdf_drawTo\n");
-  cpdf_drawTo(0, 0);
+  cpdf_drawTo(1, 2);
   prerr();
   printf("---cpdf_drawLine\n");
   cpdf_drawLine(100, 100);
@@ -1077,7 +1077,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawStroke\n");
   cpdf_drawStroke();
   prerr();
-  printf("---cpdf_drawRect\n");
+ /* printf("---cpdf_drawRect\n");
   cpdf_drawRect(0.0, 0.0, 0.0, 0.0);
   prerr();
   printf("---cpdf_drawTo\n");
@@ -1229,9 +1229,9 @@ int main(int argc, char **argv) {
   prerr();
   printf("---cpdf_drawNewPage\n");
   cpdf_drawNewPage();
-  prerr();
+  prerr();*/
   printf("---cpdf_drawEnd\n");
-  cpdf_drawEnd();
+  cpdf_drawEnd(draw, drawall);
   prerr();
   cpdf_toFile(draw, "testoutputs/drawn.pdf", false, false);
   cpdf_deletePdf(draw);

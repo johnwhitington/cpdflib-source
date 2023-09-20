@@ -1,4 +1,5 @@
 #!/bin/bash
+./clean
 make
 ./auto
 #linux: n.b we had to copy libasmrun_pic.a to libasmrun.a here

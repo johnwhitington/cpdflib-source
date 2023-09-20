@@ -297,8 +297,8 @@ val fromPNGMemory : Pdfio.rawbytes -> pdf
 val fromJPEGMemory : Pdfio.rawbytes -> pdf
 
 (* CHAPTER 18. Drawing on PDFs *)
-val drawBegin : pdf -> range -> unit
-val drawEnd : unit -> unit
+val drawBegin : unit -> unit
+val drawEnd : pdf -> range -> unit
 val drawTo : float -> float -> unit
 val drawLine : float -> float -> unit
 val drawStroke : unit -> unit
@@ -313,7 +313,6 @@ val drawStrokeColCYMK : float -> float -> float -> float -> unit
 val drawFillColGrey : float -> unit
 val drawFillColRGB : float -> float -> float -> unit
 val drawFillColCYMK : float -> float -> float -> float -> unit
-val drawStroke : unit -> unit
 val drawFill : unit -> unit
 val drawFillEo : unit -> unit
 val drawStrokeFill : unit -> unit

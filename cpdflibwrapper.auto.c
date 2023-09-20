@@ -1631,8 +1631,8 @@ int cpdf_fromJSONMemory(void *data, int len) {
 
 /* CHAPTER 18. Drawing on PDFs */
 
-/* __AUTO drawBegin int->int->unit */
-/* __AUTO drawEnd unit->unit */
+/* __AUTO drawBegin unit->unit */
+/* __AUTO drawEnd int->int->unit */
 /* __AUTO drawRect float->float->float->float->unit */
 /* __AUTO drawTo float->float->unit */
 /* __AUTO drawLine float->float->unit */

@@ -2903,33 +2903,39 @@ let _ = Callback.register "fromJPEGMemory" fromJPEGMemory
 let _ = Callback.register "fromPNGMemory" fromPNGMemory
 
 (* CHAPTER 18. Drawing on PDFs *)
-let drawBegin pdf range =
+let drawBegin () =
   try
-    err_unit
+    Cpdfdrawcontrol.drawops := [("_MAIN", [])];
   with
     e -> handle_error "drawBegin" e; err_unit
 
-let drawEnd () =
+let drawEnd pdf range =
   try
-    err_unit
+    (* FIXME all the other optional arguments *)
+    match !Cpdfdrawcontrol.drawops with
+    | [("_MAIN", ops)] ->
+        update_pdf
+          (Cpdfdraw.draw ~fast:false ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
+          (lookup_pdf pdf)
+    | _ -> err_unit (*error "not enough -end-xobj or -et"*)
   with
     e -> handle_error "drawEnd" e; err_unit
 
 let drawTo a b =
   try
-    err_unit
+    Cpdfdrawcontrol.addto (Printf.sprintf "%f %f" a b)
   with
     e -> handle_error "drawTo" e; err_unit
 
 let drawLine a b =
   try
-    err_unit
+    Cpdfdrawcontrol.addline (Printf.sprintf "%f %f" a b)
   with
     e -> handle_error "drawLine" e; err_unit
 
 let drawStroke () =
   try
-    err_unit
+    Cpdfdrawcontrol.stroke ()
   with
     e -> handle_error "drawStroke" e; err_unit
 
@@ -2965,9 +2971,6 @@ let drawFillColRGB a b c =
 
 let drawFillColCYMK a b c d =
   try err_unit with e -> handle_error "drawFillColCYMK" e; err_unit
-
-let drawStroke a =
-  try err_unit with e -> handle_error "drawStroke" e; err_unit
 
 let drawFill a =
   try err_unit with e -> handle_error "drawFill" e; err_unit
@@ -3102,7 +3105,6 @@ let _ = Callback.register "drawStrokeColCYMK" drawStrokeColCYMK
 let _ = Callback.register "drawFillColGrey" drawFillColGrey
 let _ = Callback.register "drawFillColRGB" drawFillColRGB
 let _ = Callback.register "drawFillColCYMK" drawFillColCYMK
-let _ = Callback.register "drawStroke" drawStroke
 let _ = Callback.register "drawFill" drawFill
 let _ = Callback.register "drawFillEo" drawFillEo
 let _ = Callback.register "drawStrokeFill" drawStrokeFill
