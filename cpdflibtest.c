@@ -1077,11 +1077,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawStroke\n");
   cpdf_drawStroke();
   prerr();
- /* printf("---cpdf_drawRect\n");
+  printf("---cpdf_drawRect\n");
   cpdf_drawRect(0.0, 0.0, 0.0, 0.0);
-  prerr();
-  printf("---cpdf_drawTo\n");
-  cpdf_drawTo(0.0, 0.0);
   prerr();
   printf("---cpdf_drawBez\n");
   cpdf_drawBez(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -1113,7 +1110,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawFillColCYMK\n");
   cpdf_drawFillColCYMK(0.0, 0.0, 0.0, 0.0);
   prerr();
-  printf("---cpdf_drawFill\n");
+  /*printf("---cpdf_drawFill\n");
   cpdf_drawFill();
   prerr();
   printf("---cpdf_drawFillEo\n");

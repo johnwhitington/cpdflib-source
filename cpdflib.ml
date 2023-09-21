@@ -2917,19 +2917,26 @@ let drawEnd pdf range =
         update_pdf
           (Cpdfdraw.draw ~fast:false ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
           (lookup_pdf pdf)
-    | _ -> err_unit (*error "not enough -end-xobj or -et"*)
+    | _ -> failwith "not enough -end-xobj or -et"
   with
     e -> handle_error "drawEnd" e; err_unit
 
+let one = Printf.sprintf "%f"
+let two = Printf.sprintf "%f %f"
+let three = Printf.sprintf "%f %f %f"
+let four = Printf.sprintf "%f %f %f %f"
+let five = Printf.sprintf "%f %f %f %f %f"
+let six = Printf.sprintf "%f %f %f %f %f %f"
+
 let drawTo a b =
   try
-    Cpdfdrawcontrol.addto (Printf.sprintf "%f %f" a b)
+    Cpdfdrawcontrol.addto (two a b)
   with
     e -> handle_error "drawTo" e; err_unit
 
 let drawLine a b =
   try
-    Cpdfdrawcontrol.addline (Printf.sprintf "%f %f" a b)
+    Cpdfdrawcontrol.addline (two a b)
   with
     e -> handle_error "drawLine" e; err_unit
 
@@ -2940,52 +2947,85 @@ let drawStroke () =
     e -> handle_error "drawStroke" e; err_unit
 
 let drawRect a b c d =
-  try err_unit with e -> handle_error "drawRect" e; err_unit
+  try
+    Cpdfdrawcontrol.addrect (four a b c d)
+  with
+    e -> handle_error "drawRect" e; err_unit
 
 let drawBez a b c d e f =
-  try err_unit with e -> handle_error "drawBez" e; err_unit
+  try
+    Cpdfdrawcontrol.addbezier (six a b c d e f)
+  with
+    e -> handle_error "drawBez" e; err_unit
 
 let drawBez23 a b c d =
-  try err_unit with e -> handle_error "drawBez23" e; err_unit
+  try
+    Cpdfdrawcontrol.addbezier23 (four a b c d)
+  with
+    e -> handle_error "drawBez23" e; err_unit
 
 let drawBez13 a b c d =
-  try err_unit with e -> handle_error "drawBez13" e; err_unit
+  try
+    Cpdfdrawcontrol.addbezier13 (four a b c d)
+  with
+    e -> handle_error "drawBez13" e; err_unit
 
 let drawCircle a b c =
-  try err_unit with e -> handle_error "drawCircle" e; err_unit
+  try
+    Cpdfdrawcontrol.addcircle (three a b c)
+  with
+    e -> handle_error "drawCircle" e; err_unit
 
 let drawStrokeColGrey a =
-  try err_unit with e -> handle_error "drawStrokeColGrey" e; err_unit
+  try
+    Cpdfdrawcontrol.setstroke (one a)
+  with
+    e -> handle_error "drawStrokeColGrey" e; err_unit
 
 let drawStrokeColRGB a b c =
-  try err_unit with e -> handle_error "drawStrokeColRGB" e; err_unit
+  try
+    Cpdfdrawcontrol.setstroke (three a b c)
+  with
+    e -> handle_error "drawStrokeColRGB" e; err_unit
 
 let drawStrokeColCYMK a b c d =
-  try err_unit with e -> handle_error "drawStrokeColCYMK" e; err_unit
+  try
+    Cpdfdrawcontrol.setstroke (four a b c d)
+  with
+    e -> handle_error "drawStrokeColCYMK" e; err_unit
 
 let drawFillColGrey a =
-  try err_unit with e -> handle_error "drawFillColGrey" e; err_unit
+  try
+    Cpdfdrawcontrol.setfill (one a)
+  with
+    e -> handle_error "drawFillColGrey" e; err_unit
 
 let drawFillColRGB a b c =
-  try err_unit with e -> handle_error "drawFillColRGB" e; err_unit
+  try
+    Cpdfdrawcontrol.setfill (three a b c)
+  with
+    e -> handle_error "drawFillColRGB" e; err_unit
 
 let drawFillColCYMK a b c d =
-  try err_unit with e -> handle_error "drawFillColCYMK" e; err_unit
+  try
+    Cpdfdrawcontrol.setfill (four a b c d)
+  with
+    e -> handle_error "drawFillColCYMK" e; err_unit
 
-let drawFill a =
-  try err_unit with e -> handle_error "drawFill" e; err_unit
+let drawFill () =
+  try Cpdfdrawcontrol.fill () with e -> handle_error "drawFill" e; err_unit
 
-let drawFillEo a =
-  try err_unit with e -> handle_error "drawFillEo" e; err_unit
+let drawFillEo () =
+  try Cpdfdrawcontrol.fillevenodd () with e -> handle_error "drawFillEo" e; err_unit
 
-let drawStrokeFill a =
-  try err_unit with e -> handle_error "drawStrokeFill" e; err_unit
+let drawStrokeFill () =
+  try Cpdfdrawcontrol.strokefill () with e -> handle_error "drawStrokeFill" e; err_unit
 
-let drawStrokeFillEo a =
-  try err_unit with e -> handle_error "drawStrokeFillEo" e; err_unit
+let drawStrokeFillEo () =
+  try Cpdfdrawcontrol.strokefillevenodd () with e -> handle_error "drawStrokeFillEo" e; err_unit
 
-let drawClose a =
-  try err_unit with e -> handle_error "drawClose" e; err_unit
+let drawClose () =
+  try Cpdfdrawcontrol.closepath () with e -> handle_error "drawClose" e; err_unit
 
 let drawThick a =
   try err_unit with e -> handle_error "drawThick" e; err_unit
