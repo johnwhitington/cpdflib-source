@@ -1110,7 +1110,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawFillColCYMK\n");
   cpdf_drawFillColCYMK(0.0, 0.0, 0.0, 0.0);
   prerr();
-  /*printf("---cpdf_drawFill\n");
+  printf("---cpdf_drawFill\n");
   cpdf_drawFill();
   prerr();
   printf("---cpdf_drawFillEo\n");
@@ -1138,9 +1138,9 @@ int main(int argc, char **argv) {
   cpdf_drawMiter(0.0);
   prerr();
   printf("---cpdf_drawDash\n");
-  cpdf_drawDash("");
+  cpdf_drawDash("1");
   prerr();
-  printf("---cpdf_drawPush\n");
+  /*printf("---cpdf_drawPush\n");
   cpdf_drawPush();
   prerr();
   printf("---cpdf_drawPop\n");

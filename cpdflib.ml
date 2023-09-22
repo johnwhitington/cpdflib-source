@@ -2929,118 +2929,112 @@ let five = Printf.sprintf "%f %f %f %f %f"
 let six = Printf.sprintf "%f %f %f %f %f %f"
 
 let drawTo a b =
-  try
-    Cpdfdrawcontrol.addto (two a b)
-  with
+  try Cpdfdrawcontrol.addto (two a b) with
     e -> handle_error "drawTo" e; err_unit
 
 let drawLine a b =
-  try
-    Cpdfdrawcontrol.addline (two a b)
-  with
+  try Cpdfdrawcontrol.addline (two a b) with
     e -> handle_error "drawLine" e; err_unit
 
 let drawStroke () =
-  try
-    Cpdfdrawcontrol.stroke ()
-  with
+  try Cpdfdrawcontrol.stroke () with
     e -> handle_error "drawStroke" e; err_unit
 
 let drawRect a b c d =
-  try
-    Cpdfdrawcontrol.addrect (four a b c d)
-  with
+  try Cpdfdrawcontrol.addrect (four a b c d) with
     e -> handle_error "drawRect" e; err_unit
 
 let drawBez a b c d e f =
-  try
-    Cpdfdrawcontrol.addbezier (six a b c d e f)
-  with
+  try Cpdfdrawcontrol.addbezier (six a b c d e f) with
     e -> handle_error "drawBez" e; err_unit
 
 let drawBez23 a b c d =
-  try
-    Cpdfdrawcontrol.addbezier23 (four a b c d)
-  with
+  try Cpdfdrawcontrol.addbezier23 (four a b c d) with
     e -> handle_error "drawBez23" e; err_unit
 
 let drawBez13 a b c d =
-  try
-    Cpdfdrawcontrol.addbezier13 (four a b c d)
-  with
+  try Cpdfdrawcontrol.addbezier13 (four a b c d) with
     e -> handle_error "drawBez13" e; err_unit
 
 let drawCircle a b c =
-  try
-    Cpdfdrawcontrol.addcircle (three a b c)
-  with
+  try Cpdfdrawcontrol.addcircle (three a b c) with
     e -> handle_error "drawCircle" e; err_unit
 
 let drawStrokeColGrey a =
-  try
-    Cpdfdrawcontrol.setstroke (one a)
-  with
+  try Cpdfdrawcontrol.setstroke (one a) with
     e -> handle_error "drawStrokeColGrey" e; err_unit
 
 let drawStrokeColRGB a b c =
-  try
-    Cpdfdrawcontrol.setstroke (three a b c)
-  with
+  try Cpdfdrawcontrol.setstroke (three a b c) with
     e -> handle_error "drawStrokeColRGB" e; err_unit
 
 let drawStrokeColCYMK a b c d =
-  try
-    Cpdfdrawcontrol.setstroke (four a b c d)
-  with
+  try Cpdfdrawcontrol.setstroke (four a b c d) with
     e -> handle_error "drawStrokeColCYMK" e; err_unit
 
 let drawFillColGrey a =
-  try
-    Cpdfdrawcontrol.setfill (one a)
-  with
+  try Cpdfdrawcontrol.setfill (one a) with
     e -> handle_error "drawFillColGrey" e; err_unit
 
 let drawFillColRGB a b c =
-  try
-    Cpdfdrawcontrol.setfill (three a b c)
-  with
+  try Cpdfdrawcontrol.setfill (three a b c) with
     e -> handle_error "drawFillColRGB" e; err_unit
 
 let drawFillColCYMK a b c d =
-  try
-    Cpdfdrawcontrol.setfill (four a b c d)
-  with
+  try Cpdfdrawcontrol.setfill (four a b c d) with
     e -> handle_error "drawFillColCYMK" e; err_unit
 
 let drawFill () =
-  try Cpdfdrawcontrol.fill () with e -> handle_error "drawFill" e; err_unit
+  try Cpdfdrawcontrol.fill () with
+    e -> handle_error "drawFill" e; err_unit
 
 let drawFillEo () =
-  try Cpdfdrawcontrol.fillevenodd () with e -> handle_error "drawFillEo" e; err_unit
+  try Cpdfdrawcontrol.fillevenodd () with
+    e -> handle_error "drawFillEo" e; err_unit
 
 let drawStrokeFill () =
-  try Cpdfdrawcontrol.strokefill () with e -> handle_error "drawStrokeFill" e; err_unit
+  try Cpdfdrawcontrol.strokefill () with
+    e -> handle_error "drawStrokeFill" e; err_unit
 
 let drawStrokeFillEo () =
-  try Cpdfdrawcontrol.strokefillevenodd () with e -> handle_error "drawStrokeFillEo" e; err_unit
+  try Cpdfdrawcontrol.strokefillevenodd () with
+    e -> handle_error "drawStrokeFillEo" e; err_unit
 
 let drawClose () =
-  try Cpdfdrawcontrol.closepath () with e -> handle_error "drawClose" e; err_unit
+  try Cpdfdrawcontrol.closepath () with
+    e -> handle_error "drawClose" e; err_unit
 
 let drawThick a =
-  try err_unit with e -> handle_error "drawThick" e; err_unit
+  try Cpdfdrawcontrol.setthickness (one a) with
+    e -> handle_error "drawThick" e; err_unit
+
+let cap = function
+  0 -> "butt"
+| 1 -> "round"
+| 2 -> "square"
+| _ -> failwith "cap"
 
 let drawCap a =
-  try err_unit with e -> handle_error "drawCap" e; err_unit
+  try Cpdfdrawcontrol.setcap (cap a) with
+    e -> handle_error "drawCap" e; err_unit
+
+let join = function
+   0 -> "miter"
+ | 1 -> "round"
+ | 2 -> "bevel"
+ | _ -> failwith "join"
 
 let drawJoin a =
-  try err_unit with e -> handle_error "drawJoin" e; err_unit
+  try Cpdfdrawcontrol.setjoin (join a) with
+    e -> handle_error "drawJoin" e; err_unit
 
 let drawMiter a =
-  try err_unit with e -> handle_error "drawMiter" e; err_unit
+  try Cpdfdrawcontrol.setmiter (one a) with
+    e -> handle_error "drawMiter" e; err_unit
 
 let drawDash a =
-  try err_unit with e -> handle_error "drawDash" e; err_unit
+  try Cpdfdrawcontrol.setdash a with
+    e -> handle_error "drawDash" e; err_unit
 
 let drawPush a =
   try err_unit with e -> handle_error "drawPush" e; err_unit
