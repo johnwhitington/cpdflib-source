@@ -3120,25 +3120,31 @@ let drawSText a =
   try err_unit with e -> handle_error "drawSText" e; err_unit
 
 let drawLeading a =
-  try err_unit with e -> handle_error "drawLeading" e; err_unit
+  try Cpdfdrawcontrol.addleading a with
+    e -> handle_error "drawLeading" e; err_unit
 
 let drawCharSpace a =
-  try err_unit with e -> handle_error "drawCharSpace" e; err_unit
+  try Cpdfdrawcontrol.addcharspace a with
+    e -> handle_error "drawCharSpace" e; err_unit
 
 let drawWordSpace a =
-  try err_unit with e -> handle_error "drawWordSpace" e; err_unit
+  try Cpdfdrawcontrol.addwordspace a with
+    e -> handle_error "drawWordSpace" e; err_unit
 
 let drawTextScale a =
-  try err_unit with e -> handle_error "drawTextScale" e; err_unit
+  try Cpdfdrawcontrol.addtextscale a with
+    e -> handle_error "drawTextScale" e; err_unit
 
 let drawRenderMode a =
-  try err_unit with e -> handle_error "drawRenderMode" e; err_unit
+  try Cpdfdrawcontrol.addrendermode a with
+    e -> handle_error "drawRenderMode" e; err_unit
 
 let drawRise a = 
-  try err_unit with e -> handle_error "drawRise" e; err_unit
+  try Cpdfdrawcontrol.addrise a with e -> handle_error "drawRise" e; err_unit
 
 let drawNL a =
-  try err_unit with e -> handle_error "drawNL" e; err_unit
+  try Cpdfdrawcontrol.addnewline () with
+    e -> handle_error "drawNL" e; err_unit
 
 let drawNewPage () =
   try Cpdfdrawcontrol.addnewpage ()

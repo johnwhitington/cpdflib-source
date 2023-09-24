@@ -1140,7 +1140,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawDash\n");
   cpdf_drawDash("1");
   prerr();
-  /*printf("---cpdf_drawPush\n");
+  printf("---cpdf_drawPush\n");
   cpdf_drawPush();
   prerr();
   printf("---cpdf_drawPop\n");
@@ -1226,7 +1226,7 @@ int main(int argc, char **argv) {
   prerr();
   printf("---cpdf_drawNewPage\n");
   cpdf_drawNewPage();
-  prerr();*/
+  prerr();
   printf("---cpdf_drawEnd\n");
   cpdf_drawEnd(draw, drawall);
   prerr();
