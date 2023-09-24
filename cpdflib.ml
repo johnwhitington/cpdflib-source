@@ -2590,8 +2590,6 @@ let _ = Callback.register "getImageResolutionYPixels" getImageResolutionYPixels
 let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 
-
-
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range progress =
   if !dbg then flprint "Cpdflib.addPageLabels\n";
@@ -3036,66 +3034,88 @@ let drawDash a =
   try Cpdfdrawcontrol.setdash a with
     e -> handle_error "drawDash" e; err_unit
 
-let drawPush a =
-  try err_unit with e -> handle_error "drawPush" e; err_unit
+let drawPush () =
+  try Cpdfdrawcontrol.push () with
+    e -> handle_error "drawPush" e; err_unit
 
-let drawPop a =
-  try err_unit with e -> handle_error "drawPop" e; err_unit
+let drawPop () =
+  try Cpdfdrawcontrol.pop () with
+    e -> handle_error "drawPop" e; err_unit
 
 let drawMatrix a b c d e f =
-  try err_unit with e -> handle_error "drawMatrix" e; err_unit
+  try Cpdfdrawcontrol.setmatrix (six a b c d e f) with
+    e -> handle_error "drawMatrix" e; err_unit
 
 let drawMTrans a b =
-  try err_unit with e -> handle_error "drawMTrans" e; err_unit
+  try Cpdfdrawcontrol.setmtranslate (two a b) with
+    e -> handle_error "drawMTrans" e; err_unit
 
 let drawMRot a b c =
-  try err_unit with e -> handle_error "drawMRot" e; err_unit
+  try Cpdfdrawcontrol.setmrotate (three a b c) with
+    e -> handle_error "drawMRot" e; err_unit
 
 let drawMScale a b c d =
-  try err_unit with e -> handle_error "drawMScale" e; err_unit
+  try Cpdfdrawcontrol.setmscale (four a b c d) with
+    e -> handle_error "drawMScale" e; err_unit
 
 let drawMShearX a b c =
-  try err_unit with e -> handle_error "drawMShearX" e; err_unit
+  try Cpdfdrawcontrol.setmshearx (three a b c) with
+    e -> handle_error "drawMShearX" e; err_unit
 
 let drawMShearY a b c =
-  try err_unit with e -> handle_error "drawMShearY" e; err_unit
+  try Cpdfdrawcontrol.setmsheary (three a b c) with
+    e -> handle_error "drawMShearY" e; err_unit
 
 let drawXObjBBox a b c d = 
-  try err_unit with e -> handle_error "drawXObjBBox" e; err_unit
+  try Cpdfdrawcontrol.xobjbbox (four a b c d) with
+    e -> handle_error "drawXObjBBox" e; err_unit
 
 let drawXObj a =
-  try err_unit with e -> handle_error "drawXObj" e; err_unit
+  try Cpdfdrawcontrol.startxobj a with
+    e -> handle_error "drawXObj" e; err_unit
 
-let drawEndXObj a =
-  try err_unit with e -> handle_error "drawEndXObj" e; err_unit
+let drawEndXObj () =
+  try Cpdfdrawcontrol.endxobj () with
+    e -> handle_error "drawEndXObj" e; err_unit
 
 let drawUse a =
-  try err_unit with e -> handle_error "drawUse" e; err_unit
+  try Cpdfdrawcontrol.usexobj a with
+    e -> handle_error "drawUse" e; err_unit
 
+(* FIXME *)
 let drawJPEG a b =
-  try err_unit with e -> handle_error "drawJPEG" e; err_unit
+  try err_unit with
+    e -> handle_error "drawJPEG" e; err_unit
 
+(* FIXME *)
 let drawPNG a b =
   try err_unit with e -> handle_error "drawPNG" e; err_unit
 
 let drawImage a =
-  try err_unit with e -> handle_error "drawImage" e; err_unit
+  try Cpdfdrawcontrol.addimage a with
+    e -> handle_error "drawImage" e; err_unit
 
 let drawFillOpacity a =
-  try err_unit with e -> handle_error "drawFillOpacity" e; err_unit
+  try Cpdfdrawcontrol.addopacity a with
+    e -> handle_error "drawFillOpacity" e; err_unit
 
 let drawStrokeOpacity a =
-  try err_unit with e -> handle_error "drawStrokeOpacity" e; err_unit
+  try Cpdfdrawcontrol.addsopacity a with
+    e -> handle_error "drawStrokeOpacity" e; err_unit
 
 let drawBT a =
-  try err_unit with e -> handle_error "drawBT" e; err_unit
+  try Cpdfdrawcontrol.addbt () with
+    e -> handle_error "drawBT" e; err_unit
 
 let drawET a =
-  try err_unit with e -> handle_error "drawET" e; err_unit
+  try Cpdfdrawcontrol.addet () with
+    e -> handle_error "drawET" e; err_unit
 
+(* FIXME *)
 let drawText a =
   try err_unit with e -> handle_error "drawText" e; err_unit
 
+(* FIXME *)
 let drawSText a =
   try err_unit with e -> handle_error "drawSText" e; err_unit
 
@@ -3120,8 +3140,9 @@ let drawRise a =
 let drawNL a =
   try err_unit with e -> handle_error "drawNL" e; err_unit
 
-let drawNewPage a =
-  try err_unit with e -> handle_error "drawNewPage" e; err_unit
+let drawNewPage () =
+  try Cpdfdrawcontrol.addnewpage ()
+    with e -> handle_error "drawNewPage" e; err_unit
 
 let _ = Callback.register "drawBegin" drawBegin
 let _ = Callback.register "drawEnd" drawEnd
