@@ -3082,14 +3082,13 @@ let drawUse a =
   try Cpdfdrawcontrol.usexobj a with
     e -> handle_error "drawUse" e; err_unit
 
-(* FIXME *)
 let drawJPEG a b =
-  try err_unit with
+  try Cpdfdrawcontrol.addjpeg (Printf.sprintf "%s=%s" a b) with
     e -> handle_error "drawJPEG" e; err_unit
 
-(* FIXME *)
 let drawPNG a b =
-  try err_unit with e -> handle_error "drawPNG" e; err_unit
+  try Cpdfdrawcontrol.addpng (Printf.sprintf "%s=%s" a b) with
+    e -> handle_error "drawPNG" e; err_unit
 
 let drawImage a =
   try Cpdfdrawcontrol.addimage a with

@@ -1177,13 +1177,14 @@ int main(int argc, char **argv) {
   cpdf_drawUse("");
   prerr();
   printf("---cpdf_drawJPEG\n");
-  cpdf_drawJPEG("", "");
+  cpdf_drawJPEG("A", "testinputs/jpg.jpg");
   prerr();
   printf("---cpdf_drawPNG\n");
-  cpdf_drawPNG("", "");
+  cpdf_drawPNG("B", "testinputs/png.png");
   prerr();
   printf("---cpdf_drawImage\n");
-  cpdf_drawImage("");
+  cpdf_drawImage("A");
+  cpdf_drawImage("B");
   prerr();
   printf("---cpdf_drawFillOpacity\n");
   cpdf_drawFillOpacity(0.0);
