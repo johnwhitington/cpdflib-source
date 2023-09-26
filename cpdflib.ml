@@ -3110,13 +3110,13 @@ let drawET a =
   try Cpdfdrawcontrol.addet () with
     e -> handle_error "drawET" e; err_unit
 
-(* FIXME *)
 let drawText a =
-  try err_unit with e -> handle_error "drawText" e; err_unit
+  try Cpdfdrawcontrol.addtext a with
+    e -> handle_error "drawText" e; err_unit
 
-(* FIXME *)
 let drawSText a =
-  try err_unit with e -> handle_error "drawSText" e; err_unit
+  try Cpdfdrawcontrol.addspecialtext a with
+    e -> handle_error "drawSText" e; err_unit
 
 let drawLeading a =
   try Cpdfdrawcontrol.addleading a with

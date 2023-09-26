@@ -1195,14 +1195,14 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawBT\n");
   cpdf_drawBT();
   prerr();
-  printf("---cpdf_drawET\n");
-  cpdf_drawET();
-  prerr();
   printf("---cpdf_drawText\n");
   cpdf_drawText("");
   prerr();
   printf("---cpdf_drawSText\n");
   cpdf_drawSText("");
+  prerr();
+  printf("---cpdf_drawET\n");
+  cpdf_drawET();
   prerr();
   printf("---cpdf_drawLeading\n");
   cpdf_drawLeading(0.0);
