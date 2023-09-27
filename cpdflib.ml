@@ -3110,6 +3110,18 @@ let drawET a =
   try Cpdfdrawcontrol.addet () with
     e -> handle_error "drawET" e; err_unit
 
+let loadFont a b =
+  try err_unit with
+    e -> handle_error "loadFont" e; err_unit
+
+let drawFont n =
+  try !Cpdfdrawcontrol.setfontname n with
+    e -> handle_error "drawFont" e; err_unit
+
+let drawFontSize f =
+  try !Cpdfdrawcontrol.setfontsize f with
+    e -> handle_error "drawFontSize" e; err_unit
+
 let drawText a =
   try Cpdfdrawcontrol.addtext a with
     e -> handle_error "drawText" e; err_unit
@@ -3194,6 +3206,9 @@ let _ = Callback.register "drawFillOpacity" drawFillOpacity
 let _ = Callback.register "drawStrokeOpacity" drawStrokeOpacity
 let _ = Callback.register "drawBT" drawBT
 let _ = Callback.register "drawET" drawET
+let _ = Callback.register "loadFont" loadFont
+let _ = Callback.register "drawFont" drawFont
+let _ = Callback.register "drawFontSize" drawFontSize
 let _ = Callback.register "drawText" drawText
 let _ = Callback.register "drawSText" drawSText
 let _ = Callback.register "drawLeading" drawLeading

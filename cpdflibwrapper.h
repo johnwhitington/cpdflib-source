@@ -1461,6 +1461,9 @@ void cpdf_drawFillOpacity(double);
 void cpdf_drawStrokeOpacity(double);
 void cpdf_drawBT(void);
 void cpdf_drawET(void);
+void cpdf_loadFont(char*, char*); /* FIXME move this, since it applies to -add-text too */
+void cpdf_drawFont(char*);
+void cpdf_drawFontSize(double);
 void cpdf_drawText(char*);
 void cpdf_drawSText(char*);
 void cpdf_drawLeading(double);

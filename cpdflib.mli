@@ -342,6 +342,9 @@ val drawFillOpacity : float -> unit
 val drawStrokeOpacity : float -> unit
 val drawBT : unit -> unit
 val drawET : unit -> unit
+val loadFont : string -> string -> unit
+val drawFont : string -> unit
+val drawFontSize : float -> unit
 val drawText : string -> unit
 val drawSText : string -> unit
 val drawLeading : float -> unit

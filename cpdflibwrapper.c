@@ -3478,6 +3478,34 @@ void cpdf_drawET() {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_loadFont(char *str, char* str2) {
+  CAMLparam0();
+  CAMLlocal4(fn, instr, instr2, out);
+  fn = *caml_named_value("loadFont");
+  instr = caml_copy_string(str);
+  instr2 = caml_copy_string(str2);
+  out = caml_callback2(fn, instr, instr2);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawFont(char *str) {
+  CAMLparam0();
+  CAMLlocal3(fn, instr, out);
+  fn = *caml_named_value("drawFont");
+  instr = caml_copy_string(str);
+  out = caml_callback(fn, instr);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawFontSize(double o) {
+  CAMLparam0();
+  CAMLlocal3(fn, o_v, unit_out);
+  fn = *caml_named_value("drawFontSize");
+  o_v = caml_copy_double(o);
+  unit_out = caml_callback(fn, o_v);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_drawText(char *str) {
   CAMLparam0();
   CAMLlocal3(fn, instr, out);

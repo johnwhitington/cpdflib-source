@@ -1676,6 +1676,9 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO drawStrokeOpacity float->unit */
 /* __AUTO drawBT unit->unit */
 /* __AUTO drawET unit->unit */
+/* __AUTO loadFont string->string->unit */
+/* __AUTO drawFont string->unit */
+/* __AUTO drawFontSize float->unit */
 /* __AUTO drawText string->unit */
 /* __AUTO drawSText string->unit */
 /* __AUTO drawLeading float->unit */
