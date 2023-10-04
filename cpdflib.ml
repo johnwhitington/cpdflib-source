@@ -3116,7 +3116,7 @@ let drawET a =
     e -> handle_error "drawET" e; err_unit
 
 let loadFont a b =
-  try err_unit with
+  try Cpdfdrawcontrol.loadttf a b with
     e -> handle_error "loadFont" e; err_unit
 
 let drawFont n =
