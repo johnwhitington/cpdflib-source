@@ -1,6 +1,10 @@
 (* CHAPTER 1. Basics *)
 open Pdfutil
 
+(* We need to poke Cpdfcommand to get its module initialisation to run, to get
+the mutual recursion between Cpdfdrawcontrol and Cpdfcommand done. *)
+let () = Cpdfcommand.null ()
+
 let dbg = ref false
 
 let fast = ref false
@@ -2904,6 +2908,7 @@ let _ = Callback.register "fromPNGMemory" fromPNGMemory
 let drawBegin () =
   try
     Cpdfdrawcontrol.drawops := [("_MAIN", [])];
+    !Cpdfdrawcontrol.setdrawing ()
   with
     e -> handle_error "drawBegin" e; err_unit
 
@@ -3115,6 +3120,7 @@ let loadFont a b =
     e -> handle_error "loadFont" e; err_unit
 
 let drawFont n =
+  Printf.printf "Cpdflib.drawFont: |%s|\n%!" n;
   try !Cpdfdrawcontrol.setfontname n with
     e -> handle_error "drawFont" e; err_unit
 

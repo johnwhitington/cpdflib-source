@@ -1297,13 +1297,11 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawBT\n");
   cpdf_drawBT();
   prerr();
-  /*
   printf("---cpdf_loadFont\n");
   cpdf_loadFont("A", "testinputs/NotoSans-Black.ttf");
   prerr();
-  */
   printf("---cpdf_drawFont\n");
-  cpdf_drawFont("TimesRoman");
+  cpdf_drawFont("Times-Roman");
   prerr();
   printf("---cpdf_drawFontSize\n");
   cpdf_drawFontSize(15.0);
@@ -1311,6 +1309,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawText\n");
   cpdf_drawText("Hello!");
   prerr();
+  cpdf_drawFont("A");
   printf("---cpdf_drawSText\n");
   cpdf_drawSText("Page %Page");
   prerr();
