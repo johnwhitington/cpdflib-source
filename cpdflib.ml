@@ -3116,11 +3116,11 @@ let drawET a =
     e -> handle_error "drawET" e; err_unit
 
 let loadFont a b =
-  try Cpdfdrawcontrol.loadttf a b with
+  try Cpdfdrawcontrol.loadttfseparate a b with
     e -> handle_error "loadFont" e; err_unit
 
 let drawFont n =
-  Printf.printf "Cpdflib.drawFont: |%s|\n%!" n;
+  (*Printf.printf "Cpdflib.drawFont: |%s|\n%!" n;*)
   try !Cpdfdrawcontrol.setfontname n with
     e -> handle_error "drawFont" e; err_unit
 
