@@ -2,7 +2,7 @@ v2.6 (to come)
 
 o Merge Linux / Mac build processes into one Unix one
 o Remove Windows 32 bit to old/
-o Library is now mostly auto-generated
+o C part of library is now mostly auto-generated
 
 v2.5.2 (April 2022)
 

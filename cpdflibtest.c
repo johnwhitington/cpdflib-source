@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   cpdf_embedStd14(true);
   prerr();
   printf("---cpdf_embedStd14Dir()\n");
-  cpdf_embedStd14Dir(".");
+  cpdf_embedStd14Dir("fonts");
   prerr();
   printf("---cpdf_JSONUTF8()\n");
   cpdf_JSONUTF8(true);

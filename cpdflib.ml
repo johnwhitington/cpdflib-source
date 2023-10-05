@@ -2908,7 +2908,9 @@ let _ = Callback.register "fromPNGMemory" fromPNGMemory
 let drawBegin () =
   try
     Cpdfdrawcontrol.drawops := [("_MAIN", [])];
-    !Cpdfdrawcontrol.setdrawing ()
+    !Cpdfdrawcontrol.setdrawing ();
+    (*Printf.printf "!embed_std14 = %b, !embed_std14_dir = %s\n%!" !embed_std14 !embed_std14_dir;*)
+    !Cpdfdrawcontrol.setembedstd14 !embed_std14 !embed_std14_dir;
   with
     e -> handle_error "drawBegin" e; err_unit
 
