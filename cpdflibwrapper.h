@@ -1408,6 +1408,7 @@ int cpdf_fromJPEG(const char[]);
 /* CHAPTER 18. Drawing on PDFs */
 void cpdf_drawBegin(void);
 void cpdf_drawEnd(int, int);
+void cpdf_drawEndExtended(int, int, int, int, char*);
 void cpdf_drawRect(double, double, double, double);
 void cpdf_drawTo(double, double);
 void cpdf_drawLine(double, double);

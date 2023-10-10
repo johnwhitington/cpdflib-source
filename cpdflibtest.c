@@ -1311,7 +1311,7 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_drawFont("A");
   printf("---cpdf_drawSText\n");
-  cpdf_drawSText("Page %Page");
+  cpdf_drawSText("Page %Page on %filename with bates |%Bates|");
   prerr();
   printf("---cpdf_drawET\n");
   cpdf_drawET();
@@ -1353,8 +1353,10 @@ int main(int argc, char **argv) {
   cpdf_drawBT();
   cpdf_drawText("Another page");
   cpdf_drawET();
-  printf("---cpdf_drawEnd\n");
-  cpdf_drawEnd(draw, drawall);
+  /*printf("---cpdf_drawEnd\n");
+  cpdf_drawEnd(draw, drawall);*/
+  printf("---cpdf_drawEndExtended\n");
+  cpdf_drawEndExtended(draw, drawall, true, 10, "filename.txt");
   prerr();
   cpdf_toFile(draw, "testoutputs/drawn.pdf", false, false);
   cpdf_deletePdf(draw);

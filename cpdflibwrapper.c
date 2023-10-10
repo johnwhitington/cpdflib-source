@@ -3045,6 +3045,21 @@ void cpdf_drawEnd(int o, int n) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_drawEndExtended(int from_pdf, int to_pdf, int range, int pagenumber,
+                   char *fontname) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("drawEndExtended");
+  CAMLlocalN(args, 5);
+  args[0] = Val_int(from_pdf);
+  args[1] = Val_int(to_pdf);
+  args[2] = Val_int(range);
+  args[3] = Val_int(pagenumber);
+  args[4] = caml_copy_string(fontname);
+  out_v = caml_callbackN(fn_v, 5, args);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_drawRect(double o, double n, double m, double p) {
   CAMLparam0();
   CAMLlocal2(fn, unit_out);

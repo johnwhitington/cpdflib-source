@@ -1390,7 +1390,7 @@ let addText_inner
          topline (* relative to topline *)
          filename (* file name *)
          None (* extract text font size *)
-         ~raw:false (* FIXME *)
+         ~raw:false
          "0 0" (* shift *)
          pdf (* pdf *))
     in
@@ -2916,11 +2916,21 @@ let drawBegin () =
 
 let drawEnd pdf range =
   try
-    (* FIXME all the other optional arguments *)
     match !Cpdfdrawcontrol.drawops with
     | [("_MAIN", ops)] ->
         update_pdf
-          (Cpdfdraw.draw ~fast:false ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
+          (Cpdfdraw.draw ~fast:!fast ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
+          (lookup_pdf pdf)
+    | _ -> failwith "not enough -end-xobj or -et"
+  with
+    e -> handle_error "drawEnd" e; err_unit
+
+let drawEndExtended pdf range underneath bates filename =
+  try
+    match !Cpdfdrawcontrol.drawops with
+    | [("_MAIN", ops)] ->
+        update_pdf
+          (Cpdfdraw.draw ~fast:!fast ~underneath ~filename ~bates ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
           (lookup_pdf pdf)
     | _ -> failwith "not enough -end-xobj or -et"
   with
@@ -3171,6 +3181,7 @@ let drawNewPage () =
 
 let _ = Callback.register "drawBegin" drawBegin
 let _ = Callback.register "drawEnd" drawEnd
+let _ = Callback.register "drawEndExtended" drawEndExtended
 let _ = Callback.register "drawTo" drawTo
 let _ = Callback.register "drawLine" drawLine
 let _ = Callback.register "drawStroke" drawStroke
