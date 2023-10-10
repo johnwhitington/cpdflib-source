@@ -22,7 +22,12 @@ char *cpdf_version();
 void cpdf_setFast();
 void cpdf_setSlow();
 
+/* Calling this function with a true argument sets embedding for the Standard
+ * 14 fonts.  You must also set the directory to load them from with the next
+ * function. Default value: false. */
 void cpdf_embedStd14(int);
+
+/* Set the directory to load Standard 14 fonts for embedding. */
 void cpdf_embedStd14Dir(char*);
 
 /*
@@ -887,8 +892,12 @@ void cpdf_padMultipleBefore(int, int);
  */
 void *cpdf_annotationsJSON(int, int *);
 
+/* cpdf_removeAnnotations(pdf, range) removes all annotations from pages in the
+ * given range. */
 void cpdf_removeAnnotations(int, int);
 
+/* cpdf_setAnnotationsJSON(length, data, pdf) adds the annotations given in
+ * JSON format to the PDF, on top of any exisiting annotations. */
 void cpdf_setAnnotationsJSON(int, void *, int);
 
 /* CHAPTER 11. Document Information and Metadata */
@@ -1139,6 +1148,8 @@ int cpdf_getNonFullScreenPageMode(int);
  * zoom-to-fit, at the given page number. */
 void cpdf_openAtPage(int, int, int);
 
+/* cpdf_openAtPageCustom(pdf, destination) sets the PDF to open at the
+ * destination described by the string. */
 void cpdf_openAtPageCustom(int, char*);
 
 /*
@@ -1230,6 +1241,8 @@ int cpdf_getPageLabelOffset(int);
 int cpdf_getPageLabelRange(int);
 void cpdf_endGetPageLabels();
 
+/* cpdf_compositionJSON(filesize, pdf, size returns the composition data in
+ * JSON format. */
 void *cpdf_compositionJSON(int, int, int*);
 
 /* CHAPTER 12. File Attachments */
@@ -1401,7 +1414,10 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 
+/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-transparent PNG */
 int cpdf_fromPNG(const char[]);
+
+/* cpdf_fromJPEG(filename) builds a PDF from a JPEG */
 int cpdf_fromJPEG(const char[]);
 
 
