@@ -353,6 +353,11 @@ int cpdf_hasPermission(int, enum cpdf_permission);
  */
 enum cpdf_encryptionMethod cpdf_encryptionKind(int);
 
+/* cpdf_loadFont(name, filename) loads a TrueType font from the given file
+ * name, and names it. It may then be used when adding text or drawing, using
+ * the name in place of a standard font name. */
+void cpdf_loadFont(char*, char*);
+
 /* CHAPTER 2. Merging and Splitting */
 
 /*
@@ -1423,36 +1428,84 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 
-/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-transparent PNG */
+/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-transparent PNG. */
 int cpdf_fromPNG(const char[]);
 
-/* cpdf_fromJPEG(filename) builds a PDF from a JPEG */
+/* cpdf_fromJPEG(filename) builds a PDF from a JPEG/ */
 int cpdf_fromJPEG(const char[]);
 
 
 /* CHAPTER 18. Drawing on PDFs */
+
+/* cpdf_drawBegin sets up the drawing process. It must be called before any
+ * other cpdf_draw* function. */
 void cpdf_drawBegin(void);
+
+/* cpdf_drawEnd(pdf, range) commits the drawing to the given PDF on pages in
+ * the given range. */
 void cpdf_drawEnd(int, int);
+
+/* cpdf_drawExtended(pdf, range, underneath, bates, filename) is the same as
+ * cpdf_drawEnd, but provides the special parameters which may be required when
+ * using cpdf_drawSText. */
 void cpdf_drawEndExtended(int, int, int, int, char*);
+
+/* cpdf_drawRect(x, y, w, h) adds a rectangle to the current path. */
 void cpdf_drawRect(double, double, double, double);
+
+/* cpdf_drawTo(x, y) moves the current point to (x, y). */
 void cpdf_drawTo(double, double);
+
+/* cpdf_drawLine(x, y) adds a line from the current point to (x, y) to the
+ * current path. */
 void cpdf_drawLine(double, double);
+
+/* cpdf_drawBez(x1, y1, x2, y2, x3, y3) adds a bezier curve to the current
+ * path. */
 void cpdf_drawBez(double, double, double, double, double, double);
+
+/* cpdf_drawBez23(x2, y2, x3, y3) add a bezier curve with (x1, y1) = current
+ * point. */
 void cpdf_drawBez23(double, double, double, double);
+
+/* cpdf_drawBez13(x1, y1, x3, y3) add a bezier curve with (x3, y3) = new
+ * current point. */
 void cpdf_drawBez13(double, double, double, double);
+
+/* cpdf_drawCircle(x, y, r) adds a circle to the current path. */
 void cpdf_drawCircle(double, double, double);
+
+/* cpdf_drawStroke() strokes the curent path, and clears it. */
+void cpdf_drawStroke(void);
+
+/* cpdf_drawFill() fills the current path with a non-zero winding rule, and
+ * clears it. */
+void cpdf_drawFill(void);
+
+/* cpdf_drawFillEo() fills the current path with an even-odd winding rule, and
+ * clears it. */
+void cpdf_drawFillEo(void);
+
+/* cpdf_drawStrokeFill() fills and then strokes the current path with a
+ * non-zero winding rule, and clears it. */
+void cpdf_drawStrokeFill(void);
+
+/* cpdf_drawStrokeFillEo() fills and then strokes the current path with an even
+ * odd winding rule, and clears it. */
+void cpdf_drawStrokeFillEo(void);
+
+/* cpdf_drawClose closes the current path by appending a straight line segment
+ * from the current point to the starting point of the subpath. */
+void cpdf_drawClose(void);
+
+/* FIXME clipping missing here */
+
 void cpdf_drawStrokeColGrey(double);
 void cpdf_drawStrokeColRGB(double, double, double);
 void cpdf_drawStrokeColCYMK(double, double, double, double);
 void cpdf_drawFillColGrey(double);
 void cpdf_drawFillColRGB(double, double, double);
 void cpdf_drawFillColCYMK(double, double, double, double);
-void cpdf_drawStroke(void);
-void cpdf_drawFill(void);
-void cpdf_drawFillEo(void);
-void cpdf_drawStrokeFill(void);
-void cpdf_drawStrokeFillEo(void);
-void cpdf_drawClose(void);
 void cpdf_drawThick(double);
 enum cpdf_cap {
   cpdf_capButt,
@@ -1468,6 +1521,7 @@ void cpdf_drawCap(enum cpdf_cap);
 void cpdf_drawJoin(enum cpdf_join);
 void cpdf_drawMiter(double);
 void cpdf_drawDash(char*);
+
 void cpdf_drawPush(void);
 void cpdf_drawPop(void);
 void cpdf_drawMatrix(double, double, double, double, double, double);
@@ -1476,18 +1530,21 @@ void cpdf_drawMRot(double, double, double);
 void cpdf_drawMScale(double, double, double, double);
 void cpdf_drawMShearX(double, double, double);
 void cpdf_drawMShearY(double, double, double);
+
 void cpdf_drawXObjBBox(double, double, double, double);
 void cpdf_drawXObj(char*);
 void cpdf_drawEndXObj(void);
 void cpdf_drawUse(char*);
+
 void cpdf_drawJPEG(char*, char*);
 void cpdf_drawPNG(char*, char*);
 void cpdf_drawImage(char*);
+
 void cpdf_drawFillOpacity(double);
 void cpdf_drawStrokeOpacity(double);
+
 void cpdf_drawBT(void);
 void cpdf_drawET(void);
-void cpdf_loadFont(char*, char*); /* FIXME move this, since it applies to -add-text too */
 void cpdf_drawFont(char*);
 void cpdf_drawFontSize(double);
 void cpdf_drawText(char*);
@@ -1499,6 +1556,7 @@ void cpdf_drawTextScale(double);
 void cpdf_drawRenderMode(int);
 void cpdf_drawRise(double);
 void cpdf_drawNL(void);
+
 void cpdf_drawNewPage(void);
 
 /* CHAPTER 19. Miscellaneous */
