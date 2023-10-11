@@ -1428,7 +1428,8 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 
-/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-transparent PNG. */
+/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-interlaced
+ * non-transparent PNG. */
 int cpdf_fromPNG(const char[]);
 
 /* cpdf_fromJPEG(filename) builds a PDF from a JPEG/ */
@@ -1530,41 +1531,94 @@ void cpdf_drawFillColRGB(double, double, double);
  * the fill colour. */
 void cpdf_drawFillColCYMK(double, double, double, double);
 
+/* cpdf_drawThick(thickness) sets the line thickness. */
 void cpdf_drawThick(double);
+
+/* Line caps. */
 enum cpdf_cap {
   cpdf_capButt,
   cpdf_capRound,
   cpdf_capSquare
 };
+
+/* cpdf_drawCap(captype) sets the line cap. */
+void cpdf_drawCap(enum cpdf_cap);
+
+/* Line joins. */
 enum cpdf_join {
   cpdf_joinMiter,
   cpdf_joinRound,
   cpdf_joinBevel
 };
-void cpdf_drawCap(enum cpdf_cap);
+
+/* cpdf_drawJoin(jointype) sets the line join type. */
 void cpdf_drawJoin(enum cpdf_join);
+
+/* cpdf_drawMiter(m) sets the miter limit. */
 void cpdf_drawMiter(double);
+
+/* cpdf_drawDash(dash description) sets the line dash style. */
 void cpdf_drawDash(char*);
 
+/* cpdf_drawPush() saves the current graphics state on the stack. */
 void cpdf_drawPush(void);
+
+/* cpdf_drawPop() restores the graphics state from the stack. */
 void cpdf_drawPop(void);
+
+/* cpdf_drawMatrix(a, b, c, d, e, f) appends the given matrix to the Current
+ * Transformation Matrix. */
 void cpdf_drawMatrix(double, double, double, double, double, double);
+
+/* cpdf_drawMTrans(tx, ty) appends a translation by (tx, ty) to the Current
+ * Transformation Matrix. */ 
 void cpdf_drawMTrans(double, double);
+
+/* cpdf_drawMRot(x, y, a) appends a rotation by a around (a, y) to the Current
+ * Transformation Matrix. */
 void cpdf_drawMRot(double, double, double);
+
+/* cpdf_drawMScale(x, y, sx, sy) appends a scaling by (sx, sy) around (x, y) to
+ * the Current Transformation Matrix. */
 void cpdf_drawMScale(double, double, double, double);
+
+/* cpdf_drawMShearX(x, y, a) appends an X shearing of angle a around (x, y) to
+ * the Current Transformation Matrix. */
 void cpdf_drawMShearX(double, double, double);
+
+/* cpdf_drawMShearY(x, y, a) appends an Y shearing of angle a around (x, y) to
+ * the Current Transformation Matrix. */
 void cpdf_drawMShearY(double, double, double);
 
+/* cpdf_drawXObjBBox(x, y, w, h) sets the XObject bounding box. */
 void cpdf_drawXObjBBox(double, double, double, double);
+
+/* cpdf_drawXObj(name) begins the storing of an XObject. */
 void cpdf_drawXObj(char*);
+
+/* cpdf_drawEndXObj() ends the storing of an XObject. */
 void cpdf_drawEndXObj(void);
+
+/* cpdf_drawUse(name) uses the named XObject. */
 void cpdf_drawUse(char*);
 
+/* cpdf_drawJPEG(name, filename) loads a JPEG from the given file, storing it
+ * under the given name. */
 void cpdf_drawJPEG(char*, char*);
+
+/* cpdf_drawPNG(name, filename) loads a 24 bit non-interlaced non-transparent
+ * PNG from the given file, storing it under the given name. */
 void cpdf_drawPNG(char*, char*);
+
+/* cpdf_drawImage(name) draws a stored image. To draw at the expected size, it
+ * is required to scale the Current Transformation Matrix by the width and
+ * height of the image. */
 void cpdf_drawImage(char*);
 
+/* cpdf_drawFillOpacity(n) sets the fill opacity. */
 void cpdf_drawFillOpacity(double);
+
+/* cpdf_drawStrokeOpacity(n) sets the stroke opacity. */
 void cpdf_drawStrokeOpacity(double);
 
 void cpdf_drawBT(void);
@@ -1581,6 +1635,8 @@ void cpdf_drawRenderMode(int);
 void cpdf_drawRise(double);
 void cpdf_drawNL(void);
 
+/* cpdf_drawNewPage() moves to the next page, creating it if necessary, and
+ * setting the range to just that new page. */
 void cpdf_drawNewPage(void);
 
 /* CHAPTER 19. Miscellaneous */
