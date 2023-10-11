@@ -1621,18 +1621,45 @@ void cpdf_drawFillOpacity(double);
 /* cpdf_drawStrokeOpacity(n) sets the stroke opacity. */
 void cpdf_drawStrokeOpacity(double);
 
+/* cpdf_drawBT() begins a text section. */
 void cpdf_drawBT(void);
+
+/* cpdf_drawET() ends a text section. */
 void cpdf_drawET(void);
+
+/* cpdf_drawFont(fontname) sets the font. */
 void cpdf_drawFont(char*);
+
+/* cpdf_drawFontSize(n) sets the font size. */
 void cpdf_drawFontSize(double);
+
+/* cpdf_drawText(text) draws text. */
 void cpdf_drawText(char*);
+
+/* cpdf_drawSText(text) draws text with %Specials. You may need to use
+ * cpdf_drawEndExtended instead of cpdf_drawEnd later, to provide the extra
+ * information required. */
 void cpdf_drawSText(char*);
+
+/* cpdf_drawLeading(n) sets the leading. */
 void cpdf_drawLeading(double);
+
+/* cpdf_drawCharSpace(n) sets the character spacing. */
 void cpdf_drawCharSpace(double);
+
+/* cpdf_drawWordSpace(n) sets the word spacing. */
 void cpdf_drawWordSpace(double);
+
+/* cpdf_drawTextScale(n) sets the text scaling. */
 void cpdf_drawTextScale(double);
+
+/* cpdf_drawRenderMode(n) sets the text rendering mode. */
 void cpdf_drawRenderMode(int);
+
+/* cpdf_drawRise(n) sets the text rise. */
 void cpdf_drawRise(double);
+
+/* cpdf_drawNL() moves to the next line. */
 void cpdf_drawNL(void);
 
 /* cpdf_drawNewPage() moves to the next page, creating it if necessary, and
