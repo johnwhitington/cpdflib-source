@@ -3259,6 +3259,22 @@ void cpdf_drawClose() {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_drawClip() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawClip");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_drawClipEo() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("drawClipEo");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_drawThick(double o) {
   CAMLparam0();
   CAMLlocal3(fn, o_v, unit_out);

@@ -318,6 +318,8 @@ val drawFillEo : unit -> unit
 val drawStrokeFill : unit -> unit
 val drawStrokeFillEo : unit -> unit
 val drawClose : unit -> unit
+val drawClip : unit -> unit
+val drawClipEo : unit -> unit
 val drawThick : float -> unit
 val drawCap : int -> unit
 val drawJoin : int -> unit

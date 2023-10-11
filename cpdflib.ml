@@ -3019,6 +3019,14 @@ let drawClose () =
   try Cpdfdrawcontrol.closepath () with
     e -> handle_error "drawClose" e; err_unit
 
+let drawClip () =
+  try Cpdfdrawcontrol.clip () with
+    e -> handle_error "drawClip" e; err_unit
+
+let drawClipEo () =
+  try Cpdfdrawcontrol.clipevenodd () with
+    e -> handle_error "drawClipEo" e; err_unit
+
 let drawThick a =
   try Cpdfdrawcontrol.setthickness (one a) with
     e -> handle_error "drawThick" e; err_unit

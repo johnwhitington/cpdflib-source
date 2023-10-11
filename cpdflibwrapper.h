@@ -1498,14 +1498,38 @@ void cpdf_drawStrokeFillEo(void);
  * from the current point to the starting point of the subpath. */
 void cpdf_drawClose(void);
 
-/* FIXME clipping missing here */
+/* cpdf_drawClip uses the current path as a clipping region, using the non-zero
+ * winding rule. */
+void cpdf_drawClip(void);
 
+/* cpdf_drawClipEo uses the current path as a clipping region, using the
+ * even-odd winding rule. */
+void cpdf_drawClipEo(void);
+
+/* cpdf_drawStrokColGrey(g) changes to a greyscale stroke colourspace and sets
+ * the stroke colour. */
 void cpdf_drawStrokeColGrey(double);
+
+/* cpdf_drawStrokeColRGB(r, g, b) changes to an RGB stroke colourspace and sets
+ * the stroke colour. */
 void cpdf_drawStrokeColRGB(double, double, double);
+
+/* cpdf_drawStrokeColCYMK(c, y, m, k) changes to a CYMK stroke colourspace and
+ * sets the stroke colour. */
 void cpdf_drawStrokeColCYMK(double, double, double, double);
+
+/* cpdf_drawFillColGrey(g) changes to a greyscale fill colourspace and sets the
+ * fill colour. */
 void cpdf_drawFillColGrey(double);
+
+/* cpdf_drawFillColRGB(r, g, b) changes to an RGB fill colourspace and sets the
+ * fill colour. */
 void cpdf_drawFillColRGB(double, double, double);
+
+/* cpdf_drawFillColCYMK(c, y, m, k) changes to a CYMK fill colourspace and sets
+ * the fill colour. */
 void cpdf_drawFillColCYMK(double, double, double, double);
+
 void cpdf_drawThick(double);
 enum cpdf_cap {
   cpdf_capButt,
