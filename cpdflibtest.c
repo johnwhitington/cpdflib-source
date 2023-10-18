@@ -1062,7 +1062,7 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(jpg);
 
   /* CHAPTER 18. Drawing on PDFs */
-  printf("***** CHAPTER 18. Miscellaneous\n");
+  printf("***** CHAPTER 18. Drawing on PDFs \n");
   int draw = cpdf_fromFile("hello.pdf", "");
   int drawall = cpdf_all(draw);
   printf("---cpdf_drawBegin\n");
