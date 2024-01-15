@@ -2546,42 +2546,42 @@ let endGetImageResolution () =
 let getImageResolutionPageNumber serial =
   if !dbg then flprint "Cpdflib.getImageResolutionPageNumber\n";
   try
-    begin match !images.(serial) with r, _, _, _, _, _ -> r end
+    begin match !images.(serial) with r, _, _, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionPageNumber" e; err_int
 
 let getImageResolutionImageName serial =
   if !dbg then flprint "Cpdflib.getImageResolutionImageName\n";
   try
-    begin match !images.(serial) with _, r, _, _, _, _ -> r end
+    begin match !images.(serial) with _, r, _, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionImageName" e; err_string
 
 let getImageResolutionXPixels serial =
   if !dbg then flprint "Cpdflib.getImageResolutionXPixels\n";
   try
-    begin match !images.(serial) with _, _, r, _, _, _ -> r end
+    begin match !images.(serial) with _, _, r, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionXPixels" e; err_int
 
 let getImageResolutionYPixels serial =
   if !dbg then flprint "Cpdflib.getImageResolutionYPixels\n";
   try
-    begin match !images.(serial) with _, _, _, r, _, _ -> r end
+    begin match !images.(serial) with _, _, _, r, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionYPixels" e; err_int
 
 let getImageResolutionXRes serial =
   if !dbg then flprint "Cpdflib.getImageResolutionXRes\n";
   try
-    begin match !images.(serial) with _, _, _, _, r, _ -> r end
+    begin match !images.(serial) with _, _, _, _, r, _, _ -> r end
   with e ->
     handle_error "getImageResolutionXRes" e; err_float
 
 let getImageResolutionYRes serial =
   if !dbg then flprint "Cpdflib.getImageResolutionYRes\n";
   try
-    begin match !images.(serial) with _, _, _, _, _, r -> r end
+    begin match !images.(serial) with _, _, _, _, _, r, _ -> r end
   with e ->
     handle_error "getImageResolutionYRes" e; err_float
 
@@ -2868,28 +2868,28 @@ let textToPDFPaperMemory papersize font fontsize rawbytes =
 let fromJPEGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input Cpdfimage.obj_of_jpeg_data (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_jpeg_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromJPEGMemory" e; err_int
 
 let fromPNGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input Cpdfimage.obj_of_png_data (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_png_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromPNGMemory" e; err_int
 
 let fromJPEG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input Cpdfimage.obj_of_jpeg_data input)
+      new_pdf (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_jpeg_data) input)
   with
     e -> handle_error "fromJPEG" e; err_int
 
 let fromPNG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input Cpdfimage.obj_of_png_data input)
+      new_pdf (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_png_data) input)
   with
     e -> handle_error "fromPNG" e; err_int
 
