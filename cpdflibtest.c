@@ -282,6 +282,10 @@ int main(int argc, char **argv) {
   cpdf_shiftContents(pagespdf5, r3, 1.5, 1.25);
   prerr();
   cpdf_toFile(pagespdf5, "testoutputs/03shiftcontents.pdf", false, false);
+  printf("---cpdf_shiftBoxes()\n");
+  cpdf_shiftBoxes(pagespdf5, r3, 100, 100);
+  prerr();
+  cpdf_toFile(pagespdf5, "testoutputs/03shiftboxes.pdf", false, false);
   printf("---cpdf_rotate()\n");
   cpdf_rotate(pagespdf6, r3, 90);
   prerr();

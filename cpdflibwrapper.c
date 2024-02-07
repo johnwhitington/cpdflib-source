@@ -859,6 +859,19 @@ void cpdf_shiftContents(int pdf, int range, double sx, double sy) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_shiftBoxes(int pdf, int range, double sx, double sy) {
+  CAMLparam0();
+  CAMLlocal2(fn, unit);
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = caml_copy_double(sx);
+  args[3] = caml_copy_double(sy);
+  fn = *caml_named_value("shiftBoxes");
+  unit = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_rotate(int pdf, int range, int angle) {
   CAMLparam0();
   CAMLlocal5(unit, fn, pdf_v, range_v, angle_v);

@@ -500,6 +500,12 @@ void cpdf_scaleContents(int, int, struct cpdf_position, double);
 void cpdf_shiftContents(int, int, double, double);
 
 /*
+ * cpdf_shiftContents(pdf, range, dx, dy) shifts the boxes of the pages in
+ * the range.
+ */
+void cpdf_shiftBoxes(int, int, double, double);
+
+/*
  * cpdf_rotate(pdf, range, rotation) changes the viewing rotation to an
  * absolute value. Appropriate rotations are 0, 90, 180, 270.
  */

@@ -839,6 +839,13 @@ let shiftContents i range dx dy =
   with
     e -> handle_error "shiftContents" e; err_unit
 
+let shiftBoxes i range dx dy =
+  try
+    let dxdylist = many (dx, dy) (pages i) in
+    update_pdf (Cpdfpage.shift_boxes dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
+  with
+    e -> handle_error "shiftBoxes" e; err_unit
+
 let scaleContents pdf range pos f1 f2 factor =
   try
     update_pdf (Cpdfpage.scale_contents ~fast:!fast (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
@@ -949,6 +956,7 @@ let _ = Callback.register "scalePages" scalePages
 let _ = Callback.register "scaleToFit" scaleToFit
 let _ = Callback.register "scaleToFitPaper" scaleToFitPaper
 let _ = Callback.register "shiftContents" shiftContents
+let _ = Callback.register "shiftBoxes" shiftBoxes
 let _ = Callback.register "scaleContents" scaleContents
 let _ = Callback.register "rotate" rotate
 let _ = Callback.register "rotateBy" rotateBy
