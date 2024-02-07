@@ -87,6 +87,7 @@ val setMediabox : pdf -> range -> float -> float -> float -> float -> unit
 val setCropBox : pdf -> int -> float -> float -> float -> float -> unit
 val setTrimBox : pdf -> int -> float -> float -> float -> float -> unit
 val setBleedBox : pdf -> int -> float -> float -> float -> float -> unit
+val pageInfoJSON : pdf -> Pdfio.rawbytes
 val setArtBox : pdf -> int -> float -> float -> float -> float -> unit
 val getMediaBox : pdf -> int -> float * float * float * float
 val getCropBox : pdf -> int -> float * float * float * float
@@ -269,6 +270,7 @@ val getFontType : int -> string
 val getFontEncoding : int -> string
 val startGetFontInfo : int -> unit
 val endGetFontInfo : unit -> unit
+val fontsJSON : pdf -> Pdfio.rawbytes
 val copyFont : pdf -> pdf -> range -> int -> string -> unit
 val removeFonts : int -> unit
 

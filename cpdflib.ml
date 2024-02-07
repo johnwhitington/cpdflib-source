@@ -1333,7 +1333,6 @@ let _ = Callback.register "padEvery" padEvery
 let _ = Callback.register "padMultiple" padMultiple
 let _ = Callback.register "padMultipleBefore" padMultipleBefore
 
-
 (* CHAPTER 10. Annotations *)
 let annotationsJSON pdf =
   try
@@ -1407,6 +1406,12 @@ let getFontType serial =
 let getFontEncoding serial =
   try let _, _, _, _, x = !fontinfo.(serial) in x with e -> handle_error "getFontEncoding" e; err_string
 
+let fontsJSON pdf =
+  try
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdffont.json_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+  with
+    e -> handle_error "fontsJSON" e; err_data
+
 let _ = Callback.register "numberFonts" numberFonts
 let _ = Callback.register "getFontPage" getFontPage
 let _ = Callback.register "getFontName" getFontName
@@ -1414,6 +1419,7 @@ let _ = Callback.register "getFontType" getFontType
 let _ = Callback.register "getFontEncoding" getFontEncoding
 let _ = Callback.register "startGetFontInfo" startGetFontInfo
 let _ = Callback.register "endGetFontInfo" endGetFontInfo
+let _ = Callback.register "fontsJSON" fontsJSON
 
 let removeFonts pdf = ()
 let copyFont pdf_from pdf_to range page name = ()
@@ -2068,6 +2074,13 @@ let setCropBox pdf range minx maxx miny maxy =
     update_pdf (Cpdfpage.setBox "/CropBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setCropBox" e; err_unit
+
+(* FIXME not fonts *)
+let pageInfoJSON pdf =
+  try
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdffont.json_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+  with
+    e -> handle_error "pageInfoJSON" e; err_data
 
 let compositionJSON filesize pdf =
   try

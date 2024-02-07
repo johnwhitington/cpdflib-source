@@ -594,7 +594,7 @@ int main(int argc, char **argv) {
   printf("Contains %i bytes of data\n", annotlength);
   printf("---cpdf_removeAnnotations()\n");
   int r_annot = cpdf_range(1, 1);
-  cpdf_removeAnnotations(annot, r_annot); 
+  cpdf_removeAnnotations(annot, r_annot);
   printf("---cpdf_setAnnotationsJSON()\n");
   cpdf_setAnnotationsJSON(annot, data, annotlength);
   cpdf_deletePdf(annot);
@@ -827,7 +827,7 @@ int main(int argc, char **argv) {
   int displaydoc = cpdf_getDisplayDocTitle(info);
   prerr();
   printf("---cpdf_nonFullScreenPageMode()\n");
-  cpdf_nonFullScreenPageMode(info, cpdf_useOutlines); 
+  cpdf_nonFullScreenPageMode(info, cpdf_useOutlines);
   prerr();
   printf("---cpdf_getNonFullScreenPageMode()\n");
   int nonfullscreenpagemode = cpdf_getNonFullScreenPageMode(info);
@@ -951,7 +951,8 @@ int main(int argc, char **argv) {
     double xres = cpdf_getImageResolutionXRes(x);
     double yres = cpdf_getImageResolutionYRes(x);
     int objnum = cpdf_getImageResolutionObjNum(x);
-    printf("IMAGE: %i, %s, %i, %i, %f, %f, %i\n", page, name, xp, yp, xres, yres, objnum);
+    printf("IMAGE: %i, %s, %i, %i, %f, %f, %i\n", page, name, xp, yp, xres,
+           yres, objnum);
   }
   prerr();
   cpdf_endGetImageResolution();
@@ -1230,9 +1231,10 @@ int main(int argc, char **argv) {
   cpdf_drawLine(250, 200);
   cpdf_drawLine(350, 0);
   cpdf_drawStroke();
-  /* Here, we will use push/pop and the translation functions to draw a rectangle, transformed */
+  /* Here, we will use push/pop and the translation functions to draw a
+   * rectangle, transformed */
   cpdf_drawThick(5);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   printf("---cpdf_drawPush\n");
   cpdf_drawPush();
@@ -1243,42 +1245,42 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawMTrans\n");
   cpdf_drawPush();
   cpdf_drawMTrans(20.0, 20.0);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawMRot\n");
   cpdf_drawPush();
   cpdf_drawMRot(0.0, 0.0, 0.1);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawMScale\n");
   cpdf_drawPush();
   cpdf_drawMScale(0.0, 0.0, 0.9, 1.1);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawShearX\n");
   cpdf_drawPush();
   cpdf_drawMShearX(100.0, 500.0, 0.5);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawShearY\n");
   cpdf_drawPush();
   cpdf_drawMShearY(100.0, 500.0, 0.5);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawMatrix\n");
   cpdf_drawPush();
   cpdf_drawMatrix(0.0, 1.0, 2.0, 3.0, 4.0, 5.0);
-  cpdf_drawRect (100, 500, 100, 100);
+  cpdf_drawRect(100, 500, 100, 100);
   cpdf_drawStroke();
   prerr();
   cpdf_drawPop();

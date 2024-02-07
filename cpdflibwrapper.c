@@ -2133,6 +2133,27 @@ void cpdf_setBleedBox(int pdf, int range, double minx, double maxx, double miny,
   updateLastError();
   CAMLreturn0;
 }
+void *cpdf_pageInfoJSON(int pdf, int *retlen) {
+  CAMLparam0();
+  CAMLlocal3(fn, bytestream, pdf_v);
+  fn = *caml_named_value("pageInfoJSON");
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "pageInfoJSON: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
 void cpdf_markTrapped(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, int_in, unit_out);
@@ -2862,6 +2883,27 @@ void cpdf_endGetFontInfo() {
   unit_v = caml_callback(fn_v, Val_unit);
   updateLastError();
   CAMLreturn0;
+}
+void *cpdf_fontsJSON(int pdf, int *retlen) {
+  CAMLparam0();
+  CAMLlocal3(fn, bytestream, pdf_v);
+  fn = *caml_named_value("fontsJSON");
+  pdf_v = Val_int(pdf);
+  bytestream = caml_callback(fn, pdf_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "fontsJSON: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
 }
 void cpdf_removeFonts(int pdf) {
   CAMLparam0();

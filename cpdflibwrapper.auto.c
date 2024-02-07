@@ -1469,6 +1469,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 /* __AUTO setTrimBox int->int->float->float->float->float->unit */
 /* __AUTO setArtBox int->int->float->float->float->float->unit */
 /* __AUTO setBleedBox int->int->float->float->float->float->unit */
+/* __AUTO pageInfoJSON int->int*->void* */
 /* __AUTO markTrapped int->unit */
 /* __AUTO markUntrapped int->unit */
 /* __AUTO markTrappedXMP int->unit */
@@ -1577,6 +1578,7 @@ void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
 /* __AUTO getFontType int->string */
 /* __AUTO getFontEncoding int->string */
 /* __AUTO endGetFontInfo unit->unit */
+/* __AUTO fontsJSON int->int*->void* */
 /* __AUTO removeFonts int->unit */
 /* __AUTO copyFont int->int->int->int->string->unit */
 

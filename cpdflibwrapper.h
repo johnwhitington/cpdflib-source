@@ -28,7 +28,7 @@ void cpdf_setSlow();
 void cpdf_embedStd14(int);
 
 /* Set the directory to load Standard 14 fonts for embedding. */
-void cpdf_embedStd14Dir(char*);
+void cpdf_embedStd14Dir(char *);
 
 /*
  * Errors. cpdf_lastError and cpdf_lastErrorString hold information about the
@@ -356,7 +356,7 @@ enum cpdf_encryptionMethod cpdf_encryptionKind(int);
 /* cpdf_loadFont(name, filename) loads a TrueType font from the given file
  * name, and names it. It may then be used when adding text or drawing, using
  * the name in place of a standard font name. */
-void cpdf_loadFont(char*, char*);
+void cpdf_loadFont(char *, char *);
 
 /* CHAPTER 2. Merging and Splitting */
 
@@ -1080,6 +1080,10 @@ void cpdf_setTrimBox(int, int, double, double, double, double);
 void cpdf_setArtBox(int, int, double, double, double, double);
 void cpdf_setBleedBox(int, int, double, double, double, double);
 
+/* cpdf_pageInfoJSON(pdf, retlen) returns JSON data for the page
+information, and fills in the return length. */
+void *cpdf_pageInfoJSON(int, int *);
+
 /* cpdf_markTrapped(pdf) marks a document as trapped. */
 void cpdf_markTrapped(int);
 
@@ -1158,7 +1162,8 @@ void cpdf_displayDocTitle(int, int);
 /* cpdf_getDisplayDocTitle(pdf) gets the display document title flag. */
 int cpdf_getDisplayDocTitle(int);
 
-/* cpdf_nonFullScreenPageMode(pdf, page mode) sets the non full screen page mode. */
+/* cpdf_nonFullScreenPageMode(pdf, page mode) sets the non full screen page
+ * mode. */
 void cpdf_nonFullScreenPageMode(int, enum cpdf_pageMode);
 
 /* cpdf_getNonFullScreenPageMode(pdf) gets the non full screen page mode. */
@@ -1170,7 +1175,7 @@ void cpdf_openAtPage(int, int, int);
 
 /* cpdf_openAtPageCustom(pdf, destination) sets the PDF to open at the
  * destination described by the string. */
-void cpdf_openAtPageCustom(int, char*);
+void cpdf_openAtPageCustom(int, char *);
 
 /*
  * cpdf_setMetadataFromFile(pdf, filename) set the XMP metadata of a
@@ -1263,7 +1268,7 @@ void cpdf_endGetPageLabels();
 
 /* cpdf_compositionJSON(filesize, pdf, size returns the composition data in
  * JSON format. */
-void *cpdf_compositionJSON(int, int, int*);
+void *cpdf_compositionJSON(int, int, int *);
 
 /* CHAPTER 12. File Attachments */
 
@@ -1364,6 +1369,10 @@ char *cpdf_getFontType(int);
 char *cpdf_getFontEncoding(int);
 void cpdf_endGetFontInfo(void);
 
+/* cpdf_fontsJSON(pdf, retlen) returns JSON data for the font list, and fills
+ * in the return length. */
+void *cpdf_fontsJSON(int, int *);
+
 /* cpdf_removeFonts(pdf) removes all font data from a file. */
 void cpdf_removeFonts(int);
 
@@ -1448,7 +1457,6 @@ int cpdf_fromPNG(const char[]);
 /* cpdf_fromJPEG(filename) builds a PDF from a JPEG/ */
 int cpdf_fromJPEG(const char[]);
 
-
 /* CHAPTER 18. Drawing on PDFs */
 
 /* cpdf_drawBegin sets up the drawing process. It must be called before any
@@ -1462,7 +1470,7 @@ void cpdf_drawEnd(int, int);
 /* cpdf_drawExtended(pdf, range, underneath, bates, filename) is the same as
  * cpdf_drawEnd, but provides the special parameters which may be required when
  * using cpdf_drawSText. */
-void cpdf_drawEndExtended(int, int, int, int, char*);
+void cpdf_drawEndExtended(int, int, int, int, char *);
 
 /* cpdf_drawRect(x, y, w, h) adds a rectangle to the current path. */
 void cpdf_drawRect(double, double, double, double);
@@ -1548,21 +1556,13 @@ void cpdf_drawFillColCYMK(double, double, double, double);
 void cpdf_drawThick(double);
 
 /* Line caps. */
-enum cpdf_cap {
-  cpdf_capButt,
-  cpdf_capRound,
-  cpdf_capSquare
-};
+enum cpdf_cap { cpdf_capButt, cpdf_capRound, cpdf_capSquare };
 
 /* cpdf_drawCap(captype) sets the line cap. */
 void cpdf_drawCap(enum cpdf_cap);
 
 /* Line joins. */
-enum cpdf_join {
-  cpdf_joinMiter,
-  cpdf_joinRound,
-  cpdf_joinBevel
-};
+enum cpdf_join { cpdf_joinMiter, cpdf_joinRound, cpdf_joinBevel };
 
 /* cpdf_drawJoin(jointype) sets the line join type. */
 void cpdf_drawJoin(enum cpdf_join);
@@ -1571,7 +1571,7 @@ void cpdf_drawJoin(enum cpdf_join);
 void cpdf_drawMiter(double);
 
 /* cpdf_drawDash(dash description) sets the line dash style. */
-void cpdf_drawDash(char*);
+void cpdf_drawDash(char *);
 
 /* cpdf_drawPush() saves the current graphics state on the stack. */
 void cpdf_drawPush(void);
@@ -1584,7 +1584,7 @@ void cpdf_drawPop(void);
 void cpdf_drawMatrix(double, double, double, double, double, double);
 
 /* cpdf_drawMTrans(tx, ty) appends a translation by (tx, ty) to the Current
- * Transformation Matrix. */ 
+ * Transformation Matrix. */
 void cpdf_drawMTrans(double, double);
 
 /* cpdf_drawMRot(x, y, a) appends a rotation by a around (a, y) to the Current
@@ -1607,26 +1607,26 @@ void cpdf_drawMShearY(double, double, double);
 void cpdf_drawXObjBBox(double, double, double, double);
 
 /* cpdf_drawXObj(name) begins the storing of an XObject. */
-void cpdf_drawXObj(char*);
+void cpdf_drawXObj(char *);
 
 /* cpdf_drawEndXObj() ends the storing of an XObject. */
 void cpdf_drawEndXObj(void);
 
 /* cpdf_drawUse(name) uses the named XObject. */
-void cpdf_drawUse(char*);
+void cpdf_drawUse(char *);
 
 /* cpdf_drawJPEG(name, filename) loads a JPEG from the given file, storing it
  * under the given name. */
-void cpdf_drawJPEG(char*, char*);
+void cpdf_drawJPEG(char *, char *);
 
 /* cpdf_drawPNG(name, filename) loads a 24 bit non-interlaced non-transparent
  * PNG from the given file, storing it under the given name. */
-void cpdf_drawPNG(char*, char*);
+void cpdf_drawPNG(char *, char *);
 
 /* cpdf_drawImage(name) draws a stored image. To draw at the expected size, it
  * is required to scale the Current Transformation Matrix by the width and
  * height of the image. */
-void cpdf_drawImage(char*);
+void cpdf_drawImage(char *);
 
 /* cpdf_drawFillOpacity(n) sets the fill opacity. */
 void cpdf_drawFillOpacity(double);
@@ -1641,18 +1641,18 @@ void cpdf_drawBT(void);
 void cpdf_drawET(void);
 
 /* cpdf_drawFont(fontname) sets the font. */
-void cpdf_drawFont(char*);
+void cpdf_drawFont(char *);
 
 /* cpdf_drawFontSize(n) sets the font size. */
 void cpdf_drawFontSize(double);
 
 /* cpdf_drawText(text) draws text. */
-void cpdf_drawText(char*);
+void cpdf_drawText(char *);
 
 /* cpdf_drawSText(text) draws text with %Specials. You may need to use
  * cpdf_drawEndExtended instead of cpdf_drawEnd later, to provide the extra
  * information required. */
-void cpdf_drawSText(char*);
+void cpdf_drawSText(char *);
 
 /* cpdf_drawLeading(n) sets the leading. */
 void cpdf_drawLeading(double);
@@ -1742,7 +1742,7 @@ void cpdf_replaceDictEntrySearch(int, const char[], const char[], const char[]);
 
 /* cpdf_getDictEntries(pdf, key, length) returns a JSON array containing any
  * and all values associated with the given key, and fills in its length. */
-void *cpdf_getDictEntries(int, const char[], int *retlen);
+void *cpdf_getDictEntries(int, const char[], int *);
 
 /*
  * cpdf_removeClipping(pdf, range) removes all clipping from pages in the
