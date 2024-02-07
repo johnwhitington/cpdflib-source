@@ -5,8 +5,6 @@ open Pdfutil
 the mutual recursion between Cpdfdrawcontrol and Cpdfcommand done. *)
 let () = Cpdfcommand.null ()
 
-let dbg = ref false
-
 let fast = ref false
 
 let embed_std14 = ref false
@@ -15,23 +13,18 @@ let embed_std14_dir = ref ""
 let json_utf8 = ref false
 
 let setFast () =
-  if !dbg then flprint "Cpdflib.setFast\n";
   fast := true
 
 let setSlow () =
-  if !dbg then flprint "Cpdflib.setSlow\n";
   fast := false
 
 let embedStd14 b =
-  if !dbg then flprint "Cpdflib.embedStd14\n";
   embed_std14 := b
 
 let embedStd14Dir dir =
-  if !dbg then flprint "Cpdflib.embedStd14Dir\n";
   embed_std14_dir := dir
 
 let jsonUTF8 b =
-  if !dbg then flprint "Cpdflib.jsonUTF8\n";
   json_utf8 := b
 
 let _ = Callback.register "setFast" setFast
@@ -104,32 +97,26 @@ let err_box = (0., 0., 0., 0.)
 
 (* Basic Types and Functions *)
 let ptOfCm x =
-  if !dbg then flprint "Cpdflib.ptOfCm\n";
   try Pdfunits.points x Pdfunits.Centimetre with e ->
     handle_error "ptOfCm" e; err_float
 
 let ptOfMm x =
-  if !dbg then flprint "Cpdflib.ptOfMm\n";
   try Pdfunits.points x Pdfunits.Millimetre with e ->
     handle_error "ptOfMm" e; err_float
 
 let ptOfIn x =
-  if !dbg then flprint "Cpdflib.ptOfIn\n";
   try Pdfunits.points x Pdfunits.Inch with e ->
     handle_error "ptOfIn" e; err_float
 
 let cmOfPt x =
-  if !dbg then flprint "Cpdflib.cmOfPt\n";
   try Pdfunits.centimetres x Pdfunits.PdfPoint with e ->
     handle_error "cmOfPt" e; err_float
 
 let mmOfPt x =
-  if !dbg then flprint "Cpdflib.mmOfPt\n";
   try Pdfunits.millimetres x Pdfunits.PdfPoint with e ->
     handle_error "mmOfPt" e; err_float
 
 let inOfPt x =
-  if !dbg then flprint "Cpdflib.inOfPt\n";
   try Pdfunits.inches x Pdfunits.PdfPoint with e ->
     handle_error "inOfPt" e; err_float
 
@@ -155,27 +142,21 @@ let lookup_range i =
   Hashtbl.find ranges i
 
 let blankrange () =
-  if !dbg then flprint "Cpdflib.blankrange\n";
   try new_range (Array.make 0 0) with e -> handle_error "blankrange" e; err_int
 
 let writerange r p n =
-  if !dbg then flprint "Cpdflib.writerange\n";
   try Array.set (lookup_range r) p n with e -> handle_error "writerange" e; err_unit
 
 let makerange len =
-  if !dbg then flprint "Cpdflib.makerange\n";
   try new_range (Array.make len 0) with e -> handle_error "makerange" e; err_int
 
 let lengthrange r =
-  if !dbg then flprint "Cpdflib.lengthrange\n";
   try Array.length (lookup_range r) with e -> handle_error "lengthrange" e; err_int
 
 let readrange r p =
-  if !dbg then flprint "Cpdflib.readrange\n";
   try (lookup_range r).(p) with e -> handle_error "readrange" e; err_int
 
 let addtorange r p =
-  if !dbg then flprint "Cpdflib.addtorange\n";
   try
     let old = lookup_range r in
       let len = Array.length old in
@@ -187,7 +168,6 @@ let addtorange r p =
     e -> handle_error "addtorange" e; err_int
 
 let deleterange r =
-  if !dbg then flprint "Cpdflib.deleterange\n";
   try Hashtbl.remove ranges r with e -> handle_error "deleterange" e; err_unit
 
 let _ = Callback.register "blankRange" blankrange
@@ -226,31 +206,24 @@ let sort r =
   Array.of_list (sort compare (Array.to_list r))
 
 let range a b =
-  if !dbg then flprint "Cpdflib.range\n";
   try new_range (range a b) with e -> handle_error "range" e; err_int
 
 let even r =
-  if !dbg then flprint "Cpdflib.even\n";
   try new_range (even (lookup_range r)) with e -> handle_error "even" e; err_int
 
 let odd r =
-  if !dbg then flprint "Cpdflib.odd\n";
   try new_range (odd (lookup_range r)) with e -> handle_error "odd" e; err_int
 
 let union a b =
-  if !dbg then flprint "Cpdflib.union\n";
   try new_range (union (lookup_range a) (lookup_range b)) with e -> handle_error "union" e; err_int
 
 let difference a b =
-  if !dbg then flprint "Cpdflib.difference\n";
   try new_range (difference (lookup_range a) (lookup_range b)) with e -> handle_error "difference" e; err_int
 
 let removeDuplicates r =
-  if !dbg then flprint "Cpdflib.removeDuplicates\n";
   try new_range (removeDuplicates (lookup_range r)) with e -> handle_error "removeDuplicated" e; err_int
 
 let isInRange r i =
-  if !dbg then flprint "Cpdflib.isInRange\n";
   try mem i (Array.to_list (lookup_range r)) with e -> handle_error "isInRange" e; err_bool
 
 let _ = Callback.register "range" range
@@ -308,7 +281,6 @@ let lookup_pdf_status i =
   match Hashtbl.find pdfs i with (_, (_, enc, _), _) -> enc
 
 let lookupPdfStatus i =
-  if !dbg then flprint "Cpdflib.lookupPdfStatus\n";
   try
     number_of_encryption_status (lookup_pdf_status i)
   with
@@ -345,7 +317,6 @@ let list_pdfs () =
   flprint "\n"
 
 let startEnumeratePDFs () =
-  if !dbg then flprint "Cpdflib.startEnumeratePDFs\n";
   try
     Hashtbl.iter
       (fun k v -> enumeratePairs := (k, info_of_pdf v)::!enumeratePairs)
@@ -355,25 +326,20 @@ let startEnumeratePDFs () =
     e -> handle_error "startEnumeratePDFs" e; err_int
 
 let enumeratePDFsKey i =
-  if !dbg then flprint "Cpdflib.enumeratePDFsKey\n";
   try fst (select (i + 1) !enumeratePairs) with e -> handle_error "enumeratePDFsKey" e; err_int
 
 let enumeratePDFsInfo i =
-  if !dbg then flprint "Cpdflib.enumeratePDFsInfo\n";
   try snd (select (i + 1) !enumeratePairs) with e -> handle_error "enumeratePDFsInfo" e; err_string
 
 let endEnumeratePDFs () =
-  if !dbg then flprint "Cpdflib.endEnumeratePDFs\n";
   try enumeratePairs := [] with e -> handle_error "endEnumeratePDFs" e; err_unit
 
 (* Remove a PDF from memory *)
 let deletePdf i =
-  if !dbg then flprint "Cpdflib.deletePdf\n";
   try delete_pdf i with e -> handle_error "deletePdf" e; err_unit
 
 (* Replace a PDF under the same pdf number *)
 let replacePdf x y =
-  if !dbg then flprint "Cpdflib.replacePdf\n";
   try
     replace_pdf x (lookup_pdf y);
     delete_pdf y
@@ -390,82 +356,26 @@ let flatten_encryptionKind = function
   | Some Pdfwrite.AES256bitISO true -> 7
   | Some Pdfwrite.AES256bitISO false -> 8
 
-(* 20/11/2020: We have removed status stuff from cpdflibwrapper, but left the machinery here for now *)
-
-(* hasPermissionStatus looks for a permission in the /status/ of a PDF, not the PDF itself *)
-let hasPermissionStatus i tocheck =
-  if !dbg then flprint "Cpdflib.hasPermissionStatus\n";
-  let status_permissions i =
-    match lookup_pdf_status i with
-    | NotEncrypted | Encrypted ->
-        failwith "hasPermissionStatus - not decryptedWithUser or DecryptedWithOwner"
-    | WasDecryptedWithUser (l, _, _) | WasDecryptedWithOwner (l, _, _) -> l 
-  in
-    try
-      mem
-        (match tocheck with
-         | 0 -> Pdfcrypt.NoEdit
-         | 1 -> Pdfcrypt.NoPrint
-         | 2 -> Pdfcrypt.NoCopy
-         | 3 -> Pdfcrypt.NoAnnot
-         | 4 -> Pdfcrypt.NoForms
-         | 5 -> Pdfcrypt.NoExtract
-         | 6 -> Pdfcrypt.NoAssemble
-         | 7 -> Pdfcrypt.NoHqPrint
-         | _ -> raise (Failure "hasPermissionStatus"))
-        (status_permissions i)
-    with
-      e -> handle_error "hasPermissionStatus" e; err_bool
-
-(* lookupPdfEncryption looks for the encryption type in the /status/ of a PDF
-which is decryptedWithUser or decryptedWithOwner *)
-let lookupPdfEncryption i =
-  if !dbg then flprint "Cpdflib.lookupPdfEncryption\n";
-  try
-    match lookup_pdf_status i with
-    | NotEncrypted | Encrypted ->
-        failwith "lookupPdfEncryption - not decryptedWithOwner or DecryptedWithUser"
-    | WasDecryptedWithOwner (_, ek, _) | WasDecryptedWithUser (_, ek, _) ->
-        flatten_encryptionKind ek
-  with
-    e -> handle_error "lookupPdfEncryption" e; err_int
-
-let lookupPdfUserPassword i =
-  if !dbg then flprint "Cpdflib.lookupPdfUserPassword\n";
-  try
-    match lookup_pdf_status i with
-    | WasDecryptedWithUser (_, _, Some pw) -> pw
-    | _ -> failwith "lookupPdfUserPassword failure"
-  with
-    e -> handle_error "lookupPdfUserPassword" e; err_string
-
 let _ = Callback.register "startEnumeratePDFs" startEnumeratePDFs
 let _ = Callback.register "enumeratePDFsKey" enumeratePDFsKey
 let _ = Callback.register "enumeratePDFsInfo" enumeratePDFsInfo
 let _ = Callback.register "endEnumeratePDFs" endEnumeratePDFs
 let _ = Callback.register "deletePdf" deletePdf
 let _ = Callback.register "replacePdf" replacePdf
-let _ = Callback.register "lookupPdfStatus" lookupPdfStatus
-let _ = Callback.register "hasPermissionStatus" hasPermissionStatus
-let _ = Callback.register "lookupPdfEncryption" lookupPdfEncryption
-let _ = Callback.register "lookupPdfUserPassword" lookupPdfUserPassword
 
 let parsePagespec pdf str =
-  if !dbg then flprint "Cpdflib.parsePagespec\n";
   try
     new_range (Array.of_list (Cpdfpagespec.parse_pagespec (lookup_pdf pdf) str))
   with
     e -> handle_error "parsePagespec" e; err_int
 
 let stringOfPagespec pdf range =
-  if !dbg then flprint "Cpdflib.stringOfPagespec\n";
   try
     Cpdfpagespec.string_of_pagespec (lookup_pdf pdf) (Array.to_list (lookup_range range))
   with
     e -> handle_error "stringOfPagespec" e; err_string
 
 let validatePagespec spec =
-  if !dbg then flprint "Cpdflib.validatePagespec\n";
   try
     Cpdfpagespec.validate_pagespec spec
   with
@@ -477,14 +387,12 @@ let _ = Callback.register "validatePagespec" validatePagespec
 
 (* Read a file, no attempt at decryption, unless it's the blank user password. *)
 let fromFile filename userpw =
-  if !dbg then flprint "Cpdflib.fromFile\n";
   try
     new_pdf (Pdfread.pdf_of_file (Some userpw) None filename)
   with
     e -> handle_error "fromFile" e; err_int
 
 let fromMemory rawbytes userpw =
-  if !dbg then flprint "Cpdflib.fromMemory\n";
   try
     new_pdf
       (Pdfread.pdf_of_input
@@ -498,7 +406,6 @@ let fromMemory rawbytes userpw =
 (* Same, but don't attempt to decrypt, and read it lazily. Use only when
 decryption not required at any time. *)
 let fromFileLazy filename userpw =
-  if !dbg then flprint "Cpdflib.fromFileLazy\n";
   try
     let fh = open_in_bin filename in
       try
@@ -509,7 +416,6 @@ let fromFileLazy filename userpw =
     e -> handle_error "fromFileLazy" e; err_int
 
 let fromMemoryLazy rawbytes userpw =
-  if !dbg then flprint "Cpdflib.fromMemoryLazy\n";
   try
     new_pdf
       (Pdfread.pdf_of_input_lazy
@@ -522,7 +428,6 @@ let fromMemoryLazy rawbytes userpw =
 
 (* Simple full write to a file *)
 let toFile pdf filename linearize make_id =
-  if !dbg then flprint "Cpdflib.toFile\n";
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
@@ -533,7 +438,6 @@ let toFile pdf filename linearize make_id =
 let toFileExt
   pdf filename linearize make_id preserve_objstm generate_objstm compress_objstm
 =
-  if !dbg then flprint "Cpdflib.toFileOptions\n";
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
@@ -545,7 +449,6 @@ let toFileExt
 
 (* Write to memory. *)
 let toFileMemory pdf linearize make_id =
-  if !dbg then flprint "Cpdflib.toFileMemory\n";
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
@@ -559,7 +462,6 @@ let toFileMemory pdf linearize make_id =
 let toFileMemoryExt
   pdf linearize make_id preserve_objstm generate_objstm compress_objstm
 =
-  if !dbg then flprint "Cpdflib.toFileOptions\n";
   try
     let pdf = lookup_pdf pdf in
       Pdf.remove_unreferenced pdf;
@@ -574,7 +476,6 @@ let toFileMemoryExt
 
 (* Number of pages in a PDF *)
 let pages i =
-  if !dbg then flprint "Cpdflib.pages\n";
   try Pdfpage.endpage (lookup_pdf i) with
     e -> handle_error "pages" e; err_int
 
@@ -584,7 +485,6 @@ let endpage_io ?revision i user_pw owner_pw =
     Pdfpage.endpage pdf
 
 let pagesFast password filename =
-  if !dbg then flprint "Cpdflib.pagesFast\n";
   try
     let channel = open_in_bin filename in
       try
@@ -597,7 +497,6 @@ let pagesFast password filename =
     e -> handle_error "pagesfast" e; err_int
 
 let pagesFastMemory password rawbytes =
-  if !dbg then flprint "Cpdflib.pagesFastMemory\n";
   try
     let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes) in
     let r = endpage_io i (Some password) None in
@@ -607,7 +506,6 @@ let pagesFastMemory password rawbytes =
 
 (* The full range with all pages. *)
 let all pdf =
-  if !dbg then flprint "Cpdflib.all\n";
   Array.of_list (ilist 1 (pages pdf))
 
 let all i =
@@ -615,12 +513,10 @@ let all i =
     e -> handle_error "all" e; err_int
 
 let isEncrypted i =
-  if !dbg then flprint "Cpdflib.isEncrypted\n";
   try Pdfcrypt.is_encrypted (lookup_pdf i) with
     e -> handle_error "isEncrypted" e; err_bool
 
 let hasPermission pdf tocheck =
-  if !dbg then flprint "Cpdflib.hasPermission\n";
   try
     mem
       (match tocheck with
@@ -638,7 +534,6 @@ let hasPermission pdf tocheck =
     e -> handle_error "hasPermission" e; err_bool
 
 let encryptionKind pdf =
-  if !dbg then flprint "Cpdflib.encryptionKind\n";
   try
     flatten_encryptionKind (Pdfread.what_encryption (lookup_pdf pdf))
   with
@@ -650,7 +545,6 @@ let _ = Callback.register "encryptionKind" encryptionKind
 (* If marked as encrypted, and we successfully decrypt, mark as
 WasDecryptedWithUser, otherwise leave as is. *)
 let decryptPdf i p =
-  if !dbg then flprint "Cpdflib.decryptPdf\n";
   let decryptPdf_inner pdf password =
     match Pdfcrypt.decrypt_pdf password pdf with
     | Some pdf, _ -> pdf
@@ -669,7 +563,6 @@ let decryptPdf i p =
 (* If marked as encrypted, and we successfully decrypt, mark as
 WasDecryptedWithOwner, otherwise leave as it. *)
 let decryptPdfOwner i p =
-  if !dbg then flprint "Cpdflib.decryptPdfOwner\n";
   let decryptPdfOwner_inner pdf password =
     match Pdfcrypt.decrypt_pdf_owner password pdf with
     | Some pdf -> pdf
@@ -690,7 +583,6 @@ let toFileEncrypted_inner
   ?(compress_objstm = true)
   pdf encryption_method permissions owner_password user_password linearize makeid filename
 =
-  if !dbg then flprint "Cpdflib.toFileEncrypted\n";
   try
     let encryption =
       {Pdfwrite.encryption_method = encryption_method;
@@ -707,7 +599,6 @@ let toFileMemoryEncrypted_inner
   ?(compress_objstm = true)
   pdf encryption_method permissions owner_password user_password linearize makeid o
 =
-  if !dbg then flprint "Cpdflib.toFileEncrypted\n";
   try
     let encryption =
       {Pdfwrite.encryption_method = encryption_method;
@@ -745,7 +636,6 @@ let read_perms perms =
     perms
 
 let toFileEncrypted i mthd perms user owner linearize makeid filename =
-  if !dbg then flprint "Cpdflib.toFileEncrypted\n";
   try
     Pdf.remove_unreferenced (lookup_pdf i);
     toFileEncrypted_inner
@@ -754,7 +644,6 @@ let toFileEncrypted i mthd perms user owner linearize makeid filename =
     e -> handle_error "toFileEncrypted" e; err_unit
 
 let toFileMemoryEncrypted i mthd perms user owner linearize makeid =
-  if !dbg then flprint "Cpdflib.toFileMemoryEncrypted\n";
   try
     let pdf = lookup_pdf i in
       Pdf.remove_unreferenced pdf;
@@ -782,7 +671,6 @@ let toFileMemoryEncryptedExt
   i mthd perms user owner linearize makeid 
   preserve_objstm generate_objstm compress_objstm
 =
-  if !dbg then flprint "Cpdflib.toFileMemoryEncrypted\n";
   try
     let pdf = lookup_pdf i in
       Pdf.remove_unreferenced pdf;
@@ -828,7 +716,6 @@ let mergeSimple (pdfarr : pdfdoc array) pdfnums =
           (map list_all (Array.to_list pdfnums))
 
 let mergeSimple pdfs =
-  if !dbg then flprint "Cpdflib.mergeSimple\n";
   try
     new_pdf (mergeSimple (Array.map lookup_pdf pdfs) pdfs)
   with
@@ -844,7 +731,6 @@ let merge pdfarr retain_numbering remove_duplicate_fonts rawpdfs =
           pdfs (map list_all rawpdfs) 
 
 let merge pdfs retain_numbering remove_duplicate_fonts =
-  if !dbg then flprint "Cpdflib.merge\n";
   try
     new_pdf
       (merge (Array.map lookup_pdf pdfs) retain_numbering remove_duplicate_fonts (Array.to_list pdfs))
@@ -860,16 +746,6 @@ let mergeSameRange pdfarr retain_numbering remove_duplicate_fonts (names : strin
     Pdfmerge.merge_pdfs retain_numbering remove_duplicate_fonts names pdfs ranges 
 
 let mergeSame pdfs retain_numbering remove_duplicate_fonts ranges =
-  if !dbg then flprint "Cpdflib.mergeSame\n";
-  (*Printf.printf "mergesame: %i pdfs\n" (Array.length pdfs);
-  List.iter2
-    (fun pdf range ->
-       Printf.printf "pdf %i range %i (which is)" pdf range;
-       iter (Printf.printf "%i ") (Array.to_list (lookup_range range));
-       flprint "\n")
-    (Array.to_list pdfs)
-    (Array.to_list ranges);
-    flprint "\n";*)
   try
     new_pdf
       (mergeSameRange
@@ -882,7 +758,6 @@ let mergeSame pdfs retain_numbering remove_duplicate_fonts ranges =
     e -> handle_error "mergeSame" e; err_int
 
 let selectPages pdf range =
-  if !dbg then flprint "Cpdflib.selectPages\n";
   try
     new_pdf (Pdfpage.pdf_of_pages ~retain_numbering:true (lookup_pdf pdf) (Array.to_list (lookup_range range)))
   with
@@ -922,7 +797,6 @@ let update_pdf (copyfrom : Pdf.t) (copyto : Pdf.t) =
   copyto.Pdf.trailerdict <- copyfrom.Pdf.trailerdict
 
 let scalePages i range sx sy =
-  if !dbg then flprint "Cpdflib.scalePages\n";
   try
     let sxsylist = many (sx, sy) (pages i) in
       update_pdf (Cpdfpage.scale_pdf ~fast:!fast sxsylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
@@ -930,7 +804,6 @@ let scalePages i range sx sy =
     e -> handle_error "scalePages" e; err_unit
 
 let scaleToFit i range w h scale =
-  if !dbg then flprint "Cpdflib.scaleToFit\n";
   try
     let whlist = many (w, h) (pages i) in
       update_pdf (Cpdfpage.scale_to_fit_pdf ~fast:!fast (Cpdfposition.BottomLeft (0., 0.)) scale whlist () (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
@@ -963,7 +836,6 @@ let papersize_of_int = function
   | _ -> raise (Failure "unknown papersize")
 
 let scaleToFitPaper i range papersize scale =
-  if !dbg then flprint "Cpdflib.scaleToFitPaper\n";
   try
     let w, h = points_of_papersize (papersize_of_int papersize) in
     let whlist = many (w, h) (pages i) in
@@ -972,7 +844,6 @@ let scaleToFitPaper i range papersize scale =
     e -> handle_error "scaleToFitPaper" e; err_unit
 
 let shiftContents i range dx dy =
-  if !dbg then flprint "Cpdflib.shiftContents\n";
   try
     let dxdylist = many (dx, dy) (pages i) in
     update_pdf (Cpdfpage.shift_pdf ~fast:!fast dxdylist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
@@ -980,56 +851,48 @@ let shiftContents i range dx dy =
     e -> handle_error "shiftContents" e; err_unit
 
 let scaleContents pdf range pos f1 f2 factor =
-  if !dbg then flprint "Cpdflib.scaleContents\n";
   try
     update_pdf (Cpdfpage.scale_contents ~fast:!fast (read_position f1 f2 pos) factor (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "scaleContents" e; err_unit
 
 let rotate i range angle =
-  if !dbg then flprint "Cpdflib.rotate\n";
   try
     update_pdf (Cpdfpage.rotate_pdf angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotate" e; err_unit
 
 let rotateBy i range angle =
-  if !dbg then flprint "Cpdflib.rotateBy\n";
   try
     update_pdf (Cpdfpage.rotate_pdf_by angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotateBy" e; err_unit
 
 let rotateContents i range angle =
-  if !dbg then flprint "Cpdflib.rotateContents\n";
   try
     update_pdf (Cpdfpage.rotate_contents ~fast:!fast angle (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "rotateContents" e; err_unit
 
 let upright i range =
-  if !dbg then flprint "Cpdflib.upright\n";
   try
     update_pdf (Cpdfpage.upright ~fast:!fast (Array.to_list (lookup_range range)) (lookup_pdf i)) (lookup_pdf i)
   with
     e -> handle_error "upright" e; err_unit
 
 let hFlip i range =
-  if !dbg then flprint "Cpdflib.hFlip\n";
   try
     update_pdf (Cpdfpage.hflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "hFlip" e; err_unit
 
 let vFlip i range =
-  if !dbg then flprint "Cpdflib.vFlip\n";
   try
     update_pdf (Cpdfpage.vflip_pdf ~fast:!fast (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "vFlip" e; err_unit
 
 let crop i range x y w h =
-  if !dbg then flprint "Cpdflib.crop\n";
   try
     let xywhlist = many (x, y, w, h) (pages i) in
     update_pdf (Cpdfpage.crop_pdf xywhlist (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
@@ -1037,35 +900,30 @@ let crop i range x y w h =
     e -> handle_error "crop" e; err_unit
 
 let removeCrop i range =
-  if !dbg then flprint "Cpdflib.removeCrop\n";
   try
     update_pdf (Cpdfpage.remove_cropping_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeCrop" e; err_unit
 
 let removeTrim i range =
-  if !dbg then flprint "Cpdflib.removeTrim\n";
   try
     update_pdf (Cpdfpage.remove_trim_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeTrim" e; err_unit
 
 let removeArt i range =
-  if !dbg then flprint "Cpdflib.removeArt\n";
   try
     update_pdf (Cpdfpage.remove_art_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeArt" e; err_unit
 
 let removeBleed i range =
-  if !dbg then flprint "Cpdflib.removeBleed\n";
   try
     update_pdf (Cpdfpage.remove_bleed_pdf (lookup_pdf i) (Array.to_list (lookup_range range))) (lookup_pdf i)
   with
     e -> handle_error "removeBleed" e; err_unit
 
 let setMediabox i range minx maxx miny maxy =
-  if !dbg then flprint "Cpdflib.setMediabox\n";
   try
     let lst = many (minx, miny, maxx -. minx, maxy -. miny) (pages i) in
     update_pdf
@@ -1075,7 +933,6 @@ let setMediabox i range minx maxx miny maxy =
     e -> handle_error "setMediaBox" e; err_unit
 
 let trimMarks i range =
-  if !dbg then flprint "Cpdflib.trimMarks\n";
   try
     update_pdf
       (Cpdfpage.trim_marks (lookup_pdf i) (Array.to_list (lookup_range range)))
@@ -1084,7 +941,6 @@ let trimMarks i range =
     e -> handle_error "trimMarks" e; err_unit
 
 let showBoxes i range =
-  if !dbg then flprint "Cpdflib.showBoxes\n";
   try
     update_pdf
       (Cpdfpage.show_boxes (lookup_pdf i) (Array.to_list (lookup_range range)))
@@ -1093,7 +949,6 @@ let showBoxes i range =
     e -> handle_error "showBoxes" e; err_unit
 
 let hardBox i range box =
-  if !dbg then flprint "Cpdflib.hardBox\n";
   try
     update_pdf
       (Cpdfpage.hard_box (lookup_pdf i) (Array.to_list (lookup_range range)) box false !fast)
@@ -1124,12 +979,10 @@ let _ = Callback.register "hardBox" hardBox
 
 (* CHAPTER 5. Compression *)
 let compress pdf =
-  if !dbg then flprint "Cpdflib.compress\n";
   try update_pdf (Cpdfsqueeze.recompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
     e -> handle_error "compress" e; err_unit
 
 let decompress pdf =
-  if !dbg then flprint "Cpdflib.decompress\n";
   try update_pdf (Cpdfsqueeze.decompress_pdf (lookup_pdf pdf)) (lookup_pdf pdf) with
     e -> handle_error "decompress" e; err_unit
 
@@ -1141,7 +994,6 @@ let bookmarkinfo = ref [||]
 
 (* Actually get the bookmark info and store in an array. *)
 let startGetBookmarkInfo pdf =
-  if !dbg then flprint "Cpdflib.startGetBookmarkInfo\n";
   try
     bookmarkinfo := Array.of_list (Pdfmarks.read_bookmarks (lookup_pdf pdf))
   with
@@ -1149,19 +1001,16 @@ let startGetBookmarkInfo pdf =
 
 (* Throw the information away. *)
 let endGetBookmarkInfo () =
-  if !dbg then flprint "Cpdflib.endGetBookmarkInfo\n";
   try
     bookmarkinfo := [||]
   with
     e -> handle_error "endGetBookmarkInfo" e; err_unit
 
 let numberBookmarks () =
-  if !dbg then flprint "Cpdflib.numberBookmarks\n";
   try Array.length !bookmarkinfo with 
     e -> handle_error "numberBookmarks" e; err_int 
 
 let getBookmarkPage pdf serial =
-  if !dbg then flprint "Cpdflib.getBookmarkPage\n";
   try
     let page =
       Pdfpage.pagenumber_of_target (lookup_pdf pdf) !bookmarkinfo.(serial).Pdfmarks.target
@@ -1171,17 +1020,14 @@ let getBookmarkPage pdf serial =
     e -> handle_error "getBookmarkPage" e; err_int
 
 let getBookmarkLevel serial =
-  if !dbg then flprint "Cpdflib.getBookmarkLevel\n";
   try !bookmarkinfo.(serial).Pdfmarks.level with
     e -> handle_error "getBookmarkLevel" e; err_int
 
 let getBookmarkText serial =
-  if !dbg then flprint "Cpdflib.getBookmarkText\n";
   try Pdftext.utf8_of_pdfdocstring !bookmarkinfo.(serial).Pdfmarks.text with
     e -> handle_error "getBookmarkText" e; err_string
 
 let getBookmarkOpenStatus serial =
-  if !dbg then flprint "Cpdflib.getBookmarkOpenStatus\n";
   try !bookmarkinfo.(serial).Pdfmarks.isopen with
     e -> handle_error "getBookmarkOpenStatus" e; err_bool
 
@@ -1201,7 +1047,6 @@ let debug_setbookmarkinfo () =
   !setbookmarkinfo.(0).mut_isopen
 
 let startSetBookmarkInfo num_bookmarks =
-  if !dbg then flprint "Cpdflib.startSetBookmarkInfo\n";
   setbookmarkinfo :=
     Array.init
       num_bookmarks
@@ -1211,7 +1056,6 @@ let startSetBookmarkInfo num_bookmarks =
                  mut_isopen = false})
 
 let setBookmarkPage pdf serial pagenum =
-  if !dbg then flprint "Cpdflib.setBookmarkPage\n";
   try
     !setbookmarkinfo.(serial).mut_target <-
       Pdfpage.target_of_pagenumber (lookup_pdf pdf) pagenum 
@@ -1219,14 +1063,12 @@ let setBookmarkPage pdf serial pagenum =
     e -> handle_error "setBookmarkPage" e; err_unit
 
 let setBookmarkLevel serial level =
-  if !dbg then flprint "Cpdflib.setBookmarkLevel\n";
   try
     !setbookmarkinfo.(serial).mut_level <- level
   with
     e -> handle_error "setBookmarkLevel" e; err_unit
 
 let setBookmarkOpenStatus serial isopen =
-  if !dbg then flprint "Cpdflib.setBookmarkOpenStatus\n";
   try
     !setbookmarkinfo.(serial).mut_isopen <- isopen
   with
@@ -1241,7 +1083,6 @@ let rec fixup_characters prev = function
   | h::t -> fixup_characters (h::prev) t
 
 let setBookmarkText serial str =
-  if !dbg then flprint "Cpdflib.setBookmarkText\n";
   try
     !setbookmarkinfo.(serial).mut_text <-
       Pdftext.pdfdocstring_of_utf8 (implode (fixup_characters [] (explode str)))
@@ -1249,7 +1090,6 @@ let setBookmarkText serial str =
     e -> handle_error "setBookmarkText" e; err_unit
 
 let endSetBookmarkInfo pdf =
-  if !dbg then flprint "Cpdflib.endSetBookmarkInfo\n";
   let convert {mut_level; mut_text; mut_target; mut_isopen} =
     {Pdfmarks.level = mut_level;
      Pdfmarks.text = mut_text;
@@ -1263,14 +1103,12 @@ let endSetBookmarkInfo pdf =
       e -> handle_error "endSetBookmarkInfo" e; err_unit
 
 let getBookmarksJSON pdf =
-  if !dbg then flprint "Cpdflib.getBookmarksJSON()\n";
   try
     Pdfio.raw_of_bytes (Cpdfbookmarks.get_bookmarks_json (lookup_pdf pdf))
   with
     e -> handle_error "getBookmarksJSON" e; err_data
 
 let setBookmarksJSON pdf data =
-  if !dbg then flprint "Cpdflib.setBookmarksJSON()\n";
   try
     let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw data) in
       update_pdf (Cpdfbookmarks.add_bookmarks ~json:true false i (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1278,7 +1116,6 @@ let setBookmarksJSON pdf data =
     e -> handle_error "setBookmarksJSON" e; err_unit
 
 let tableOfContents pdf font fontsize title bookmark =
-  if !dbg then flprint "Cpdflib.tableOfContents\n";
   try
     let font = Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) in
       update_pdf
@@ -1306,7 +1143,6 @@ let _ = Callback.register "tableOfContents" tableOfContents
 
 (* CHAPTER 8. Logos, Watermarks and Stamps *)
 let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relative_to_cropbox =
-  if !dbg then flprint "Cpdflib.stampExtended\n";
   try
     update_pdf
       (Cpdfpage.stamp
@@ -1325,22 +1161,18 @@ let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relati
     e -> handle_error "stampExtended" e; err_unit
 
 let stampOn pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampOn\n";
   stampExtended pdf pdf2 range true false bl0_1 bl0_2 bl0_3 false
 
 let stampUnder pdf pdf2 range =
-  if !dbg then flprint "Cpdflib.stampUnder\n";
   stampExtended pdf pdf2 range false false bl0_1 bl0_2 bl0_3 false
 
 let combinePages pdf pdf2 =
-  if !dbg then flprint "Cpdflib.combinePages\n";
   try
     new_pdf (Cpdfpage.combine_pages !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
   with
     e -> handle_error "combinePages" e; err_int
 
 let removeText pdf range =
-  if !dbg then flprint "Cpdflib.removeText\n";
   try
     update_pdf (Cpdfremovetext.removetext (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -1405,7 +1237,6 @@ let addText
   metrics pdf range text pos f1 f2 linespace bates font size r g b
   underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
-  if !dbg then flprint "Cpdflib.addText\n";
   try
     addText_inner metrics (lookup_pdf pdf) (lookup_range range) text (read_position f1 f2 pos)
     linespace bates font size (rgb r g b) underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
@@ -1413,7 +1244,6 @@ let addText
     e -> handle_error "addText" e; err_unit
 
 let textWidth font text =
-  if !dbg then flprint "Cpdflib.textwidth\n";
   try
     Pdfstandard14.textwidth false Pdftext.StandardEncoding font text
   with
@@ -1428,7 +1258,6 @@ let _ = Callback.register "addText" addText
 let _ = Callback.register "textWidth" textWidth
 
 let addContent s before pdf range =
-  if !dbg then flprint "Cpdflib.addContent";
   try
     update_pdf (Cpdftweak.append_page_content s before !fast (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -1437,7 +1266,6 @@ let addContent s before pdf range =
 let _ = Callback.register "addContent" addContent
 
 let stampAsXObject pdf range stamp_pdf =
-  if !dbg then flprint "Cpdflib.stampAsXObject";
   try
      let pdf', name = Cpdfxobject.stamp_as_xobject (lookup_pdf pdf) (Array.to_list (lookup_range range)) (lookup_pdf stamp_pdf) in
      update_pdf pdf' (lookup_pdf pdf);
@@ -1449,42 +1277,36 @@ let _ = Callback.register "stampAsXObject" stampAsXObject
 
 (* CHAPTER 9. Multipage facilities *)
 let impose pdf x y fit columns rtl btt center margin spacing linewidth =
-  if !dbg then flprint "Cpdflib.impose\n";
   try
     update_pdf (Cpdfimpose.impose ~x ~y ~fit ~columns ~rtl ~btt ~center ~margin ~spacing ~linewidth ~fast:!fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "impose" e; err_unit
 
 let twoUp pdf =
-  if !dbg then flprint "Cpdflib.twoUp\n";
   try
     update_pdf (Cpdfimpose.twoup !fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUp" e; err_unit
 
 let twoUpStack pdf =
-  if !dbg then flprint "Cpdflib.twoUpStack\n";
   try
     update_pdf (Cpdfimpose.twoup_stack !fast (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "twoUpStack" e; err_unit
 
 let padBefore pdf range =
-  if !dbg then flprint "Cpdflib.padBefore\n";
   try
     update_pdf (Cpdfpad.padbefore (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padBefore" e; err_unit
  
 let padAfter pdf range =
-  if !dbg then flprint "Cpdflib.padAfter\n";
   try
     update_pdf (Cpdfpad.padafter (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padAfter" e; err_unit
 
 let padEvery pdf n =
-  if !dbg then flprint "Cpdflib.padEvery\n";
   try
     let pdf = lookup_pdf pdf in
     let range =
@@ -1497,14 +1319,12 @@ let padEvery pdf n =
     e -> handle_error "padEvery" e; err_unit
 
 let padMultiple pdf n =
-  if !dbg then flprint "Cpdflib.padMultiple\n";
   try
     update_pdf (Cpdfpad.padmultiple n (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "padMultiple" e; err_unit
 
 let padMultipleBefore pdf n =
-  if !dbg then flprint "Cpdflib.padMultipleBefore\n";
   try
     update_pdf (Cpdfpad.padmultiple (-n) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -1522,21 +1342,18 @@ let _ = Callback.register "padMultipleBefore" padMultipleBefore
 
 (* CHAPTER 10. Annotations *)
 let annotationsJSON pdf =
-  if !dbg then flprint "Cpdflib.annotationsJSON\n";
   try
     Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf) (Array.to_list (lookup_range (all pdf))))
   with
     e -> handle_error "annotationsJSON" e; err_data
 
 let removeAnnotations pdf range =
-  if !dbg then flprint "Cpdflib.removeAnnotations\n";
   try
     update_pdf (Cpdfannot.remove_annotations (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeAnnotations" e; err_unit
 
 let setAnnotationsJSON pdf data =
-  if !dbg then flprint "Cpdflib.setAnnotationsJSON()\n";
   try
     let i = Pdfio.input_of_bytes (Pdfio.bytes_of_raw data) in
       Cpdfannot.set_annotations_json (lookup_pdf pdf) i
@@ -1550,7 +1367,6 @@ let _ = Callback.register "setAnnotationsJSON" setAnnotationsJSON
 (* CHAPTER 11. Document Information and Metadata *)
 
 let isLinearized string =
-  if !dbg then flprint "Cpdflib.isLinearized\n";
   try
     let ch = open_in_bin string in
       try
@@ -1561,7 +1377,6 @@ let isLinearized string =
     e -> handle_error "isLinearized" e; err_bool
 
 let isLinearizedMemory rawbytes =
-  if !dbg then flprint "Cpdflib.isLinearizedMemory\n";
   try
     Pdfread.is_linearized (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes))
   with
@@ -1574,7 +1389,6 @@ let fontinfo = ref [||]
 
 (* Actually get the font info and store in an array. *)
 let startGetFontInfo pdf =
-  if !dbg then flprint "Cpdflib.startGetFontInfo\n";
   try
     fontinfo := Array.of_list (Cpdffont.list_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))
   with
@@ -1582,27 +1396,21 @@ let startGetFontInfo pdf =
 
 (* Throw the information away. *)
 let endGetFontInfo () =
-  if !dbg then flprint "Cpdflib.endGetFontInfo\n";
   try fontinfo := [||] with e -> handle_error "endGetFontInfo" e; err_unit
 
 let numberFonts () =
-  if !dbg then flprint "Cpdflib.numberFonts\n";
   try Array.length !fontinfo with e -> handle_error "numberFonts" e; err_int
 
 let getFontPage serial =
-  if !dbg then flprint "Cpdflib.getFontPage\n";
   try let x, _, _, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontPage" e; err_int
 
 let getFontName serial =
-  if !dbg then flprint "Cpdflib.getFontName\n";
   try let _, _, _, x, _ = !fontinfo.(serial) in x with e -> handle_error "getFontName" e; err_string
 
 let getFontType serial =
-  if !dbg then flprint "Cpdflib.getFontType\n";
   try let _, _, x, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontType" e; err_string
 
 let getFontEncoding serial =
-  if !dbg then flprint "Cpdflib.getFontEncoding\n";
   try let _, _, _, _, x = !fontinfo.(serial) in x with e -> handle_error "getFontEncoding" e; err_string
 
 let _ = Callback.register "numberFonts" numberFonts
@@ -1619,134 +1427,113 @@ let copyFont pdf_from pdf_to range page name = ()
 let _ = Callback.register "removeFonts" removeFonts
 let _ = Callback.register "copyFont" copyFont
 
-
 let getVersion pdf =
-  if !dbg then flprint "Cpdflib.getVersion\n";
   try (lookup_pdf pdf).Pdf.minor with e -> handle_error "getVersion" e; err_int
 
 let getMajorVersion pdf =
-  if !dbg then flprint "Cpdflib.getMajorVersion\n";
   try (lookup_pdf pdf).Pdf.major with e -> handle_error "getMajorVersion" e; err_int
 
 let getTitle pdf =
-  if !dbg then flprint "Cpdflib.getTitle\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Title"
   with
     e -> handle_error "getTitle" e; err_string
 
 let getAuthor pdf =
-  if !dbg then flprint "Cpdflib.getAuthor\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Author"
   with
     e -> handle_error "getAuthor" e; err_string
 
 let getSubject pdf =
-  if !dbg then flprint "Cpdflib.getSubject\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Subject"
   with
     e -> handle_error "getSubject" e; err_string
 
 let getKeywords pdf =
-  if !dbg then flprint "Cpdflib.getKeywords\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Keywords"
   with
     e -> handle_error "getKeywords" e; err_string
 
 let getCreator pdf =
-  if !dbg then flprint "Cpdflib.getCreator\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Creator"
   with
     e -> handle_error "getCreator" e; err_string
 
 let getProducer pdf =
-  if !dbg then flprint "Cpdflib.getProducer\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Producer"
   with
     e -> handle_error "getProducer" e; err_string
 
 let getCreationDate pdf =
-  if !dbg then flprint "Cpdflib.getCreationDate\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/CreationDate"
   with
     e -> handle_error "getCreationDate" e; err_string
 
 let getModificationDate pdf =
-  if !dbg then flprint "Cpdflib.getModificationDate\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/ModDate"
   with
     e -> handle_error "getModificationDate" e; err_string
 
 let getTitleXMP pdf =
-  if !dbg then flprint "Cpdflib.getTitleXMP\n";
   try
     Cpdfmetadata.get_info_utf8 (lookup_pdf pdf) "/Title"
   with
     e -> handle_error "getTitleXMP" e; err_string
 
 let getAuthorXMP pdf =
-  if !dbg then flprint "Cpdflib.getAuthorXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Author"
   with
     e -> handle_error "getAuthorXMP" e; err_string
 
 let getSubjectXMP pdf =
-  if !dbg then flprint "Cpdflib.getSubjectXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Subject"
   with
     e -> handle_error "getSubjectXMP" e; err_string
 
 let getKeywordsXMP pdf =
-  if !dbg then flprint "Cpdflib.getKeywordsXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Keywords"
   with
     e -> handle_error "getKeywordsXMP" e; err_string
 
 let getCreatorXMP pdf =
-  if !dbg then flprint "Cpdflib.getCreatorXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Creator"
   with
     e -> handle_error "getCreatorXMP" e; err_string
 
 let getProducerXMP pdf =
-  if !dbg then flprint "Cpdflib.getProducerXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/Producer"
   with
     e -> handle_error "getProducerXMP" e; err_string
 
 let getCreationDateXMP pdf =
-  if !dbg then flprint "Cpdflib.getCreationDateXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/CreationDate"
   with
     e -> handle_error "getCreationDateXMP" e; err_string
 
 let getModificationDateXMP pdf =
-  if !dbg then flprint "Cpdflib.getModificationDateXMP\n";
   try
     Cpdfmetadata.get_xmp_info (lookup_pdf pdf) "/ModDate"
   with
     e -> handle_error "getModificationDateXMP" e; err_string
 
 let getDateComponents str =
-  if !dbg then flprint "Cpdflib.getDateComponents\n";
   try Pdfdate.date_of_string str with
     e -> handle_error "getDateComponents" e; err_date
 
 let dateStringOfComponents year month day hour minute second hour_offset minute_offset =
-  if !dbg then flprint "Cpdflib.dateStringOfComponents\n";
   try
     Pdfdate.string_of_date
       {Pdfdate.year = year;
@@ -1761,14 +1548,12 @@ let dateStringOfComponents year month day hour minute second hour_offset minute_
     e -> handle_error "dateStringOfComponents" e; err_string
 
 let setVersion pdf version =
-  if !dbg then flprint "Cpdflib.setVersion\n";
   try
     (lookup_pdf pdf).Pdf.minor <- version
   with
     e -> handle_error "setVersion" e; err_unit
 
 let setFullVersion pdf major minor =
-  if !dbg then flprint "Cpdflib.setFullVersion\n";
   try
     (lookup_pdf pdf).Pdf.major <- major;
     (lookup_pdf pdf).Pdf.minor <- minor
@@ -1776,7 +1561,6 @@ let setFullVersion pdf major minor =
     e -> handle_error "setFullVersion" e; err_unit
 
 let setTitle pdf title =
-  if !dbg then flprint "Cpdflib.setTitle\n";
   try
     let title = Pdftext.pdfdocstring_of_utf8 title in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1784,7 +1568,6 @@ let setTitle pdf title =
     e -> handle_error "setTitle" e; err_unit
 
 let setAuthor pdf author =
-  if !dbg then flprint "Cpdflib.setAuthor\n";
   try
     let author = Pdftext.pdfdocstring_of_utf8 author in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1792,7 +1575,6 @@ let setAuthor pdf author =
     e -> handle_error "setAuthor" e; err_unit
 
 let setSubject pdf subject =
-  if !dbg then flprint "Cpdflib.setSubject\n";
   try
     let subject = Pdftext.pdfdocstring_of_utf8 subject in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1800,7 +1582,6 @@ let setSubject pdf subject =
     e -> handle_error "setSubject" e; err_unit
 
 let setKeywords pdf keywords =
-  if !dbg then flprint "Cpdflib.setKeywords\n";
   try
     let keywords = Pdftext.pdfdocstring_of_utf8 keywords in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1808,7 +1589,6 @@ let setKeywords pdf keywords =
     e -> handle_error "setKeywords" e; err_unit
 
 let setCreator pdf creator =
-  if !dbg then flprint "Cpdflib.setCreator\n";
   try
     let creator = Pdftext.pdfdocstring_of_utf8 creator in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1816,7 +1596,6 @@ let setCreator pdf creator =
     e -> handle_error "SetCreator" e; err_unit
 
 let setProducer pdf producer =
-  if !dbg then flprint "Cpdflib.setProducer\n";
   try      
     let producer = Pdftext.pdfdocstring_of_utf8 producer in
       update_pdf (Cpdfmetadata.set_pdf_info ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1824,7 +1603,6 @@ let setProducer pdf producer =
     e -> handle_error "setProducer" e; err_unit
 
 let setCreationDate pdf date =
-  if !dbg then flprint "Cpdflib.setCreationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
       update_pdf (Cpdfmetadata.set_pdf_info ("/CreationDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1832,7 +1610,6 @@ let setCreationDate pdf date =
     e -> handle_error "setCreationDate" e; err_unit
 
 let setModificationDate pdf date =
-  if !dbg then flprint "Cpdflib.setModificationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
       update_pdf (Cpdfmetadata.set_pdf_info ("/ModDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1840,21 +1617,18 @@ let setModificationDate pdf date =
     e -> handle_error "setModificationDate" e; err_unit
 
 let markTrapped pdf =
-  if !dbg then flprint "Cpdflib.markTrapped\n";
   try
     update_pdf (Cpdfmetadata.set_pdf_info ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markTrapped" e; err_unit
 
 let markUntrapped pdf =
-  if !dbg then flprint "Cpdflib.markUntrapped\n";
   try
     update_pdf (Cpdfmetadata.set_pdf_info ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markUntrapped" e; err_unit
 
 let setTitleXMP pdf title =
-  if !dbg then flprint "Cpdflib.setTitle\n";
   try
     let title = Pdftext.pdfdocstring_of_utf8 title in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Title", Pdf.String title, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1862,7 +1636,6 @@ let setTitleXMP pdf title =
     e -> handle_error "setTitle" e; err_unit
 
 let setAuthorXMP pdf author =
-  if !dbg then flprint "Cpdflib.setAuthor\n";
   try
     let author = Pdftext.pdfdocstring_of_utf8 author in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Author", Pdf.String author, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1870,7 +1643,6 @@ let setAuthorXMP pdf author =
     e -> handle_error "setAuthor" e; err_unit
 
 let setSubjectXMP pdf subject =
-  if !dbg then flprint "Cpdflib.setSubject\n";
   try
     let subject = Pdftext.pdfdocstring_of_utf8 subject in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Subject", Pdf.String subject, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1878,7 +1650,6 @@ let setSubjectXMP pdf subject =
     e -> handle_error "setSubject" e; err_unit
 
 let setKeywordsXMP pdf keywords =
-  if !dbg then flprint "Cpdflib.setKeywords\n";
   try
     let keywords = Pdftext.pdfdocstring_of_utf8 keywords in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Keywords", Pdf.String keywords, 1) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1886,7 +1657,6 @@ let setKeywordsXMP pdf keywords =
     e -> handle_error "setKeywords" e; err_unit
 
 let setCreatorXMP pdf creator =
-  if !dbg then flprint "Cpdflib.setCreator\n";
   try
     let creator = Pdftext.pdfdocstring_of_utf8 creator in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Creator", Pdf.String creator, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1894,7 +1664,6 @@ let setCreatorXMP pdf creator =
     e -> handle_error "SetCreator" e; err_unit
 
 let setProducerXMP pdf producer =
-  if !dbg then flprint "Cpdflib.setProducer\n";
   try      
     let producer = Pdftext.pdfdocstring_of_utf8 producer in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Producer", Pdf.String producer, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1902,7 +1671,6 @@ let setProducerXMP pdf producer =
     e -> handle_error "setProducer" e; err_unit
 
 let setCreationDateXMP pdf date =
-  if !dbg then flprint "Cpdflib.setCreationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/CreationDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1910,7 +1678,6 @@ let setCreationDateXMP pdf date =
     e -> handle_error "setCreationDate" e; err_unit
 
 let setModificationDateXMP pdf date =
-  if !dbg then flprint "Cpdflib.setModificationDate\n";
   try
     let date = Pdftext.pdfdocstring_of_utf8 date in
       update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/ModDate", Pdf.String (Cpdfmetadata.expand_date date), 0) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1918,14 +1685,12 @@ let setModificationDateXMP pdf date =
     e -> handle_error "setModificationDate" e; err_unit
 
 let markTrappedXMP pdf =
-  if !dbg then flprint "Cpdflib.markTrapped\n";
   try
     update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean true, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "markTrapped" e; err_unit
 
 let markUntrappedXMP pdf =
-  if !dbg then flprint "Cpdflib.markUntrapped\n";
   try
     update_pdf (Cpdfmetadata.set_pdf_info ~xmp_just_set:true ("/Trapped", Pdf.Boolean false, 3) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -1948,7 +1713,6 @@ let string_of_layout = function
   | TwoPageRight -> "TwoPageRight"
 
 let getPageLayout pdf =
-  if !dbg then flprint "Cpdflib.getPageLayout\n";
   try
     match Cpdfmetadata.get_catalog_item "/PageLayout" (lookup_pdf pdf) with
     | "SinglePage" -> 0
@@ -1962,7 +1726,6 @@ let getPageLayout pdf =
     e -> handle_error "getPageLayout" e; err_int
 
 let setPageLayout pdf layout =
-  if !dbg then flprint "Cpdflib.setPageLayout\n";
   try
     let layout =
       match layout with
@@ -1995,7 +1758,6 @@ let string_of_mode = function
   | UseAttachments -> "UseAttachments"
 
 let getPageMode pdf =
-  if !dbg then flprint "Cpdflib.getPageMode\n";
   try
     match Cpdfmetadata.get_catalog_item "/PageMode" (lookup_pdf pdf) with
     | "UseNone" -> 0
@@ -2009,7 +1771,6 @@ let getPageMode pdf =
     e -> handle_error "getPageMode" e; err_int
 
 let setPageMode pdf mode =
-  if !dbg then flprint "Cpdflib.setPageMode\n";
   try
     let mode =
       match mode with
@@ -2026,14 +1787,12 @@ let setPageMode pdf mode =
     e -> handle_error "setPageMode" e; err_unit
 
 let hideToolbar pdf b =
-  if !dbg then flprint "Cpdflib.hideToolbar\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/HideToolbar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideToolbar" e; err_unit
 
 let getHideToolbar pdf =
-  if !dbg then flprint "Cpdflib.getHideToolbar";
   try
     match Cpdfmetadata.get_viewer_pref_item "/HideToolbar" (lookup_pdf pdf) with
     | "true" -> true
@@ -2042,14 +1801,12 @@ let getHideToolbar pdf =
     e -> handle_error "getHideToolbar" e; err_bool
 
 let hideMenubar pdf b =
-  if !dbg then flprint "Cpdflib.hideMenubar\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/HideMenubar", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideMenubar" e; err_unit
 
 let getHideMenubar pdf =
-  if !dbg then flprint "Cpdflib.getHideMenubar";
   try
     match Cpdfmetadata.get_viewer_pref_item "/HideMenubar" (lookup_pdf pdf) with
     | "true" -> true
@@ -2058,14 +1815,12 @@ let getHideMenubar pdf =
     e -> handle_error "getHideMenubar" e; err_bool
 
 let hideWindowUi pdf b =
-  if !dbg then flprint "Cpdflib.hideWindowUi\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/HideWindowUI", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "hideWindowUi" e; err_unit
 
 let getHideWindowUi pdf =
-  if !dbg then flprint "Cpdflib.getHideWindowUi";
   try
     match Cpdfmetadata.get_viewer_pref_item "/HideWindowUI" (lookup_pdf pdf) with
     | "true" -> true
@@ -2074,14 +1829,12 @@ let getHideWindowUi pdf =
     e -> handle_error "getHideWindowUi" e; err_bool
 
 let fitWindow pdf b =
-  if !dbg then flprint "Cpdflib.fitWindow\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/FitWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "fitWindow" e; err_unit
 
 let getFitWindow pdf =
-  if !dbg then flprint "Cpdflib.getFitWindow";
   try
     match Cpdfmetadata.get_viewer_pref_item "/FitWindow" (lookup_pdf pdf) with
     | "true" -> true
@@ -2090,14 +1843,12 @@ let getFitWindow pdf =
     e -> handle_error "getFitWindow" e; err_bool
 
 let centerWindow pdf b =
-  if !dbg then flprint "Cpdflib.centerWindow\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/CenterWindow", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "centerWindow" e; err_unit
 
 let getCenterWindow pdf =
-  if !dbg then flprint "Cpdflib.getCenterWindow\n";
   try
     match Cpdfmetadata.get_viewer_pref_item "/CenterWindow" (lookup_pdf pdf) with
     | "true" -> true
@@ -2106,14 +1857,12 @@ let getCenterWindow pdf =
     e -> handle_error "getCenterWindow" e; err_bool
 
 let displayDocTitle pdf b =
-  if !dbg then flprint "Cpdflib.displayDocTitle\n";
   try
     update_pdf (Cpdfmetadata.set_viewer_preference ("/DisplayDocTitle", Pdf.Boolean b, 0) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "displayDocTitle" e; err_unit
 
 let getDisplayDocTitle pdf =
-  if !dbg then flprint "Cpdflib.getDisplayDocTitle\n";
   try
     match Cpdfmetadata.get_viewer_pref_item "/DisplayDocTitle" (lookup_pdf pdf) with
     | "true" -> true
@@ -2122,7 +1871,6 @@ let getDisplayDocTitle pdf =
     e -> handle_error "getDisplayDocTitle" e; err_bool
 
 let getNonFullScreenPageMode pdf =
-  if !dbg then flprint "Cpdflib.getNonFullScreenPageMode\n";
   try
     match Cpdfmetadata.get_viewer_pref_item "/NonFullScreenPageMode" (lookup_pdf pdf) with
     | "UseNone" -> 0
@@ -2135,7 +1883,6 @@ let getNonFullScreenPageMode pdf =
     e -> handle_error "getNonFullScreenPageMode" e; err_int
 
 let nonFullScreenPageMode pdf mode =
-  if !dbg then flprint "Cpdflib.nonFullScreenPageMode\n";
   try
     let mode =
       match mode with
@@ -2152,35 +1899,30 @@ let nonFullScreenPageMode pdf mode =
     e -> handle_error "nonFullScreenPageMode" e; err_unit
 
 let openAtPage pdf fit pagenum =
-  if !dbg then flprint "Cpdflib.openAtPage\n";
   try
     update_pdf (Cpdfmetadata.set_open_action (lookup_pdf pdf) fit pagenum) (lookup_pdf pdf)
   with
     e -> handle_error "openAtPage" e; err_unit
 
 let openAtPageCustom pdf dest =
-  if !dbg then flprint "Cpdflib.openAtPageCustom\n";
   try
     update_pdf (Cpdfmetadata.set_open_action ~dest (lookup_pdf pdf) false 1) (lookup_pdf pdf)
   with
     e -> handle_error "openAtPageCustom" e; err_unit
 
 let setMetadataFromFile pdf filename =
-  if !dbg then flprint "Cpdflib.setMetadataFromFile\n";
   try
     update_pdf (Cpdfmetadata.set_metadata false filename (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataFromFile" e; err_unit
 
 let setMetadataFromByteArray pdf bytes =
-  if !dbg then flprint "Cpdflib.setMetadataFromByteArray\n";
   try
     update_pdf (Cpdfmetadata.set_metadata_from_bytes false (Pdfio.copybytes (Pdfio.bytes_of_raw bytes)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataFromByteArray" e; err_unit
 
 let getMetadata pdf =
-  if !dbg then flprint "Cpdflib.getMetadata\n";
   try
     match Cpdfmetadata.get_metadata (lookup_pdf pdf) with
       None -> err_data
@@ -2189,33 +1931,28 @@ let getMetadata pdf =
     e -> handle_error "getMetadata" e; err_data
 
 let removeMetadata pdf =
-  if !dbg then flprint "Cpdflib.removeMetadata\n";
   try
     update_pdf (Cpdfmetadata.remove_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeMetadata" e; err_unit
 
 let createMetadata pdf =
-  if !dbg then flprint "Cpdflib.createMetadata\n";
   try
     update_pdf (Cpdfmetadata.create_metadata (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "createMetadata" e; err_unit
 
 let setMetadataDate pdf date =
-  if !dbg then flprint "Cpdflib.setMetadataDate\n";
   try
     update_pdf (Cpdfmetadata.set_metadata_date (lookup_pdf pdf) date) (lookup_pdf pdf)
   with
     e -> handle_error "setMetadataDate" e; err_unit
 
 let hasBox pdf pagenumber boxname =
-  if !dbg then flprint "Cpdflib.hasBox\n";
   try Cpdfpage.hasbox (lookup_pdf pdf) pagenumber boxname with
     e -> handle_error "hasBox" e; err_bool
 
 let getPageRotation pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getPageRotation\n";
   try 
     let pages = Pdfpage.pages_of_pagetree (lookup_pdf pdf) in
       Pdfpage.int_of_rotation (List.nth pages (pagenumber - 1)).Pdfpage.rotate
@@ -2270,7 +2007,6 @@ let getPageInfo pdf =
        (Pdfpage.pages_of_pagetree pdf))
 
 let getMediaBox pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getMediaBox\n";
   try 
     let box =
       (getPageInfo (lookup_pdf pdf)).(pagenumber - 1).pimediabox
@@ -2280,7 +2016,6 @@ let getMediaBox pdf pagenumber =
     e -> handle_error "getMediaBox" e; err_box
 
 let getCropBox pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getCropBox\n";
   try
     let box =
       (getPageInfo (lookup_pdf pdf)).(pagenumber - 1).cropbox
@@ -2290,7 +2025,6 @@ let getCropBox pdf pagenumber =
     e -> handle_error "getCropBox" e; err_box
 
 let getTrimBox pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getTrimBox\n";
   try
     let box =
       (getPageInfo (lookup_pdf pdf)).(pagenumber - 1).trimbox
@@ -2300,7 +2034,6 @@ let getTrimBox pdf pagenumber =
     e -> handle_error "getTrimBox" e; err_box
 
 let getArtBox pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getArtBox\n";
   try
     let box =
       (getPageInfo (lookup_pdf pdf)).(pagenumber - 1).artbox
@@ -2310,7 +2043,6 @@ let getArtBox pdf pagenumber =
     e -> handle_error "getArtBox" e; err_box
 
 let getBleedBox pdf pagenumber =
-  if !dbg then flprint "Cpdflib.getBleedBox\n";
   try
     let box =
       (getPageInfo (lookup_pdf pdf)).(pagenumber - 1).bleedbox
@@ -2320,35 +2052,30 @@ let getBleedBox pdf pagenumber =
     e -> handle_error "getBleedBox" e; err_box
 
 let setArtBox pdf range minx maxx miny maxy =
-  if !dbg then flprint "Cpdflib.setArtBox\n";
   try
     update_pdf (Cpdfpage.setBox "/ArtBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setArtBox" e; err_unit
 
 let setBleedBox pdf range minx maxx miny maxy =
-  if !dbg then flprint "Cpdflib.setBleedBox\n";
   try
     update_pdf (Cpdfpage.setBox "/BleedBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setBleedBox" e; err_unit
 
 let setTrimBox pdf range minx maxx miny maxy =
-  if !dbg then flprint "Cpdflib.setTrimBox\n";
   try
     update_pdf (Cpdfpage.setBox "/TrimBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setTrimBox" e; err_unit
 
 let setCropBox pdf range minx maxx miny maxy =
-  if !dbg then flprint "Cpdflib.setCropBox\n";
   try
     update_pdf (Cpdfpage.setBox "/CropBox" minx maxx miny maxy (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
     e -> handle_error "setCropBox" e; err_unit
 
 let compositionJSON filesize pdf =
-  if !dbg then flprint "Cpdflib.compositionJSON()\n";
   try
     Pdfio.raw_of_bytes (Cpdfcomposition.show_composition_json_blob filesize (lookup_pdf pdf))
   with
@@ -2437,7 +2164,6 @@ let _ = Callback.register "compositionJSON" compositionJSON
 
 (* CHAPTER 12. File Attachments *)
 let attachFile filename pdf =
-  if !dbg then flprint "Cpdflib.attachFile\n";
   try
     update_pdf
       (Cpdfattach.attach_file false None (lookup_pdf pdf) filename)
@@ -2446,7 +2172,6 @@ let attachFile filename pdf =
     e -> handle_error "attachFile" e; err_unit
 
 let attachFileFromMemory rawbytes filename pdf =
-  if !dbg then flprint "Cpdflib.attachFileFromMemory\n";
   try
     update_pdf
       (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) filename)
@@ -2455,7 +2180,6 @@ let attachFileFromMemory rawbytes filename pdf =
     e -> handle_error "attachFileFromMemory" e; err_unit
 
 let attachFileToPage filename pdf pagenumber =
-  if !dbg then flprint "Cpdflib.attachFileToPage\n";
   try
     update_pdf
       (Cpdfattach.attach_file false (Some pagenumber) (lookup_pdf pdf) filename)
@@ -2464,7 +2188,6 @@ let attachFileToPage filename pdf pagenumber =
     e -> handle_error "attachFileToPage" e; err_unit
 
 let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
-  if !dbg then flprint "Cpdflib.attachFileToPageFromMemory\n";
   try
     update_pdf
       (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) filename)
@@ -2473,7 +2196,6 @@ let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
     e -> handle_error "attachFileToPageFromMemory" e; err_unit
 
 let removeAttachedFiles pdf =
-  if !dbg then flprint "Cpdflib.removeAttachedFiles\n";
   try
     update_pdf (Cpdfattach.remove_attached_files (lookup_pdf pdf)) (lookup_pdf pdf)
   with
@@ -2482,37 +2204,31 @@ let removeAttachedFiles pdf =
 let attachments = ref []
 
 let startGetAttachments pdf =
-  if !dbg then flprint "Cpdflib.startGetAttachments\n";
   try
     attachments := Cpdfattach.list_attached_files (lookup_pdf pdf)
   with
     e -> handle_error "startGetAttachments" e; err_unit
 
 let endGetAttachments () =
-  if !dbg then flprint "Cpdflib.endGetAttachments\n";
   try attachments := [] with
     e -> handle_error "endGetAttachments" e; err_unit
 
 let numberGetAttachments () =
-  if !dbg then flprint "Cpdflib.numberGetAttachments\n";
   try length !attachments with e -> handle_error "numberGetAttachments" e; err_int
 
 let getAttachmentName serial =
-  if !dbg then flprint "Cpdflib.getAttachmentName\n";
   try
     (select (serial + 1) !attachments).Cpdfattach.name
   with e ->
     handle_error "getAttachmentName" e; err_string
 
 let getAttachmentPage serial =
-  if !dbg then flprint "Cpdflib.getAttachmentPage\n";
   try
     (select (serial + 1) !attachments).Cpdfattach.pagenumber
   with e ->
     handle_error "getAttachmentPage" e; err_int
 
 let getAttachmentData serial =
-  if !dbg then flprint "Cpdflib.getAttachmentData\n";
   try
     Pdfio.raw_of_bytes
       ((select (serial + 1) !attachments).Cpdfattach.data ())
@@ -2544,53 +2260,52 @@ let endGetImageResolution () =
   images := [||]
 
 let getImageResolutionPageNumber serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionPageNumber\n";
   try
     begin match !images.(serial) with r, _, _, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionPageNumber" e; err_int
 
 let getImageResolutionImageName serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionImageName\n";
   try
     begin match !images.(serial) with _, r, _, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionImageName" e; err_string
 
 let getImageResolutionXPixels serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionXPixels\n";
   try
     begin match !images.(serial) with _, _, r, _, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionXPixels" e; err_int
 
 let getImageResolutionYPixels serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionYPixels\n";
   try
     begin match !images.(serial) with _, _, _, r, _, _, _ -> r end
   with e ->
     handle_error "getImageResolutionYPixels" e; err_int
 
 let getImageResolutionXRes serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionXRes\n";
   try
     begin match !images.(serial) with _, _, _, _, r, _, _ -> r end
   with e ->
     handle_error "getImageResolutionXRes" e; err_float
 
 let getImageResolutionYRes serial =
-  if !dbg then flprint "Cpdflib.getImageResolutionYRes\n";
   try
     begin match !images.(serial) with _, _, _, _, _, r, _ -> r end
   with e ->
     handle_error "getImageResolutionYRes" e; err_float
 
 let imageResolutionJSON pdf res =
-  if !dbg then flprint "Cpdflib.getImageResolutionJSON()\n";
   try
     Pdfio.raw_of_bytes (Cpdfimage.image_resolution_json (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res)
   with
-    e -> handle_error "getImageResolutionJSON" e; err_data
+    e -> handle_error "imageResolutionJSON" e; err_data
+
+let imagesJSON pdf =
+  try
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfimage.images (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+  with
+    e -> handle_error "imagesJSON" e; err_data
 
 let _ = Callback.register "startGetImageResolution" startGetImageResolution
 let _ = Callback.register "endGetImageResolution" endGetImageResolution
@@ -2601,10 +2316,10 @@ let _ = Callback.register "getImageResolutionYPixels" getImageResolutionYPixels
 let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
 let _ = Callback.register "imageResolutionJSON" imageResolutionJSON
+let _ = Callback.register "imagesJSON" imagesJSON
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range progress =
-  if !dbg then flprint "Cpdflib.addPageLabels\n";
   try
     let style =
       match style with
@@ -2622,7 +2337,6 @@ let addPageLabels pdf style prefix offset range progress =
     e -> handle_error "addPageLabels" e; err_unit
 
 let removePageLabels pdf =
-  if !dbg then flprint "Cpdflib.removePageLabels\n";
   try
     Pdfpagelabels.remove (lookup_pdf pdf)
   with
@@ -2631,7 +2345,6 @@ let removePageLabels pdf =
 let labels = ref [||]
 
 let startGetPageLabels pdf =
-  if !dbg then flprint "Cpdflib.startGetPageLabels\n";
   try
     labels := Array.of_list (Pdfpagelabels.read (lookup_pdf pdf));
     Array.length !labels
@@ -2647,14 +2360,12 @@ let int_of_labelstyle = function
   | Pdfpagelabels.NoLabelPrefixOnly -> 5
 
 let getPageLabelStyle n =
-  if !dbg then flprint "Cpdflib.getPageLabelStyle\n";
   try
     int_of_labelstyle (!labels.(n).Pdfpagelabels.labelstyle)
   with
     e -> handle_error "getPageLabelStyle\n" e; err_int
 
 let getPageLabelPrefix n =
-  if !dbg then flprint "Cpdflib.getPageLabelPrefix\n";
   try
     match !labels.(n).Pdfpagelabels.labelprefix with
     | None -> ""
@@ -2663,25 +2374,21 @@ let getPageLabelPrefix n =
     e -> handle_error "getPageLabelPrefix\n" e; err_string
 
 let getPageLabelOffset n =
-  if !dbg then flprint "Cpdflib.getPageLabelOffset\n";
   try
     !labels.(n).Pdfpagelabels.startpage
   with
     e -> handle_error "getPageLabelOffset\n" e; err_int
 
 let getPageLabelRange n =
-  if !dbg then flprint "Cpdflib.getPageLabelRange\n";
   try
     !labels.(n).Pdfpagelabels.startvalue
   with
     e -> handle_error "getPageLabelRange\n" e; err_int
 
 let endGetPageLabels () =
-  if !dbg then flprint "Cpdflib.endGetPageLabels\n";
   labels := [||]
 
 let getPageLabelStringForPage pdf n =
-  if !dbg then flprint "Cpdflib.getPageLabelStringForPage\n";
   let labels = Pdfpagelabels.read (lookup_pdf pdf) in
   try
     begin try Pdfpagelabels.pagelabeltext_of_pagenumber n labels with Not_found -> "" end
@@ -2698,10 +2405,8 @@ let _ = Callback.register "getPageLabelRange" getPageLabelRange
 let _ = Callback.register "endGetPageLabels" endGetPageLabels
 let _ = Callback.register "getPageLabelStringForPage" getPageLabelStringForPage
 
-
 (* Look up the pdf, squeeze it with Cpdf.squeeze *)
 let squeezeInMemory pdf =
-  if !dbg then flprint "Cpdflib.squeezeInMemory\n";
   try
     Cpdfsqueeze.squeeze ~logto:"nolog" (lookup_pdf pdf);
     update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
@@ -2712,7 +2417,6 @@ let _ = Callback.register "squeezeInMemory" squeezeInMemory
 
 (* CHAPTER 15. PDF and JSON *)
 let outputJSON filename parse_content no_stream_data decompress_streams pdf =
-  if !dbg then flprint "Cpdflib.outputJSON";
   try
     let handle = open_out_bin filename in
       Cpdfjson.to_output
@@ -2722,7 +2426,6 @@ let outputJSON filename parse_content no_stream_data decompress_streams pdf =
     e -> handle_error "outputJSON" e; err_unit
 
 let outputJSONMemory parse_content no_stream_data decompress_streams pdf =
-  if !dbg then flprint "Cpdflib.toJSONMemory\n";
   try
     let o, bytes = Pdfio.input_output_of_bytes (100 * 1024) in
       Cpdfjson.to_output o ~utf8:!json_utf8 ~parse_content ~no_stream_data ~decompress_streams (lookup_pdf pdf);
@@ -2734,7 +2437,6 @@ let _ = Callback.register "outputJSON" outputJSON
 let _ = Callback.register "outputJSONMemory" outputJSONMemory
 
 let fromJSON filename =
-  if !dbg then flprint "Cpdflib.fromJSON";
   try
     let fh = open_in_bin filename in
       try
@@ -2747,7 +2449,6 @@ let fromJSON filename =
     e -> handle_error "fromJSON" e; err_int
 
 let fromJSONMemory rawbytes =
-  if !dbg then flprint "Cpdflib.fromJSONMemory";
   try
     new_pdf (Cpdfjson.of_input (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
@@ -2760,7 +2461,6 @@ let _ = Callback.register "fromJSONMemory" fromJSONMemory
 let ocgnamelist = ref [||]
 
 let startGetOCGList pdf =
-  if !dbg then flprint "Cpdflib.startGetOCGList\n";
   try
     ocgnamelist := Array.of_list (Cpdfocg.ocg_get_list (lookup_pdf pdf));
     Array.length !ocgnamelist;
@@ -2768,14 +2468,12 @@ let startGetOCGList pdf =
     e -> handle_error "startGetOCGList" e; err_int
 
 let ocgListEntry n =
-  if !dbg then flprint "Cpdflib.ocgListEntry\n";
   try
     Array.get !ocgnamelist n
   with
     e -> handle_error "ocgListEntry" e; err_string
 
 let endGetOCGList () =
-  if !dbg then flprint "Cpdflib.endGetOCGList";
   try
     ocgnamelist := [||]
   with
@@ -2786,7 +2484,6 @@ let _ = Callback.register "OCGListEntry" ocgListEntry
 let _ = Callback.register "endGetOCGList" endGetOCGList
 
 let ocgCoalesce pdf =
-  if !dbg then flprint "Cpdflib.ocgCoalesce";
   try
     Cpdfocg.ocg_coalesce (lookup_pdf pdf)
   with
@@ -2795,7 +2492,6 @@ let ocgCoalesce pdf =
 let _ = Callback.register "OCGCoalesce" ocgCoalesce
 
 let ocgRename pdf f t =
-  if !dbg then flprint "Cpdflib.ocgRename";
   try
     Cpdfocg.ocg_rename f t (lookup_pdf pdf) 
   with
@@ -2804,7 +2500,6 @@ let ocgRename pdf f t =
 let _ = Callback.register "OCGRename" ocgRename
 
 let ocgOrderAll pdf =
-  if !dbg then flprint "Cpdflib.ocgOrderAll";
   try
     Cpdfocg.ocg_order_all (lookup_pdf pdf)
   with
@@ -2814,12 +2509,10 @@ let _ = Callback.register "OCGOrderAll" ocgOrderAll
 
 (* CHAPTER 17. Creating new PDFs *)
 let blankDocument width height pages =
-  if !dbg then flprint "Cpdflib.blankDocument\n";
   try new_pdf (Cpdfcreate.blank_document width height pages) with
     e -> handle_error "blankDocument" e; err_int
 
 let blankDocumentPaper papersize pages =
-  if !dbg then flprint "Cpdflib.blankDocumentPaper\n";
   try new_pdf (Cpdfcreate.blank_document_paper (papersize_of_int papersize) pages) with
     e -> handle_error "blankDocumentPaper" e; err_int
 
@@ -2833,7 +2526,6 @@ let contents_of_file filename =
       _ -> close_in ch; raise Exit
 
 let textToPDF width height font fontsize filename =
-  if !dbg then flprint "Cpdflib.textToPDF\n";
   try
     new_pdf
       (Cpdftexttopdf.typeset
@@ -2844,7 +2536,6 @@ let textToPDF width height font fontsize filename =
     e -> handle_error "textToPDF" e; err_int
 
 let textToPDFPaper papersize font fontsize filename =
-  if !dbg then flprint "Cpdflib.textToPDFPaper\n";
   try
     new_pdf
       (Cpdftexttopdf.typeset
@@ -2854,7 +2545,6 @@ let textToPDFPaper papersize font fontsize filename =
     e -> handle_error "textToPDFPaper" e; err_int
 
 let textToPDFMemory width height font fontsize rawbytes =
-  if !dbg then flprint "Cpdflib.textToPDFMemory\n";
   try
     new_pdf
       (Cpdftexttopdf.typeset
@@ -2864,7 +2554,6 @@ let textToPDFMemory width height font fontsize rawbytes =
     e -> handle_error "textToPDFMemory" e; err_int
 
 let textToPDFPaperMemory papersize font fontsize rawbytes =
-  if !dbg then flprint "Cpdflib.textToPDFPaperMemory\n";
   try
     new_pdf
       (Cpdftexttopdf.typeset
@@ -3259,86 +2948,72 @@ let _ = Callback.register "drawNewPage" drawNewPage
 
 (* CHAPTER 19. Miscellaneous *)
 let draft pdf range boxes =
-  (*Printf.printf "**********draft pdf = %i, range = %i, boxes = %b\n" pdf range boxes; *)
-  if !dbg then flprint "Cpdflib.draft\n";
   try
     update_pdf (Cpdfdraft.draft None boxes (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "draft" e; err_unit
 
 let blackText pdf range =
-  if !dbg then flprint "Cpdflib.blackText\n";
   try
     update_pdf (Cpdftweak.blacktext (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackText" e; err_unit
 
 let blackLines pdf range =
-  if !dbg then flprint "Cpdflib.blackLines\n";
   try
     update_pdf (Cpdftweak.blacklines (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackLines" e; err_unit
 
 let blackFills pdf range =
-  if !dbg then flprint "Cpdflib.blackFills\n";
   try
     update_pdf (Cpdftweak.blackfills (Cpdfaddtext.RGB (0., 0., 0.)) (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "blackFills" e; err_unit
 
 let thinLines pdf range thickness =
-  if !dbg then flprint "Cpdflib.thinLines\n";
   try
     update_pdf (Cpdftweak.thinlines (Array.to_list (lookup_range range)) thickness (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "thinLines" e; err_unit
 
 let copyId from_pdf to_pdf =
-  if !dbg then flprint "Cpdflib.copyId\n";
   try
     update_pdf (Cpdfmetadata.copy_id false (lookup_pdf from_pdf) (lookup_pdf to_pdf)) (lookup_pdf to_pdf)
   with
     e -> handle_error "copyId" e; err_unit
 
 let removeAllText pdf range =
-  if !dbg then flprint "Cpdflib.removeAllText\n";
   try
     update_pdf (Cpdfremovetext.remove_all_text (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
   with
     e -> handle_error "removeAllText" e; err_unit
 
 let removeId pdf =
-  if !dbg then flprint "Cpdflib.removeId\n";
   try
     (lookup_pdf pdf).Pdf.trailerdict <- Pdf.remove_dict_entry (lookup_pdf pdf).Pdf.trailerdict "/ID"
   with
     e -> handle_error "removeId" e; err_unit
 
 let removeDictEntry pdf key =
-  if !dbg then flprint "Cpdf.removeDictEntry\n";
   try
     Cpdftweak.remove_dict_entry (lookup_pdf pdf) key None
   with
     e -> handle_error "removeDictEntry" e; err_unit
 
 let removeDictEntrySearch pdf key searchterm =
-  if !dbg then flprint "Cpdf.removeDictEntrySearch\n";
   try
     Cpdftweak.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
   with
     e -> handle_error "removeDictEntrySearch" e; err_unit
 
 let replaceDictEntry pdf key value =
-  if !dbg then flprint "Cpdf.replaceDictEntry\n";
-  (*Printf.printf "******************ocaml: replaceDictEntry (%s) (%s)\n" key value; *)
   try
     Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) None
   with
     e -> handle_error "replaceDictEntry" e; err_unit
 
 let replaceDictEntrySearch pdf key value searchterm =
-  if !dbg then flprint "Cpdf.replaceDictEntrySearch\n";
   try
     let a = lookup_pdf pdf in
     let b = (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) in
@@ -3348,14 +3023,12 @@ let replaceDictEntrySearch pdf key value searchterm =
     e -> handle_error "replaceDictEntrySearch" e; err_unit
 
 let getDictEntries pdf key =
-  if !dbg then flprint "Cpdflib.getDictEntries\n";
   try
     Pdfio.raw_of_bytes (Cpdftweak.get_dict_entries ~utf8:!json_utf8 (lookup_pdf pdf) key)
   with
     e -> handle_error "getDictEntries" e; err_data
 
 let removeClipping pdf range =
-  if !dbg then flprint "Cpdf.removeClipping\n";
   try
     update_pdf (Cpdftweak.remove_clipping (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
   with
@@ -3378,7 +3051,6 @@ let _ = Callback.register "removeClipping" removeClipping
 
 
 let onexit () =
-  if !dbg then flprint "Cpdflib.onexit\n";
   Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
   Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
   Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
