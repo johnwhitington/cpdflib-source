@@ -955,6 +955,10 @@ int main(int argc, char **argv) {
   int irlength;
   void *irdata = cpdf_imageResolutionJSON(images, &irlength, 300.);
   printf("Contains %i bytes of data\n", irlength);
+  prerr();
+  printf("---cpdf_imagesJSON");
+  void *irdata2 = cpdf_imagesJSON(images, &irlength);
+  printf("Contains %i bytes of data\n", irlength);
   cpdf_deletePdf(images);
 
   /* CHAPTER 14. Fonts */
