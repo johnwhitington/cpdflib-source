@@ -1334,6 +1334,12 @@ double cpdf_getImageResolutionXRes(int);
 double cpdf_getImageResolutionYRes(int);
 void cpdf_endGetImageResolution(void);
 
+/* Get image resolution data in JSON format */
+void *cpdf_imageResolutionJSON(int, int *, float);
+
+/* Get image data in JSON */
+/* void *cpdf_images(int, int *); */
+
 /* CHAPTER 14. Fonts. */
 
 /*

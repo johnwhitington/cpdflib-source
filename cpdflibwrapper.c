@@ -2733,6 +2733,28 @@ void cpdf_endGetImageResolution() {
   updateLastError();
   CAMLreturn0;
 }
+void *cpdf_imageResolutionJSON(int pdf, int *retlen, double f) {
+  CAMLparam0();
+  CAMLlocal4(fn, bytestream, pdf_v, f_v);
+  fn = *caml_named_value("imageResolutionJSON");
+  pdf_v = Val_int(pdf);
+  f_v = caml_copy_double(f);
+  bytestream = caml_callback2(fn, pdf_v, f_v);
+  updateLastError();
+  char *memory = NULL;
+  int size = Caml_ba_array_val(bytestream)->dim[0];
+  memory = calloc(size, sizeof(char));
+  if (memory == NULL && size > 0) fprintf(stderr, "imageResolutionJSON: failed");
+  if (size > 0) {
+    int x;
+    char *indata = Caml_ba_data_val(bytestream);
+    for (x = 0; x < size; x++) {
+      memory[x] = indata[x];
+    };
+  }
+  *retlen = size;
+  CAMLreturnT(void *, memory);
+}
 
 /* CHAPTER 14. Fonts */
 

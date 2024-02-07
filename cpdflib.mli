@@ -257,6 +257,7 @@ val getImageResolutionYPixels : int -> int
 val getImageResolutionXRes : int -> float
 val getImageResolutionYRes : int -> float
 val endGetImageResolution : unit -> unit
+val imageResolutionJSON : int -> float -> Pdfio.rawbytes
 
 (* CHAPTER 14. Fonts *)
 val numberFonts : unit -> int

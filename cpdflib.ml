@@ -2585,6 +2585,13 @@ let getImageResolutionYRes serial =
   with e ->
     handle_error "getImageResolutionYRes" e; err_float
 
+let imageResolutionJSON pdf res =
+  if !dbg then flprint "Cpdflib.getImageResolutionJSON()\n";
+  try
+    Pdfio.raw_of_bytes (Cpdfimage.image_resolution_json (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res)
+  with
+    e -> handle_error "getImageResolutionJSON" e; err_data
+
 let _ = Callback.register "startGetImageResolution" startGetImageResolution
 let _ = Callback.register "endGetImageResolution" endGetImageResolution
 let _ = Callback.register "getImageResolutionPageNumber" getImageResolutionPageNumber
@@ -2593,6 +2600,7 @@ let _ = Callback.register "getImageResolutionXPixels" getImageResolutionXPixels
 let _ = Callback.register "getImageResolutionYPixels" getImageResolutionYPixels
 let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
+let _ = Callback.register "imageResolutionJSON" imageResolutionJSON
 
 (* Add page labels of a given style, prefix and offset in a given range. *)
 let addPageLabels pdf style prefix offset range progress =
