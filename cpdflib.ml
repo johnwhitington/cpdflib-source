@@ -180,7 +180,6 @@ type pdfdoc = Pdf.t
 
 type range_arr = int array
 
-(* Manipulating ranges *)
 let range f t =
   let l =
     if f < t then ilist f t else rev (ilist f t)
@@ -248,8 +247,6 @@ type encryption_status =
    | WasDecryptedWithOwner of extra_encryption_info 
 
 let initial_encryption_status pdf =
-  (*Printf.printf "initial_encryption_status: encrypted = %b\n" (Pdfcrypt.is_encrypted pdf);
-  flprint "\n";*)
   if Pdfcrypt.is_encrypted pdf then Encrypted else NotEncrypted
 
 (* Store the PDF and return the integer key *)
@@ -259,14 +256,10 @@ let pdfkey = ref 0
 
 let new_pdf ?channel pdf =
   incr pdfkey;
-  (*Printf.printf "new_pdf %i" !pdfkey;
-  flprint "\n";*)
   Hashtbl.add pdfs !pdfkey ([], (pdf, initial_encryption_status pdf, channel), []);
   !pdfkey
 
 let lookup_pdf i =
-  (*Printf.printf "lookup_pdf : %i PDFs in table" (Hashtbl.length pdfs);
-  flprint "\n";*)
   match Hashtbl.find pdfs i with
   | (_, (pdf, _, _), _) -> pdf
   | exception Not_found -> failwith "lookup_pdf: not found"
@@ -307,10 +300,8 @@ let replace_pdf i pdf =
 
 let enumeratePairs = ref []
 
-(* FIXME put something useful here... *)
 let info_of_pdf _ = "info"
 
-(* debug window *)
 let list_pdfs () =
   Printf.printf "PDFs in memory\n";
   Hashtbl.iter (fun i _ -> Printf.printf "%i " i) pdfs;
@@ -334,11 +325,9 @@ let enumeratePDFsInfo i =
 let endEnumeratePDFs () =
   try enumeratePairs := [] with e -> handle_error "endEnumeratePDFs" e; err_unit
 
-(* Remove a PDF from memory *)
 let deletePdf i =
   try delete_pdf i with e -> handle_error "deletePdf" e; err_unit
 
-(* Replace a PDF under the same pdf number *)
 let replacePdf x y =
   try
     replace_pdf x (lookup_pdf y);
@@ -992,14 +981,12 @@ let _ = Callback.register "decompress" decompress
 (* CHAPTER 6. Bookmarks *)
 let bookmarkinfo = ref [||]
 
-(* Actually get the bookmark info and store in an array. *)
 let startGetBookmarkInfo pdf =
   try
     bookmarkinfo := Array.of_list (Pdfmarks.read_bookmarks (lookup_pdf pdf))
   with
     e -> handle_error "startGetBookmarkInfo" e; err_unit
 
-(* Throw the information away. *)
 let endGetBookmarkInfo () =
   try
     bookmarkinfo := [||]
@@ -1204,7 +1191,6 @@ let addText_inner
          outline (* outline *)
          !fast (* fast *)
          fontname (* font name *)
-         (* FIXME Implement embedStd14 here once loadttf is done - need dir for embedStd14 too *)
          (Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding)))) (* font *)
          bates (* bates number *)
          None (* pad bates *)
@@ -2606,7 +2592,6 @@ let drawBegin () =
   try
     Cpdfdrawcontrol.drawops := [("_MAIN", [])];
     !Cpdfdrawcontrol.setdrawing ();
-    (*Printf.printf "!embed_std14 = %b, !embed_std14_dir = %s\n%!" !embed_std14 !embed_std14_dir;*)
     !Cpdfdrawcontrol.setembedstd14 !embed_std14 !embed_std14_dir;
   with
     e -> handle_error "drawBegin" e; err_unit
@@ -2837,7 +2822,6 @@ let loadFont a b =
     e -> handle_error "loadFont" e; err_unit
 
 let drawFont n =
-  (*Printf.printf "Cpdflib.drawFont: |%s|\n%!" n;*)
   try !Cpdfdrawcontrol.setfontname n with
     e -> handle_error "drawFont" e; err_unit
 
