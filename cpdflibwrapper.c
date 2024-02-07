@@ -2738,6 +2738,15 @@ double cpdf_getImageResolutionYRes(int serial) {
   updateLastError();
   CAMLreturnT(int, Double_val(out_v));
 }
+int cpdf_getImageResolutionObjNum(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageResolutionObjNum");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 void cpdf_endGetImageResolution() {
   CAMLparam0();
   CAMLlocal2(fn_v, unit_v);

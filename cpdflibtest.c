@@ -950,7 +950,8 @@ int main(int argc, char **argv) {
     int yp = cpdf_getImageResolutionYPixels(x);
     double xres = cpdf_getImageResolutionXRes(x);
     double yres = cpdf_getImageResolutionYRes(x);
-    printf("IMAGE: %i, %s, %i, %i, %f, %f\n", page, name, xp, yp, xres, yres);
+    int objnum = cpdf_getImageResolutionObjNum(x);
+    printf("IMAGE: %i, %s, %i, %i, %f, %f, %i\n", page, name, xp, yp, xres, yres, objnum);
   }
   prerr();
   cpdf_endGetImageResolution();

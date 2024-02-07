@@ -2289,6 +2289,12 @@ let getImageResolutionYRes serial =
   with e ->
     handle_error "getImageResolutionYRes" e; err_float
 
+let getImageResolutionObjNum serial =
+  try
+    begin match !images.(serial) with _, _, _, _, _, _, r -> r end
+  with e ->
+    handle_error "getImageResolutionObjNum" e; err_int
+
 let imageResolutionJSON pdf res =
   try
     Pdfio.raw_of_bytes (Cpdfimage.image_resolution_json (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res)
@@ -2309,6 +2315,7 @@ let _ = Callback.register "getImageResolutionXPixels" getImageResolutionXPixels
 let _ = Callback.register "getImageResolutionYPixels" getImageResolutionYPixels
 let _ = Callback.register "getImageResolutionXRes" getImageResolutionXRes
 let _ = Callback.register "getImageResolutionYRes" getImageResolutionYRes
+let _ = Callback.register "getImageResolutionObjNum" getImageResolutionObjNum
 let _ = Callback.register "imageResolutionJSON" imageResolutionJSON
 let _ = Callback.register "imagesJSON" imagesJSON
 

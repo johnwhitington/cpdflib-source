@@ -1563,6 +1563,7 @@ void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
 /* __AUTO getImageResolutionYPixels int->int */
 /* __AUTO getImageResolutionXRes int->float */
 /* __AUTO getImageResolutionYRes int->float */
+/* __AUTO getImageResolutionObjNum int->int */
 /* __AUTO endGetImageResolution unit->unit */
 /* __AUTO imageResolutionJSON int->int*->float->void* */
 /* __AUTO imagesJSON int->int*->void* */

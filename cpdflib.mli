@@ -256,6 +256,7 @@ val getImageResolutionXPixels : int -> int
 val getImageResolutionYPixels : int -> int
 val getImageResolutionXRes : int -> float
 val getImageResolutionYRes : int -> float
+val getImageResolutionObjNum : int -> int
 val endGetImageResolution : unit -> unit
 val imageResolutionJSON : int -> float -> Pdfio.rawbytes
 val imagesJSON : int -> Pdfio.rawbytes

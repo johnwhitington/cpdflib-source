@@ -1338,6 +1338,7 @@ int cpdf_getImageResolutionXPixels(int);
 int cpdf_getImageResolutionYPixels(int);
 double cpdf_getImageResolutionXRes(int);
 double cpdf_getImageResolutionYRes(int);
+int cpdf_getImageResolutionObjNum(int);
 void cpdf_endGetImageResolution(void);
 
 /* Get image resolution data in JSON format */
