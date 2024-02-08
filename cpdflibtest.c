@@ -959,10 +959,10 @@ int main(int argc, char **argv) {
     int w = cpdf_getImageWidth(x);
     int h = cpdf_getImageHeight(x);
     int size = cpdf_getImageSize(x);
-    int bpp = cpdf_getImageBPP(x);
+    int bpc = cpdf_getImageBPC(x);
     char* colspace = cpdf_getImageColSpace(x);
     char* filter = cpdf_getImageFilter(x);
-    printf("IMAGE: %i, %s, %s, %i, %i, %i, %i, %s, %s\n", objnum, pages, name, w, h, size, bpp, colspace, filter);
+    printf("IMAGE: %i, %s, %s, %i, %i, %i, %i, %s, %s\n", objnum, pages, name, w, h, size, bpc, colspace, filter);
   }
   prerr();
   cpdf_endGetImages();

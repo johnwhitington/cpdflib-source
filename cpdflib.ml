@@ -2266,17 +2266,130 @@ let _ = Callback.register "getAttachmentPage" getAttachmentPage
 let _ = Callback.register "getAttachmentData" getAttachmentData
 
 (* CHAPTER 13. Images *)
-let startGetImages pdf = 1
-let getImageObjNum s = 0
-let getImagePages s = ""
-let getImageName s = ""
-let getImageHeight s = 0
-let getImageWidth s = 0
-let getImageSize s = 0
-let getImageBPP s = 0
-let getImageColSpace s = ""
-let getImageFilter s = ""
-let endGetImages () = ()
+let imagejson = ref `Null
+
+let startGetImages pdf =
+  try
+    imagejson := Cpdfimage.images (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf)));
+    match !imagejson with `List l -> length l | _ -> 0
+  with e ->
+    handle_error "startGetImages" e; err_int
+
+let getImageObjNum s =
+  try
+    match !imagejson with
+    | `List l ->
+        begin match List.nth l s with
+        | `Assoc [(_, `Int i); _; _; _; _; _; _; _; _] -> i
+        | _ -> raise Exit
+        end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageObjNum" e; err_int
+
+let combine_with_spaces strs =
+  String.trim
+    (fold_left (fun x y -> x ^ (if x <> "" then " " else "") ^ y) "" strs)
+
+let getImagePages s =
+  try
+    match !imagejson with
+    | `List l ->
+        begin match List.nth l s with
+        | `Assoc [_; (_, `List pages); _; _; _; _; _; _; _] ->
+             combine_with_spaces (map (function `Int i -> string_of_int i | _ -> "") pages)
+        | _ -> raise Exit
+        end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImagePages" e; err_string
+
+let getImageName s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; (_, `String name); _; _; _; _; _; _] -> name
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageName" e; err_string
+
+let getImageWidth s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; (_, `Int w); _; _; _; _; _] -> w
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageWidth" e; err_int
+
+let getImageHeight s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; _; (_, `Int h); _; _; _; _] -> h
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageHeight" e; err_int
+
+let getImageSize s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; _; _; (_, `Int size); _; _; _] -> size
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageSize" e; err_int
+
+let getImageBPC s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; _; _; _; (_, `Int bpc); _; _] -> bpc
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageBPC" e; err_int
+
+let getImageColSpace s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; _; _; _; _; (_, `String cs); _] -> cs
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageColSpace" e; err_string
+
+let getImageFilter s =
+  try
+    match !imagejson with
+    | `List l ->
+      begin match List.nth l s with
+      | `Assoc [_; _; _; _; _; _; _; _; (_, `String filter)] -> filter
+      | _ -> raise Exit
+      end
+    | _ -> raise Exit
+  with e ->
+    handle_error "getImageFilter" e; err_string
+
+let endGetImages () =
+  imagejson := `Null
 
 let images = ref [||]
 
@@ -2350,7 +2463,7 @@ let _ = Callback.register "getImageName" getImageName
 let _ = Callback.register "getImageHeight" getImageHeight
 let _ = Callback.register "getImageWidth" getImageWidth
 let _ = Callback.register "getImageSize" getImageSize
-let _ = Callback.register "getImageBPP" getImageBPP
+let _ = Callback.register "getImageBPC" getImageBPC
 let _ = Callback.register "getImageColSpace" getImageColSpace
 let _ = Callback.register "getImageFilter" getImageFilter
 let _ = Callback.register "endGetImages" endGetImages

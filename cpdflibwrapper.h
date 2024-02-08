@@ -1343,7 +1343,7 @@ char *cpdf_getImageName(int);
 int cpdf_getImageWidth(int);
 int cpdf_getImageHeight(int);
 int cpdf_getImageSize(int);
-int cpdf_getImageBPP(int);
+int cpdf_getImageBPC(int);
 char *cpdf_getImageColSpace(int);
 char *cpdf_getImageFilter(int);
 void cpdf_endGetImages(void);

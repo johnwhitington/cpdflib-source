@@ -2768,10 +2768,10 @@ int cpdf_getImageSize(int pdf) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
-int cpdf_getImageBPP(int pdf) {
+int cpdf_getImageBPC(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, in_v, out_v);
-  fn = *caml_named_value("getImageBPP");
+  fn = *caml_named_value("getImageBPC");
   in_v = Val_int(pdf);
   out_v = caml_callback(fn, in_v);
   updateLastError();
