@@ -2346,6 +2346,7 @@ let imagesJSON pdf =
 let _ = Callback.register "startGetImages" startGetImages
 let _ = Callback.register "getImageObjNum" getImageObjNum
 let _ = Callback.register "getImagePages" getImagePages
+let _ = Callback.register "getImageName" getImageName
 let _ = Callback.register "getImageHeight" getImageHeight
 let _ = Callback.register "getImageWidth" getImageWidth
 let _ = Callback.register "getImageSize" getImageSize
