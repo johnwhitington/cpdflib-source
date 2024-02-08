@@ -2075,10 +2075,9 @@ let setCropBox pdf range minx maxx miny maxy =
   with
     e -> handle_error "setCropBox" e; err_unit
 
-(* FIXME not fonts *)
 let pageInfoJSON pdf =
   try
-    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdffont.json_fonts (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfpage.json_page_info (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
   with
     e -> handle_error "pageInfoJSON" e; err_data
 
@@ -2167,6 +2166,7 @@ let _ = Callback.register "createMetadata" createMetadata
 let _ = Callback.register "setMetadataDate" setMetadataDate
 let _ = Callback.register "setMetadataFromByteArray" setMetadataFromByteArray
 let _ = Callback.register "getMetadata" getMetadata
+let _ = Callback.register "pageInfoJSON" pageInfoJSON
 let _ = Callback.register "compositionJSON" compositionJSON
 
 (* CHAPTER 12. File Attachments *)

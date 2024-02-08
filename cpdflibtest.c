@@ -659,6 +659,11 @@ int main(int argc, char **argv) {
   char *modificationdateXMP = cpdf_getModificationDateXMP(info);
   printf("modificationdateXMP: %s\n", modificationdateXMP);
   prerr();
+  printf("---cpdf_pageInfoJSON()\n");
+  int pijson = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int pilength;
+  void *pidata = cpdf_pageInfoJSON(pijson, &pilength);
+  printf("Contains %i bytes of data\n", pilength);
   printf("---cpdf_setTitle()\n");
   cpdf_setTitle(info, "title");
   prerr();
@@ -984,6 +989,11 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_endGetFontInfo();
   prerr();
+  printf("---cpdf_fontsJSON()\n");
+  int fontsjson = cpdf_fromFile("cpdflibmanual.pdf", "");
+  int fontslength;
+  void *fontsdata = cpdf_getBookmarksJSON(fontsjson, &fontslength);
+  printf("Contains %i bytes of data\n", fontslength);
   printf("---cpdf_removeFonts()\n");
   int fontrange = cpdf_all(fonts);
   cpdf_removeFonts(fonts);
