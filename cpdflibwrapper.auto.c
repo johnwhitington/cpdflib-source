@@ -1558,6 +1558,17 @@ void cpdf_attachFileToPageFromMemory(void *data, int length, char *filename,
 
 /* CHAPTER 13. Images */
 
+/* __AUTO startGetImages int->int */
+/* __AUTO getImageObjNum int->int */
+/* __AUTO getImagePages int->string */
+/* __AUTO getImageName int->string */
+/* __AUTO getImageWidth int->int */
+/* __AUTO getImageHeight int->int */
+/* __AUTO getImageSize int->int */
+/* __AUTO getImageBPP int->int */
+/* __AUTO getImageColSpace int->string */
+/* __AUTO getImageFilter int->string */
+/* __AUTO endGetImages unit->unit */
 /* __AUTO startGetImageResolution int->float->int */
 /* __AUTO getImageResolutionPageNumber int->int */
 /* __AUTO getImageResolutionImageName int->string */

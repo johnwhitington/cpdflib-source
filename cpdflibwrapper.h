@@ -1333,6 +1333,21 @@ void cpdf_endGetAttachments(void);
 
 /* CHAPTER 13. Images. */
 
+/* Get list of images. Call cpdf_startGetImages, which returns the total number
+ * of images. Then serial numbers 0..<total number> - 1 are used to retreive
+ * data. Finally, call cpdf_endGetImages to clean up. */
+int cpdf_startGetImages(int);
+int cpdf_getImageObjNum(int);
+char *cpdf_getImagePages(int);
+char *cpdf_getImageName(int);
+int cpdf_getImageWidth(int);
+int cpdf_getImageHeight(int);
+int cpdf_getImageSize(int);
+int cpdf_getImageBPP(int);
+char *cpdf_getImageColSpace(int);
+char *cpdf_getImageFilter(int);
+void cpdf_endGetImages(void);
+
 /*
  * Get image data, including resolution at all points of use. Call
  * cpdf_startGetImageResolution(pdf, min_required_resolution) will begin the

@@ -2266,6 +2266,18 @@ let _ = Callback.register "getAttachmentPage" getAttachmentPage
 let _ = Callback.register "getAttachmentData" getAttachmentData
 
 (* CHAPTER 13. Images *)
+let startGetImages pdf = 1
+let getImageObjNum s = 0
+let getImagePages s = ""
+let getImageName s = ""
+let getImageHeight s = 0
+let getImageWidth s = 0
+let getImageSize s = 0
+let getImageBPP s = 0
+let getImageColSpace s = ""
+let getImageFilter s = ""
+let endGetImages () = ()
+
 let images = ref [||]
 
 let startGetImageResolution pdf res = 
@@ -2331,6 +2343,16 @@ let imagesJSON pdf =
   with
     e -> handle_error "imagesJSON" e; err_data
 
+let _ = Callback.register "startGetImages" startGetImages
+let _ = Callback.register "getImageObjNum" getImageObjNum
+let _ = Callback.register "getImagePages" getImagePages
+let _ = Callback.register "getImageHeight" getImageHeight
+let _ = Callback.register "getImageWidth" getImageWidth
+let _ = Callback.register "getImageSize" getImageSize
+let _ = Callback.register "getImageBPP" getImageBPP
+let _ = Callback.register "getImageColSpace" getImageColSpace
+let _ = Callback.register "getImageFilter" getImageFilter
+let _ = Callback.register "endGetImages" endGetImages
 let _ = Callback.register "startGetImageResolution" startGetImageResolution
 let _ = Callback.register "endGetImageResolution" endGetImageResolution
 let _ = Callback.register "getImageResolutionPageNumber" getImageResolutionPageNumber

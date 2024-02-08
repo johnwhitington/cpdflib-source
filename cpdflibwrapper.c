@@ -2705,6 +2705,104 @@ void cpdf_endGetAttachments() {
 
 /* CHAPTER 13. Images */
 
+int cpdf_startGetImages(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("startGetImages");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_getImageObjNum(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageObjNum");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+char *cpdf_getImagePages(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("getImagePages");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+char *cpdf_getImageName(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("getImageName");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+int cpdf_getImageWidth(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageWidth");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_getImageHeight(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageHeight");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_getImageSize(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageSize");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_getImageBPP(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("getImageBPP");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+char *cpdf_getImageColSpace(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("getImageColSpace");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+char *cpdf_getImageFilter(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("getImageFilter");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+void cpdf_endGetImages() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("endGetImages");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
 int cpdf_startGetImageResolution(int pdf, double res) {
   CAMLparam0();
   CAMLlocal4(fn, pdf_v, out_v, res_v);

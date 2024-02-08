@@ -948,6 +948,25 @@ int main(int argc, char **argv) {
 
   /* CHAPTER 13. Images */
   printf("***** CHAPTER 13. Images\n");
+  printf("---cpdf: get images\n");
+  int images2 = cpdf_fromFile("testinputs/image.pdf", "");
+  int n2 = cpdf_startGetImages(images2);
+  prerr();
+  for (int x = 0; x < n2; x++) {
+    int objnum = cpdf_getImageObjNum(x);
+    char* pages = cpdf_getImagePages(x);
+    char* name = cpdf_getImageName(x);
+    int w = cpdf_getImageWidth(x);
+    int h = cpdf_getImageHeight(x);
+    int size = cpdf_getImageSize(x);
+    int bpp = cpdf_getImageBPP(x);
+    char* colspace = cpdf_getImageColSpace(x);
+    char* filter = cpdf_getImageFilter(x);
+    printf("IMAGE: %i, %s, %s, %i, %i, %i, %i, %s, %s\n", objnum, pages, name, w, h, size, bpp, colspace, filter);
+  }
+  prerr();
+  cpdf_endGetImages();
+  prerr();
   printf("---cpdf: get image resolution\n");
   int images = cpdf_fromFile("testinputs/image.pdf", "");
   int n = cpdf_startGetImageResolution(images, 500000.);
@@ -966,12 +985,12 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_endGetImageResolution();
   prerr();
-  printf("---cpdf_imageResolutionJSON");
+  printf("---cpdf_imageResolutionJSON\n");
   int irlength;
   void *irdata = cpdf_imageResolutionJSON(images, &irlength, 300.);
   printf("Contains %i bytes of data\n", irlength);
   prerr();
-  printf("---cpdf_imagesJSON");
+  printf("---cpdf_imagesJSON\n");
   void *irdata2 = cpdf_imagesJSON(images, &irlength);
   printf("Contains %i bytes of data\n", irlength);
   cpdf_deletePdf(images);
