@@ -1941,6 +1941,16 @@ int cpdf_getPageRotation(int a, int b) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
+int cpdf_numAnnots(int a, int b) {
+  CAMLparam0();
+  CAMLlocal4(fn, out_v, av, bv);
+  av = Val_int(a);
+  bv = Val_int(b);
+  fn = *caml_named_value("numAnnots");
+  out_v = caml_callback2(fn, av, bv);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
 int cpdf_hasBox(int pdf, int pagenumber, char *boxname) {
   CAMLparam0();
   CAMLlocal4(fn, pdf_v, pagenumber_v, boxname_v);

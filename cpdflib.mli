@@ -199,6 +199,7 @@ val setProducerXMP : pdf -> string -> unit
 val setCreationDateXMP : pdf -> string -> unit
 val setModificationDateXMP : pdf -> string -> unit
 val hasBox : pdf -> int -> string -> bool
+val numAnnots : pdf -> int -> int
 val getPageRotation : pdf -> int -> int
 val getPageLayout : pdf -> int
 val setPageLayout : pdf -> int -> unit

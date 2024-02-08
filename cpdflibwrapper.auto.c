@@ -1458,6 +1458,7 @@ char *cpdf_dateStringOfComponents(int year, int month, int day, int hour,
 }
 
 /* __AUTO getPageRotation int->int->int */
+/* __AUTO numAnnots int->int->int */
 /* __AUTO hasBox int->int->string->int */
 /* __AUTO getMediaBox int->int->float*->float*->float*->float*->unit */
 /* __AUTO getCropBox int->int->float*->float*->float*->float*->unit */

@@ -732,6 +732,10 @@ int main(int argc, char **argv) {
   int hasbox = cpdf_hasBox(info, 1, "/CropBox");
   prerr();
   printf("hasbox: %i\n", hasbox);
+  printf("---cpdf_numAnnots()\n");
+  int numAnnots = cpdf_numAnnots(info, 1);
+  prerr();
+  printf("numAnnots: %i\n", numAnnots);
   double minx, maxx, miny, maxy;
   printf("---cpdf_getMediaBox()\n");
   cpdf_getMediaBox(info, 1, &minx, &maxx, &miny, &maxy);

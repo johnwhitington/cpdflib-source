@@ -1959,6 +1959,16 @@ let getPageRotation pdf pagenumber =
   with
     e -> handle_error "getPageRotation" e; err_int
 
+let numAnnots pdf pagenumber =
+  try 
+    let pages = Pdfpage.pages_of_pagetree (lookup_pdf pdf) in
+    let page = List.nth pages (pagenumber - 1) in
+      match Pdf.lookup_direct (lookup_pdf pdf) "/Annots" page.Pdfpage.rest with
+      | Some (Pdf.Array a) -> length a
+      | _ -> 0
+  with
+    e -> handle_error "numAnnots" e; err_int
+
 type box =
   {minx : float;
    maxx : float;
@@ -2134,6 +2144,7 @@ let _ = Callback.register "setPageMode" setPageMode
 let _ = Callback.register "getPageLayout" getPageLayout
 let _ = Callback.register "setPageLayout" setPageLayout
 let _ = Callback.register "hasBox" hasBox
+let _ = Callback.register "numAnnots" numAnnots
 let _ = Callback.register "getPageRotation" getPageRotation
 let _ = Callback.register "getMediaBox" getMediaBox
 let _ = Callback.register "getCropBox" getCropBox

@@ -1054,6 +1054,12 @@ char *cpdf_dateStringOfComponents(int, int, int, int, int, int, int, int);
 int cpdf_getPageRotation(int, int);
 
 /*
+ * cpdf_numAnnots(pdf, pagenumber) returns the number of annotations on
+ * a given page.
+ */
+int cpdf_numAnnots(int, int);
+
+/*
  * cpdf_hasBox(pdf, pagenumber, boxname) returns true, if that page has the
  * given box. E.g "/CropBox".
  */
