@@ -1289,13 +1289,22 @@ let twoUpStack pdf =
     e -> handle_error "twoUpStack" e; err_unit
 
 let chop pdf range x y columns rtl btt =
-  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+  try
+    update_pdf (Cpdfchop.chop ~x ~y ~columns ~btt ~rtl (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+  with
+    e -> handle_error "chop" e; err_unit
 
 let chopH pdf range columns y =
-  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+  try
+    update_pdf (Cpdfchop.chop_hv ~is_h:true ~line:y ~columns (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+  with
+    e -> handle_error "chopH" e; err_unit
 
 let chopV pdf range columns x =
-  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+  try
+    update_pdf (Cpdfchop.chop_hv ~is_h:false ~line:x ~columns (lookup_pdf pdf) (Array.to_list (lookup_range range))) (lookup_pdf pdf)
+  with
+    e -> handle_error "chopV" e; err_unit
 
 let padBefore pdf range =
   try
