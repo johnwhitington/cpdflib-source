@@ -1451,6 +1451,48 @@ void cpdf_twoUpStack(int pdf) {
   updateLastError();
   CAMLreturn0;
 }
+void cpdf_chop(int a, int b, int c, int d, int e, int f, int g) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("chop");
+  CAMLlocalN(args, 7);
+  args[0] = Val_int(a);
+  args[1] = Val_int(b);
+  args[2] = Val_int(c);
+  args[3] = Val_int(d);
+  args[4] = Val_int(e);
+  args[5] = Val_int(f);
+  args[6] = Val_int(g);
+  out_v = caml_callbackN(fn_v, 7, args);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_chopH(int pdf, int range, int papersize, double scale) {
+  CAMLparam0();
+  CAMLlocalN(args, 4);
+  CAMLlocal2(unit, fn);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = Val_int(papersize);
+  args[3] = caml_copy_double(scale);
+  fn = *caml_named_value("chopH");
+  unit = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
+void cpdf_chopV(int pdf, int range, int papersize, double scale) {
+  CAMLparam0();
+  CAMLlocalN(args, 4);
+  CAMLlocal2(unit, fn);
+  args[0] = Val_int(pdf);
+  args[1] = Val_int(range);
+  args[2] = Val_int(papersize);
+  args[3] = caml_copy_double(scale);
+  fn = *caml_named_value("chopV");
+  unit = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturn0;
+}
 void cpdf_padBefore(int o, int n) {
   CAMLparam0();
   CAMLlocal4(fn, o_v, n_v, unit_out);

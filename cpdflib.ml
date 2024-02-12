@@ -1288,6 +1288,15 @@ let twoUpStack pdf =
   with
     e -> handle_error "twoUpStack" e; err_unit
 
+let chop pdf range x y columns rtl btt =
+  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+
+let chopH pdf range columns y =
+  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+
+let chopV pdf range columns x =
+  update_pdf (lookup_pdf pdf) (lookup_pdf pdf)
+
 let padBefore pdf range =
   try
     update_pdf (Cpdfpad.padbefore (Array.to_list (lookup_range range)) (lookup_pdf pdf)) (lookup_pdf pdf)
@@ -1332,6 +1341,9 @@ let _ = Callback.register "padAfter" padAfter
 let _ = Callback.register "padEvery" padEvery
 let _ = Callback.register "padMultiple" padMultiple
 let _ = Callback.register "padMultipleBefore" padMultipleBefore
+let _ = Callback.register "chop" chop
+let _ = Callback.register "chopH" chopH
+let _ = Callback.register "chopV" chopV
 
 (* CHAPTER 10. Annotations *)
 let annotationsJSON pdf =

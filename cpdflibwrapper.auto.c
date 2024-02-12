@@ -551,6 +551,25 @@ void cpdf_~(int from_pdf, int to_pdf, int range, int pagenumber,
 }
 */
 
+/* __AUTODEF int->int->int->int->int->int->int->unit
+void cpdf_~(int a, int b, int c, int d, int e, int f, int g) {
+  CAMLparam0();
+  CAMLlocal2(fn_v, out_v);
+  fn_v = *caml_named_value("~");
+  CAMLlocalN(args, 7);
+  args[0] = Val_int(a);
+  args[1] = Val_int(b);
+  args[2] = Val_int(c);
+  args[3] = Val_int(d);
+  args[4] = Val_int(e);
+  args[5] = Val_int(f);
+  args[6] = Val_int(g);
+  out_v = caml_callbackN(fn_v, 7, args);
+  updateLastError();
+  CAMLreturn0;
+}
+*/
+
 /* __AUTODEF int->string->string->unit
 void cpdf_~(int pdf, char *f, char *t) {
   CAMLparam0();
@@ -1357,6 +1376,9 @@ void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl,
 
 /* __AUTO twoUp int->unit */
 /* __AUTO twoUpStack int->unit */
+/* __AUTO chop int->int->int->int->int->int->int->unit */
+/* __AUTO chopH int->int->int->float->unit */
+/* __AUTO chopV int->int->int->float->unit */
 /* __AUTO padBefore int->int->unit */
 /* __AUTO padAfter int->int->unit */
 /* __AUTO padEvery int->int->unit */

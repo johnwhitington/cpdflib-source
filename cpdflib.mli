@@ -143,7 +143,10 @@ val stampAsXObject : int -> int -> int -> string
 (* CHAPTER 9. Multipage facilities *)
 val twoUp : pdf -> unit
 val twoUpStack : pdf -> unit
-val impose : pdf -> float -> float -> bool -> bool -> bool -> bool -> bool -> float -> float -> float -> unit 
+val impose : pdf -> float -> float -> bool -> bool -> bool -> bool -> bool -> float -> float -> float -> unit
+val chop : pdf -> range -> int -> int -> bool -> bool -> bool -> unit
+val chopH : pdf -> range -> bool -> float -> unit
+val chopV : pdf -> range -> bool -> float -> unit
 val padBefore : pdf -> range -> unit
 val padAfter : pdf -> range -> unit
 val padEvery : pdf -> int -> unit
