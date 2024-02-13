@@ -928,6 +928,20 @@ void cpdf_setAnnotationsJSON(int, void *, int);
  */
 int cpdf_isLinearized(const char[]);
 
+int cpdf_hasObjectStreams(int);
+
+char* cpdf_id1(int);
+
+char* cpdf_id2(int);
+
+int cpdf_hasAcroForm(int);
+
+int cpdf_startGetSubformats(int);
+
+char* cpdf_getSubformat(int);
+
+void cpdf_endGetSubformats(void);
+
 /* cpdf_getVersion(pdf) returns the minor version number of a document. */
 int cpdf_getVersion(int);
 

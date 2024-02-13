@@ -1394,6 +1394,13 @@ void cpdf_impose(int pdf, double x, double y, int fit, int columns, int rtl,
 /* CHAPTER 11. Document Information and Metadata */
 
 /* __AUTO isLinearized string->int */
+/* __AUTO hasObjectStreams int->int */
+/* __AUTO id1 int->string */
+/* __AUTO id2 int->string */
+/* __AUTO hasAcroForm int->int */
+/* __AUTO startGetSubformats int->int */
+/* __AUTO getSubformat int->string */
+/* __AUTO endGetSubformats unit->unit */
 /* __AUTO getVersion int->int */
 /* __AUTO getMajorVersion int->int */
 /* __AUTO getTitle int->string */

@@ -159,6 +159,10 @@ int main(int argc, char **argv) {
   prerr();
   printf("---cpdf_isLinearized()\n");
   printf("islinearized:%i\n", cpdf_isLinearized("cpdflibmanual.pdf"));
+  prerr();
+  printf("---cpdf_hasObjectStreams()\n");
+  printf("hasObjectStreams:%i\n", cpdf_hasObjectStreams(f3));
+  prerr();
   printf("---cpdf_toFileEncrypted()\n");
   int permissions = {cpdf_noEdit};
   int encmethod = cpdf_pdf40bit;

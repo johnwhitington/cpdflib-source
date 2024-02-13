@@ -162,7 +162,13 @@ val setAnnotationsJSON : pdf -> Pdfio.rawbytes -> unit
 val getVersion : pdf -> int
 val getMajorVersion : pdf -> int
 val isLinearized : string -> bool
-val isLinearizedMemory : Pdfio.rawbytes -> bool
+val hasObjectStreams : pdf -> bool
+val id1 : pdf -> string
+val id2 : pdf -> string
+val hasAcroForm : pdf -> bool
+val startGetSubformats : pdf -> int
+val getSubformat : int -> string
+val endGetSubformats : unit -> unit
 val getTitle : pdf -> string
 val getAuthor : pdf -> string
 val getSubject : pdf -> string

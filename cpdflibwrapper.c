@@ -1600,6 +1600,68 @@ int cpdf_isLinearized(char *str) {
   updateLastError();
   CAMLreturnT(int, Int_val(out));
 }
+int cpdf_hasObjectStreams(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("hasObjectStreams");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+char *cpdf_id1(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("id1");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+char *cpdf_id2(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("id2");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+int cpdf_hasAcroForm(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("hasAcroForm");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+int cpdf_startGetSubformats(int pdf) {
+  CAMLparam0();
+  CAMLlocal3(fn, in_v, out_v);
+  fn = *caml_named_value("startGetSubformats");
+  in_v = Val_int(pdf);
+  out_v = caml_callback(fn, in_v);
+  updateLastError();
+  CAMLreturnT(int, Int_val(out_v));
+}
+char *cpdf_getSubformat(int key) {
+  CAMLparam0();
+  CAMLlocal3(f, key_v, out_v);
+  f = *caml_named_value("getSubformat");
+  key_v = Val_int(key);
+  out_v = caml_callback(f, key_v);
+  updateLastError();
+  CAMLreturnT(char *, (char *)String_val(out_v));
+}
+void cpdf_endGetSubformats() {
+  CAMLparam0();
+  CAMLlocal2(fn_v, unit_v);
+  fn_v = *caml_named_value("endGetSubformats");
+  unit_v = caml_callback(fn_v, Val_unit);
+  updateLastError();
+  CAMLreturn0;
+}
 int cpdf_getVersion(int pdf) {
   CAMLparam0();
   CAMLlocal3(fn, in_v, out_v);

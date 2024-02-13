@@ -1,3 +1,5 @@
+(* FIXME embedstd14 for addtext FIXME? *)
+
 (* CHAPTER 1. Basics *)
 open Pdfutil
 
@@ -1390,14 +1392,27 @@ let isLinearized string =
   with
     e -> handle_error "isLinearized" e; err_bool
 
-let isLinearizedMemory rawbytes =
+let hasObjectStreams pdf =
   try
-    Pdfread.is_linearized (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes))
+    length (list_of_hashtbl (lookup_pdf pdf).Pdf.objects.Pdf.object_stream_ids) > 0
   with
-    e -> handle_error "isLinearizedMemory" e; err_bool
+    e -> handle_error "hasObjectStreams" e; err_bool
+
+let id1 pdf = "id1"
+let id2 pdf = "id2"
+let hasAcroForm pdf = false
+let startGetSubformats pdf = 0
+let getSubformat n = ""
+let endGetSubformats () = ()
 
 let _ = Callback.register "isLinearized" isLinearized
-let _ = Callback.register "isLinearizedMemory" isLinearizedMemory
+let _ = Callback.register "hasObjectStreams" hasObjectStreams 
+let _ = Callback.register "id1" id1 
+let _ = Callback.register "id2" id2 
+let _ = Callback.register "hasAcroForm" hasAcroForm 
+let _ = Callback.register "startGetSubformats" startGetSubformats 
+let _ = Callback.register "getSubformat" getSubformat
+let _ = Callback.register "endGetSubformats" endGetSubformats 
 
 let fontinfo = ref [||]
 
