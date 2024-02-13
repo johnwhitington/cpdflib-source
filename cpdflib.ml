@@ -1416,7 +1416,19 @@ let id2 pdf =
   with
     e -> handle_error "id2" e; err_string
 
-let hasAcroForm pdf = false
+let hasAcroForm pdf =
+  try
+    let pdf = lookup_pdf pdf in
+      match Pdf.lookup_direct pdf "/Root" pdf.Pdf.trailerdict with
+      | Some catalog ->
+          begin match Pdf.lookup_direct pdf "/AcroForm" catalog with
+          | Some _ -> true
+          | _ -> false
+          end
+      | _ -> false
+  with
+    e -> handle_error "hasAcroForm" e; err_bool
+
 let startGetSubformats pdf = 0
 let getSubformat n = ""
 let endGetSubformats () = ()

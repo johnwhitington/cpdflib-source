@@ -169,6 +169,9 @@ int main(int argc, char **argv) {
   printf("---cpdf_id2()\n");
   printf("id2:%s\n", cpdf_id2(f3));
   prerr();
+  printf("---cpdf_hasAcroForm()\n");
+  printf("hasAcroForm:%i\n", cpdf_hasAcroForm(f3));
+  prerr();
   printf("---cpdf_toFileEncrypted()\n");
   int permissions = {cpdf_noEdit};
   int encmethod = cpdf_pdf40bit;
