@@ -1398,8 +1398,24 @@ let hasObjectStreams pdf =
   with
     e -> handle_error "hasObjectStreams" e; err_bool
 
-let id1 pdf = "id1"
-let id2 pdf = "id2"
+let id1 pdf =
+  try
+    let pdf = lookup_pdf pdf in
+      match Pdf.lookup_direct pdf "/ID" pdf.Pdf.trailerdict with
+      | Some (Pdf.Array [Pdf.String s; _]) -> s
+      | _ -> ""
+  with
+    e -> handle_error "id1" e; err_string
+
+let id2 pdf =
+  try
+    let pdf = lookup_pdf pdf in
+      match Pdf.lookup_direct pdf "/ID" pdf.Pdf.trailerdict with
+      | Some (Pdf.Array [_; Pdf.String s]) -> s
+      | _ -> ""
+  with
+    e -> handle_error "id2" e; err_string
+
 let hasAcroForm pdf = false
 let startGetSubformats pdf = 0
 let getSubformat n = ""

@@ -163,6 +163,12 @@ int main(int argc, char **argv) {
   printf("---cpdf_hasObjectStreams()\n");
   printf("hasObjectStreams:%i\n", cpdf_hasObjectStreams(f3));
   prerr();
+  printf("---cpdf_id1()\n");
+  printf("id1:%s\n", cpdf_id1(f3));
+  prerr();
+  printf("---cpdf_id2()\n");
+  printf("id2:%s\n", cpdf_id2(f3));
+  prerr();
   printf("---cpdf_toFileEncrypted()\n");
   int permissions = {cpdf_noEdit};
   int encmethod = cpdf_pdf40bit;
