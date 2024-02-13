@@ -163,6 +163,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_hasObjectStreams()\n");
   printf("hasObjectStreams:%i\n", cpdf_hasObjectStreams(f3));
   prerr();
+  /* FIXME move this stuff to Chapter 11 */
   printf("---cpdf_id1()\n");
   printf("id1:%s\n", cpdf_id1(f3));
   prerr();
@@ -171,6 +172,18 @@ int main(int argc, char **argv) {
   prerr();
   printf("---cpdf_hasAcroForm()\n");
   printf("hasAcroForm:%i\n", cpdf_hasAcroForm(f3));
+  prerr();
+  printf("---cpdf_startGetSubformats()\n");
+  int numsubs = cpdf_startGetSubformats(f3);
+  printf("n subformats: %i\n", numsubs);
+  printf("---cpdf_getSubformat()\n");
+  prerr();
+  for (int x = 0; x < numsubs; x++) {
+    printf("Subformat: %s\n", cpdf_getSubformat(x));
+  };
+  prerr();
+  printf("---cpdf_endGetSubformats\n");
+  cpdf_endGetSubformats();
   prerr();
   printf("---cpdf_toFileEncrypted()\n");
   int permissions = {cpdf_noEdit};
