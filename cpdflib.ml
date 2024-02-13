@@ -1429,9 +1429,24 @@ let hasAcroForm pdf =
   with
     e -> handle_error "hasAcroForm" e; err_bool
 
-let startGetSubformats pdf = 0
-let getSubformat n = ""
-let endGetSubformats () = ()
+
+let subformats = ref []
+
+let startGetSubformats pdf =
+  try
+    subformats := Cpdfmetadata.determine_subformats (lookup_pdf pdf);
+    length !subformats
+  with
+    e -> handle_error "startGetSubformats" e; err_int
+
+let getSubformat n =
+  try
+    List.nth !subformats n
+  with
+    e -> handle_error "getSubformat" e; err_string
+
+let endGetSubformats () =
+  subformats := []
 
 let _ = Callback.register "isLinearized" isLinearized
 let _ = Callback.register "hasObjectStreams" hasObjectStreams 
