@@ -39,8 +39,6 @@ let version = "2.6.1"
 
 let _ = Callback.register "version" version
 
-let ppstub f n p = (f n p, n, Pdftransform.i_matrix)
-
 (* Error Handling *)
 exception Cpdflib_error of string
 
@@ -84,7 +82,6 @@ let err_float = 0.
 let err_unit = ()
 let err_bool = false
 let err_string = ""
-let err_array = [||]
 let err_date =
   {Pdfdate.year = 0;
    Pdfdate.month = 0;
@@ -203,9 +200,6 @@ let difference r r' =
 let removeDuplicates r =
   Array.of_list (setify_preserving_order (Array.to_list r))
 
-let sort r =
-  Array.of_list (sort compare (Array.to_list r))
-
 let range a b =
   try new_range (range a b) with e -> handle_error "range" e; err_int
 
@@ -266,20 +260,8 @@ let lookup_pdf i =
   | (_, (pdf, _, _), _) -> pdf
   | exception Not_found -> failwith "lookup_pdf: not found"
 
-let number_of_encryption_status = function
-  | NotEncrypted -> 0
-  | Encrypted -> 1
-  | WasDecryptedWithUser _ -> 2
-  | WasDecryptedWithOwner _ -> 3
-
 let lookup_pdf_status i =
   match Hashtbl.find pdfs i with (_, (_, enc, _), _) -> enc
-
-let lookupPdfStatus i =
-  try
-    number_of_encryption_status (lookup_pdf_status i)
-  with
-    e -> handle_error "lookupPdfStatus" e; err_int
 
 let set_pdf_status i status =
   let l, (pdf, _, channel), r = Hashtbl.find pdfs i in
@@ -303,11 +285,6 @@ let replace_pdf i pdf =
 let enumeratePairs = ref []
 
 let info_of_pdf _ = "info"
-
-let list_pdfs () =
-  Printf.printf "PDFs in memory\n";
-  Hashtbl.iter (fun i _ -> Printf.printf "%i " i) pdfs;
-  flprint "\n"
 
 let startEnumeratePDFs () =
   try
@@ -1036,13 +1013,6 @@ type mut_pdfmarks =
                     
 let setbookmarkinfo = ref [||]
 
-let debug_setbookmarkinfo () =
-  Printf.printf "debug_setbookmarkinfo: %i %s %s %b\n"
-  !setbookmarkinfo.(0).mut_level
-  !setbookmarkinfo.(0).mut_text
-  (Pdfwrite.string_of_pdf (Pdfdest.pdfobject_of_destination !setbookmarkinfo.(0).mut_target))
-  !setbookmarkinfo.(0).mut_isopen
-
 let startSetBookmarkInfo num_bookmarks =
   setbookmarkinfo :=
     Array.init
@@ -1178,16 +1148,6 @@ let removeText pdf range =
 type font = Pdftext.standard_font
 
 type color = {r: float; g: float ; b: float}
-
-let white = {r = 1.; g = 1.; b = 1.}
-
-let black = {r = 0.; g = 0.; b = 0.}
-
-let red = {r = 1.; g = 0.; b = 0.}
-
-let green = {r = 0.; g = 1.; b = 0.}
-
-let blue = {r = 0.; g = 0.; b = 1.}
 
 let rgb r g b = {r = r; g = g; b = b}
 
@@ -2876,7 +2836,6 @@ let one = Printf.sprintf "%f"
 let two = Printf.sprintf "%f %f"
 let three = Printf.sprintf "%f %f %f"
 let four = Printf.sprintf "%f %f %f %f"
-let five = Printf.sprintf "%f %f %f %f %f"
 let six = Printf.sprintf "%f %f %f %f %f %f"
 
 let drawTo a b =
