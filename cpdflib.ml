@@ -35,7 +35,7 @@ let _ = Callback.register "embedStd14" embedStd14
 let _ = Callback.register "embedStd14Dir" embedStd14Dir
 let _ = Callback.register "JSONUTF8" jsonUTF8
 
-let version = "2.6.1"
+let version = "2.7"
 
 let _ = Callback.register "version" version
 
