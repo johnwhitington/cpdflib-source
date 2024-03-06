@@ -257,7 +257,7 @@ char *cpdf_~(int a, int b) {
   CAMLlocal4(fn, a_v, b_v, out);
   fn = *caml_named_value("~");
   a_v = Val_int(a);
-  b_v = Val_int(a);
+  b_v = Val_int(b);
   out = caml_callback2(fn, a_v, b_v);
   updateLastError();
   CAMLreturnT(char *, (char *)String_val(out));

@@ -400,7 +400,7 @@ char *cpdf_stringOfPagespec(int a, int b) {
   CAMLlocal4(fn, a_v, b_v, out);
   fn = *caml_named_value("stringOfPagespec");
   a_v = Val_int(a);
-  b_v = Val_int(a);
+  b_v = Val_int(b);
   out = caml_callback2(fn, a_v, b_v);
   updateLastError();
   CAMLreturnT(char *, (char *)String_val(out));
@@ -2649,7 +2649,7 @@ char *cpdf_getPageLabelStringForPage(int a, int b) {
   CAMLlocal4(fn, a_v, b_v, out);
   fn = *caml_named_value("getPageLabelStringForPage");
   a_v = Val_int(a);
-  b_v = Val_int(a);
+  b_v = Val_int(b);
   out = caml_callback2(fn, a_v, b_v);
   updateLastError();
   CAMLreturnT(char *, (char *)String_val(out));
