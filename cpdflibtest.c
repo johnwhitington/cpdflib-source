@@ -1027,12 +1027,12 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_endGetImageResolution();
   prerr();
-  printf("---cpdf_imageResolutionJSON\n");
+  printf("---cpdf_imageResolutionJSON()\n");
   int irlength;
   void *irdata = cpdf_imageResolutionJSON(images, &irlength, 300.);
   printf("Contains %i bytes of data\n", irlength);
   prerr();
-  printf("---cpdf_imagesJSON\n");
+  printf("---cpdf_imagesJSON()\n");
   void *irdata2 = cpdf_imagesJSON(images, &irlength);
   printf("Contains %i bytes of data\n", irlength);
   cpdf_deletePdf(images);
@@ -1057,7 +1057,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_fontsJSON()\n");
   int fontsjson = cpdf_fromFile("cpdflibmanual.pdf", "");
   int fontslength;
-  void *fontsdata = cpdf_getBookmarksJSON(fontsjson, &fontslength);
+  void *fontsdata = cpdf_fontsJSON(fontsjson, &fontslength);
   printf("Contains %i bytes of data\n", fontslength);
   printf("---cpdf_removeFonts()\n");
   int fontrange = cpdf_all(fonts);
