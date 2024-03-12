@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
     printf("Subformat: %s\n", cpdf_getSubformat(x));
   };
   prerr();
-  printf("---cpdf_endGetSubformats\n");
+  printf("---cpdf_endGetSubformats()\n");
   cpdf_endGetSubformats();
   prerr();
   printf("---cpdf_toFileEncrypted()\n");
