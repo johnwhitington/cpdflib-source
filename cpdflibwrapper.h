@@ -916,7 +916,7 @@ void *cpdf_annotationsJSON(int, int *);
  * given range. */
 void cpdf_removeAnnotations(int, int);
 
-/* cpdf_setAnnotationsJSON(length, data, pdf) adds the annotations given in
+/* cpdf_setAnnotationsJSON(pdf, data, length) adds the annotations given in
  * JSON format to the PDF, on top of any exisiting annotations. */
 void cpdf_setAnnotationsJSON(int, void *, int);
 
@@ -930,15 +930,15 @@ int cpdf_isLinearized(const char[]);
 
 int cpdf_hasObjectStreams(int);
 
-char* cpdf_id1(int);
+char *cpdf_id1(int);
 
-char* cpdf_id2(int);
+char *cpdf_id2(int);
 
 int cpdf_hasAcroForm(int);
 
 int cpdf_startGetSubformats(int);
 
-char* cpdf_getSubformat(int);
+char *cpdf_getSubformat(int);
 
 void cpdf_endGetSubformats(void);
 
