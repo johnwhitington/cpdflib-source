@@ -725,8 +725,6 @@ int cpdf_combinePages(int, int);
  *
  * %EndLabel The page label of the last page
  *
- * %filename The full file name of the input document
- *
  * %a        Abbreviated weekday name (Sun, Mon etc.)
  *
  * %A        Full weekday name (Sunday, Monday etc.)

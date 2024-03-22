@@ -1415,7 +1415,7 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_drawFont("A");
   printf("---cpdf_drawSText()\n");
-  cpdf_drawSText("Page %Page on %filename with bates |%Bates|");
+  cpdf_drawSText("Page %Page with bates |%Bates|");
   prerr();
   printf("---cpdf_drawET()\n");
   cpdf_drawET();
