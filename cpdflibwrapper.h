@@ -23,8 +23,8 @@ void cpdf_setFast();
 void cpdf_setSlow();
 
 /* Calling this function with a true argument sets embedding for the Standard
- * 14 fonts.  You must also set the directory to load them from with the next
- * function. Default value: false. */
+ * 14 fonts.  You must also set the directory to load them from with the
+ * cpdf_embedStd14Dir function. Default value: false. */
 void cpdf_embedStd14(int);
 
 /* Set the directory to load Standard 14 fonts for embedding. */
@@ -269,8 +269,8 @@ void cpdf_toFile(int, const char[], int, int);
 void cpdf_toFileExt(int, const char[], int, int, int, int, int);
 
 /*
- * cpdf_toFileMemory (pdf, linearize, make_id, &length) writes a PDF file it
- * and returns the buffer. The buffer length is filled in &length.
+ * cpdf_toFileMemory (pdf, linearize, make_id, sizse) writes a PDF file it
+ * and returns the buffer. The buffer length is filled in.
  */
 void *cpdf_toMemory(int, int, int, int *);
 
@@ -890,10 +890,10 @@ void cpdf_impose(int, double, double, int, int, int, int, int, double, double,
 /* cpdf_chop(pdf, range, x, y, columns, rtl, btt) */
 void cpdf_chop(int, int, int, int, int, int, int);
 
-/* cpdf_choph(pdf, range, columns, y) */
+/* cpdf_chopH(pdf, range, columns, y) */
 void cpdf_chopH(int, int, int, double);
 
-/* cpdf_chopv(pdf, range, columns, x) */
+/* cpdf_chopV(pdf, range, columns, x) */
 void cpdf_chopV(int, int, int, double);
 
 /*
@@ -1107,7 +1107,7 @@ void cpdf_setTrimBox(int, int, double, double, double, double);
 void cpdf_setArtBox(int, int, double, double, double, double);
 void cpdf_setBleedBox(int, int, double, double, double, double);
 
-/* cpdf_pageInfoJSON(pdf, retlen) returns JSON data for the page
+/* cpdf_pageInfoJSON(pdf, size) returns JSON data for the page
 information, and fills in the return length. */
 void *cpdf_pageInfoJSON(int, int *);
 
@@ -1189,7 +1189,7 @@ void cpdf_displayDocTitle(int, int);
 /* cpdf_getDisplayDocTitle(pdf) gets the display document title flag. */
 int cpdf_getDisplayDocTitle(int);
 
-/* cpdf_nonFullScreenPageMode(pdf, page mode) sets the non full screen page
+/* cpdf_nonFullScreenPageMode(pdf, pagemode) sets the non full screen page
  * mode. */
 void cpdf_nonFullScreenPageMode(int, enum cpdf_pageMode);
 
@@ -1217,7 +1217,7 @@ void cpdf_setMetadataFromFile(int, const char[]);
 void cpdf_setMetadataFromByteArray(int, void *, int);
 
 /*
- * cpdf_getMetadata(pdf, &length) returns the XMP metadata and fills in
+ * cpdf_getMetadata(pdf, length) returns the XMP metadata and fills in
  * length.
  */
 void *cpdf_getMetadata(int, int *);
@@ -1293,8 +1293,8 @@ int cpdf_getPageLabelOffset(int);
 int cpdf_getPageLabelRange(int);
 void cpdf_endGetPageLabels();
 
-/* cpdf_compositionJSON(filesize, pdf, size returns the composition data in
- * JSON format. */
+/* cpdf_compositionJSON(filesize, pdf, size) returns the composition data in
+ * JSON format, filling in the return length. */
 void *cpdf_compositionJSON(int, int, int *);
 
 /* CHAPTER 12. File Attachments */
@@ -1344,7 +1344,7 @@ char *cpdf_getAttachmentName(int);
 int cpdf_getAttachmentPage(int);
 
 /*
- * cpdf_getAttachmentData(serial number, &length) returns a pointer to the
+ * cpdf_getAttachmentData(serial number, length) returns a pointer to the
  * data, and its length.
  */
 void *cpdf_getAttachmentData(int, int *);
@@ -1411,7 +1411,7 @@ char *cpdf_getFontType(int);
 char *cpdf_getFontEncoding(int);
 void cpdf_endGetFontInfo(void);
 
-/* cpdf_fontsJSON(pdf, retlen) returns JSON data for the font list, and fills
+/* cpdf_fontsJSON(pdf, size) returns JSON data for the font list, and fills
  * in the return length. */
 void *cpdf_fontsJSON(int, int *);
 
@@ -1435,7 +1435,7 @@ void cpdf_JSONUTF8(int);
  * */
 void cpdf_outputJSON(const char[], int, int, int, int);
 
-/* cpdf_outputJSONMemory(parse_content, no_stream_data, pdf, &length) is like
+/* cpdf_outputJSONMemory(parse_content, no_stream_data, pdf, size) is like
  * outputJSON, but it writes to a buffer in memory. The length is filled in. */
 void *cpdf_outputJSONMemory(int, int, int, int, int *);
 
@@ -1492,11 +1492,11 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 
-/* cpdf_fromPNG(filename) builds a PDF from a 24-bit non-interlaced
- * non-transparent PNG. */
+/* cpdf_fromPNG(filename) builds a PDF from a non-interlaced non-transparent
+ * PNG. */
 int cpdf_fromPNG(const char[]);
 
-/* cpdf_fromJPEG(filename) builds a PDF from a JPEG/ */
+/* cpdf_fromJPEG(filename) builds a PDF from a JPEG. */
 int cpdf_fromJPEG(const char[]);
 
 /* CHAPTER 18. Drawing on PDFs */
