@@ -890,7 +890,7 @@ void cpdf_impose(int, double, double, int, int, int, int, int, double, double,
 /* cpdf_chop(pdf, range, x, y, columns, rtl, btt) chops each page in the range
  * into x * y pieces. If columns is set, the pieces go by columns instead of
  * rows. If rtl is set, the pieces are taken right-to-left. If btt is set, the
- * pieces are taken from botto to top. */
+ * pieces are taken from bottom to top. */
 void cpdf_chop(int, int, int, int, int, int, int);
 
 /* cpdf_chopH(pdf, range, columns, y) chops each page in the range horizontally
@@ -922,7 +922,7 @@ void *cpdf_annotationsJSON(int, int *);
 void cpdf_removeAnnotations(int, int);
 
 /* cpdf_setAnnotationsJSON(pdf, data, length) adds the annotations given in
- * JSON format to the PDF, on top of any exisiting annotations. */
+ * JSON format to the PDF, on top of any existing annotations. */
 void cpdf_setAnnotationsJSON(int, void *, int);
 
 /* CHAPTER 11. Document Information and Metadata */
@@ -945,7 +945,7 @@ char *cpdf_id1(int);
  * hexadecimal string format. */
 char *cpdf_id2(int);
 
-/* cpdf_hasAcroForm returns true if the document as an AcroForm */
+/* cpdf_hasAcroForm returns true if the document has an AcroForm */
 int cpdf_hasAcroForm(int);
 
 /* To return the subformats of a PDF (if any), call
