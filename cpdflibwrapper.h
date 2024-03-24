@@ -952,8 +952,9 @@ int cpdf_hasAcroForm(int);
  * cpdf_startGetSubformats(pdf) to return their number. Then pass the numbers
  * 0..n - 1 to cpdf_getSubformat to return the strings. Call
  * cpdf_endGetSubformats() to clean up. */
-int cpdf_startGetSubformats(int); char *cpdf_getSubformat(int); void
-cpdf_endGetSubformats(void);
+int cpdf_startGetSubformats(int);
+char *cpdf_getSubformat(int);
+void cpdf_endGetSubformats(void);
 
 /* cpdf_getVersion(pdf) returns the minor version number of a document. */
 int cpdf_getVersion(int);
