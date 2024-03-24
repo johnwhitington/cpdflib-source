@@ -1,5 +1,3 @@
-(* FIXME embedstd14 for addtext FIXME? *)
-
 (* CHAPTER 1. Basics *)
 open Pdfutil
 

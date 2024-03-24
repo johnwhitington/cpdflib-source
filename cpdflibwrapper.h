@@ -887,13 +887,20 @@ void cpdf_padMultipleBefore(int, int);
 void cpdf_impose(int, double, double, int, int, int, int, int, double, double,
                  double);
 
-/* cpdf_chop(pdf, range, x, y, columns, rtl, btt) */
+/* cpdf_chop(pdf, range, x, y, columns, rtl, btt) chops each page in the range
+ * into x * y pieces. If columns is set, the pieces go by columns instead of
+ * rows. If rtl is set, the pieces are taken right-to-left. If btt is set, the
+ * pieces are taken from botto to top. */
 void cpdf_chop(int, int, int, int, int, int, int);
 
-/* cpdf_chopH(pdf, range, columns, y) */
+/* cpdf_chopH(pdf, range, columns, y) chops each page in the range horizontally
+ * at position y. If columns is set, the pieces are arranged in reverse order.
+ * */
 void cpdf_chopH(int, int, int, double);
 
-/* cpdf_chopV(pdf, range, columns, x) */
+/* cpdf_chopV(pdf, range, columns, x) chops each page in the range vertically
+ * at position x. If columns is set, the pieces are arranged in reverse order.
+ * */
 void cpdf_chopV(int, int, int, double);
 
 /*
@@ -926,19 +933,27 @@ void cpdf_setAnnotationsJSON(int, void *, int);
  */
 int cpdf_isLinearized(const char[]);
 
+/* cpdf_hasObjectStreams(pdf) finds out if a document was written using object
+ * streams. */
 int cpdf_hasObjectStreams(int);
 
+/* cpdf_id1(pdfs) returns the first ID string of the PDF, if any, in
+ * hexadecimal string format. */
 char *cpdf_id1(int);
 
+/* cpdf_id2(pdfs) returns the second ID string of the PDF, if any, in
+ * hexadecimal string format. */
 char *cpdf_id2(int);
 
+/* cpdf_hasAcroForm returns true if the document as an AcroForm */
 int cpdf_hasAcroForm(int);
 
-int cpdf_startGetSubformats(int);
-
-char *cpdf_getSubformat(int);
-
-void cpdf_endGetSubformats(void);
+/* To return the subformats of a PDF (if any), call
+ * cpdf_startGetSubformats(pdf) to return their number. Then pass the numbers
+ * 0..n - 1 to cpdf_getSubformat to return the strings. Call
+ * cpdf_endGetSubformats() to clean up. */
+int cpdf_startGetSubformats(int); char *cpdf_getSubformat(int); void
+cpdf_endGetSubformats(void);
 
 /* cpdf_getVersion(pdf) returns the minor version number of a document. */
 int cpdf_getVersion(int);
@@ -1427,6 +1442,8 @@ void cpdf_copyFont(int, int, int, int, const char[]);
 
 /* CHAPTER 15. PDF and JSON */
 
+/* Set the JSON output format. If true, the newer UTF8 format is used. Default:
+ * false. */
 void cpdf_JSONUTF8(int);
 
 /* cpdf_outputJSON(filename, parse_content, no_stream_data, pdf) outputs a PDF
