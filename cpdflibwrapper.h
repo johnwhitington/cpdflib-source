@@ -8,7 +8,7 @@
 
 /* CHAPTER 0. Preliminaries */
 
-/* The function cpdf_startup(argv) must be called before using the library.  */
+/* The function cpdf_startup(argv) must be called before using the library. */
 void cpdf_startup(char **);
 
 /* Return the version of the cpdflib library as a string */
