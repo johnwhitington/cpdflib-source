@@ -4,6 +4,7 @@
 #include <caml/memory.h>
 #include <stdio.h>
 
+
 enum cpdf_papersize {
   cpdf_a0portrait,
   cpdf_a1portrait,
@@ -113,9 +114,17 @@ enum cpdf_pageMode {
   cpdf_useAttachments
 };
 
-enum cpdf_cap { cpdf_capButt, cpdf_capRound, cpdf_capSquare };
+enum cpdf_cap {
+  cpdf_capButt,
+  cpdf_capRound,
+  cpdf_capSquare
+};
 
-enum cpdf_join { cpdf_joinMiter, cpdf_joinRound, cpdf_joinBevel };
+enum cpdf_join {
+  cpdf_joinMiter,
+  cpdf_joinRound,
+  cpdf_joinBevel
+};
 
 /* CHAPTER 0. Preliminaries */
 
@@ -927,7 +936,7 @@ void cpdf_vFlip(int o, int n) {
   CAMLreturn0;
 }
 void cpdf_crop(int pdf, int range, double minx, double maxx, double miny,
-               double maxy) {
+                      double maxy) {
   CAMLparam0();
   CAMLlocalN(args, 6);
   CAMLlocal2(unit, fn);
@@ -2079,7 +2088,7 @@ void cpdf_getMediaBox(int pdf, int pagenumber, double *minx, double *maxx,
   CAMLreturn0;
 }
 void cpdf_getCropBox(int pdf, int pagenumber, double *minx, double *maxx,
-                     double *miny, double *maxy) {
+                      double *miny, double *maxy) {
   CAMLparam0();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
   CAMLlocal3(maxx_v, miny_v, maxy_v);
@@ -2099,7 +2108,7 @@ void cpdf_getCropBox(int pdf, int pagenumber, double *minx, double *maxx,
   CAMLreturn0;
 }
 void cpdf_getTrimBox(int pdf, int pagenumber, double *minx, double *maxx,
-                     double *miny, double *maxy) {
+                      double *miny, double *maxy) {
   CAMLparam0();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
   CAMLlocal3(maxx_v, miny_v, maxy_v);
@@ -2119,7 +2128,7 @@ void cpdf_getTrimBox(int pdf, int pagenumber, double *minx, double *maxx,
   CAMLreturn0;
 }
 void cpdf_getArtBox(int pdf, int pagenumber, double *minx, double *maxx,
-                    double *miny, double *maxy) {
+                      double *miny, double *maxy) {
   CAMLparam0();
   CAMLlocal5(fn, pdf_v, pagenumber_v, tuple_v, minx_v);
   CAMLlocal3(maxx_v, miny_v, maxy_v);
@@ -2175,7 +2184,7 @@ void cpdf_setMediabox(int pdf, int range, double minx, double maxx, double miny,
   CAMLreturn0;
 }
 void cpdf_setCropBox(int pdf, int range, double minx, double maxx, double miny,
-                     double maxy) {
+                      double maxy) {
   CAMLparam0();
   CAMLlocalN(args, 6);
   CAMLlocal2(unit, fn);
@@ -2191,7 +2200,7 @@ void cpdf_setCropBox(int pdf, int range, double minx, double maxx, double miny,
   CAMLreturn0;
 }
 void cpdf_setTrimBox(int pdf, int range, double minx, double maxx, double miny,
-                     double maxy) {
+                      double maxy) {
   CAMLparam0();
   CAMLlocalN(args, 6);
   CAMLlocal2(unit, fn);
@@ -2207,7 +2216,7 @@ void cpdf_setTrimBox(int pdf, int range, double minx, double maxx, double miny,
   CAMLreturn0;
 }
 void cpdf_setArtBox(int pdf, int range, double minx, double maxx, double miny,
-                    double maxy) {
+                      double maxy) {
   CAMLparam0();
   CAMLlocalN(args, 6);
   CAMLlocal2(unit, fn);
@@ -2990,8 +2999,7 @@ void *cpdf_imageResolutionJSON(int pdf, int *retlen, double f) {
   char *memory = NULL;
   int size = Caml_ba_array_val(bytestream)->dim[0];
   memory = calloc(size, sizeof(char));
-  if (memory == NULL && size > 0)
-    fprintf(stderr, "imageResolutionJSON: failed");
+  if (memory == NULL && size > 0) fprintf(stderr, "imageResolutionJSON: failed");
   if (size > 0) {
     int x;
     char *indata = Caml_ba_data_val(bytestream);
@@ -3266,6 +3274,7 @@ void cpdf_OCGOrderAll(int pdf) {
   CAMLreturn0;
 }
 
+
 /* CHAPTER 17. Creating New PDFs */
 
 int cpdf_blankDocument(double width, double height, int pages) {
@@ -3356,7 +3365,7 @@ void cpdf_drawEnd(int o, int n) {
   CAMLreturn0;
 }
 void cpdf_drawEndExtended(int from_pdf, int to_pdf, int range, int pagenumber,
-                          char *fontname) {
+                   char *fontname) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   fn_v = *caml_named_value("drawEndExtended");
@@ -3646,8 +3655,7 @@ void cpdf_drawPop() {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_drawMatrix(double o, double n, double m, double p, double q,
-                     double r) {
+void cpdf_drawMatrix(double o, double n, double m, double p, double q, double r) {
   CAMLparam0();
   CAMLlocal2(fn, unit_out);
   CAMLlocalN(args, 6);
@@ -3757,7 +3765,7 @@ void cpdf_drawUse(char *str) {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_drawJPEG(char *str, char *str2) {
+void cpdf_drawJPEG(char *str, char* str2) {
   CAMLparam0();
   CAMLlocal4(fn, instr, instr2, out);
   fn = *caml_named_value("drawJPEG");
@@ -3767,7 +3775,7 @@ void cpdf_drawJPEG(char *str, char *str2) {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_drawPNG(char *str, char *str2) {
+void cpdf_drawPNG(char *str, char* str2) {
   CAMLparam0();
   CAMLlocal4(fn, instr, instr2, out);
   fn = *caml_named_value("drawPNG");
@@ -3820,7 +3828,7 @@ void cpdf_drawET() {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_loadFont(char *str, char *str2) {
+void cpdf_loadFont(char *str, char* str2) {
   CAMLparam0();
   CAMLlocal4(fn, instr, instr2, out);
   fn = *caml_named_value("loadFont");

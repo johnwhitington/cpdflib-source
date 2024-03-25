@@ -725,6 +725,8 @@ int cpdf_combinePages(int, int);
  *
  * %EndLabel The page label of the last page
  *
+ * %Filename The file name
+ *
  * %a        Abbreviated weekday name (Sun, Mon etc.)
  *
  * %A        Full weekday name (Sunday, Monday etc.)
@@ -1679,7 +1681,7 @@ void cpdf_drawUse(char *);
  * under the given name. */
 void cpdf_drawJPEG(char *, char *);
 
-/* cpdf_drawPNG(name, filename) loads a 24 bit non-interlaced non-transparent
+/* cpdf_drawPNG(name, filename) loads a non-interlaced non-transparent
  * PNG from the given file, storing it under the given name. */
 void cpdf_drawPNG(char *, char *);
 
