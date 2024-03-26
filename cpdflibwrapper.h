@@ -1508,16 +1508,33 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
  * size. */
 int cpdf_textToPDF(double, double, int, double, const char[]);
 
+/* cpdf_textToPDFMemory(w, h, font, fontsize, data, length) typesets a UTF8 text file
+ * ragged right on a page of size w * h in points in the given font and font
+ * size. */
+int cpdf_textToPDFMemory(double, double, int, double, void*, int);
+
 /* cpdf_textToPDF(papersize font, fontsize, filename) typesets a UTF8 text file
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
+
+/* cpdf_textToPDFMemory(papersize font, fontsize, data, length) typesets a UTF8
+ * text file ragged right on a page of the given size in the given font and
+ * font size. */
+int cpdf_textToPDFPaperMemory(int, int, double, void*, int);
 
 /* cpdf_fromPNG(filename) builds a PDF from a non-interlaced non-transparent
  * PNG. */
 int cpdf_fromPNG(const char[]);
 
+/* cpdf_fromPNGMemory(data, length) builds a PDF from a non-interlaced
+ * non-transparent PNG. */
+int cpdf_fromPNGMemory(void*, int);
+
 /* cpdf_fromJPEG(filename) builds a PDF from a JPEG. */
 int cpdf_fromJPEG(const char[]);
+
+/* cpdf_fromJPEGMemory(data, length) builds a PDF from a JPEG. */
+int cpdf_fromJPEGMemory(void*, int);
 
 /* CHAPTER 18. Drawing on PDFs */
 
@@ -1681,9 +1698,17 @@ void cpdf_drawUse(char *);
  * under the given name. */
 void cpdf_drawJPEG(char *, char *);
 
+/* cpdf_drawJPEGMemory(name, data, length) loads a JPEG from the given file,
+ * storing it under the given name. */
+void cpdf_drawJPEGMemory(char *, void *, int);
+
 /* cpdf_drawPNG(name, filename) loads a non-interlaced non-transparent
  * PNG from the given file, storing it under the given name. */
 void cpdf_drawPNG(char *, char *);
+
+/* cpdf_drawPNG(name, data, length) loads a non-interlaced non-transparent
+ * PNG from the given file, storing it under the given name. */
+void cpdf_drawPNGMemory(char *, void *, int);
 
 /* cpdf_drawImage(name) draws a stored image. To draw at the expected size, it
  * is required to scale the Current Transformation Matrix by the width and
