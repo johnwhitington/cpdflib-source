@@ -1701,6 +1701,57 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO fromPNG string->int */
 /* __AUTO fromJPEG string->int */
 
+int cpdf_textToPDFMemory(double w, double h, int font, double fontsize, void *data, int len) {
+  CAMLparam0();
+  CAMLlocal2(fn, pdf_v);
+  CAMLlocalN(args, 5);
+  args[0] = caml_copy_double(w);
+  args[1] = caml_copy_double(h);
+  args[2] = Val_int(font);
+  args[3] = caml_copy_double(fontsize);
+  args[4] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("textToPDFMemory");
+  pdf_v = caml_callbackN(fn, 5, args);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
+int cpdf_textToPDFPaperMemory(int papersize, int font, double fontsize, void *data, int len) {
+  CAMLparam0();
+  CAMLlocal2(fn, pdf_v);
+  CAMLlocalN(args, 4);
+  args[0] = Val_int(papersize);
+  args[1] = Val_int(font);
+  args[2] = caml_copy_double(fontsize);
+  args[3] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("textToPDFPaperMemory");
+  pdf_v = caml_callbackN(fn, 4, args);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
+int cpdf_fromPNGMemory(void *data, int len) {
+  CAMLparam0();
+  CAMLlocal3(pdf_v, bytestream, fn);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromPNGMemory");
+  pdf_v = caml_callback(fn, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
+int cpdf_fromJPEGMemory(void *data, int len) {
+  CAMLparam0();
+  CAMLlocal3(pdf_v, bytestream, fn);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("fromJPEGMemory");
+  pdf_v = caml_callback(fn, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
 /* CHAPTER 18. Drawing on PDFs */
 
 /* __AUTO drawBegin unit->unit */
@@ -1746,6 +1797,31 @@ int cpdf_fromJSONMemory(void *data, int len) {
 /* __AUTO drawUse string->unit */
 /* __AUTO drawJPEG string->string->unit */
 /* __AUTO drawPNG string->string->unit */
+
+int cpdf_drawJPEGMemory(char *name, void *data, int len) {
+  CAMLparam0();
+  CAMLlocal4(pdf_v, name_v, bytestream, fn);
+  name_v = caml_copy_string(name);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("drawJPEGMemory");
+  pdf_v = caml_callback2(fn, name_v, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
+int cpdf_drawPNGMemory(char *name, void *data, int len) {
+  CAMLparam0();
+  CAMLlocal4(pdf_v, name_v, bytestream, fn);
+  name_v = caml_copy_string(name);
+  bytestream =
+      caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
+  fn = *caml_named_value("drawPNGMemory");
+  pdf_v = caml_callback2(fn, name_v, bytestream);
+  updateLastError();
+  CAMLreturnT(int, Int_val(pdf_v));
+}
+
 /* __AUTO drawImage string->unit */
 /* __AUTO drawFillOpacity float->unit */
 /* __AUTO drawStrokeOpacity float->unit */

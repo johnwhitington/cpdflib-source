@@ -3006,9 +3006,17 @@ let drawJPEG a b =
   try Cpdfdrawcontrol.addjpeg (Printf.sprintf "%s=%s" a b) with
     e -> handle_error "drawJPEG" e; err_unit
 
+let drawJPEGMemory a b =
+  try Cpdfdrawcontrol.addjpeg ~data:b a with
+    e -> handle_error "drawJPEGMemory" e; err_unit
+
 let drawPNG a b =
   try Cpdfdrawcontrol.addpng (Printf.sprintf "%s=%s" a b) with
     e -> handle_error "drawPNG" e; err_unit
+
+let drawPNGMemory a b =
+  try Cpdfdrawcontrol.addpng ~data:b a with
+    e -> handle_error "drawPNGMemory" e; err_unit
 
 let drawImage a =
   try Cpdfdrawcontrol.addimage a with

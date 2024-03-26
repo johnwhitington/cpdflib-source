@@ -1513,7 +1513,7 @@ int cpdf_textToPDF(double, double, int, double, const char[]);
  * size. */
 int cpdf_textToPDFMemory(double, double, int, double, void*, int);
 
-/* cpdf_textToPDF(papersize font, fontsize, filename) typesets a UTF8 text file
+/* cpdf_textToPDF(papersize, font, fontsize, filename) typesets a UTF8 text file
  * ragged right on a page of the given size in the given font and font size. */
 int cpdf_textToPDFPaper(int, int, double, const char[]);
 

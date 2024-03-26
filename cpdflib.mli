@@ -365,6 +365,8 @@ val drawEndXObj : unit -> unit
 val drawUse : string -> unit
 val drawJPEG : string -> string -> unit
 val drawPNG : string -> string -> unit
+val drawJPEGMemory : string -> Pdfio.rawbytes -> unit
+val drawPNGMemory : string -> Pdfio.rawbytes -> unit
 val drawImage : string -> unit
 val drawFillOpacity : float -> unit
 val drawStrokeOpacity : float -> unit
