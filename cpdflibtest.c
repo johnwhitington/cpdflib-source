@@ -1,6 +1,9 @@
 /* Uses every function in cpdflibwrapper.h */
 #include <stdbool.h>
 #include <stdio.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "cpdflibwrapper.h"
 
@@ -37,8 +40,8 @@ int main(int argc, char **argv) {
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();
-  // printf("---cpdf_onExit()\n");
-  // cpdf_onExit();
+ /* printf("---cpdf_onExit()\n");
+  cpdf_onExit();FIXME*/
 
   /* CHAPTER 1. Basics */
   printf("***** CHAPTER 1. Basics\n");
@@ -1134,16 +1137,36 @@ int main(int argc, char **argv) {
   int ttpdf =
       cpdf_textToPDF(500.0, 600.0, cpdf_timesItalic, 8.0, "cpdflibtest.c");
   cpdf_toFile(ttpdf, "testoutputs/17ttpdf.pdf", false, false);
+  printf("---cpdf_textToPDFMemory()\n");
+  char* str = "Hello, World!";
+  int ttpdf2 =
+      cpdf_textToPDFMemory(500.0, 600.0, cpdf_timesItalic, 8.0, (void*) str, 13);
+  cpdf_toFile(ttpdf2, "testoutputs/17ttpdf2.pdf", false, false);
   printf("---cpdf_textToPDFPaper()\n");
   int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, cpdf_timesBoldItalic,
                                        10.0, "cpdflibtest.c");
   cpdf_toFile(ttpdfpaper, "testoutputs/17ttpdfpaper.pdf", false, false);
+  printf("---cpdf_textToPDFPaperMemory()\n");
+  int ttpdfpaper2 = cpdf_textToPDFPaperMemory(cpdf_a4portrait, cpdf_timesBoldItalic, 10.0, (void*) str, 13);
+  cpdf_toFile(ttpdfpaper2, "testoutputs/17ttpdfpaper2.pdf", false, false);
   printf("---cpdf_fromPNG()\n");
   int png = cpdf_fromPNG("testinputs/png.png");
   cpdf_toFile(png, "testoutputs/17png.pdf", false, false);
+  printf("---cpdf_fromPNGMemory()\n");
+  int fd = open("testinputs/png.png", O_RDONLY);
+  int len = lseek(fd, 0, SEEK_END);
+  void *pngfile = mmap(0, len, PROT_READ, MAP_PRIVATE, fd, 0);
+  int png2 = cpdf_fromPNGMemory(pngfile, len);
+  cpdf_toFile(png2, "testoutputs/17png2.pdf", false, false);
   printf("---cpdf_fromJPEG()\n");
   int jpg = cpdf_fromJPEG("testinputs/jpg.jpg");
   cpdf_toFile(jpg, "testoutputs/17jpg.pdf", false, false);
+  printf("---cpdf_fromJPEGMemory()\n");
+  int fd2 = open("testinputs/jpg.jpg", O_RDONLY);
+  int len2 = lseek(fd2, 0, SEEK_END);
+  void *jpgfile = mmap(0, len2, PROT_READ, MAP_PRIVATE, fd2, 0);
+  int jpg2 = cpdf_fromJPEGMemory(jpgfile, len2);
+  cpdf_toFile(jpg2, "testoutputs/17jpg2.pdf", false, false);
   cpdf_deletePdf(ttpdf);
   cpdf_deletePdf(ttpdfpaper);
   cpdf_deletePdf(blankdoc);
@@ -1382,13 +1405,27 @@ int main(int argc, char **argv) {
   printf("---cpdf_drawJPEG()\n");
   cpdf_drawJPEG("A", "testinputs/jpg.jpg");
   prerr();
+  printf("---cpdf_drawJPEGMemory()\n");
+  int fd3 = open("testinputs/jpg.jpg", O_RDONLY);
+  int len3 = lseek(fd3, 0, SEEK_END);
+  void *jpgfile2 = mmap(0, len3, PROT_READ, MAP_PRIVATE, fd3, 0);
+  cpdf_drawJPEGMemory("A2", jpgfile2, len3);
   printf("---cpdf_drawPNG()\n");
   cpdf_drawPNG("B", "testinputs/png.png");
   prerr();
+  printf("---cpdf_drawPNGMemory()\n");
+  int fd4 = open("testinputs/png.png", O_RDONLY);
+  int len4 = lseek(fd4, 0, SEEK_END);
+  void *pngfile2 = mmap(0, len4, PROT_READ, MAP_PRIVATE, fd4, 0);
+  cpdf_drawPNGMemory("B2", pngfile2, len4);
   printf("---cpdf_drawImage()\n");
   cpdf_drawImage("A");
-  cpdf_drawMScale(0, 0, 0.7, 0.7);
+  cpdf_drawMScale(0, 0, 0.95, 0.95);
   cpdf_drawImage("B");
+  cpdf_drawMScale(0, 0, 0.95, 0.95);
+  cpdf_drawImage("A2");
+  cpdf_drawMScale(0, 0, 0.95, 0.95);
+  cpdf_drawImage("B2");
   prerr();
   cpdf_drawPop();
   printf("---cpdf_drawFillOpacity()\n");
