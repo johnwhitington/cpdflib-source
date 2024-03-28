@@ -40,8 +40,6 @@ int main(int argc, char **argv) {
   printf("---cpdf_clearError()\n");
   cpdf_clearError();
   prerr();
- /* printf("---cpdf_onExit()\n");
-  cpdf_onExit();FIXME*/
 
   /* CHAPTER 1. Basics */
   printf("***** CHAPTER 1. Basics\n");
@@ -460,6 +458,7 @@ int main(int argc, char **argv) {
                        false);
   cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
   cpdf_deletePdf(tocfile);
+  cpdf_deletePdf(marksjson);
 
   /* CHAPTER 7. Presentations */
   /* Not included in the library version */
@@ -627,8 +626,12 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(mp6);
   cpdf_deletePdf(mp7);
   cpdf_deletePdf(mp25);
+  cpdf_deletePdf(mp25a);
+  cpdf_deletePdf(mp25b);
+  cpdf_deletePdf(mp25c);
   cpdf_deletePdf(mp26);
   cpdf_deleteRange(r);
+  cpdf_deleteRange(all25abc);
 
   /* CHAPTER 10. Annotations */
   printf("***** CHAPTER 10. Annotations\n");
@@ -639,6 +642,7 @@ int main(int argc, char **argv) {
   printf("Contains %i bytes of data\n", annotlength);
   printf("---cpdf_removeAnnotations()\n");
   int r_annot = cpdf_range(1, 1);
+  printf("annot is %i\n", r_annot);
   cpdf_removeAnnotations(annot, r_annot);
   printf("---cpdf_setAnnotationsJSON()\n");
   cpdf_setAnnotationsJSON(annot, data, annotlength);
@@ -950,6 +954,7 @@ int main(int argc, char **argv) {
   printf("Contains %i bytes of data\n", complength);
   cpdf_deletePdf(compjson);
   cpdf_deletePdf(info);
+  cpdf_deletePdf(pijson);
   cpdf_deleteRange(r_info);
 
   /* CHAPTER 12. File Attachments */
@@ -1040,6 +1045,7 @@ int main(int argc, char **argv) {
   void *irdata2 = cpdf_imagesJSON(images, &irlength);
   printf("Contains %i bytes of data\n", irlength);
   cpdf_deletePdf(images);
+  cpdf_deletePdf(images2);
 
   /* CHAPTER 14. Fonts */
   printf("***** CHAPTER 14. Fonts\n");
@@ -1073,6 +1079,7 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_deletePdf(fonts);
   cpdf_deletePdf(fonts2);
+  cpdf_deletePdf(fontsjson);
   cpdf_deleteRange(fontrange);
 
   /* CHAPTER 15. PDF and JSON */
@@ -1100,6 +1107,7 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_deletePdf(json);
   cpdf_deletePdf(jsonpdf);
+  cpdf_deletePdf(jfrommem);
 
   /* CHAPTER 16. Optional Content Groups */
   int ocg = cpdf_fromFile("testinputs/has_ocgs.pdf", "");
@@ -1169,10 +1177,14 @@ int main(int argc, char **argv) {
   cpdf_toFile(jpg2, "testoutputs/17jpg2.pdf", false, false);
   cpdf_deletePdf(ttpdf);
   cpdf_deletePdf(ttpdfpaper);
+  cpdf_deletePdf(ttpdf2);
+  cpdf_deletePdf(ttpdfpaper2);
   cpdf_deletePdf(blankdoc);
   cpdf_deletePdf(blanksized);
   cpdf_deletePdf(png);
   cpdf_deletePdf(jpg);
+  cpdf_deletePdf(png2);
+  cpdf_deletePdf(jpg2);
 
   /* CHAPTER 18. Drawing on PDFs */
   printf("***** CHAPTER 18. Drawing on PDFs\n");
@@ -1608,7 +1620,6 @@ int main(int argc, char **argv) {
   cpdf_deletePdf(misc16);
   cpdf_deletePdf(misclogo);
   cpdf_deleteRange(misc_r);
-
-  /* cpdf_onExit(); */
+  /*cpdf_onExit();*/
   return 0;
 }

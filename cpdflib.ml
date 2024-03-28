@@ -1317,7 +1317,7 @@ let _ = Callback.register "chopV" chopV
 (* CHAPTER 10. Annotations *)
 let annotationsJSON pdf =
   try
-    Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf) (Array.to_list (lookup_range (all pdf))))
+    Pdfio.raw_of_bytes (Cpdfannot.get_annotations_json (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))
   with
     e -> handle_error "annotationsJSON" e; err_data
 
@@ -3258,10 +3258,12 @@ let _ = Callback.register "removeClipping" removeClipping
 
 
 let onexit () =
-  Printf.printf "There are %i ranges on exit\n" (Hashtbl.length ranges);
+  Printf.printf "There are %i ranges on exit:\n" (Hashtbl.length ranges);
+  Hashtbl.iter (fun k v -> Printf.printf "%i, " k) ranges;
+  print_string "\n";
   Printf.printf "There are %i PDFs on exit:\n" (Hashtbl.length pdfs);
   Hashtbl.iter (fun k v -> Printf.printf "%i, " k) pdfs;
   print_string "\n";
   flush stdout
 
-let _ = Callback.register "onexit" onexit
+let _ = Callback.register "onExit" onexit
