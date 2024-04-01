@@ -2735,6 +2735,11 @@ let contents_of_file filename =
    font (and maybe embedStd14 is set or not), or it's a font loaded with
    loadTTF.
 *)
+let embed_font fontname = ()
+  (* 1. is it a standard font name? *)
+    (* A. Are we embedding? No, just build a non-embedded fontpack *)
+    (* B. Yes, we are embedding. Load and embed and return. *)
+  (* 2. Or it it from loadTTF? Embed and return. *)
 
 let textToPDF width height font fontsize filename =
   try
