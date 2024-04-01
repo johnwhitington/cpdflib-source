@@ -253,6 +253,10 @@ int cpdf_pagesFast(const char[], const char[]);
  * cpdf_toFile (pdf, filename, linearize, make_id) writes the file to a given
  * filename. If linearize is true, it will be linearized if a linearizer is
  * available. If make_id is true, it will be given a new ID.
+ *
+ * NB: Unlike with the command line tool, cpdf, streams decompressed during
+ * processing will not automatically be compressed when writing. Call
+ * cpdf_compress() first.
  */
 void cpdf_toFile(int, const char[], int, int);
 
@@ -271,6 +275,10 @@ void cpdf_toFileExt(int, const char[], int, int, int, int, int);
 /*
  * cpdf_toFileMemory (pdf, linearize, make_id, sizse) writes a PDF file it
  * and returns the buffer. The buffer length is filled in.
+ *
+ * NB: Unlike with the command line tool, cpdf, streams decompressed during
+ * processing will not automatically be compressed when writing. Call
+ * cpdf_compress() first.
  */
 void *cpdf_toMemory(int, int, int, int *);
 
@@ -820,7 +828,7 @@ void cpdf_addText(int,                  /* If true, don't actually add text but
                   int           /* embed fonts */
 );
 
-/* Add text, with most parameters default. */
+/* Add text, with most parameters default. NB %filename cannot be used here. */
 void cpdf_addTextSimple(int,                  /* Document */
                         int,                  /* Page range */
                         const char[],         /* The text to add */
