@@ -2725,6 +2725,17 @@ let contents_of_file filename =
     with
       _ -> close_in ch; raise Exit
 
+(* Code for embedding Standard14, or for using custom font with loadTTF
+
+   - Cpdfdrawcontrol has its own internal one (FIXME check embedstd14)
+   - Cpdf has its own - complex, legacy one.
+   
+   This is a simpler one for textToPDF, tableOfContents, addText. Only a single
+   font is in use here, and no legacy stuff. It's either the name of a standard
+   font (and maybe embedStd14 is set or not), or it's a font loaded with
+   loadTTF.
+*)
+
 let textToPDF width height font fontsize filename =
   try
     new_pdf

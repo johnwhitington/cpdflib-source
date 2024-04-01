@@ -1,9 +1,6 @@
-v2.7 (February 2024)
+v2.7 (May 2024)
 
 o Removed debug printing from cpdflib.ml
-
-v2.6 (Skipped)
-
 o Merge Linux / Mac build processes into one Unix one
 o Remove Windows 32 bit to old/
 o C part of library is now mostly auto-generated
