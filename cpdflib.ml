@@ -1080,8 +1080,11 @@ let setBookmarksJSON pdf data =
   with
     e -> handle_error "setBookmarksJSON" e; err_unit
 
-let tableOfContents pdf font fontsize title bookmark =
+let tableOfContents pdf fontname fontsize title bookmark =
   try
+    let font = 
+      unopt (Pdftext.standard_font_of_name ("/" ^ fontname))
+    in
     let font = Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) in
       update_pdf
         (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf))
@@ -1150,9 +1153,9 @@ type color = {r: float; g: float ; b: float}
 let rgb r g b = {r = r; g = g; b = b}
 
 let addText_inner
-  metrics pdf range text position linespacing bates font fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
+  metrics pdf range text position linespacing bates fontname fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
-  let fontname = Pdftext.string_of_standard_font font in
+  let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     let newpdf =
       (Cpdfaddtext.addtexts
          linewidth (* linewidth *)
@@ -1197,9 +1200,10 @@ let addText
   with
     e -> handle_error "addText" e; err_unit
 
-let textWidth font text =
+let textWidth fontname text =
   try
-    Pdfstandard14.textwidth false Pdftext.StandardEncoding font text
+    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
+      Pdfstandard14.textwidth false Pdftext.StandardEncoding font text
   with
     e -> handle_error "textWidth" e; err_int
 
@@ -2741,8 +2745,9 @@ let embed_font fontname = ()
     (* B. Yes, we are embedding. Load and embed and return. *)
   (* 2. Or it it from loadTTF? Embed and return. *)
 
-let textToPDF width height font fontsize filename =
+let textToPDF width height fontname fontsize filename =
   try
+    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
@@ -2751,8 +2756,9 @@ let textToPDF width height font fontsize filename =
   with
     e -> handle_error "textToPDF" e; err_int
 
-let textToPDFPaper papersize font fontsize filename =
+let textToPDFPaper papersize fontname fontsize filename =
   try
+    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)
@@ -2760,8 +2766,9 @@ let textToPDFPaper papersize font fontsize filename =
          ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDFPaper" e; err_int
 
-let textToPDFMemory width height font fontsize rawbytes =
+let textToPDFMemory width height fontname fontsize rawbytes =
   try
+    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
@@ -2769,8 +2776,9 @@ let textToPDFMemory width height font fontsize rawbytes =
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFMemory" e; err_int
 
-let textToPDFPaperMemory papersize font fontsize rawbytes =
+let textToPDFPaperMemory papersize fontname fontsize rawbytes =
   try
+    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)

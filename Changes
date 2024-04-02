@@ -1,5 +1,6 @@
 v2.7 (May 2024)
 
+o Fonts are now strings, not enum of ints - to allow for TTF font loading.
 o Removed debug printing from cpdflib.ml
 o Merge Linux / Mac build processes into one Unix one
 o Remove Windows 32 bit to old/

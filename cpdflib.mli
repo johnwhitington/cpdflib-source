@@ -125,7 +125,7 @@ val setBookmarkText : int -> string -> unit
 val setBookmarkOpenStatus : int -> bool -> unit
 val getBookmarksJSON : pdf -> Pdfio.rawbytes
 val setBookmarksJSON : pdf -> Pdfio.rawbytes -> unit
-val tableOfContents : pdf -> Pdftext.standard_font -> float -> string -> bool -> unit
+val tableOfContents : pdf -> string -> float -> string -> bool -> unit
 
 (* CHAPTER 7. Presentations *)
 
@@ -134,8 +134,8 @@ val stampOn : pdf -> pdf -> range -> unit
 val stampUnder : pdf -> pdf -> range -> unit
 val stampExtended : pdf -> pdf -> range -> bool -> bool -> float -> float -> int -> bool -> unit 
 val combinePages : pdf -> pdf -> pdf
-val addText : bool -> pdf -> int -> string -> int -> float -> float -> float -> int -> Pdftext.standard_font -> float -> float -> float -> float -> bool -> bool -> bool -> float -> Cpdfaddtext.justification -> bool -> bool -> string -> float -> bool -> unit
-val textWidth : Pdftext.standard_font -> string -> int
+val addText : bool -> pdf -> int -> string -> int -> float -> float -> float -> int -> string -> float -> float -> float -> float -> bool -> bool -> bool -> float -> Cpdfaddtext.justification -> bool -> bool -> string -> float -> bool -> unit
+val textWidth : string -> string -> int
 val removeText : pdf -> range -> unit
 val addContent : string -> bool -> int -> int -> unit
 val stampAsXObject : int -> int -> int -> string
@@ -313,10 +313,10 @@ val ocgOrderAll : int -> unit
 (* CHAPTER 17. Creating New PDFs *)
 val blankDocument : float -> float -> int -> pdf
 val blankDocumentPaper : int -> int -> pdf
-val textToPDF : float -> float -> Pdftext.standard_font -> float -> string -> pdf
-val textToPDFPaper : int -> Pdftext.standard_font -> float -> string -> pdf
-val textToPDFMemory : float -> float -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
-val textToPDFPaperMemory : int -> Pdftext.standard_font -> float -> Pdfio.rawbytes -> pdf
+val textToPDF : float -> float -> string -> float -> string -> pdf
+val textToPDFPaper : int -> string -> float -> string -> pdf
+val textToPDFMemory : float -> float -> string -> float -> Pdfio.rawbytes -> pdf
+val textToPDFPaperMemory : int -> string -> float -> Pdfio.rawbytes -> pdf
 val fromPNG : string -> pdf
 val fromJPEG : string -> pdf
 val fromPNGMemory : Pdfio.rawbytes -> pdf
