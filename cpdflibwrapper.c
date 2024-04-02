@@ -68,21 +68,6 @@ struct cpdf_position {
   double cpdf_coord2;
 };
 
-enum cpdf_font {
-  cpdf_timesRoman,
-  cpdf_timesBold,
-  cpdf_timesItalic,
-  cpdf_timesBoldItalic,
-  cpdf_helvetica,
-  cpdf_helveticaBold,
-  cpdf_helveticaOblique,
-  cpdf_helveticaBoldOblique,
-  cpdf_courier,
-  cpdf_courierBold,
-  cpdf_courierOblique,
-  cpdf_courierBoldOblique
-};
-
 enum cpdf_justification {
   cpdf_leftJustify,
   cpdf_CentreJustify,
@@ -1209,12 +1194,12 @@ void cpdf_setBookmarksJSON(int pdf, void *data, int len) {
   updateLastError();
   CAMLreturn0;
 }
-void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
+void cpdf_tableOfContents(int pdf, char* font, double fontsize, char *title,
                           int bookmark) {
   CAMLparam0();
   CAMLlocalN(args, 5);
   args[0] = Val_int(pdf);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_copy_string(title);
   args[4] = Val_int(bookmark);
@@ -1287,7 +1272,7 @@ int cpdf_combinePages(int a, int b) {
 
 void cpdf_addText(int metrics, int pdf, int range, char *text,
                   struct cpdf_position pos, double linespacing, int bates,
-                  enum cpdf_font font, double fontsize, double r, double g,
+                  char* font, double fontsize, double r, double g,
                   double b, int underneath, int cropbox, int outline,
                   double opacity, enum cpdf_justification justification,
                   int midline, int topline, char *filename, double linewidth,
@@ -1305,7 +1290,7 @@ void cpdf_addText(int metrics, int pdf, int range, char *text,
   args[6] = caml_copy_double(pos.cpdf_coord2);
   args[7] = caml_copy_double(linespacing);
   args[8] = Val_int(bates);
-  args[9] = Val_int(font);
+  args[9] = caml_copy_string(font);
   args[10] = caml_copy_double(fontsize);
   args[11] = caml_copy_double(r);
   args[12] = caml_copy_double(g);
@@ -1326,7 +1311,7 @@ void cpdf_addText(int metrics, int pdf, int range, char *text,
 }
 
 void cpdf_addTextSimple(int pdf, int range, char *text,
-                        struct cpdf_position pos, enum cpdf_font font,
+                        struct cpdf_position pos, char* font,
                         double fontsize) {
   CAMLparam0();
   char s[] = "";
@@ -1374,15 +1359,15 @@ int cpdf_removeText(int a, int b) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
-int cpdf_textWidth(int i, char *str) {
+int cpdf_textWidth(char *one, char *two) {
   CAMLparam0();
-  CAMLlocal4(fn, ini, instr, out);
-  fn = *caml_named_value("textWidth");
-  ini = Val_int(i);
-  instr = caml_copy_string(str);
-  out = caml_callback2(fn, ini, instr);
+  CAMLlocal4(fn_v, one_v, two_v, result_v);
+  fn_v = *caml_named_value("textWidth");
+  one_v = caml_copy_string(one);
+  two_v = caml_copy_string(two);
+  result_v = caml_callback2(fn_v, one_v, two_v);
   updateLastError();
-  CAMLreturnT(int, Int_val(out));
+  CAMLreturnT(int, Int_val(result_v));
 }
 void cpdf_addContent(char *s, int before, int pdf, int range) {
   CAMLparam0();
@@ -3298,28 +3283,28 @@ int cpdf_blankDocumentPaper(int a, int b) {
   updateLastError();
   CAMLreturnT(int, Int_val(out_v));
 }
-int cpdf_textToPDF(double w, double h, int font, double fontsize,
+int cpdf_textToPDF(double w, double h, char* font, double fontsize,
                    char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 5);
   args[0] = caml_copy_double(w);
   args[1] = caml_copy_double(h);
-  args[2] = Val_int(font);
+  args[2] = caml_copy_string(font);
   args[3] = caml_copy_double(fontsize);
   args[4] = caml_copy_string(filename);
   fn_v = *caml_named_value("textToPDF");
   out_v = caml_callbackN(fn_v, 5, args);
   CAMLreturnT(int, Int_val(out_v));
 }
-int cpdf_textToPDFPaper(int papersize, int font, double fontsize,
+int cpdf_textToPDFPaper(int papersize, char* font, double fontsize,
                         char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 4);
   fn_v = *caml_named_value("textToPDFPaper");
   args[0] = Val_int(papersize);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_copy_string(filename);
   out_v = caml_callbackN(fn_v, 4, args);
@@ -3344,13 +3329,13 @@ int cpdf_fromJPEG(char *str) {
   CAMLreturnT(int, Int_val(out));
 }
 
-int cpdf_textToPDFMemory(double w, double h, int font, double fontsize, void *data, int len) {
+int cpdf_textToPDFMemory(double w, double h, char* font, double fontsize, void *data, int len) {
   CAMLparam0();
   CAMLlocal2(fn, pdf_v);
   CAMLlocalN(args, 5);
   args[0] = caml_copy_double(w);
   args[1] = caml_copy_double(h);
-  args[2] = Val_int(font);
+  args[2] = caml_copy_string(font);
   args[3] = caml_copy_double(fontsize);
   args[4] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("textToPDFMemory");
@@ -3359,12 +3344,12 @@ int cpdf_textToPDFMemory(double w, double h, int font, double fontsize, void *da
   CAMLreturnT(int, Int_val(pdf_v));
 }
 
-int cpdf_textToPDFPaperMemory(int papersize, int font, double fontsize, void *data, int len) {
+int cpdf_textToPDFPaperMemory(int papersize, char* font, double fontsize, void *data, int len) {
   CAMLparam0();
   CAMLlocal2(fn, pdf_v);
   CAMLlocalN(args, 4);
   args[0] = Val_int(papersize);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("textToPDFPaperMemory");

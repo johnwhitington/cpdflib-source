@@ -678,7 +678,7 @@ void cpdf_setBookmarksJSON(int, void *, int);
 /* cpdf_tableOfContents(pdf, font, fontsize, title, bookmark) typesets a table
  * of contents from existing bookmarks and prepends it to the document. If
  * bookmark is set, the table of contents gets its own bookmark. */
-void cpdf_tableOfContents(int, const char[], double, const char[], int); /* FIXME NEWFONT */
+void cpdf_tableOfContents(int, const char[], double, const char[], int);
 
 /* CHAPTER 7. Presentations */
 
@@ -802,7 +802,7 @@ void cpdf_addText(int,                  /* If true, don't actually add text but
                   struct cpdf_position, /* Position to add text at */
                   double,               /* Linespacing, 1.0 = normal */
                   int,                  /* Starting Bates number */
-                  const char[],         /* Font */ /*FIXME NEWFONT*/
+                  const char[],         /* Font */
                   double,               /* Font size in points */
                   double,               /* Red component of colour, 0.0 - 1.0 */
                   double, /* Green component of colour, 0.0 - 1.0 */
@@ -832,7 +832,7 @@ void cpdf_addTextSimple(int,                  /* Document */
                         const char[],         /* The text to add */
                         struct cpdf_position, /* Position to add text
                                                * at */
-                        const char[],         /* font */ /*FIXME NEWFONT*/
+                        const char[],         /* font */
                         double);              /* font size */
 
 /*
@@ -845,7 +845,7 @@ void cpdf_removeText(int, int);
  * Return the width of a given string in the given font in thousandths of a
  * point.
  */
-int cpdf_textWidth(const char[], const char[]); /*FIXME NEWFONT*/
+int cpdf_textWidth(const char[], const char[]);
 
 /* cpdf_addContent(content, before, pdf, range) adds page content before (if
  * true) or after (if false) the existing content to pages in the given range
@@ -1512,21 +1512,21 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
 /* cpdf_textToPDF(w, h, font, fontsize, filename) typesets a UTF8 text file
  * ragged right on a page of size w * h in points in the given font and font
  * size. */
-int cpdf_textToPDF(double, double, const char[], double, const char[]); /* FIXME NEWFONT */
+int cpdf_textToPDF(double, double, const char[], double, const char[]);
 
 /* cpdf_textToPDFMemory(w, h, font, fontsize, data, length) typesets a UTF8 text file
  * ragged right on a page of size w * h in points in the given font and font
  * size. */
-int cpdf_textToPDFMemory(double, double, const char[], double, void*, int); /* FIXME NEWFONT */
+int cpdf_textToPDFMemory(double, double, const char[], double, void*, int);
 
 /* cpdf_textToPDF(papersize, font, fontsize, filename) typesets a UTF8 text file
  * ragged right on a page of the given size in the given font and font size. */
-int cpdf_textToPDFPaper(int, const char[], double, const char[]); /* FIXME NEWFONT */
+int cpdf_textToPDFPaper(int, const char[], double, const char[]);
 
 /* cpdf_textToPDFMemory(papersize font, fontsize, data, length) typesets a UTF8
  * text file ragged right on a page of the given size in the given font and
  * font size. */
-int cpdf_textToPDFPaperMemory(int, const char[], double, void*, int); /* FIXME NEWFONT */
+int cpdf_textToPDFPaperMemory(int, const char[], double, void*, int);
 
 /* cpdf_fromPNG(filename) builds a PDF from a non-interlaced non-transparent
  * PNG. */

@@ -371,13 +371,13 @@ void cpdf_~(int pdf, int range, char *box) {
 }
 */
 
-/* __AUTODEF int->int->float->string->int->unit
-void cpdf_tableOfContents(int pdf, int font, double fontsize, char *title,
+/* __AUTODEF int->string->float->string->int->unit
+void cpdf_tableOfContents(int pdf, char* font, double fontsize, char *title,
                           int bookmark) {
   CAMLparam0();
   CAMLlocalN(args, 5);
   args[0] = Val_int(pdf);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_copy_string(title);
   args[4] = Val_int(bookmark);
@@ -597,15 +597,15 @@ int cpdf_~(double width, double height, int pages) {
 }
 */
 
-/* __AUTODEF float->float->int->float->string->int
-int cpdf_~(double w, double h, int font, double fontsize,
+/* __AUTODEF float->float->string->float->string->int
+int cpdf_~(double w, double h, char* font, double fontsize,
                    char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 5);
   args[0] = caml_copy_double(w);
   args[1] = caml_copy_double(h);
-  args[2] = Val_int(font);
+  args[2] = caml_copy_string(font);
   args[3] = caml_copy_double(fontsize);
   args[4] = caml_copy_string(filename);
   fn_v = *caml_named_value("~");
@@ -614,15 +614,15 @@ int cpdf_~(double w, double h, int font, double fontsize,
 }
 */
 
-/* __AUTODEF int->int->float->string->int
-int cpdf_~(int papersize, int font, double fontsize,
+/* __AUTODEF int->string->float->string->int
+int cpdf_~(int papersize, char* font, double fontsize,
                         char *filename) {
   CAMLparam0();
   CAMLlocal2(fn_v, out_v);
   CAMLlocalN(args, 4);
   fn_v = *caml_named_value("~");
   args[0] = Val_int(papersize);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_copy_string(filename);
   out_v = caml_callbackN(fn_v, 4, args);
@@ -824,21 +824,6 @@ struct cpdf_position {
   int cpdf_anchor;
   double cpdf_coord1;
   double cpdf_coord2;
-};
-
-enum cpdf_font {
-  cpdf_timesRoman,
-  cpdf_timesBold,
-  cpdf_timesItalic,
-  cpdf_timesBoldItalic,
-  cpdf_helvetica,
-  cpdf_helveticaBold,
-  cpdf_helveticaOblique,
-  cpdf_helveticaBoldOblique,
-  cpdf_courier,
-  cpdf_courierBold,
-  cpdf_courierOblique,
-  cpdf_courierBoldOblique
 };
 
 enum cpdf_justification {
@@ -1231,7 +1216,7 @@ void cpdf_scaleContents(int pdf, int range, struct cpdf_position pos,
 /* __AUTO endSetBookmarkInfo int->unit */
 /* __AUTO getBookmarksJSON int->int*->void* */
 /* __AUTO setBookmarksJSON int->void*->int->unit */
-/* __AUTO tableOfContents int->int->float->string->int->unit */
+/* __AUTO tableOfContents int->string->float->string->int->unit */
 
 /* CHAPTER 7. Presentations */
 
@@ -1267,7 +1252,7 @@ void cpdf_stampExtended(int pdf, int pdf2, int range, int isover,
 
 void cpdf_addText(int metrics, int pdf, int range, char *text,
                   struct cpdf_position pos, double linespacing, int bates,
-                  enum cpdf_font font, double fontsize, double r, double g,
+                  char* font, double fontsize, double r, double g,
                   double b, int underneath, int cropbox, int outline,
                   double opacity, enum cpdf_justification justification,
                   int midline, int topline, char *filename, double linewidth,
@@ -1285,7 +1270,7 @@ void cpdf_addText(int metrics, int pdf, int range, char *text,
   args[6] = caml_copy_double(pos.cpdf_coord2);
   args[7] = caml_copy_double(linespacing);
   args[8] = Val_int(bates);
-  args[9] = Val_int(font);
+  args[9] = caml_copy_string(font);
   args[10] = caml_copy_double(fontsize);
   args[11] = caml_copy_double(r);
   args[12] = caml_copy_double(g);
@@ -1306,7 +1291,7 @@ void cpdf_addText(int metrics, int pdf, int range, char *text,
 }
 
 void cpdf_addTextSimple(int pdf, int range, char *text,
-                        struct cpdf_position pos, enum cpdf_font font,
+                        struct cpdf_position pos, char* font,
                         double fontsize) {
   CAMLparam0();
   char s[] = "";
@@ -1345,7 +1330,7 @@ void cpdf_addTextSimple(int pdf, int range, char *text,
 }
 
 /* __AUTO removeText int->int->int */
-/* __AUTO textWidth int->string->int */
+/* __AUTO textWidth string->string->int */
 /* __AUTO addContent string->int->int->int->unit */
 /* __AUTO stampAsXObject int->int->int->string */
 
@@ -1696,18 +1681,18 @@ int cpdf_fromJSONMemory(void *data, int len) {
 
 /* __AUTO blankDocument float->float->int->int */
 /* __AUTO blankDocumentPaper int->int->int */
-/* __AUTO textToPDF float->float->int->float->string->int */
-/* __AUTO textToPDFPaper int->int->float->string->int */
+/* __AUTO textToPDF float->float->string->float->string->int */
+/* __AUTO textToPDFPaper int->string->float->string->int */
 /* __AUTO fromPNG string->int */
 /* __AUTO fromJPEG string->int */
 
-int cpdf_textToPDFMemory(double w, double h, int font, double fontsize, void *data, int len) {
+int cpdf_textToPDFMemory(double w, double h, char* font, double fontsize, void *data, int len) {
   CAMLparam0();
   CAMLlocal2(fn, pdf_v);
   CAMLlocalN(args, 5);
   args[0] = caml_copy_double(w);
   args[1] = caml_copy_double(h);
-  args[2] = Val_int(font);
+  args[2] = caml_copy_string(font);
   args[3] = caml_copy_double(fontsize);
   args[4] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("textToPDFMemory");
@@ -1716,12 +1701,12 @@ int cpdf_textToPDFMemory(double w, double h, int font, double fontsize, void *da
   CAMLreturnT(int, Int_val(pdf_v));
 }
 
-int cpdf_textToPDFPaperMemory(int papersize, int font, double fontsize, void *data, int len) {
+int cpdf_textToPDFPaperMemory(int papersize, char* font, double fontsize, void *data, int len) {
   CAMLparam0();
   CAMLlocal2(fn, pdf_v);
   CAMLlocalN(args, 4);
   args[0] = Val_int(papersize);
-  args[1] = Val_int(font);
+  args[1] = caml_copy_string(font);
   args[2] = caml_copy_double(fontsize);
   args[3] = caml_ba_alloc_dims(CAML_BA_UINT8 | CAML_BA_C_LAYOUT, 1, data, len);
   fn = *caml_named_value("textToPDFPaperMemory");
