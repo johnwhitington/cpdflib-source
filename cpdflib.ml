@@ -1080,15 +1080,19 @@ let setBookmarksJSON pdf data =
   with
     e -> handle_error "setBookmarksJSON" e; err_unit
 
+let fontpack_of_fontname fontname =
+  match Pdftext.standard_font_of_name ("/" ^ fontname) with
+  | Some standardfont ->
+      Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (standardfont, Pdftext.WinAnsiEncoding)))
+  | None ->
+      try snd (Hashtbl.find Cpdfdrawcontrol.ttfs fontname) with
+        Not_found -> failwith "TTF font not found in table"
+
 let tableOfContents pdf fontname fontsize title bookmark =
   try
-    let font = 
-      unopt (Pdftext.standard_font_of_name ("/" ^ fontname))
-    in
-    let font = Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))) in
-      update_pdf
-        (Cpdftoc.typeset_table_of_contents ~font ~fontsize ~title ~bookmark (lookup_pdf pdf))
-        (lookup_pdf pdf)
+    update_pdf
+      (Cpdftoc.typeset_table_of_contents ~font:(fontpack_of_fontname fontname) ~fontsize ~title ~bookmark (lookup_pdf pdf))
+      (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
 
@@ -1152,43 +1156,43 @@ type color = {r: float; g: float ; b: float}
 
 let rgb r g b = {r = r; g = g; b = b}
 
+
 let addText_inner
   metrics pdf range text position linespacing bates fontname fontsize color underneath cropbox outline opacity justification midline topline filename linewidth embed_fonts
 =
-  let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
-    let newpdf =
-      (Cpdfaddtext.addtexts
-         linewidth (* linewidth *)
-         outline (* outline *)
-         !fast (* fast *)
-         fontname (* font name *)
-         (Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding)))) (* font *)
-         bates (* bates number *)
-         None (* pad bates *)
-         (Cpdfaddtext.RGB (color.r, color.g, color.b)) (* colour *)
-         position (* position *)
-         linespacing (* line spacing *)
-         fontsize (* font size *)
-         underneath (* underneath *)
-         text (* text *)
-         (Array.to_list range) (* page range *)
-         cropbox (* relative to cropbox *)
-         opacity (* opacity *)
-         justification (* justification *)
-         midline (* relative to midline *)
-         topline (* relative to topline *)
-         filename (* file name *)
-         None (* extract text font size *)
-         ~raw:false
-         "0 0" (* shift *)
-         pdf (* pdf *))
-    in
-      if not metrics then
-        begin
-          pdf.Pdf.root <- newpdf.Pdf.root;
-          pdf.Pdf.objects <- newpdf.Pdf.objects;
-          pdf.Pdf.trailerdict <- newpdf.Pdf.trailerdict
-        end
+  let newpdf =
+    (Cpdfaddtext.addtexts
+       linewidth (* linewidth *)
+       outline (* outline *)
+       !fast (* fast *)
+       fontname (* font name *)
+       (fontpack_of_fontname fontname) (* font pack *)
+       bates (* bates number *)
+       None (* pad bates *)
+       (Cpdfaddtext.RGB (color.r, color.g, color.b)) (* colour *)
+       position (* position *)
+       linespacing (* line spacing *)
+       fontsize (* font size *)
+       underneath (* underneath *)
+       text (* text *)
+       (Array.to_list range) (* page range *)
+       cropbox (* relative to cropbox *)
+       opacity (* opacity *)
+       justification (* justification *)
+       midline (* relative to midline *)
+       topline (* relative to topline *)
+       filename (* file name *)
+       None (* extract text font size *)
+       ~raw:false
+       "0 0" (* shift *)
+       pdf (* pdf *))
+  in
+    if not metrics then
+      begin
+        pdf.Pdf.root <- newpdf.Pdf.root;
+        pdf.Pdf.objects <- newpdf.Pdf.objects;
+        pdf.Pdf.trailerdict <- newpdf.Pdf.trailerdict
+      end
 
 let addText
   metrics pdf range text pos f1 f2 linespace bates font size r g b
@@ -2729,60 +2733,40 @@ let contents_of_file filename =
     with
       _ -> close_in ch; raise Exit
 
-(* Code for embedding Standard14, or for using custom font with loadTTF
-
-   - Cpdfdrawcontrol has its own internal one (FIXME check embedstd14)
-   - Cpdf has its own - complex, legacy one.
-   
-   This is a simpler one for textToPDF, tableOfContents, addText. Only a single
-   font is in use here, and no legacy stuff. It's either the name of a standard
-   font (and maybe embedStd14 is set or not), or it's a font loaded with
-   loadTTF.
-*)
-let embed_font fontname = ()
-  (* 1. is it a standard font name? *)
-    (* A. Are we embedding? No, just build a non-embedded fontpack *)
-    (* B. Yes, we are embedding. Load and embed and return. *)
-  (* 2. Or it it from loadTTF? Embed and return. *)
-
 let textToPDF width height fontname fontsize filename =
   try
-    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
-         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
+         ~font:(fontpack_of_fontname fontname)
          ~fontsize (contents_of_file filename))
   with
     e -> handle_error "textToPDF" e; err_int
 
 let textToPDFPaper papersize fontname fontsize filename =
   try
-    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)
-         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
+         ~font:(fontpack_of_fontname fontname)
          ~fontsize (contents_of_file filename)) with
     e -> handle_error "textToPDFPaper" e; err_int
 
 let textToPDFMemory width height fontname fontsize rawbytes =
   try
-    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
-         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
+         ~font:(fontpack_of_fontname fontname)
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFMemory" e; err_int
 
 let textToPDFPaperMemory papersize fontname fontsize rawbytes =
   try
-    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
     new_pdf
       (Cpdftexttopdf.typeset
          ~papersize:(papersize_of_int papersize)
-         ~font:(Cpdfembed.PreMadeFontPack (Cpdfembed.fontpack_of_standardfont (Pdftext.StandardFont (font, Pdftext.WinAnsiEncoding))))
+         ~font:(fontpack_of_fontname fontname)
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
     e -> handle_error "textToPDFPaperMemory" e; err_int
 

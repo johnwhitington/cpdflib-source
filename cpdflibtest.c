@@ -454,7 +454,8 @@ int main(int argc, char **argv) {
   cpdf_toFile(marksjson, "testoutputs/06jsonmarks.pdf", false, false);
   printf("---cpdf_tableOfContents()\n");
   int tocfile = cpdf_fromFile("cpdflibmanual.pdf", "");
-  cpdf_tableOfContents(tocfile, cpdf_timesRoman, 12.0, "Table of Contents",
+  cpdf_loadFont("A", "testinputs/NotoSans-Black.ttf");
+  cpdf_tableOfContents(tocfile, "A", 12.0, "Table of Contents",
                        false);
   cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
   cpdf_deletePdf(tocfile);
@@ -469,6 +470,7 @@ int main(int argc, char **argv) {
       .cpdf_anchor = cpdf_topLeft, .cpdf_coord1 = 20, .cpdf_coord2 = 20};
   int textfile = cpdf_fromFile("cpdflibmanual.pdf", "");
   int textfile_all = cpdf_all(textfile);
+  cpdf_loadFont("A", "testinputs/NotoSans-Black.ttf");
   printf("---cpdf_addText()\n");
   cpdf_addText(false,                  /* Just get metrics, don't add text */
                textfile,               /* pdf */
@@ -477,7 +479,7 @@ int main(int argc, char **argv) {
                textpos,                /* position */
                1.0,                    /* line spacing */
                1,                      /* starting bates number */
-               cpdf_timesRoman,        /* font */
+               "A",                    /* font */
                20,                     /* font size */
                0.5,                    /* r */
                0.5,                    /* g */
@@ -1143,19 +1145,19 @@ int main(int argc, char **argv) {
   cpdf_toFile(blanksized, "testoutputs/17blanka4.pdf", false, false);
   printf("---cpdf_textToPDF()\n");
   int ttpdf =
-      cpdf_textToPDF(500.0, 600.0, cpdf_timesItalic, 8.0, "cpdflibtest.c");
+      cpdf_textToPDF(500.0, 600.0, "A", 8.0, "cpdflibtest.c");
   cpdf_toFile(ttpdf, "testoutputs/17ttpdf.pdf", false, false);
   printf("---cpdf_textToPDFMemory()\n");
   char* str = "Hello, World!";
   int ttpdf2 =
-      cpdf_textToPDFMemory(500.0, 600.0, cpdf_timesItalic, 8.0, (void*) str, 13);
+      cpdf_textToPDFMemory(500.0, 600.0, "A", 8.0, (void*) str, 13);
   cpdf_toFile(ttpdf2, "testoutputs/17ttpdf2.pdf", false, false);
   printf("---cpdf_textToPDFPaper()\n");
-  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, cpdf_timesBoldItalic,
+  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, "A",
                                        10.0, "cpdflibtest.c");
   cpdf_toFile(ttpdfpaper, "testoutputs/17ttpdfpaper.pdf", false, false);
   printf("---cpdf_textToPDFPaperMemory()\n");
-  int ttpdfpaper2 = cpdf_textToPDFPaperMemory(cpdf_a4portrait, cpdf_timesBoldItalic, 10.0, (void*) str, 13);
+  int ttpdfpaper2 = cpdf_textToPDFPaperMemory(cpdf_a4portrait, "A", 10.0, (void*) str, 13);
   cpdf_toFile(ttpdfpaper2, "testoutputs/17ttpdfpaper2.pdf", false, false);
   printf("---cpdf_fromPNG()\n");
   int png = cpdf_fromPNG("testinputs/png.png");
