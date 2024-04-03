@@ -842,8 +842,8 @@ void cpdf_addTextSimple(int,                  /* Document */
 void cpdf_removeText(int, int);
 
 /*
- * Return the width of a given string in the given font in thousandths of a
- * point.
+ * Return the width of a given string in the given standard font in thousandths
+ * of a point.
  */
 int cpdf_textWidth(const char[], const char[]);
 

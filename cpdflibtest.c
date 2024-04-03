@@ -506,6 +506,7 @@ int main(int argc, char **argv) {
   prerr();
   printf("---cpdf_textWidth()\n");
   int width = cpdf_textWidth(cpdf_timesRoman, "What is the width of this?");
+  printf("width is %i thousandths of a point\n", width);
   int stamp = cpdf_fromFile("logo.pdf", "");
   int stampee = cpdf_fromFile("cpdflibmanual.pdf", "");
   int stamp_range = cpdf_all(stamp);

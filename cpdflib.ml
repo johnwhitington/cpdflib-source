@@ -1206,8 +1206,9 @@ let addText
 
 let textWidth fontname text =
   try
-    let font = unopt (Pdftext.standard_font_of_name ("/" ^ fontname)) in
-      Pdfstandard14.textwidth false Pdftext.StandardEncoding font text
+    match Pdftext.standard_font_of_name ("/" ^ fontname) with
+    | Some font -> Pdfstandard14.textwidth false Pdftext.WinAnsiEncoding font text
+    | None -> failwith "textWidth: not a standard font"
   with
     e -> handle_error "textWidth" e; err_int
 
