@@ -645,7 +645,6 @@ int main(int argc, char **argv) {
   printf("Contains %i bytes of data\n", annotlength);
   printf("---cpdf_removeAnnotations()\n");
   int r_annot = cpdf_range(1, 1);
-  printf("annot is %i\n", r_annot);
   cpdf_removeAnnotations(annot, r_annot);
   printf("---cpdf_setAnnotationsJSON()\n");
   cpdf_setAnnotationsJSON(annot, data, annotlength);
