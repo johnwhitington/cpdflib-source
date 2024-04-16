@@ -124,7 +124,9 @@ $cc -o $finalcfile-shared$exesuffix ${finalcfile}.o -Wl,-rpath,. -L. -l:lib${lib
 cd examples
 $ocamlfind ocamlc -c merge.c
 $ocamlfind ocamlc -c squeeze.c
+$ocamlfind ocamlc -c rde.c
 $cc -o merge$exesuffix merge.o -Wl,-rpath,. -L.. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
 $cc -o squeeze$exesuffix squeeze.o -Wl,-rpath,. -L.. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
+$cc -o rde$exesuffix rde.o -Wl,-rpath,. -L.. -l:lib${libname}.dll -Wl,-rpath,$libdir -L$libdir $camllink
 cp ../libcpdf.dll .
 fi

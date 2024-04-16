@@ -120,6 +120,8 @@ $ocamlfind ocamlc -c merge.c
 $link -o merge$exesuffix merge.o $staticlinkflags
 $ocamlfind ocamlc -c squeeze.c
 $link -o squeeze$exesuffix squeeze.o $staticlinkflags
+$ocamlfind ocamlc -c rde.c
+$link -o rde$exesuffix rde.o $staticlinkflags
 cd ..
 
 #Using -output-obj for dynamic library (moved here so static build doesn't pick it up!)
