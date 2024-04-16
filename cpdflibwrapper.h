@@ -41,7 +41,7 @@ extern int cpdf_lastError;
 extern char *cpdf_lastErrorString;
 
 /* In some contexts, for example, .NET or JNI, constants in DLLs can be
- * difficult or impossible to access. we provide functions in addition. */
+ * difficult or impossible to access. We provide functions in addition. */
 int cpdf_fLastError(void);
 char *cpdf_fLastErrorString(void);
 
@@ -773,18 +773,18 @@ int cpdf_combinePages(int, int);
  */
 
 /* The standard fonts */
-char* cpdf_timesRoman = "Times-Roman";
-char* cpdf_timesBold = "Times-Bold";
-char* cpdf_timesItalic = "Times-Italic";
-char* cpdf_timesBoldItalic = "Times-BoldItalic";
-char* cpdf_helvetica = "Helvetica";
-char* cpdf_helveticaBold = "Helvetica-Bold";
-char* cpdf_helveticaOblique = "Helvetica-Oblique";
-char* cpdf_helveticaBoldOblique = "Helvetica-BoldOblique";
-char* cpdf_courier = "Courier";
-char* cpdf_courierBold = "Courier-Bold";
-char* cpdf_courierOblique = "Courier-Oblique";
-char* cpdf_courierBoldOblique = "Courier-BoldOblique";
+char *cpdf_timesRoman = "Times-Roman";
+char *cpdf_timesBold = "Times-Bold";
+char *cpdf_timesItalic = "Times-Italic";
+char *cpdf_timesBoldItalic = "Times-BoldItalic";
+char *cpdf_helvetica = "Helvetica";
+char *cpdf_helveticaBold = "Helvetica-Bold";
+char *cpdf_helveticaOblique = "Helvetica-Oblique";
+char *cpdf_helveticaBoldOblique = "Helvetica-BoldOblique";
+char *cpdf_courier = "Courier";
+char *cpdf_courierBold = "Courier-Bold";
+char *cpdf_courierOblique = "Courier-Oblique";
+char *cpdf_courierBoldOblique = "Courier-BoldOblique";
 
 /* Justifications for multi line text */
 enum cpdf_justification {
@@ -1514,10 +1514,10 @@ int cpdf_blankDocumentPaper(enum cpdf_papersize, int);
  * size. */
 int cpdf_textToPDF(double, double, const char[], double, const char[]);
 
-/* cpdf_textToPDFMemory(w, h, font, fontsize, data, length) typesets a UTF8 text file
- * ragged right on a page of size w * h in points in the given font and font
- * size. */
-int cpdf_textToPDFMemory(double, double, const char[], double, void*, int);
+/* cpdf_textToPDFMemory(w, h, font, fontsize, data, length) typesets a UTF8 text
+ * file ragged right on a page of size w * h in points in the given font and
+ * font size. */
+int cpdf_textToPDFMemory(double, double, const char[], double, void *, int);
 
 /* cpdf_textToPDF(papersize, font, fontsize, filename) typesets a UTF8 text file
  * ragged right on a page of the given size in the given font and font size. */
@@ -1526,7 +1526,7 @@ int cpdf_textToPDFPaper(int, const char[], double, const char[]);
 /* cpdf_textToPDFMemory(papersize font, fontsize, data, length) typesets a UTF8
  * text file ragged right on a page of the given size in the given font and
  * font size. */
-int cpdf_textToPDFPaperMemory(int, const char[], double, void*, int);
+int cpdf_textToPDFPaperMemory(int, const char[], double, void *, int);
 
 /* cpdf_fromPNG(filename) builds a PDF from a non-interlaced non-transparent
  * PNG. */
@@ -1534,13 +1534,13 @@ int cpdf_fromPNG(const char[]);
 
 /* cpdf_fromPNGMemory(data, length) builds a PDF from a non-interlaced
  * non-transparent PNG. */
-int cpdf_fromPNGMemory(void*, int);
+int cpdf_fromPNGMemory(void *, int);
 
 /* cpdf_fromJPEG(filename) builds a PDF from a JPEG. */
 int cpdf_fromJPEG(const char[]);
 
 /* cpdf_fromJPEGMemory(data, length) builds a PDF from a JPEG. */
-int cpdf_fromJPEGMemory(void*, int);
+int cpdf_fromJPEGMemory(void *, int);
 
 /* CHAPTER 18. Drawing on PDFs */
 

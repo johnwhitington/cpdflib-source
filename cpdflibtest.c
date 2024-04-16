@@ -1,8 +1,8 @@
 /* Uses every function in cpdflibwrapper.h */
+#include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/mman.h>
-#include <fcntl.h>
 #include <unistd.h>
 
 #include "cpdflibwrapper.h"
@@ -455,8 +455,7 @@ int main(int argc, char **argv) {
   printf("---cpdf_tableOfContents()\n");
   int tocfile = cpdf_fromFile("cpdflibmanual.pdf", "");
   cpdf_loadFont("A", "testinputs/NotoSans-Black.ttf");
-  cpdf_tableOfContents(tocfile, "A", 12.0, "Table of Contents",
-                       false);
+  cpdf_tableOfContents(tocfile, "A", 12.0, "Table of Contents", false);
   cpdf_toFile(tocfile, "testoutputs/06toc.pdf", false, false);
   cpdf_deletePdf(tocfile);
   cpdf_deletePdf(marksjson);
@@ -1144,20 +1143,19 @@ int main(int argc, char **argv) {
   prerr();
   cpdf_toFile(blanksized, "testoutputs/17blanka4.pdf", false, false);
   printf("---cpdf_textToPDF()\n");
-  int ttpdf =
-      cpdf_textToPDF(500.0, 600.0, "A", 8.0, "cpdflibtest.c");
+  int ttpdf = cpdf_textToPDF(500.0, 600.0, "A", 8.0, "cpdflibtest.c");
   cpdf_toFile(ttpdf, "testoutputs/17ttpdf.pdf", false, false);
   printf("---cpdf_textToPDFMemory()\n");
-  char* str = "Hello, World!";
-  int ttpdf2 =
-      cpdf_textToPDFMemory(500.0, 600.0, "A", 8.0, (void*) str, 13);
+  char *str = "Hello, World!";
+  int ttpdf2 = cpdf_textToPDFMemory(500.0, 600.0, "A", 8.0, (void *)str, 13);
   cpdf_toFile(ttpdf2, "testoutputs/17ttpdf2.pdf", false, false);
   printf("---cpdf_textToPDFPaper()\n");
-  int ttpdfpaper = cpdf_textToPDFPaper(cpdf_a4portrait, "A",
-                                       10.0, "cpdflibtest.c");
+  int ttpdfpaper =
+      cpdf_textToPDFPaper(cpdf_a4portrait, "A", 10.0, "cpdflibtest.c");
   cpdf_toFile(ttpdfpaper, "testoutputs/17ttpdfpaper.pdf", false, false);
   printf("---cpdf_textToPDFPaperMemory()\n");
-  int ttpdfpaper2 = cpdf_textToPDFPaperMemory(cpdf_a4portrait, "A", 10.0, (void*) str, 13);
+  int ttpdfpaper2 =
+      cpdf_textToPDFPaperMemory(cpdf_a4portrait, "A", 10.0, (void *)str, 13);
   cpdf_toFile(ttpdfpaper2, "testoutputs/17ttpdfpaper2.pdf", false, false);
   printf("---cpdf_fromPNG()\n");
   int png = cpdf_fromPNG("testinputs/png.png");
