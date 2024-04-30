@@ -76,6 +76,7 @@ val scaleToFit : pdf -> range -> float -> float -> float -> unit
 val scaleToFitPaper : pdf -> range -> int -> float -> unit
 val scaleContents : pdf -> range -> int -> float -> float -> float -> unit
 val shiftContents : pdf -> range -> float -> float -> unit
+val shiftBoxes : pdf -> range -> float -> float -> unit
 val rotate : pdf -> range -> int -> unit
 val rotateBy : pdf -> range -> int -> unit
 val rotateContents : pdf -> range -> float -> unit
@@ -245,6 +246,7 @@ val getPageLabelOffset : int -> int
 val getPageLabelRange : int -> int
 val endGetPageLabels : unit -> unit
 val getPageLabelStringForPage : pdf -> int -> string
+val compositionJSON : int -> pdf -> Pdfio.rawbytes
 
 (* CHAPTER 12. File Attachments *)
 val attachFile : string -> pdf -> unit
