@@ -327,6 +327,7 @@ val fromJPEGMemory : Pdfio.rawbytes -> pdf
 (* CHAPTER 18. Drawing on PDFs *)
 val drawBegin : unit -> unit
 val drawEnd : pdf -> range -> unit
+val drawEndExtended : pdf -> range -> bool -> int -> string -> unit
 val drawTo : float -> float -> unit
 val drawLine : float -> float -> unit
 val drawStroke : unit -> unit
