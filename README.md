@@ -6,8 +6,13 @@ cpdflib-source
 Cpdflib is a library version of the Coherent PDF Command Line Tools, which are
 available from http://www.coherentpdf.com/
 
-It is licensed free for non-commercial use (see the file LICENSE in this
-directory).
+It is distributed under the AGPL - see LICENSE.md. If you are unable to abide
+by the terms of the AGPL, you will need a commercial license.
+
+[https://www.coherentpdf.com/](https://www.coherentpdf.com/)
+
+For commercial licenses, email
+[contact@coherentgraphics.co.uk](mailto:contact@coherentgraphics.co.uk)
 
 Prerequisites for building:
 
