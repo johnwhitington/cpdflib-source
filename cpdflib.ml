@@ -2738,6 +2738,7 @@ let textToPDF width height fontname fontsize filename =
   try
     new_pdf
       (Cpdftexttopdf.typeset
+         ~process_struct_tree:false
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
          ~font:(fontpack_of_fontname fontname)
          ~fontsize (contents_of_file filename))
@@ -2748,6 +2749,7 @@ let textToPDFPaper papersize fontname fontsize filename =
   try
     new_pdf
       (Cpdftexttopdf.typeset
+         ~process_struct_tree:false
          ~papersize:(papersize_of_int papersize)
          ~font:(fontpack_of_fontname fontname)
          ~fontsize (contents_of_file filename)) with
@@ -2757,6 +2759,7 @@ let textToPDFMemory width height fontname fontsize rawbytes =
   try
     new_pdf
       (Cpdftexttopdf.typeset
+         ~process_struct_tree:false
          ~papersize:(Pdfpaper.make Pdfunits.PdfPoint width height)
          ~font:(fontpack_of_fontname fontname)
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
@@ -2766,6 +2769,7 @@ let textToPDFPaperMemory papersize fontname fontsize rawbytes =
   try
     new_pdf
       (Cpdftexttopdf.typeset
+         ~process_struct_tree:false
          ~papersize:(papersize_of_int papersize)
          ~font:(fontpack_of_fontname fontname)
          ~fontsize (Pdfio.bytes_of_raw rawbytes)) with
@@ -2774,28 +2778,28 @@ let textToPDFPaperMemory papersize fontname fontsize rawbytes =
 let fromJPEGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_jpeg_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromJPEGMemory" e; err_int
 
 let fromPNGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_png_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_png_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromPNGMemory" e; err_int
 
 let fromJPEG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_jpeg_data) input)
+      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data) input)
   with
     e -> handle_error "fromJPEG" e; err_int
 
 let fromPNG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input (fun () -> Cpdfimage.obj_of_png_data) input)
+      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_png_data) input)
   with
     e -> handle_error "fromPNG" e; err_int
 
@@ -2824,7 +2828,7 @@ let drawEnd pdf range =
     match !Cpdfdrawcontrol.drawops with
     | [("_MAIN", ops)] ->
         update_pdf
-          (Cpdfdraw.draw ~fast:!fast ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
+          (Cpdfdraw.draw ~struct_tree:false ~fast:!fast ~underneath:false ~filename:"" ~bates:0 ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
           (lookup_pdf pdf)
     | _ -> failwith "not enough -end-xobj or -et"
   with
@@ -2835,7 +2839,7 @@ let drawEndExtended pdf range underneath bates filename =
     match !Cpdfdrawcontrol.drawops with
     | [("_MAIN", ops)] ->
         update_pdf
-          (Cpdfdraw.draw ~fast:!fast ~underneath ~filename ~bates ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
+          (Cpdfdraw.draw ~struct_tree:false ~fast:!fast ~underneath ~filename ~bates ~batespad:None (Array.to_list (lookup_range range)) (lookup_pdf pdf) (rev ops))
           (lookup_pdf pdf)
     | _ -> failwith "not enough -end-xobj or -et"
   with
