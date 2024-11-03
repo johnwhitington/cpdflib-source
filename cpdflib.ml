@@ -1059,7 +1059,9 @@ let endSetBookmarkInfo pdf =
     {Pdfmarks.level = mut_level;
      Pdfmarks.text = mut_text;
      Pdfmarks.target = mut_target;
-     Pdfmarks.isopen = mut_isopen}
+     Pdfmarks.isopen = mut_isopen;
+     Pdfmarks.flags = 0;
+     Pdfmarks.colour = (0., 0., 0.)}
   in
     try
       update_pdf (Pdfmarks.add_bookmarks (map convert (Array.to_list !setbookmarkinfo)) (lookup_pdf pdf)) (lookup_pdf pdf);
