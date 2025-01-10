@@ -1093,7 +1093,7 @@ let fontpack_of_fontname fontname =
 let tableOfContents pdf fontname fontsize title bookmark =
   try
     update_pdf
-      (Cpdftoc.typeset_table_of_contents ~font:(fontpack_of_fontname fontname) ~fontsize ~title ~bookmark (lookup_pdf pdf))
+      (Cpdftoc.typeset_table_of_contents ~dotleader:false ~font:(fontpack_of_fontname fontname) ~fontsize ~title ~bookmark (lookup_pdf pdf))
       (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
@@ -2137,7 +2137,7 @@ let setCropBox pdf range minx maxx miny maxy =
 
 let pageInfoJSON pdf =
   try
-    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfpage.json_page_info (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfpage.json_page_info (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) Pdfunits.PdfPoint)))
   with
     e -> handle_error "pageInfoJSON" e; err_data
 
