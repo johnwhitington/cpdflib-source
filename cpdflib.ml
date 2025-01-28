@@ -1445,16 +1445,16 @@ let numberFonts () =
   try Array.length !fontinfo with e -> handle_error "numberFonts" e; err_int
 
 let getFontPage serial =
-  try let x, _, _, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontPage" e; err_int
+  try let x, _, _, _, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontPage" e; err_int
 
 let getFontName serial =
-  try let _, _, _, x, _ = !fontinfo.(serial) in x with e -> handle_error "getFontName" e; err_string
+  try let _, _, _, x, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontName" e; err_string
 
 let getFontType serial =
-  try let _, _, x, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontType" e; err_string
+  try let _, _, x, _, _, _ = !fontinfo.(serial) in x with e -> handle_error "getFontType" e; err_string
 
 let getFontEncoding serial =
-  try let _, _, _, _, x = !fontinfo.(serial) in x with e -> handle_error "getFontEncoding" e; err_string
+  try let _, _, _, _, x, _ = !fontinfo.(serial) in x with e -> handle_error "getFontEncoding" e; err_string
 
 let fontsJSON pdf =
   try
