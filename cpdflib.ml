@@ -1093,7 +1093,7 @@ let fontpack_of_fontname fontname =
 let tableOfContents pdf fontname fontsize title bookmark =
   try
     update_pdf
-      (Cpdftoc.typeset_table_of_contents ~dotleader:false ~font:(fontpack_of_fontname fontname) ~fontsize ~title ~bookmark (lookup_pdf pdf))
+      (Cpdftoc.typeset_table_of_contents ~process_struct_tree:false ~dotleader:false ~font:(fontpack_of_fontname fontname) ~fontsize ~title ~bookmark (lookup_pdf pdf))
       (lookup_pdf pdf)
   with
     e -> handle_error "tableOfContents" e; err_unit
@@ -1120,6 +1120,7 @@ let stampExtended pdf pdf2 range isover scale_stamp_to_fit pos1 pos2 pos3 relati
   try
     update_pdf
       (Cpdfpage.stamp
+         ~process_struct_tree:false
          relative_to_cropbox
          (read_position pos1 pos2 pos3)
          false
@@ -1142,7 +1143,7 @@ let stampUnder pdf pdf2 range =
 
 let combinePages pdf pdf2 =
   try
-    new_pdf (Cpdfpage.combine_pages !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
+    new_pdf (Cpdfpage.combine_pages ~process_struct_tree:false !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
   with
     e -> handle_error "combinePages" e; err_int
 
