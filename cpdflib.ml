@@ -968,7 +968,7 @@ let bookmarkinfo = ref [||]
 
 let startGetBookmarkInfo pdf =
   try
-    bookmarkinfo := Array.of_list (Pdfmarks.read_bookmarks (lookup_pdf pdf))
+    bookmarkinfo := Array.of_list (Pdfmarks.read_bookmarks ~preserve_actions:false (lookup_pdf pdf))
   with
     e -> handle_error "startGetBookmarkInfo" e; err_unit
 
@@ -1143,7 +1143,7 @@ let stampUnder pdf pdf2 range =
 
 let combinePages pdf pdf2 =
   try
-    new_pdf (Cpdfpage.combine_pages ~process_struct_tree:false !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false true)
+    new_pdf (Cpdfpage.combine_pages ~process_struct_tree:false !fast (lookup_pdf pdf2) (lookup_pdf pdf) false false)
   with
     e -> handle_error "combinePages" e; err_int
 
@@ -3220,19 +3220,19 @@ let removeId pdf =
 
 let removeDictEntry pdf key =
   try
-    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key None
+    Cpdfutil.remove_dict_entry (lookup_pdf pdf) key None
   with
     e -> handle_error "removeDictEntry" e; err_unit
 
 let removeDictEntrySearch pdf key searchterm =
   try
-    Cpdftweak.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
+    Cpdfutil.remove_dict_entry (lookup_pdf pdf) key (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm)))
   with
     e -> handle_error "removeDictEntrySearch" e; err_unit
 
 let replaceDictEntry pdf key value =
   try
-    Cpdftweak.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) None
+    Cpdfutil.replace_dict_entry (lookup_pdf pdf) key (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) None
   with
     e -> handle_error "replaceDictEntry" e; err_unit
 
@@ -3241,7 +3241,7 @@ let replaceDictEntrySearch pdf key value searchterm =
     let a = lookup_pdf pdf in
     let b = (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string value)) in
     let c = (Some (Cpdfjson.object_of_json (Cpdfyojson.Safe.from_string searchterm))) in
-    Cpdftweak.replace_dict_entry a key b c 
+    Cpdfutil.replace_dict_entry a key b c 
   with
     e -> handle_error "replaceDictEntrySearch" e; err_unit
 
