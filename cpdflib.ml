@@ -341,15 +341,8 @@ let stringOfPagespec pdf range =
   with
     e -> handle_error "stringOfPagespec" e; err_string
 
-let validatePagespec spec =
-  try
-    Cpdfpagespec.validate_pagespec spec
-  with
-    e -> handle_error "validatePagespec" e; err_bool
-
 let _ = Callback.register "parsePagespec" parsePagespec
 let _ = Callback.register "stringOfPagespec" stringOfPagespec
-let _ = Callback.register "validatePagespec" validatePagespec
 
 (* Read a file, no attempt at decryption, unless it's the blank user password. *)
 let fromFile filename userpw =
@@ -2235,7 +2228,7 @@ let _ = Callback.register "compositionJSON" compositionJSON
 let attachFile filename pdf =
   try
     update_pdf
-      (Cpdfattach.attach_file false None (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file false None (lookup_pdf pdf) None None filename)
       (lookup_pdf pdf);
   with
     e -> handle_error "attachFile" e; err_unit
@@ -2243,7 +2236,7 @@ let attachFile filename pdf =
 let attachFileFromMemory rawbytes filename pdf =
   try
     update_pdf
-      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false None (lookup_pdf pdf) None None filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileFromMemory" e; err_unit
@@ -2251,7 +2244,7 @@ let attachFileFromMemory rawbytes filename pdf =
 let attachFileToPage filename pdf pagenumber =
   try
     update_pdf
-      (Cpdfattach.attach_file false (Some pagenumber) (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file false (Some pagenumber) (lookup_pdf pdf) None None filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileToPage" e; err_unit
@@ -2259,7 +2252,7 @@ let attachFileToPage filename pdf pagenumber =
 let attachFileToPageFromMemory rawbytes filename pdf pagenumber =
   try
     update_pdf
-      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) filename)
+      (Cpdfattach.attach_file ~memory:(Pdfio.bytes_of_raw rawbytes) false (Some pagenumber) (lookup_pdf pdf) None None filename)
       (lookup_pdf pdf)
   with
     e -> handle_error "attachFileToPageFromMemory" e; err_unit
@@ -2781,7 +2774,7 @@ let textToPDFPaperMemory papersize fontname fontsize rawbytes =
 let fromJPEGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromJPEGMemory" e; err_int
 
@@ -2795,7 +2788,7 @@ let fromPNGMemory rawbytes =
 let fromJPEG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data) input)
+      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") input)
   with
     e -> handle_error "fromJPEG" e; err_int
 
@@ -3019,11 +3012,11 @@ let drawUse a =
     e -> handle_error "drawUse" e; err_unit
 
 let drawJPEG a b =
-  try Cpdfdrawcontrol.addjpeg (Printf.sprintf "%s=%s" a b) with
+  try Cpdfdrawcontrol.addjpeg (Printf.sprintf "%s=%s" a b) ~path_to_im:"" with
     e -> handle_error "drawJPEG" e; err_unit
 
 let drawJPEGMemory a b =
-  try Cpdfdrawcontrol.addjpeg ~data:b a with
+  try Cpdfdrawcontrol.addjpeg ~data:b a ~path_to_im:"" with
     e -> handle_error "drawJPEGMemory" e; err_unit
 
 let drawPNG a b =

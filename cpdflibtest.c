@@ -129,9 +129,6 @@ int main(int argc, char **argv) {
   printf("---cpdf_parsePagespec()\n");
   int rfrompagespec = cpdf_parsePagespec(f2, "1-3,end");
   prerr();
-  printf("---cpdf_validatePagespec()\n");
-  printf("Validating pagespec gives %i\n", cpdf_validatePagespec("1-4,5,6"));
-  prerr();
   printf("---cpdf_stringOfPagespec()\n");
   printf("String of pagespec is %s\n", cpdf_stringOfPagespec(f2, range));
   prerr();

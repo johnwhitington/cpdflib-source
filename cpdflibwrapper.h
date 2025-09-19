@@ -164,12 +164,6 @@ double cpdf_inOfPt(double);
 int cpdf_parsePagespec(int, const char[]);
 
 /*
- * cpdf_validatePagespec(range) validates a page specification so far as is
- * possible in the absence of the actual document. Result is true if valid.
- */
-int cpdf_validatePagespec(const char[]);
-
-/*
  * cpdf_stringOfPagespec(pdf, range) builds a page specification from a page
  * range. For example, the range containing 1,2,3,6,7,8 in a document of 8
  * pages might yield "1-3,6-end"
