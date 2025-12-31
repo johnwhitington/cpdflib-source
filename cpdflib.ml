@@ -2314,7 +2314,7 @@ let imagejson = ref `Null
 
 let startGetImages pdf =
   try
-    imagejson := Cpdfimage.images (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf)));
+    imagejson := Cpdfimage.images ~inline:false (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf)));
     match !imagejson with `List l -> length l | _ -> 0
   with e ->
     handle_error "startGetImages" e; err_int
@@ -2440,7 +2440,7 @@ let images = ref [||]
 let startGetImageResolution pdf res = 
   images :=
     Array.of_list
-      (Cpdfimage.image_resolution (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res);
+      (Cpdfimage.image_resolution ~inline:true (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res);
   Array.length !images
 
 let endGetImageResolution () =
@@ -2490,13 +2490,13 @@ let getImageResolutionObjNum serial =
 
 let imageResolutionJSON pdf res =
   try
-    Pdfio.raw_of_bytes (Cpdfimage.image_resolution_json (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res)
+    Pdfio.raw_of_bytes (Cpdfimage.image_resolution_json ~inline:false (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))) res)
   with
     e -> handle_error "imageResolutionJSON" e; err_data
 
 let imagesJSON pdf =
   try
-    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfimage.images (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
+    Pdfio.raw_of_bytes (Pdfio.bytes_of_string (Cpdfyojson.Safe.pretty_to_string (Cpdfimage.images ~inline:false (lookup_pdf pdf) (ilist 1 (Pdfpage.endpage (lookup_pdf pdf))))))
   with
     e -> handle_error "imagesJSON" e; err_data
 
@@ -2774,28 +2774,28 @@ let textToPDFPaperMemory papersize fontname fontsize rawbytes =
 let fromJPEGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input ~process_struct_tree:false (fun _ -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromJPEGMemory" e; err_int
 
 let fromPNGMemory rawbytes =
   try
     new_pdf
-      (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_png_data) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
+      (Cpdfimage.image_of_input ~process_struct_tree:false (fun pdf -> Cpdfimage.obj_of_png_data pdf) (Pdfio.input_of_bytes (Pdfio.bytes_of_raw rawbytes)))
   with
     e -> handle_error "fromPNGMemory" e; err_int
 
 let fromJPEG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") input)
+      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun _ -> Cpdfimage.obj_of_jpeg_data ~path_to_im:"") input)
   with
     e -> handle_error "fromJPEG" e; err_int
 
 let fromPNG filename =
   try
     let input = Pdfio.input_of_bytes (contents_of_file filename) in
-      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun () -> Cpdfimage.obj_of_png_data) input)
+      new_pdf (Cpdfimage.image_of_input ~process_struct_tree:false (fun pdf -> Cpdfimage.obj_of_png_data pdf) input)
   with
     e -> handle_error "fromPNG" e; err_int
 
@@ -3020,11 +3020,11 @@ let drawJPEGMemory a b =
     e -> handle_error "drawJPEGMemory" e; err_unit
 
 let drawPNG a b =
-  try Cpdfdrawcontrol.addpng (Printf.sprintf "%s=%s" a b) with
+  try Cpdfdrawcontrol.addpng (Pdf.empty ()) (Printf.sprintf "%s=%s" a b) with
     e -> handle_error "drawPNG" e; err_unit
 
 let drawPNGMemory a b =
-  try Cpdfdrawcontrol.addpng ~data:b a with
+  try Cpdfdrawcontrol.addpng (Pdf.empty ()) ~data:b a with
     e -> handle_error "drawPNGMemory" e; err_unit
 
 let drawImage a =
